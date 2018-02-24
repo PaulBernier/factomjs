@@ -1,4 +1,5 @@
 const EdDSA = require('elliptic').eddsa,
+    fctUtils = require('factomjs-util'),
     {
         Entry,
         entryCost
@@ -38,9 +39,16 @@ function getChainId(firstEntry) {
     return sha256(hashes);
 }
 
-function chainCost(chain) {
-    validateChainInstance(chain);
-    return CHAIN_CREATION_COST + entryCost(chain.firstEntry);
+function chainCost(arg) {
+    let eCost = 0;
+    if (arg instanceof Chain) {
+        eCost = entryCost(arg.firstEntry);
+    } else if (arg instanceof Entry) {
+        eCost = entryCost(arg);
+    } else {
+        throw 'Argument must be an instance of Chain or Entry';
+    }
+    return CHAIN_CREATION_COST + eCost;
 }
 
 function composeChainCommit(chain, ecPrivate) {

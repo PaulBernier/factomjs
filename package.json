@@ -1,8 +1,8 @@
 {
-  "name": "factomjs",
+  "name": "factom",
   "version": "0.1.0",
   "description": "High level functions to interact with Factom blockchain and Enterprise wallet",
-  "main": "factom.js",
+  "main": "src/factom.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

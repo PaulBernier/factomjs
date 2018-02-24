@@ -1,4 +1,5 @@
 const Promise = require('bluebird'),
+    fctUtils = require('factomjs-util'),
     {
         validateChainInstance,
         composeChain
@@ -23,7 +24,8 @@ const Promise = require('bluebird'),
 // TODO: safe/unsafe version ==> NO unsafe version for addChain?
 // A prudent user will not broadcast their first Entry until the Federated server acknowledges the Chain Commit. 
 // If they do not wait, a peer on the P2P network can put their Entry as the first one in that Chain.
-async function addChain(chain, ecAddress) {
+// Options to wait on commit and/or reveal
+async function addChain(factomd, chain, ecAddress) {
     validateChainInstance(chain);
     if (!fctUtils.isValidAddress(ecAddress)) {
         throw `${ecAddress} is not a valid address`;
@@ -31,12 +33,13 @@ async function addChain(chain, ecAddress) {
 
     let composed = {};
     if (ecAddress.substring(0, 2) === 'EC') {
-        const {
-            commit,
-            reveal
-        } = await walletd.composeChain(chain.firstEntry.extIdsHex, chain.firstEntry.contentHex, ecAddress);
-        composed.commit = commit.params.message;
-        composed.reveal = reveal.params.entry;
+        throw 'Unsupported, retrieve the private key'
+        // const {
+        //     commit,
+        //     reveal
+        // } = await walletd.composeChain(chain.firstEntry.extIdsHex, chain.firstEntry.contentHex, ecAddress);
+        // composed.commit = commit.params.message;
+        // composed.reveal = reveal.params.entry;
     } else if (ecAddress.substring(0, 2) === 'Es') {
         const {
             commit,
@@ -48,9 +51,9 @@ async function addChain(chain, ecAddress) {
         throw `${ecAddress} is not an EC address`;
     }
 
-    const commitPromise = factomdjs.commitChain(composed.commit).catch(function (e) {
+    const commitPromise = factomd.commitChain(composed.commit).catch(function (e) {
         if (e.message === 'Repeated Commit') {
-            log.warn(e);
+            //log.warn(e);
         } else {
             throw e;
         }
@@ -58,11 +61,11 @@ async function addChain(chain, ecAddress) {
 
     const [committed, revealed] = await Promise.all([
         commitPromise,
-        factomdjs.revealChain(composed.reveal)
+        factomd.revealChain(composed.reveal)
     ]);
 
-    log.debug(committed);
-    log.debug(revealed);
+    // log.debug(committed);
+    // log.debug(revealed);
 
     return {
         chainId: revealed.chainid,
@@ -71,7 +74,7 @@ async function addChain(chain, ecAddress) {
 }
 
 // TODO: safe/unsage version
-async function addEntry(entry, ecAddress) {
+async function addEntry(factomd, entry, ecAddress) {
     validateEntryInstance(entry);
 
     if (!fctUtils.isValidAddress(ecAddress)) {
@@ -80,12 +83,13 @@ async function addEntry(entry, ecAddress) {
 
     let composed = {};
     if (ecAddress.substring(0, 2) === 'EC') {
-        const {
-            commit,
-            reveal
-        } = await walletd.composeEntry(entry.chainIdHex, entry.extIdsHex, entry.contentHex, ecAddress);
-        composed.commit = commit.params.message;
-        composed.reveal = reveal.params.entry;
+        throw 'Unsupported, retrieve the private key'
+        // const {
+        //     commit,
+        //     reveal
+        // } = await walletd.composeEntry(entry.chainIdHex, entry.extIdsHex, entry.contentHex, ecAddress);
+        // composed.commit = commit.params.message;
+        // composed.reveal = reveal.params.entry;
     } else if (ecAddress.substring(0, 2) === 'Es') {
         const {
             commit,
@@ -97,9 +101,9 @@ async function addEntry(entry, ecAddress) {
         throw `${ecAddress} is not an EC address`;
     }
 
-    const commitPromise = factomdjs.commitEntry(composed.commit).catch(function (e) {
+    const commitPromise = factomd.commitEntry(composed.commit).catch(function (e) {
         if (e.message === 'Repeated Commit') {
-            log.warn(e);
+            //log.warn(e);
         } else {
             throw e;
         }
@@ -107,17 +111,17 @@ async function addEntry(entry, ecAddress) {
 
     const [committed, revealed] = await Promise.all([
         commitPromise,
-        factomdjs.revealEntry(composed.reveal)
+        factomd.revealEntry(composed.reveal)
     ]);
 
-    log.debug(committed);
-    log.debug(revealed);
+    // log.debug(committed);
+    // log.debug(revealed);
 
     return Promise.resolve(revealed.entryhash);
 }
 
-async function addEntries(entries, ecpub) {
-    return Promise.map(entries, entry => addEntry(entry, ecpub));
+async function addEntries(factomd, entries, ecAddress) {
+    return Promise.map(entries, entry => addEntry(factomd, entry, ecAddress));
 }
 
 module.exports = {

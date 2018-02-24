@@ -1,4 +1,5 @@
-const EdDSA = require('elliptic').eddsa,
+const fctUtils = require('factomjs-util'),
+    EdDSA = require('elliptic').eddsa,
     {
         sha256,
         sha512
@@ -73,6 +74,12 @@ class Entry {
             extIds(extIds, enc) {
                 if (Array.isArray(extIds)) {
                     this._extIds = extIds.map(extId => Buffer.from(extId, enc));
+                }
+                return this;
+            }
+            extId(extId, enc) {
+                if (extId) {
+                    this._extIds.push(Buffer.from(extId, enc));
                 }
                 return this;
             }
@@ -166,6 +173,7 @@ function validateEntryInstance(entry) {
 
 module.exports = {
     Entry,
+    validateEntryInstance,
     composeEntryCommit,
     composeEntryReveal,
     composeEntry,

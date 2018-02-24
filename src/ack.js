@@ -1,12 +1,12 @@
-function waitOnCommitAck(txid, timeout) {
-    return waitOnAck(txid, 'c', 'commitdata', timeout);
+function waitOnCommitAck(factomd, txid, timeout) {
+    return waitOnAck(factomd, txid, 'c', 'commitdata', timeout);
 }
 
-function waitOnRevealAck(hash, chainId, timeout) {
-    return waitOnAck(hash, chainId, 'entrydata', timeout);
+function waitOnRevealAck(factomd, hash, chainId, timeout) {
+    return waitOnAck(factomd, hash, chainId, 'entrydata', timeout);
 }
 
-function waitOnAck(hash, chainId, ackResponseField, to) {
+function waitOnAck(factomd, hash, chainId, ackResponseField, to) {
     if (!hash || !chainId) {
         return Promise.reject('Invalid argument: hash or chain ID is missing');
     }
@@ -17,7 +17,7 @@ function waitOnAck(hash, chainId, ackResponseField, to) {
     return new Promise((resolve, reject) => {
         const clearId = setInterval(async function () {
             process.stdout.write('.');
-            const ackResponse = await factomdjs.ack(hash, chainId).catch(function (e) {
+            const ackResponse = await factomd.ack(hash, chainId).catch(function (e) {
                 clearInterval(clearId);
                 process.stdout.write('\n');
                 reject(e);
@@ -40,5 +40,7 @@ function waitOnAck(hash, chainId, ackResponseField, to) {
     });
 }
 
-
-
+module.exports = {
+    waitOnCommitAck,
+    waitOnRevealAck
+};
