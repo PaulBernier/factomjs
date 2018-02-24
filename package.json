@@ -1,0 +1,32 @@
+{
+  "name": "factomjs",
+  "version": "0.1.0",
+  "description": "High level functions to interact with Factom blockchain and Enterprise wallet",
+  "main": "factom.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulBernier/factomjs.git"
+  },
+  "keywords": [
+    "factom",
+    "blockchain",
+    "factomdjs",
+    "factom-walletdjs",
+    "factom-cli"
+  ],
+  "author": "Paul Bernier",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PaulBernier/factomjs/issues"
+  },
+  "homepage": "https://github.com/PaulBernier/factomjs#readme",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "elliptic": "^6.4.0",
+    "factomjs-util": "^0.1.7",
+    "winston": "3.0.0-rc1"
+  }
+}
