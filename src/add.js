@@ -1,5 +1,7 @@
 const Promise = require('bluebird'),
-    fctUtils = require('factomjs-util'),
+    {
+        isValidEcPrivateAddress
+    } = require('./util'),
     {
         validateChainInstance,
         composeChain
@@ -20,36 +22,19 @@ const Promise = require('bluebird'),
 
 
 // TODO: addEntry and addChain are exactly the same besides composeChain/commitChain
-// Handle both cases argument is chain or just firstEntry
 // TODO: safe/unsafe version ==> NO unsafe version for addChain?
 // A prudent user will not broadcast their first Entry until the Federated server acknowledges the Chain Commit. 
 // If they do not wait, a peer on the P2P network can put their Entry as the first one in that Chain.
 // Options to wait on commit and/or reveal
-async function addChain(factomd, chain, ecAddress) {
+async function addChain(factomd, chain, ecPrivate) {
     validateChainInstance(chain);
-    if (!fctUtils.isValidAddress(ecAddress)) {
-        throw `${ecAddress} is not a valid address`;
+    if (!isValidEcPrivateAddress(ecPrivate)) {
+        throw `${ecPrivate} is not a valid EC private address`;
     }
 
-    let composed = {};
-    if (ecAddress.substring(0, 2) === 'EC') {
-        throw 'Unsupported, retrieve the private key'
-        // const {
-        //     commit,
-        //     reveal
-        // } = await walletd.composeChain(chain.firstEntry.extIdsHex, chain.firstEntry.contentHex, ecAddress);
-        // composed.commit = commit.params.message;
-        // composed.reveal = reveal.params.entry;
-    } else if (ecAddress.substring(0, 2) === 'Es') {
-        const {
-            commit,
-            reveal
-        } = composeChain(chain, ecAddress);
-        composed.commit = commit.toString('hex');
-        composed.reveal = reveal.toString('hex');
-    } else {
-        throw `${ecAddress} is not an EC address`;
-    }
+    const composed = composeChain(chain, ecPrivate);
+    composed.commit = composed.commit.toString('hex');
+    composed.reveal = composed.reveal.toString('hex');
 
     const commitPromise = factomd.commitChain(composed.commit).catch(function (e) {
         if (e.message === 'Repeated Commit') {
@@ -74,32 +59,16 @@ async function addChain(factomd, chain, ecAddress) {
 }
 
 // TODO: safe/unsage version
-async function addEntry(factomd, entry, ecAddress) {
+async function addEntry(factomd, entry, ecPrivate) {
     validateEntryInstance(entry);
 
-    if (!fctUtils.isValidAddress(ecAddress)) {
-        throw `${ecAddress} is not a valid address`;
+    if (!isValidEcPrivateAddress(ecPrivate)) {
+        throw `${ecPrivate} is not a valid EC private address`;
     }
 
-    let composed = {};
-    if (ecAddress.substring(0, 2) === 'EC') {
-        throw 'Unsupported, retrieve the private key'
-        // const {
-        //     commit,
-        //     reveal
-        // } = await walletd.composeEntry(entry.chainIdHex, entry.extIdsHex, entry.contentHex, ecAddress);
-        // composed.commit = commit.params.message;
-        // composed.reveal = reveal.params.entry;
-    } else if (ecAddress.substring(0, 2) === 'Es') {
-        const {
-            commit,
-            reveal
-        } = composeEntry(entry, ecAddress);
-        composed.commit = commit.toString('hex');
-        composed.reveal = reveal.toString('hex');
-    } else {
-        throw `${ecAddress} is not an EC address`;
-    }
+    const composed = composeEntry(entry, ecPrivate);
+    composed.commit = composed.commit.toString('hex');
+    composed.reveal = composed.reveal.toString('hex');
 
     const commitPromise = factomd.commitEntry(composed.commit).catch(function (e) {
         if (e.message === 'Repeated Commit') {

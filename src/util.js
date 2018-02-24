@@ -1,4 +1,7 @@
-const crypto = require('crypto');
+const crypto = require('crypto'),
+    {
+        isValidAddress
+    } = require('factomjs-util');
 
 function sha256(data) {
     const hash = crypto.createHash('sha256');
@@ -16,8 +19,28 @@ function sha512(data) {
     return hash.digest();
 }
 
+function isValidEcAddress(address) {
+    return isValidAddress(address) && ['EC', 'Es'].includes(address.substring(0, 2));
+}
+
+function isValidEcPublicAddress(address) {
+    return isValidAddress(address) && address.substring(0, 2) === 'EC';
+}
+
+function isValidEcPrivateAddress(address) {
+    return isValidAddress(address) && address.substring(0, 2) === 'Es';
+}
+
+function isValidFctAddress(address) {
+    return isValidAddress(address) && ['FA', 'Fs'].includes(address.substring(0, 2));
+}
+
 module.exports = {
     sha256,
     sha512,
-    sha256d
+    sha256d,
+    isValidEcAddress,
+    isValidEcPublicAddress,
+    isValidEcPrivateAddress,
+    isValidFctAddress
 };

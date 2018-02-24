@@ -3,7 +3,8 @@ const factomd = require('../../factomdjs'),
 
 const add = require('./add'),
     get = require('./get'),
-    ack = require('./ack');
+    ack = require('./ack'),
+    wallet = require('./wallet');
 
 class FactomCli {
     constructor(opt) {
@@ -14,16 +15,19 @@ class FactomCli {
 
     // Add
 
-    addChain(chain, ecAddress) {
-        return add.addChain(this.factomd, chain, ecAddress);
+    async addChain(chain, ecAddress) {
+        const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
+        return add.addChain(this.factomd, chain, ecPrivate);
     }
 
-    addEntry(entry, ecAddress) {
-        return add.addEntry(this.factomd, entry, ecAddress);
+    async addEntry(entry, ecAddress) {
+        const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
+        return add.addEntry(this.factomd, entry, ecPrivate);
     }
 
-    addEntries(entries, ecAddress) {
-        return add.addEntries(this.factomd, entries, ecAddress);
+    async addEntries(entries, ecAddress) {
+        const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
+        return add.addEntries(this.factomd, entries, ecPrivate);
     }
 
     // Get

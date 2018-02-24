@@ -28,6 +28,10 @@ async function getAllEntriesOfChain(factomd, chainId) {
     const allEntries = [];
     const chainHead = await factomd.chainHead(chainId);
 
+    if (chainHead.chainhead === '' && chainHead.chaininprocesslist) {
+        throw 'Chain not yet included in a Directory Block';
+    }
+
     let keymr = chainHead.chainhead;
     while (keymr !== NULL_HASH) {
         const {
