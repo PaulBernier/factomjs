@@ -19,6 +19,10 @@ function sha512(data) {
     return hash.digest();
 }
 
+function toHex(arg) {
+    return Buffer.isBuffer(arg) ? arg.toString('hex') : arg;
+}
+
 function isValidEcAddress(address) {
     return isValidAddress(address) && ['EC', 'Es'].includes(address.substring(0, 2));
 }
@@ -39,6 +43,7 @@ module.exports = {
     sha256,
     sha512,
     sha256d,
+    toHex,
     isValidEcAddress,
     isValidEcPublicAddress,
     isValidEcPrivateAddress,

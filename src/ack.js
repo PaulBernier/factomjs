@@ -1,9 +1,13 @@
+const {
+    toHex
+} = require('./util');
+
 function waitOnCommitAck(factomd, txid, timeout) {
     return waitOnAck(factomd, txid, 'c', 'commitdata', timeout);
 }
 
 function waitOnRevealAck(factomd, hash, chainId, timeout) {
-    return waitOnAck(factomd, hash, chainId, 'entrydata', timeout);
+    return waitOnAck(factomd, hash, toHex(chainId), 'entrydata', timeout);
 }
 
 function waitOnAck(factomd, hash, chainId, ackResponseField, to) {

@@ -27,7 +27,7 @@
     "bluebird": "^3.5.1",
     "elliptic": "^6.4.0",
     "factom-walletdjs": "^0.2.5",
-    "factomdjs": "^0.3.4",
+    "factomdjs": "0.4.0",
     "factomjs-util": "^0.1.7",
     "winston": "3.0.0-rc1"
   }

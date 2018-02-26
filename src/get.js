@@ -4,14 +4,17 @@ const Promise = require('bluebird'),
     } = require('./constant'),
     {
         Entry
-    } = require('./entry');
+    } = require('./entry'),
+    {
+        toHex
+    } = require('./util');
 
 function getChainHead(factomd, chainId) {
-    return factomd.chainHead(chainId);
+    return factomd.chainHead(toHex(chainId));
 }
 
 async function getFirstEntry(factomd, chainId) {
-    const chainHead = await factomd.chainHead(chainId);
+    const chainHead = await getChainHead(factomd, chainId);
     let keymr = chainHead.chainhead;
     let entryBlock;
     while (keymr !== NULL_HASH) {
@@ -26,7 +29,7 @@ async function getFirstEntry(factomd, chainId) {
 // TODO: Paginated version
 async function getAllEntriesOfChain(factomd, chainId) {
     const allEntries = [];
-    const chainHead = await factomd.chainHead(chainId);
+    const chainHead = await getChainHead(factomd, chainId);
 
     if (chainHead.chainhead === '' && chainHead.chaininprocesslist) {
         throw 'Chain not yet included in a Directory Block';

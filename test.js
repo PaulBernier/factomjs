@@ -16,4 +16,5 @@ const cli = new FactomCli({
 
 // cli.addChain(chain, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym').then(console.log);
 
-// cli.getFirstEntry('336f97dae216617cae89cdd8307f23fcf38af8dbfa6b7edbb94e399f9d5c4115').then(console.log);
+cli.getFirstEntry(chain.chainId).then(console.log);
+
