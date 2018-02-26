@@ -1,15 +1,7 @@
 const Promise = require('bluebird'),
-    {
-        isValidEcPrivateAddress
-    } = require('./util'),
-    {
-        validateChainInstance,
-        composeChain
-    } = require('./chain'),
-    {
-        validateEntryInstance,
-        composeEntry
-    } = require('./entry');
+    { isValidEcPrivateAddress } = require('./addresses'),
+    { validateChainInstance, composeChain } = require('./chain'),
+    { validateEntryInstance, composeEntry } = require('./entry');
 
 
 // addChains
@@ -34,7 +26,7 @@ async function addChain(factomd, chain, ecPrivate) {
     composed.commit = composed.commit.toString('hex');
     composed.reveal = composed.reveal.toString('hex');
 
-    const commitPromise = factomd.commitChain(composed.commit).catch(function (e) {
+    const commitPromise = factomd.commitChain(composed.commit).catch(function(e) {
         if (e.message === 'Repeated Commit') {
             //log.warn(e);
         } else {
@@ -56,6 +48,10 @@ async function addChain(factomd, chain, ecPrivate) {
     };
 }
 
+function addChains(factomd, chains, ecAddress) {
+    return Promise.map(chains, chain => addChain(factomd, chain, ecAddress));
+}
+
 // TODO: safe/unsage version
 async function addEntry(factomd, entry, ecPrivate) {
     validateEntryInstance(entry);
@@ -68,7 +64,7 @@ async function addEntry(factomd, entry, ecPrivate) {
     composed.commit = composed.commit.toString('hex');
     composed.reveal = composed.reveal.toString('hex');
 
-    const commitPromise = factomd.commitEntry(composed.commit).catch(function (e) {
+    const commitPromise = factomd.commitEntry(composed.commit).catch(function(e) {
         if (e.message === 'Repeated Commit') {
             //log.warn(e);
         } else {
@@ -87,12 +83,13 @@ async function addEntry(factomd, entry, ecPrivate) {
     return Promise.resolve(revealed.entryhash);
 }
 
-async function addEntries(factomd, entries, ecAddress) {
+function addEntries(factomd, entries, ecAddress) {
     return Promise.map(entries, entry => addEntry(factomd, entry, ecAddress));
 }
 
 module.exports = {
     addChain,
+    addChains,
     addEntry,
     addEntries
 };

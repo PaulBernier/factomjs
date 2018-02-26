@@ -1,5 +1,6 @@
 module.exports = {
     ...require('./factom-cli'),
     ...require('./entry'),
-    ...require('./chain')
+    ...require('./chain'),
+    ...require('./addresses')
 }

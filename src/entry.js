@@ -1,9 +1,6 @@
 const fctUtils = require('factomjs-util'),
     EdDSA = require('elliptic').eddsa,
-    {
-        sha256,
-        sha512
-    } = require('./util');
+    { sha256, sha512 } = require('./util');
 
 const ec = new EdDSA('ed25519');
 

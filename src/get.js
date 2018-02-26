@@ -1,16 +1,16 @@
 const Promise = require('bluebird'),
-    {
-        NULL_HASH
-    } = require('./constant'),
-    {
-        Entry
-    } = require('./entry'),
-    {
-        toHex
-    } = require('./util');
+    { NULL_HASH } = require('./constant'),
+    { Entry } = require('./entry'),
+    { getPublicAddress } = require('./addresses'),
+    { toHex } = require('./util');
 
 function getChainHead(factomd, chainId) {
     return factomd.chainHead(toHex(chainId));
+}
+
+async function getEntry(factomd, entryHash) {
+    return factomd.entry(toHex(entryHash))
+        .then(toEntry);
 }
 
 async function getFirstEntry(factomd, chainId) {
@@ -22,11 +22,9 @@ async function getFirstEntry(factomd, chainId) {
         keymr = entryBlock.header.prevkeymr;
     }
 
-    return factomd.entry(entryBlock.entrylist[0].entryhash)
-        .then(toEntry);
+    return getEntry(factomd, entryBlock.entrylist[0].entryhash);
 }
 
-// TODO: Paginated version
 async function getAllEntriesOfChain(factomd, chainId) {
     const allEntries = [];
     const chainHead = await getChainHead(factomd, chainId);
@@ -52,10 +50,10 @@ async function getAllEntriesOfChain(factomd, chainId) {
 async function getAllEntriesOfEntryBlock(factomd, keymr) {
     const entryBlock = await factomd.entryBlock(keymr);
 
-    const entries = await Promise.map(entryBlock.entrylist.map(e => e.entryhash), factomd.entry);
+    const entries = await Promise.map(entryBlock.entrylist.map(e => e.entryhash), getEntry.bind(null, factomd));
 
     return {
-        entries: entries.map(toEntry),
+        entries: entries,
         prevkeymr: entryBlock.header.prevkeymr
     };
 }
@@ -69,9 +67,10 @@ function toEntry(entry) {
 }
 
 function getBalance(factomd, address) {
-    // TODO: detect type of X and redirect
-    // TODO: implement https://github.com/FactomProject/factom/blob/a0a55096f9d2aeb5cb63b8b5a714a285f3a100b3/addresses.go#L43
-    return factomd.entryCreditBalance(address)
+    const publicAddress = getPublicAddress(address);
+
+    const balance = publicAddress[0] === 'E' ? factomd.entryCreditBalance : factomd.factoidBalance;
+    return balance.call(factomd, publicAddress)
         .then(res => res.balance);
 }
 
@@ -87,6 +86,7 @@ function getProperties(factomd) {
 // }
 
 module.exports = {
+    getEntry,
     getAllEntriesOfChain,
     getAllEntriesOfEntryBlock,
     getFirstEntry,

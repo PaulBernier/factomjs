@@ -1,6 +1,4 @@
-const {
-    toHex
-} = require('./util');
+const { toHex } = require('./util');
 
 function waitOnCommitAck(factomd, txid, timeout) {
     return waitOnAck(factomd, txid, 'c', 'commitdata', timeout);
@@ -19,9 +17,9 @@ function waitOnAck(factomd, hash, chainId, ackResponseField, to) {
     const startTime = Date.now();
 
     return new Promise((resolve, reject) => {
-        const clearId = setInterval(async function () {
+        const clearId = setInterval(async function() {
             process.stdout.write('.');
-            const ackResponse = await factomd.ack(hash, chainId).catch(function (e) {
+            const ackResponse = await factomd.ack(hash, chainId).catch(function(e) {
                 clearInterval(clearId);
                 process.stdout.write('\n');
                 reject(e);

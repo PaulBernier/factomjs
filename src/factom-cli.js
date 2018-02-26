@@ -21,6 +21,11 @@ class FactomCli {
         return add.addChain(this.factomd, chain, ecPrivate);
     }
 
+    async addChains(chains, ecAddress) {
+        const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
+        return add.addChains(this.factomd, chains, ecPrivate);
+    }
+
     async addEntry(entry, ecAddress) {
         const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
         return add.addEntry(this.factomd, entry, ecPrivate);

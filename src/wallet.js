@@ -1,6 +1,4 @@
-const {
-    isValidAddress
-} = require('factomjs-util');
+const { isValidAddress } = require('./addresses');
 
 function getAddress(walletd, address) {
     return walletd.address(address);
