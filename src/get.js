@@ -65,20 +65,20 @@ function toEntry(entry) {
         .build();
 }
 
-function getBalance(factomdjs, address) {
+function getBalance(factomd, address) {
     // TODO: detect type of X and redirect
     // TODO: implement https://github.com/FactomProject/factom/blob/a0a55096f9d2aeb5cb63b8b5a714a285f3a100b3/addresses.go#L43
-    return factomdjs.entryCreditBalance(address)
+    return factomd.entryCreditBalance(address)
         .then(res => res.balance);
 }
 
-function getProperties(factomdjs) {
-    return factomdjs.properties();
+function getProperties(factomd) {
+    return factomd.properties();
 }
 
 
 // async function chainExists(chainId) {
-//     return factomdjs.chainHead(chainId)
+//     return factomd.chainHead(chainId)
 //         .then(() => true)
 //         .catch(() => false);
 // }

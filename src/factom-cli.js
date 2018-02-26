@@ -1,5 +1,5 @@
-const factomd = require('../../factomdjs'),
-    walletd = require('../../factom-walletdjs');
+const factomd = require('factomdjs'),
+    walletd = require('factom-walletdjs');
 
 const add = require('./add'),
     get = require('./get'),
@@ -32,10 +32,12 @@ class FactomCli {
 
     // Get
 
+    // TODO: handle input string?
     getAllEntriesOfChain(chainId) {
         return get.getAllEntriesOfChain(this.factomd, chainId);
     }
 
+    // TODO: handle input string?
     getChainHead(chainId) {
         return get.getChainHead(this.factomd, chainId);
     }
@@ -44,6 +46,7 @@ class FactomCli {
         return get.getAllEntriesOfEntryBlock(this.factomd, keymr);
     }
 
+    // TODO: handle input string?
     getFirstEntry(chainId) {
         return get.getFirstEntry(this.factomd, chainId);
     }
@@ -61,6 +64,7 @@ class FactomCli {
         return ack.waitOnCommitAck(this.factomd, txid, timeout);
     }
 
+    // TODO: handle input string?
     waitOnRevealAck(hash, chainId, timeout) {
         return ack.waitOnRevealAck(factomd, hash, chainId, timeout);
     }

@@ -11,12 +11,10 @@ const Promise = require('bluebird'),
         composeEntry
     } = require('./entry');
 
-// addChain
+
 // addChains
 // commitChain
 // revealChain
-// addEntry
-// addEntries
 // commitEntry
 // revealEntry
 
