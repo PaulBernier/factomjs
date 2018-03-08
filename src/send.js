@@ -1,4 +1,9 @@
-const { isValidFctPublicAddress, isValidEcPublicAddress } = require('./addresses'), { getPrivateAddress } = require('./wallet'), { Transaction } = require('./transaction'), { getEntryCreditRate } = require('./get');
+const Promise = require('bluebird'),
+    { publicFactoidRCDHashToHumanAddress } = require('factomjs-util'),
+    { isValidFctPublicAddress, isValidEcPublicAddress } = require('./addresses'),
+    { getPrivateAddress } = require('./wallet'),
+    { Transaction } = require('./transaction'),
+    { getEntryCreditRate } = require('./get');
 
 async function sendTransaction(factomd, transaction) {
     if (!(transaction instanceof Transaction)) {
@@ -10,8 +15,17 @@ async function sendTransaction(factomd, transaction) {
         throw `Insufficient fees for the transaction (paid: ${transaction.feesPaid}, minimum required: ${transaction.feesRequired(ecRate)}, current EC rate: ${ecRate})`;
     }
 
+    await Promise.each(transaction.inputs, input => validateFunds(factomd, publicFactoidRCDHashToHumanAddress(input.rcdHash), input.amount));
+
     return factomd.factoidSubmit(transaction.marshalBinary().toString('hex'))
         .then(r => r.txid);
+}
+
+async function validateFunds(factomd, publicFctAddress, amount) {
+    const { balance } = await factomd.factoidBalance(publicFctAddress);
+    if (balance < amount) {
+        throw `Address ${publicFctAddress} doesn't have sufficient funds (balance: ${balance})`;
+    }
 }
 
 async function getFactoidTransaction(factomd, walletd, originAddress, recipientAddress, amount, fees) {
@@ -21,7 +35,7 @@ async function getFactoidTransaction(factomd, walletd, originAddress, recipientA
     }
 
     const ecRate = await getEntryCreditRate(factomd);
-    const requiredFees = new Transaction.Builder()
+    const requiredFees = Transaction.Builder()
         .input(originPrivateAddress, amount)
         .output(recipientAddress, amount)
         .build()
@@ -34,7 +48,7 @@ async function getFactoidTransaction(factomd, walletd, originAddress, recipientA
         finalFees = fees;
     }
 
-    const transaction = new Transaction.Builder()
+    const transaction = Transaction.Builder()
         .input(originPrivateAddress, amount + finalFees)
         .output(recipientAddress, amount)
         .build();
@@ -51,7 +65,7 @@ async function getEntryCreditPurchaseTransaction(factomd, walletd, originAddress
     const ecRate = await getEntryCreditRate(factomd);
     const amount = ecAmount * ecRate;
 
-    const requiredFees = new Transaction.Builder()
+    const requiredFees = Transaction.Builder()
         .input(originPrivateAddress, amount)
         .output(recipientAddress, amount)
         .build()
@@ -64,7 +78,7 @@ async function getEntryCreditPurchaseTransaction(factomd, walletd, originAddress
         finalFees = fees;
     }
 
-    const transaction = new Transaction.Builder()
+    const transaction = Transaction.Builder()
         .input(originPrivateAddress, amount + finalFees)
         .output(recipientAddress, amount)
         .build();

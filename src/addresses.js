@@ -49,8 +49,6 @@ function getPublicAddress(address) {
     return prefix[0] === 'F' ? publicFactoidKeyToHumanAddress(pub) : publicECKeyToHumanAddress(pub);
 }
 
-
-
 module.exports = {
     isValidAddress,
     isValidPublicAddress,

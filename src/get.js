@@ -59,7 +59,7 @@ async function getAllEntriesOfEntryBlock(factomd, keymr) {
 }
 
 function toEntry(entry) {
-    return new Entry.Builder()
+    return Entry.Builder()
         .chainId(entry.chainid, 'hex')
         .extIds(entry.extids, 'hex')
         .content(entry.content, 'hex')

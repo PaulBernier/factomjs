@@ -4,16 +4,16 @@ const fctUtils = require('factomjs-util'),
     { sha256, sha512 } = require('./util');
 
 const ec = new EdDSA('ed25519');
- 
+
 class Entry {
-    constructor(build) {
-        if (String(build.constructor) === String(Entry.Builder)) {
-            this.chainId = build._chainId;
-            this.content = build._content;
-            this.extIds = Object.freeze(build._extIds);
+    constructor(builder) {
+        if (builder instanceof EntryBuilder) {
+            this.chainId = builder._chainId;
+            this.content = builder._content;
+            this.extIds = Object.freeze(builder._extIds);
             Object.freeze(this);
         } else {
-            throw 'Use `new Entry.Builder()` syntax to create a new Entry';
+            throw 'Use `Entry.Builder()` syntax to create a new Entry';
         }
     }
 
@@ -44,48 +44,49 @@ class Entry {
         return Buffer.concat([header, externalIds, this.content]);
     }
 
-    static get Builder() {
-        class Builder {
-            constructor(entry) {
-                if (entry instanceof Entry) {
-                    this._extIds = entry.extIds;
-                    this._content = entry.content;
-                    this._chainId = entry.chainId;
-                } else {
-                    this._extIds = [];
-                    this._content = Buffer.from('');
-                    this._chainId = Buffer.from('');
-                }
-            }
-            content(content, enc) {
-                if (content) {
-                    this._content = Buffer.from(content, enc);
-                }
-                return this;
-            }
-            chainId(chainId, enc) {
-                if (chainId) {
-                    this._chainId = Buffer.from(chainId, enc);
-                }
-                return this;
-            }
-            extIds(extIds, enc) {
-                if (Array.isArray(extIds)) {
-                    this._extIds = extIds.map(extId => Buffer.from(extId, enc));
-                }
-                return this;
-            }
-            extId(extId, enc) {
-                if (extId) {
-                    this._extIds.push(Buffer.from(extId, enc));
-                }
-                return this;
-            }
-            build() {
-                return new Entry(this);
-            }
+    static Builder(entry) {
+        return new EntryBuilder(entry);
+    }
+}
+
+class EntryBuilder {
+    constructor(entry) {
+        if (entry instanceof Entry) {
+            this._extIds = entry.extIds;
+            this._content = entry.content;
+            this._chainId = entry.chainId;
+        } else {
+            this._extIds = [];
+            this._content = Buffer.from('');
+            this._chainId = Buffer.from('');
         }
-        return Builder;
+    }
+    content(content, enc) {
+        if (content) {
+            this._content = Buffer.from(content, enc);
+        }
+        return this;
+    }
+    chainId(chainId, enc) {
+        if (chainId) {
+            this._chainId = Buffer.from(chainId, enc);
+        }
+        return this;
+    }
+    extIds(extIds, enc) {
+        if (Array.isArray(extIds)) {
+            this._extIds = extIds.map(extId => Buffer.from(extId, enc));
+        }
+        return this;
+    }
+    extId(extId, enc) {
+        if (extId) {
+            this._extIds.push(Buffer.from(extId, enc));
+        }
+        return this;
+    }
+    build() {
+        return new Entry(this);
     }
 }
 

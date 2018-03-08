@@ -4,7 +4,7 @@ const assert = require('chai').assert,
 describe('Test Entry', function() {
 
     it('should populate Entry attributes', function() {
-        const entry = new Entry.Builder()
+        const entry = Entry.Builder()
             .chainId('cfb5d93e747d20433e3b14603f90a5eb152d0399e7278f9671ecf9763f8780e8', 'hex')
             .extId('extId')
             .extId(Buffer.from('extId2'))

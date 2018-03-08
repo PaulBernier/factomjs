@@ -25,21 +25,29 @@ class TransactionAddress {
 
 class Transaction {
     constructor(builder) {
-        this.timestamp = builder._timestamp || Date.now();
-        this.inputs = builder._inputs;
-        this.factoidOutputs = builder._factoidOutputs;
-        this.entryCreditOutputs = builder._entryCreditOutputs;
+        if (builder instanceof TransactionBuilder) {
+            this.timestamp = builder._timestamp || Date.now();
+            this.inputs = builder._inputs;
+            this.factoidOutputs = builder._factoidOutputs;
+            this.entryCreditOutputs = builder._entryCreditOutputs;
 
-        this.totalInputs = this.inputs.reduce((acc, value) => acc + value.amount, 0);
-        this.totalFactoidOutputs = this.factoidOutputs.reduce((acc, value) => acc + value.amount, 0);
-        this.totalEntryCreditOutputs = this.entryCreditOutputs.reduce((acc, value) => acc + value.amount, 0);
-        this.feesPaid = this.totalInputs - this.totalFactoidOutputs - this.totalEntryCreditOutputs;
+            this.totalInputs = this.inputs.reduce((acc, value) => acc + value.amount, 0);
+            this.totalFactoidOutputs = this.factoidOutputs.reduce((acc, value) => acc + value.amount, 0);
+            this.totalEntryCreditOutputs = this.entryCreditOutputs.reduce((acc, value) => acc + value.amount, 0);
+            const totalOutputs = this.totalFactoidOutputs + this.totalEntryCreditOutputs;
+            this.feesPaid = this.totalInputs - totalOutputs;
+            if (this.feesPaid < 0) {
+                throw `Outputs (${totalOutputs}) are greater than inputs (${this.totalInputs})`;
+            }
 
-        this.rcds = builder._keys.map(key => Buffer.concat([RCD_TYPE, Buffer.from(key.getPublic())]));
-        const data = this.marshalBinarySig();
-        this.signatures = builder._keys.map(key => Buffer.from(key.sign(data).toBytes()));
+            this.rcds = builder._keys.map(key => Buffer.concat([RCD_TYPE, Buffer.from(key.getPublic())]));
+            const data = this.marshalBinarySig();
+            this.signatures = builder._keys.map(key => Buffer.from(key.sign(data).toBytes()));
 
-        Object.freeze(this);
+            Object.freeze(this);
+        } else {
+            throw 'Use `Transaction.Builder()` syntax to create a new Transaction';
+        }
     }
 
     validateFees(ecRate) {
@@ -96,71 +104,73 @@ class Transaction {
         ]);
     }
 
-    static get Builder() {
-        class Builder {
-            constructor() {
-                this._inputs = [];
-                this._factoidOutputs = [];
-                this._entryCreditOutputs = [];
-                this._keys = [];
-                this._ecRate = 0;
-                this._addFeesInputIndex = 0;
-                this._overrideFees;
-                this._timestamp;
-            }
+    static Builder() {
+        return new TransactionBuilder();
+    }
 
-            input(fctPrivateAddress, amount) {
-                if (!isValidFctPrivateAddress(fctPrivateAddress)) {
-                    throw 'First argument must be a valid private factoid address';
-                }
-                if (!amount || typeof amount !== 'number') {
-                    throw 'Second argument must be a non null amount in Factoshis';
-                }
+}
 
-                const secret = privateHumanAddressStringToPrivate(fctPrivateAddress);
-                const key = ec.keyFromSecret(secret);
+class TransactionBuilder {
+    constructor() {
+        this._inputs = [];
+        this._factoidOutputs = [];
+        this._entryCreditOutputs = [];
+        this._keys = [];
+        this._ecRate = 0;
+        this._addFeesInputIndex = 0;
+        this._overrideFees;
+        this._timestamp;
+    }
 
-                this._inputs.push(new TransactionAddress(keyToRCD1(Buffer.from(key.getPublic())), amount));
-                this._keys.push(key);
-                return this;
-            }
-
-            output(publicAddress, amount) {
-                if (!isValidPublicAddress(publicAddress)) {
-                    throw 'First argument must be either a Factoid or EntryCredit public address';
-                }
-                if (!amount || typeof amount !== 'number') {
-                    throw 'Second argument must be a non null amount in Factoshis';
-                }
-
-                const rcdHash = publicHumanAddressStringToRCD(publicAddress);
-                const transactionAddress = new TransactionAddress(rcdHash, amount);
-                if (publicAddress[0] === 'F') {
-                    this._factoidOutputs.push(transactionAddress);
-                } else {
-                    this._entryCreditOutputs.push(transactionAddress);
-                }
-
-                return this;
-            }
-
-            timestamp(timestamp) {
-                this._timestamp = timestamp;
-                return this;
-            }
-
-            adjustFeesOnInput(ecRate, addFeesInputIndex, overrideFees) {
-                this._ecRate = ecRate;
-                this._addFeesInputIndex = addFeesInputIndex || 0;
-                this._overrideFees = overrideFees;
-                return this;
-            }
-
-            build() {
-                return new Transaction(this);
-            }
+    input(fctPrivateAddress, amount) {
+        if (!isValidFctPrivateAddress(fctPrivateAddress)) {
+            throw 'First argument must be a valid private factoid address';
         }
-        return Builder;
+        if (!amount || typeof amount !== 'number') {
+            throw 'Second argument must be a non null amount in Factoshis';
+        }
+
+        const secret = privateHumanAddressStringToPrivate(fctPrivateAddress);
+        const key = ec.keyFromSecret(secret);
+
+        this._inputs.push(new TransactionAddress(keyToRCD1(Buffer.from(key.getPublic())), amount));
+        this._keys.push(key);
+        return this;
+    }
+
+    output(publicAddress, amount) {
+        if (!isValidPublicAddress(publicAddress)) {
+            throw 'First argument must be either a Factoid or EntryCredit public address';
+        }
+        if (!amount || typeof amount !== 'number') {
+            throw 'Second argument must be a non null amount in Factoshis';
+        }
+
+        const rcdHash = publicHumanAddressStringToRCD(publicAddress);
+        const transactionAddress = new TransactionAddress(rcdHash, amount);
+        if (publicAddress[0] === 'F') {
+            this._factoidOutputs.push(transactionAddress);
+        } else {
+            this._entryCreditOutputs.push(transactionAddress);
+        }
+
+        return this;
+    }
+
+    timestamp(timestamp) {
+        this._timestamp = timestamp;
+        return this;
+    }
+
+    adjustFeesOnInput(ecRate, addFeesInputIndex, overrideFees) {
+        this._ecRate = ecRate;
+        this._addFeesInputIndex = addFeesInputIndex || 0;
+        this._overrideFees = overrideFees;
+        return this;
+    }
+
+    build() {
+        return new Transaction(this);
     }
 }
 

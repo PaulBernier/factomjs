@@ -10,7 +10,7 @@ class Chain {
     constructor(firstEntry) {
         if (firstEntry instanceof Entry) {
             const chainId = getChainId(firstEntry);
-            this.firstEntry = new Entry.Builder(firstEntry)
+            this.firstEntry = Entry.Builder(firstEntry)
                 .chainId(chainId)
                 .build();
             this.chainId = chainId;
