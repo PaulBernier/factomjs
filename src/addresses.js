@@ -1,13 +1,13 @@
-const EdDSA = require('elliptic').eddsa,
-    crypto = require('crypto'),
-    {
-        isValidAddress,
-        privateHumanAddressStringToPrivate,
-        publicECKeyToHumanAddress,
-        publicFactoidKeyToHumanAddress
-    } = require('factomjs-util');
+const { privateKeyToPublicKey } = require('./util'), {
+    isValidAddress,
+    privateHumanAddressStringToPrivate,
+    publicECKeyToHumanAddress,
+    publicFactoidKeyToHumanAddress
+} = require('factomjs-util');
 
-const ec = new EdDSA('ed25519');
+function isValidPublicAddress(address) {
+    return isValidAddress(address) && ['EC', 'FA'].includes(address.substring(0, 2));
+}
 
 function isValidEcAddress(address) {
     return isValidAddress(address) && ['EC', 'Es'].includes(address.substring(0, 2));
@@ -25,6 +25,14 @@ function isValidFctAddress(address) {
     return isValidAddress(address) && ['FA', 'Fs'].includes(address.substring(0, 2));
 }
 
+function isValidFctPrivateAddress(address) {
+    return isValidAddress(address) && address.substring(0, 2) === 'Fs';
+}
+
+function isValidFctPublicAddress(address) {
+    return isValidAddress(address) && address.substring(0, 2) === 'FA';
+}
+
 function getPublicAddress(address) {
     if (!isValidAddress(address)) {
         throw `Invalid address ${address}`;
@@ -36,17 +44,21 @@ function getPublicAddress(address) {
     }
 
     const secret = privateHumanAddressStringToPrivate(address);
-    const key = ec.keyFromSecret(secret);
-    const pub = Buffer.from(key.getPublic());
+    const pub = privateKeyToPublicKey(secret);
 
     return prefix[0] === 'F' ? publicFactoidKeyToHumanAddress(pub) : publicECKeyToHumanAddress(pub);
 }
 
+
+
 module.exports = {
+    isValidAddress,
+    isValidPublicAddress,
     isValidEcAddress,
     isValidEcPublicAddress,
     isValidEcPrivateAddress,
     isValidFctAddress,
-    isValidAddress,
+    isValidFctPublicAddress,
+    isValidFctPrivateAddress,
     getPublicAddress
 };

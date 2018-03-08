@@ -2,6 +2,7 @@ const factomdjs = require('factomdjs'),
     walletd = require('factom-walletdjs');
 
 const add = require('./add'),
+    send = require('./send'),
     get = require('./get'),
     ack = require('./ack'),
     wallet = require('./wallet');
@@ -13,6 +14,10 @@ class FactomCli {
         this.factomd = factomd;
         this.walletd = walletd;
     }
+
+    //////////////////
+    // Primary API //
+    ////////////////
 
     // Add
 
@@ -46,10 +51,6 @@ class FactomCli {
         return get.getChainHead(this.factomd, chainId);
     }
 
-    getAllEntriesOfEntryBlock(keymr) {
-        return get.getAllEntriesOfEntryBlock(this.factomd, keymr);
-    }
-
     getFirstEntry(chainId) {
         return get.getFirstEntry(this.factomd, chainId);
     }
@@ -62,13 +63,47 @@ class FactomCli {
         return get.getProperties(this.factomd);
     }
 
+    chainExists(chainId) {
+        return get.chainExists(this.factomd, chainId);
+    }
+
+    getEntryCreditRate() {
+        return get.getEntryCreditRate(this.factomd);
+    }
+
+    // Send transactions
+
+    sendTransaction(transaction) {
+        return send.sendTransaction(this.factomd, transaction);
+    }
+
+    getFactoidTransaction(originAddress, recipientAddress, amount, fees) {
+        return send.getFactoidTransaction(this.factomd, this.walletd, originAddress, recipientAddress, amount, fees);
+    }
+
+    getEntryCreditPurchaseTransaction(originAddress, recipientAddress, ecAmount, fees) {
+        return send.getEntryCreditPurchaseTransaction(this.factomd, this.walletd, originAddress, recipientAddress, ecAmount, fees);
+    }
+
     // Ack
-    waitOnCommitAck(txid, timeout) {
-        return ack.waitOnCommitAck(this.factomd, txid, timeout);
+    waitOnCommitAck(txId, timeout) {
+        return ack.waitOnCommitAck(this.factomd, txId, timeout);
     }
 
     waitOnRevealAck(hash, chainId, timeout) {
         return ack.waitOnRevealAck(this.factomd, hash, chainId, timeout);
+    }
+
+    waitOnFactoidTransactionAck(txId, timeout) {
+        return ack.waitOnFactoidTransactionAck(this.factomd, txId, timeout);
+    }
+
+    ////////////////////
+    // Secondary API //
+    //////////////////
+
+    getAllEntriesOfEntryBlock(keymr) {
+        return get.getAllEntriesOfEntryBlock(this.factomd, keymr);
     }
 }
 

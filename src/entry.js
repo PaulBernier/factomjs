@@ -1,9 +1,10 @@
 const fctUtils = require('factomjs-util'),
     EdDSA = require('elliptic').eddsa,
+    { MAX_ENTRY_SIZE } = require('./constant'),
     { sha256, sha512 } = require('./util');
 
 const ec = new EdDSA('ed25519');
-
+ 
 class Entry {
     constructor(build) {
         if (String(build.constructor) === String(Entry.Builder)) {
@@ -155,7 +156,7 @@ function entryCost(entry) {
     validateEntryInstance(entry);
     // Header size (35) is not counted in the cost
     const dataLength = entrySize(entry) - 35;
-    if (dataLength > 10240) {
+    if (dataLength > MAX_ENTRY_SIZE) {
         throw 'Entry cannot be larger than 10Kb';
     }
 

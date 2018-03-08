@@ -8,6 +8,10 @@ function waitOnRevealAck(factomd, hash, chainId, timeout) {
     return waitOnAck(factomd, hash, toHex(chainId), 'entrydata', timeout);
 }
 
+function waitOnFactoidTransactionAck(factomd, txId, timeout) {
+    return waitOnAck(factomd, txId, 'f', null, timeout);
+}
+
 function waitOnAck(factomd, hash, chainId, ackResponseField, to) {
     if (!hash || !chainId) {
         return Promise.reject('Invalid argument: hash or chain ID is missing');
@@ -24,7 +28,8 @@ function waitOnAck(factomd, hash, chainId, ackResponseField, to) {
                 process.stdout.write('\n');
                 reject(e);
             });
-            const status = ackResponse[ackResponseField].status;
+
+            const status = ackResponseField ? ackResponse[ackResponseField].status : ackResponse.status;
 
             if (status !== 'Unknown' && status !== 'NotConfirmed') {
                 clearInterval(clearId);
@@ -44,5 +49,6 @@ function waitOnAck(factomd, hash, chainId, ackResponseField, to) {
 
 module.exports = {
     waitOnCommitAck,
-    waitOnRevealAck
+    waitOnRevealAck,
+    waitOnFactoidTransactionAck
 };

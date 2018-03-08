@@ -25,6 +25,7 @@
   "homepage": "https://github.com/PaulBernier/factomjs#readme",
   "dependencies": {
     "bluebird": "^3.5.1",
+    "bn.js": "^4.11.8",
     "elliptic": "^6.4.0",
     "factom-walletdjs": "^0.2.5",
     "factomdjs": "0.4.0",

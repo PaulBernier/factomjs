@@ -2,19 +2,22 @@
 * safe/unsafe versions of add, capacility to chose wait on commit/reveal both
 * logging
 
-# Non critical
-## Inspired by Factom-cli
-
-* ecrate
 * buyEC
-
+* newecaddress/newfctaddress => add to wallet or not ("generate-ec-address" "generate-factoid-address")
+* getTransaction
 * composetx
 * sendtx
 * sendfct
 
+# Secondary APU
+* getBlock (detect the type smartly) EntryBlock/AdminBlock/FactoidBlock/EntryCreditBlock structure
+
+# Non critical
+## Inspired by Factom-cli
+
+
 * listtxs
-* newecaddress/newfctaddress
-* exportaddresses/listaddresses (diff?)
+* exportaddresses/listaddresses (what's the diff?)
 * get head
 * abheight, dbheight, ecbheight, fbheight => heights
 * dblock, eblock

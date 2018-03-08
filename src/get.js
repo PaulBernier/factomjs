@@ -79,11 +79,21 @@ function getProperties(factomd) {
 }
 
 
-// async function chainExists(chainId) {
-//     return factomd.chainHead(chainId)
-//         .then(() => true)
-//         .catch(() => false);
-// }
+async function chainExists(factomd, chainId) {
+    return factomd.chainHead(toHex(chainId))
+        .then(() => true)
+        .catch(function(err) {
+            if (err.code === -32009) {
+                return false;
+            }
+            throw err;
+        });
+}
+
+function getEntryCreditRate(factomd) {
+    return factomd.entryCreditRate()
+        .then(r => r.rate);
+}
 
 module.exports = {
     getEntry,
@@ -91,6 +101,8 @@ module.exports = {
     getAllEntriesOfEntryBlock,
     getFirstEntry,
     getChainHead,
+    chainExists,
+    getEntryCreditRate,
     getBalance,
     getProperties
 };
