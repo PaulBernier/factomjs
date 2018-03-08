@@ -1,4 +1,5 @@
 const factomdjs = require('factomdjs'),
+    camelCase = require('camelcase'),
     walletd = require('factom-walletdjs');
 
 const add = require('./add'),
@@ -101,6 +102,14 @@ class FactomCli {
     ////////////////////
     // Secondary API //
     //////////////////
+
+    factomdApi(api, ...args) {
+        return this.factomd[camelCase(api)](...args);
+    }
+
+    walletdApi(api, args) {
+        return this.walletd(camelCase[api])(...args);
+    }
 
     getAllEntriesOfEntryBlock(keymr) {
         return get.getAllEntriesOfEntryBlock(this.factomd, keymr);

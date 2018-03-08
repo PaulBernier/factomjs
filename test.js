@@ -6,23 +6,20 @@ const cli = new FactomCli({
     port: 8088
 });
 
-const now = Date.now()
+cli.factomdApi('directoryBlock', "faf2a058cc475c5cb8ec13e8ba979118f7cde9db38bcfeb7e35744bcf5f6134b").then(console.log)
 
-// Single input/output
-const transaction = Transaction.Builder()
-    .input('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X', 14000000)
-    .input('Fs3BhggPYJBNJRzbLMce94FYyzEA3PDnsEJFwEsr37gYDN9QgFdh', 1010000)
-    .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH', 5000000)
-    .output('FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZyeF', 10000000)
-    .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR', 10000)// Please note this line is to buy EntryCredit (see the address type) and the amount is in Factoshis like others (it is *not* the number of EntryCredit you are purchasing)
-    .build()
-    .feesRequired(1000);
+// const now = Date.now()
 
-console.log(transaction)
+// // Single input/output
+// const transaction = Transaction.Builder()
+//     .input('Fs3BhggPYJBNJRzbLMce94FYyzEA3PDnsEJFwEsr37gYDN9QgFdh', 1012000)
+//     .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH', 1000000)
+//     .build();
 
-console.log(transaction.feesRequired(1000))
+// console.log(transaction)
 
-cli.sendTransaction(transaction).then(console.log).catch(console.error);
+
+// cli.sendTransaction(transaction).then(console.log).catch(console.error);
 
 
 
