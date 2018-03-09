@@ -72,10 +72,18 @@ class FactomCli {
         return get.getEntryCreditRate(this.factomd);
     }
 
+    getTransaction(txId) {
+        return get.getTransaction(this.factomd, txId);
+    }
+
     // Send transactions
 
     sendTransaction(transaction) {
         return send.sendTransaction(this.factomd, transaction);
+    }
+
+    sendTransactionNoAck(transaction) {
+        return send.sendTransactionNoAck(this.factomd, transaction);
     }
 
     getFactoidTransaction(originAddress, recipientAddress, amount, fees) {

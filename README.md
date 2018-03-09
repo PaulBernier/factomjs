@@ -35,8 +35,6 @@ const transaction = await cli.getFactoidTransaction('Fs2w6VL6cwBqt6SpUyPLvdo9TK8
 console.log(transaction.feesPaid);
 // Send the transaction
 const txId = await cli.sendTransaction(tx);
-// Wait for the transaction to be acknowledged by the network
-await cli.waitOnFactoidTransactionAck(txId);
 ```
 
 #### Buy EntryCredit
@@ -49,7 +47,6 @@ const transaction = await cli.getEntryCreditPurchaseTransaction('Fs2w6VL6cwBqt6S
 // You can check how much Factoshis it's going to cost you to buy those EC
 console.log(transaction.totalInputs);
 const txId = await cli.sendTransaction(transaction);
-await cli.waitOnFactoidTransactionAck(txId);
 ```
 
 #### Multi inputs/outputs transaction
@@ -79,7 +76,32 @@ const transaction = Transaction.Builder()
     .build()
 
 const txId = await cli.sendTransaction(transaction);
-await cli.waitOnFactoidTransactionAck(txId);
+```
+
+#### Transaction acknowledgement
+
+`sendTransaction` method will wait for the transaction to be acknowledge by the network before returning with a default timeout. If you don't wish to wait for acknowledgement you can use `sendTransactionNoAck` together with `waitOnFactoidTransactionAck`.
+
+```javascript
+const txId = await cli.sendTransactionNoAck(transaction);
+// Wait transaction ack for 20s
+await cli.waitOnFactoidTransactionAck(txId, 20);
+```
+
+#### Get Transaction
+
+```javascript
+const result = await cli.getTransaction(txId);
+/* 
+    Output structure: 
+
+    { 
+        transaction: Transaction,
+        includedInTransactionBlock: String,
+        includedInDirectoryBlock: String,
+        includedInDirectoryBlockHeight: Number 
+    }
+*/
 ```
 
 ### Raw Factomd and Walletd API calls

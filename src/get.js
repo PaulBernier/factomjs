@@ -1,4 +1,5 @@
 const Promise = require('bluebird'),
+    { Transaction } = require('./transaction'),
     { NULL_HASH } = require('./constant'),
     { Entry } = require('./entry'),
     { getPublicAddress } = require('./addresses'),
@@ -90,6 +91,23 @@ async function chainExists(factomd, chainId) {
         });
 }
 
+async function getTransaction(factomd, txId) {
+    if (typeof txId !== 'string') {
+        throw `Argument is not a transaction ID: ${txId}`;
+    }
+
+    return factomd.transaction(txId)
+        .then(function(result) {
+            const transaction = result.factoidtransaction ? new Transaction(result.factoidtransaction) : undefined;
+            return {
+                transaction: transaction,
+                includedInTransactionBlock: result.includedintransactionblock,
+                includedInDirectoryBlock: result.includedindirectoryblock,
+                includedInDirectoryBlockHeight: result.includedindirectoryblockheight
+            };
+        });
+}
+
 function getEntryCreditRate(factomd) {
     return factomd.entryCreditRate()
         .then(r => r.rate);
@@ -103,6 +121,7 @@ module.exports = {
     getChainHead,
     chainExists,
     getEntryCreditRate,
+    getTransaction,
     getBalance,
     getProperties
 };

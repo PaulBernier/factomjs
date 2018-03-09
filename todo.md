@@ -1,12 +1,13 @@
 # Critical path
-* NoAck versions of add, and send transaction (update dock) capacility to chose wait on commit/reveal both
+* NoAck versions of add entry and add chain capacility to chose wait on commit/reveal both
 * logging
-
+* WRITE TEST
+* throw Error instead of Strings!!
 
 * newecaddress/newfctaddress => add to wallet or not ("generate-ec-address" "generate-factoid-address")
-* getTransaction => transaction + info on inserted blocks
 
-WRITE TEST
+* RPC auth, SSL etc
+
 
 # Secondary API
 * getBlock (detect the type smartly) EntryBlock/AdminBlock/FactoidBlock/EntryCreditBlock structure

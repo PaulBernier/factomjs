@@ -1,4 +1,5 @@
 const Promise = require('bluebird'),
+    { waitOnFactoidTransactionAck } = require('./ack'),
     { publicFactoidRCDHashToHumanAddress } = require('factomjs-util'),
     { isValidFctPublicAddress, isValidEcPublicAddress } = require('./addresses'),
     { getPrivateAddress } = require('./wallet'),
@@ -6,6 +7,12 @@ const Promise = require('bluebird'),
     { getEntryCreditRate } = require('./get');
 
 async function sendTransaction(factomd, transaction) {
+    const txId = await sendTransactionNoAck(factomd, transaction);
+    await waitOnFactoidTransactionAck(factomd, txId);
+    return txId;
+}
+
+async function sendTransactionNoAck(factomd, transaction) {
     if (!(transaction instanceof Transaction)) {
         throw 'Argument must be an instance of Transaction';
     }
@@ -89,6 +96,7 @@ async function getEntryCreditPurchaseTransaction(factomd, walletd, originAddress
 
 module.exports = {
     sendTransaction,
+    sendTransactionNoAck,
     getFactoidTransaction,
     getEntryCreditPurchaseTransaction
 };
