@@ -31,7 +31,7 @@ async function getAllEntriesOfChain(factomd, chainId) {
     const chainHead = await getChainHead(factomd, chainId);
 
     if (chainHead.chainhead === '' && chainHead.chaininprocesslist) {
-        throw 'Chain not yet included in a Directory Block';
+        throw new Error('Chain not yet included in a Directory Block');
     }
 
     let keymr = chainHead.chainhead;
@@ -93,7 +93,7 @@ async function chainExists(factomd, chainId) {
 
 async function getTransaction(factomd, txId) {
     if (typeof txId !== 'string') {
-        throw `Argument is not a transaction ID: ${txId}`;
+        throw new Error(`Argument is not a transaction ID: ${txId}`);
     }
 
     return factomd.transaction(txId)

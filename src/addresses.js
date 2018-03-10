@@ -35,7 +35,7 @@ function isValidFctPublicAddress(address) {
 
 function getPublicAddress(address) {
     if (!isValidAddress(address)) {
-        throw `Invalid address ${address}`;
+        throw new Error(`Invalid address ${address}`);
     }
 
     const prefix = address.substring(0, 2);

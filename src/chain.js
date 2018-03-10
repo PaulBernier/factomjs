@@ -16,14 +16,14 @@ class Chain {
             this.chainId = chainId;
             Object.freeze(this);
         } else {
-            throw 'Argument on Chain constructor should be an instance of Entry';
+            throw new Error('Argument on Chain constructor should be an instance of Entry');
         }
     }
 }
 
 function getChainId(firstEntry) {
     if (firstEntry.extIds.length === 0) {
-        throw 'First entry of a chain must contain at least 1 external id';
+        throw new Error('First entry of a chain must contain at least 1 external id');
     }
 
     const extIdsHashes = firstEntry.extIds.map(sha256);
@@ -38,7 +38,7 @@ function chainCost(arg) {
     } else if (arg instanceof Entry) {
         ecCost = entryCost(arg);
     } else {
-        throw 'Argument must be an instance of Chain or Entry';
+        throw new Error('Argument must be an instance of Chain or Entry');
     }
     return CHAIN_CREATION_COST + ecCost;
 }
@@ -85,7 +85,7 @@ function composeChain(chain, ecPrivate) {
 
 function validateChainInstance(chain) {
     if (!(chain instanceof Chain)) {
-        throw 'Argument must be an instance of Chain';
+        throw new Error('Argument must be an instance of Chain');
     }
 }
 

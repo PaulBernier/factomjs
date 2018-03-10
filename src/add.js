@@ -4,13 +4,6 @@ const Promise = require('bluebird'),
     { validateEntryInstance, composeEntry } = require('./entry');
 
 
-// addChains
-// commitChain
-// revealChain
-// commitEntry
-// revealEntry
-
-
 // TODO: addEntry and addChain are exactly the same besides composeChain/commitChain
 // TODO: safe/unsafe version ==> NO unsafe version for addChain?
 // A prudent user will not broadcast their first Entry until the Federated server acknowledges the Chain Commit. 
@@ -19,7 +12,7 @@ const Promise = require('bluebird'),
 async function addChain(factomd, chain, ecPrivate) {
     validateChainInstance(chain);
     if (!isValidEcPrivateAddress(ecPrivate)) {
-        throw `${ecPrivate} is not a valid EC private address`;
+        throw new Error(`${ecPrivate} is not a valid EC private address`);
     }
 
     const composed = composeChain(chain, ecPrivate);
@@ -39,9 +32,10 @@ async function addChain(factomd, chain, ecPrivate) {
         factomd.revealChain(composed.reveal)
     ]);
 
-    // log.debug(committed);
-    // log.debug(revealed);
+    // console.log(committed);
+    // console.log(revealed);
 
+    // TODO: return committed data?
     return {
         chainId: revealed.chainid,
         entryHash: revealed.entryhash
@@ -57,7 +51,7 @@ async function addEntry(factomd, entry, ecPrivate) {
     validateEntryInstance(entry);
 
     if (!isValidEcPrivateAddress(ecPrivate)) {
-        throw `${ecPrivate} is not a valid EC private address`;
+        throw new Error(`${ecPrivate} is not a valid EC private address`);
     }
 
     const composed = composeEntry(entry, ecPrivate);

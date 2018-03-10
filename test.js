@@ -6,11 +6,4 @@ const cli = new FactomCli({
     port: 8088
 });
 
-async function aaa() {
-
-
-
-
-}
-
-aaa();
+new Transaction();

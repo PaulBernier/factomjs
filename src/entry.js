@@ -13,7 +13,7 @@ class Entry {
             this.extIds = Object.freeze(builder._extIds);
             Object.freeze(this);
         } else {
-            throw 'Use `Entry.Builder()` syntax to create a new Entry';
+            throw new Error('Use `Entry.Builder()` syntax to create a new Entry');
         }
     }
 
@@ -36,7 +36,7 @@ class Entry {
 
     get marshalBinary() {
         if (this.chainId.length === 0) {
-            throw 'ChainId is missing to marshal the entry';
+            throw new Error('ChainId is missing to marshal the entry');
         }
 
         const externalIds = marshalExternalIdsBinary(this.extIds);
@@ -158,7 +158,7 @@ function entryCost(entry) {
     // Header size (35) is not counted in the cost
     const dataLength = entrySize(entry) - 35;
     if (dataLength > MAX_ENTRY_SIZE) {
-        throw 'Entry cannot be larger than 10Kb';
+        throw new Error('Entry cannot be larger than 10Kb');
     }
 
     return Math.ceil(dataLength / 1024);
@@ -166,7 +166,7 @@ function entryCost(entry) {
 
 function validateEntryInstance(entry) {
     if (!(entry instanceof Entry)) {
-        throw 'Argument must be an instance of Entry';
+        throw new Error('Argument must be an instance of Entry');
     }
 }
 

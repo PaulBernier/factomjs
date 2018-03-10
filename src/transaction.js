@@ -47,7 +47,7 @@ class Transaction {
             this.signatures = flatMap(builder.sigblocks, sb => sb.signatures).map(signature => Buffer.from(signature, 'hex'));
 
         } else {
-            throw 'Use `Transaction.Builder()` syntax to create a new Transaction';
+            throw new Error('Use `Transaction.Builder()` syntax to create a new Transaction');
         }
 
         this.totalInputs = this.inputs.reduce((acc, value) => acc + value.amount, 0);
@@ -56,7 +56,7 @@ class Transaction {
         const totalOutputs = this.totalFactoidOutputs + this.totalEntryCreditOutputs;
         this.feesPaid = this.totalInputs - totalOutputs;
         if (this.feesPaid < 0) {
-            throw `Outputs (${totalOutputs}) are greater than inputs (${this.totalInputs})`;
+            throw new Error(`Outputs (${totalOutputs}) are greater than inputs (${this.totalInputs})`);
         }
 
         Object.freeze(this);
@@ -75,7 +75,7 @@ class Transaction {
         const size = this.marshalBinary().length;
 
         if (size > MAX_TRANSACTION_SIZE) {
-            throw `Transaction size is bigger than the maximum (${MAX_TRANSACTION_SIZE} bytes)`;
+            throw new Error(`Transaction size is bigger than the maximum (${MAX_TRANSACTION_SIZE} bytes)`);
         }
 
         let fee = Math.floor((size + 1023) / 1024);
@@ -136,10 +136,10 @@ class TransactionBuilder {
 
     input(fctPrivateAddress, amount) {
         if (!isValidFctPrivateAddress(fctPrivateAddress)) {
-            throw 'First argument must be a valid private factoid address';
+            throw new TypeError('First argument must be a valid private factoid address');
         }
         if (!amount || typeof amount !== 'number') {
-            throw 'Second argument must be a non null amount in Factoshis';
+            throw new TypeError('Second argument must be a non null amount in Factoshis');
         }
 
         const secret = privateHumanAddressStringToPrivate(fctPrivateAddress);
@@ -152,10 +152,10 @@ class TransactionBuilder {
 
     output(publicAddress, amount) {
         if (!isValidPublicAddress(publicAddress)) {
-            throw 'First argument must be either a Factoid or EntryCredit public address';
+            throw new TypeError('First argument must be either a Factoid or EntryCredit public address');
         }
         if (!amount || typeof amount !== 'number') {
-            throw 'Second argument must be a non null amount in Factoshis';
+            throw new TypeError('Second argument must be a non null amount in Factoshis');
         }
 
         const transactionAddress = new TransactionAddress(publicAddress, amount);

@@ -6,7 +6,7 @@ function getAddress(walletd, address) {
 
 function getPrivateAddress(walletd, address) {
     if (!isValidAddress(address)) {
-        throw `${address} is not a valid address`;
+        throw new Error(`${address} is not a valid address`);
     }
 
     if (['Es', 'Fs'].includes(address.substring(0, 2))) {

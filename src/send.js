@@ -14,12 +14,12 @@ async function sendTransaction(factomd, transaction) {
 
 async function sendTransactionNoAck(factomd, transaction) {
     if (!(transaction instanceof Transaction)) {
-        throw 'Argument must be an instance of Transaction';
+        throw new Error('Argument must be an instance of Transaction');
     }
 
     const ecRate = await getEntryCreditRate(factomd);
     if (!transaction.validateFees(ecRate)) {
-        throw `Insufficient fees for the transaction (paid: ${transaction.feesPaid}, minimum required: ${transaction.feesRequired(ecRate)}, current EC rate: ${ecRate})`;
+        throw new Error(`Insufficient fees for the transaction (paid: ${transaction.feesPaid}, minimum required: ${transaction.feesRequired(ecRate)}, current EC rate: ${ecRate})`);
     }
 
     await Promise.each(transaction.inputs, input => validateFunds(factomd, publicFactoidRCDHashToHumanAddress(input.rcdHash), input.amount));
@@ -31,14 +31,14 @@ async function sendTransactionNoAck(factomd, transaction) {
 async function validateFunds(factomd, publicFctAddress, amount) {
     const { balance } = await factomd.factoidBalance(publicFctAddress);
     if (balance < amount) {
-        throw `Address ${publicFctAddress} doesn't have sufficient funds (balance: ${balance})`;
+        throw new Error(`Address ${publicFctAddress} doesn't have sufficient funds (balance: ${balance})`);
     }
 }
 
 async function getFactoidTransaction(factomd, walletd, originAddress, recipientAddress, amount, fees) {
     const originPrivateAddress = await getPrivateAddress(walletd, originAddress);
     if (!isValidFctPublicAddress(recipientAddress)) {
-        throw 'Recipient address is not a valid Factoid public address';
+        throw new Error('Recipient address is not a valid Factoid public address');
     }
 
     const ecRate = await getEntryCreditRate(factomd);
@@ -50,7 +50,7 @@ async function getFactoidTransaction(factomd, walletd, originAddress, recipientA
 
     let finalFees = requiredFees;
     if (fees && fees < requiredFees) {
-        throw `Cannot set fees to ${fees} factoshis because the minimum required fees are ${requiredFees}`;
+        throw new Error(`Cannot set fees to ${fees} factoshis because the minimum required fees are ${requiredFees}`);
     } else if (fees) {
         finalFees = fees;
     }
@@ -66,7 +66,7 @@ async function getFactoidTransaction(factomd, walletd, originAddress, recipientA
 async function getEntryCreditPurchaseTransaction(factomd, walletd, originAddress, recipientAddress, ecAmount, fees) {
     const originPrivateAddress = await getPrivateAddress(walletd, originAddress);
     if (!isValidEcPublicAddress(recipientAddress)) {
-        throw 'Recipient address is not a valid Entry Credit public address';
+        throw new Error('Recipient address is not a valid Entry Credit public address');
     }
 
     const ecRate = await getEntryCreditRate(factomd);
@@ -80,7 +80,7 @@ async function getEntryCreditPurchaseTransaction(factomd, walletd, originAddress
 
     let finalFees = requiredFees;
     if (fees && fees < requiredFees) {
-        throw `Cannot set fees to ${fees} factoshis because the minimum required fees are ${requiredFees}`;
+        throw new Error(`Cannot set fees to ${fees} factoshis because the minimum required fees are ${requiredFees}`);
     } else if (fees) {
         finalFees = fees;
     }
