@@ -52,6 +52,10 @@ class FactomCli {
         return get.getChainHead(this.factomd, chainId);
     }
 
+    getEntry(entryHash) {
+        return get.getEntry(this.factomd, entryHash);
+    }
+
     getFirstEntry(chainId) {
         return get.getFirstEntry(this.factomd, chainId);
     }
@@ -119,8 +123,16 @@ class FactomCli {
         return this.walletd(camelCase[api])(...args);
     }
 
-    getAllEntriesOfEntryBlock(keymr) {
-        return get.getAllEntriesOfEntryBlock(this.factomd, keymr);
+    getDirectoryBlockHead() {
+        return get.getDirectoryBlockHead(this.factomd);
+    }
+
+    getDirectoryBlock(keymr) {
+        return get.getDirectoryBlock(this.factomd, keymr);
+    }
+
+    getEntryBlock(keymr) {
+        return get.getEntryBlock(this.factomd, keymr);
     }
 }
 

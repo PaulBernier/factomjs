@@ -2,6 +2,7 @@ const Promise = require('bluebird'),
     { Transaction } = require('./transaction'),
     { NULL_HASH } = require('./constant'),
     { Entry } = require('./entry'),
+    { DirectoryBlock, EntryBlock } = require('./blocks'),
     { getPublicAddress } = require('./addresses'),
     { toHex } = require('./util');
 
@@ -113,15 +114,34 @@ function getEntryCreditRate(factomd) {
         .then(r => r.rate);
 }
 
+function getDirectoryBlockHead(factomd) {
+    return factomd.directoryBlockHead()
+        .then(r => getDirectoryBlock(factomd, r.keymr));
+}
+
+function getDirectoryBlock(factomd, keymr) {
+    // TODO: get by height or keymr
+    return factomd.directoryBlock(keymr)
+        .then(r => new DirectoryBlock(r));
+}
+
+function getEntryBlock(factomd, keymr) {
+    // TODO: get by height or keymr
+    return factomd.entryBlock(keymr)
+        .then(r => new EntryBlock(r));
+}
+
 module.exports = {
     getEntry,
     getAllEntriesOfChain,
-    getAllEntriesOfEntryBlock,
     getFirstEntry,
     getChainHead,
     chainExists,
     getEntryCreditRate,
     getTransaction,
     getBalance,
-    getProperties
+    getProperties,
+    getDirectoryBlockHead,
+    getDirectoryBlock,
+    getEntryBlock
 };

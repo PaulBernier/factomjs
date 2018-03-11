@@ -3,5 +3,6 @@ module.exports = {
     ...require('./entry'),
     ...require('./chain'),
     ...require('./addresses'),
+    ...require('./constant'),
     ...require('./transaction')
 }

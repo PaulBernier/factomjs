@@ -17,6 +17,10 @@ class Entry {
         }
     }
 
+    get size() {
+        return this.content.length + this.extIds.reduce((acc, value) => acc + value.length, 0);
+    }
+
     get contentHex() {
         return this.content.toString('hex');
     }
