@@ -1,6 +1,7 @@
 # Critical path
 * NoAck versions of add entry and add chain capacility to chose wait on commit/reveal both. Same for add*'s'
 * WRITE TESTS
+* rename all Keymr to KeyMR?
 
 * newecaddress/newfctaddress => add to wallet or not ("generate-ec-address" "generate-factoid-address")
 

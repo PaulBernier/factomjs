@@ -134,6 +134,14 @@ class FactomCli {
     getEntryBlock(keymr) {
         return get.getEntryBlock(this.factomd, keymr);
     }
+
+    getFactoidBlock(keymr) {
+        return get.getFactoidBlock(this.factomd, keymr);
+    }
+
+    getEntryCreditBlock(keymr) {
+        return get.getEntryCreditBlock(this.factomd, keymr);
+    }
 }
 
 module.exports = {

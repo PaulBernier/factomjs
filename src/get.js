@@ -2,7 +2,7 @@ const Promise = require('bluebird'),
     { Transaction } = require('./transaction'),
     { NULL_HASH } = require('./constant'),
     { Entry } = require('./entry'),
-    { DirectoryBlock, EntryBlock } = require('./blocks'),
+    { DirectoryBlock, EntryBlock, FactoidBlock, EntryCreditBlock } = require('./blocks'),
     { getPublicAddress } = require('./addresses'),
     { toHex } = require('./util');
 
@@ -122,13 +122,25 @@ function getDirectoryBlockHead(factomd) {
 function getDirectoryBlock(factomd, keymr) {
     // TODO: get by height or keymr
     return factomd.directoryBlock(keymr)
-        .then(r => new DirectoryBlock(r));
+        .then(r => new DirectoryBlock(r, keymr));
 }
 
 function getEntryBlock(factomd, keymr) {
     // TODO: get by height or keymr
     return factomd.entryBlock(keymr)
         .then(r => new EntryBlock(r));
+}
+
+function getFactoidBlock(factomd, keymr) {
+    // TODO: get by height or keymr
+    return factomd.factoidBlock(keymr)
+        .then(r => new FactoidBlock(r));
+}
+
+function getEntryCreditBlock(factomd, keymr) {
+    // TODO: get by height or keymr
+    return factomd.entryCreditBlock(keymr)
+        .then(r => new EntryCreditBlock(r));
 }
 
 module.exports = {
@@ -143,5 +155,7 @@ module.exports = {
     getProperties,
     getDirectoryBlockHead,
     getDirectoryBlock,
-    getEntryBlock
+    getEntryBlock,
+    getFactoidBlock,
+    getEntryCreditBlock
 };
