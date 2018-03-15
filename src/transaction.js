@@ -47,7 +47,7 @@ class Transaction {
             this.signatures = flatMap(builder.sigblocks, sb => sb.signatures).map(signature => Buffer.from(signature, 'hex'));
 
         } else {
-            throw new Error('Use `Transaction.Builder()` syntax to create a new Transaction');
+            throw new Error('Use `Transaction.builder()` syntax to create a new Transaction');
         }
 
         this.totalInputs = this.inputs.reduce((acc, value) => acc + value.amount, 0);
@@ -116,7 +116,7 @@ class Transaction {
         ]);
     }
 
-    static Builder() {
+    static builder() {
         return new TransactionBuilder();
     }
 

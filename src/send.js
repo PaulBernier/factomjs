@@ -42,7 +42,7 @@ async function getFactoidTransaction(factomd, walletd, originAddress, recipientA
     }
 
     const ecRate = await getEntryCreditRate(factomd);
-    const requiredFees = Transaction.Builder()
+    const requiredFees = Transaction.builder()
         .input(originPrivateAddress, amount)
         .output(recipientAddress, amount)
         .build()
@@ -55,7 +55,7 @@ async function getFactoidTransaction(factomd, walletd, originAddress, recipientA
         finalFees = fees;
     }
 
-    const transaction = Transaction.Builder()
+    const transaction = Transaction.builder()
         .input(originPrivateAddress, amount + finalFees)
         .output(recipientAddress, amount)
         .build();
@@ -72,7 +72,7 @@ async function getEntryCreditPurchaseTransaction(factomd, walletd, originAddress
     const ecRate = await getEntryCreditRate(factomd);
     const amount = ecAmount * ecRate;
 
-    const requiredFees = Transaction.Builder()
+    const requiredFees = Transaction.builder()
         .input(originPrivateAddress, amount)
         .output(recipientAddress, amount)
         .build()
@@ -85,7 +85,7 @@ async function getEntryCreditPurchaseTransaction(factomd, walletd, originAddress
         finalFees = fees;
     }
 
-    const transaction = Transaction.Builder()
+    const transaction = Transaction.builder()
         .input(originPrivateAddress, amount + finalFees)
         .output(recipientAddress, amount)
         .build();

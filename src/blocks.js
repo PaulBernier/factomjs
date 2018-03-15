@@ -1,4 +1,4 @@
-const { Transaction } = require('./transaction'), {
+const { Transaction } = require('./transaction'), { publicECKeyToHumanAddress } = require('factomjs-util'), {
     ADMIN_BLOCKS_CHAIN_ID,
     ENTRY_CREDIT_BLOCKS_CHAIN_ID,
     FACTOID_BLOCKS_CHAIN_ID,
@@ -64,7 +64,6 @@ class FactoidBlock {
     }
 
     getCoinbaseTransaction() {
-        // TODO: correct?
         return this.transactions[0];
     }
 }
@@ -72,8 +71,10 @@ class FactoidBlock {
 class EntryCreditBlock {
     constructor(block) {
         const ecb = block.ecblock;
+
         this.headerHash = ecb.headerhash;
         this.fullHash = ecb.fullhash;
+
         const header = ecb.header;
         this.headerExpansionArea = header.headerexpansionarea;
         this.bodyHash = header.bodyhash;
@@ -81,8 +82,34 @@ class EntryCreditBlock {
         this.previousFullHash = header.prevfullhash;
         this.height = header.dbheight;
         this.bodySize = header.bodysize;
-        // TODO transform/deep dive the different kinds / minutes etc
-        this.entries = ecb.body.entries;
+        this.objectCount = header.objectcount;
+
+        this.minuteIndexes = [0];
+        this.commits = [];
+
+        for (const entry of ecb.body.entries) {
+            if (entry.number) {
+                this.minuteIndexes.push(this.commits.length);
+            } else {
+                this.commits.push({
+                    version: entry.version,
+                    millis: parseInt(entry.millitime, 16),
+                    entryHash: Buffer.from(entry.entryhash, 'hex'),
+                    credits: entry.credits,
+                    ecPublicKey: publicECKeyToHumanAddress(Buffer.from(entry.ecpubkey, 'hex')),
+                    signature: Buffer.from(entry.sig, 'hex')
+                });
+            }
+        }
+
+        Object.freeze(this);
+    }
+
+    getCommitsForMinute(m) {
+        if (m < 1 || m >= this.minuteIndexes.length) {
+            throw new RangeError(`Minute out of range [1, ${this.minuteIndexes.length - 1}]`);
+        }
+        return this.commits.slice(this.minuteIndexes[m - 1], this.minuteIndexes[m]);
     }
 }
 

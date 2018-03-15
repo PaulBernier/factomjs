@@ -20,7 +20,20 @@ const cli = new FactomCli({
 
 #### Add a Chain
 
+```javascript
+const firstEntry = Entry.builder()
+    .extId('my ext id 1')
+    .extId('6d79206578742069642031', 'hex')
+    .content('Initial content')
+    .build();
+const chain = new Chain(firstEntry);
+cli.addChain(chain, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwtN8kE2pMDfeMym')
+    .then(console.log);
+```
+
 #### Add an entry
+
+...
 
 ### Transactions
 
@@ -57,7 +70,7 @@ For multi inputs/outputs you have to build your Transaction object yourself and 
 const { Transaction } = require('factom');
 
 const ecRate = await cli.getEntryCreditRate();
-const requiredFees = Transaction.Builder()
+const requiredFees = Transaction.builder()
     .input('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav37X', 14000000)
     .input('Fs3BhggPYJBNJRzbLMce94FYyzEA3PDnsEJFwEsr37gYDN9QgFrh', 1010000)
     .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg5uH', 5000000)
@@ -67,7 +80,7 @@ const requiredFees = Transaction.Builder()
     .feesRequired(ecRate);
 
 // Now that you know the required fees for your transaction you are free to add to any inputs or substract it from any outputs
-const transaction = Transaction.Builder()
+const transaction = Transaction.builder()
     .input('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav37X', 14000000)
     .input('Fs3BhggPYJBNJRzbLMce94FYyzEA3PDnsEJFwEsr37gYDN9QgFrh', 1010000 + requiredFees)
     .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg5uH', 5000000)
@@ -103,6 +116,10 @@ const result = await cli.getTransaction(txId);
     }
 */
 ```
+
+### Blocks
+
+...
 
 ### Raw Factomd and Walletd API calls
 

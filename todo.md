@@ -10,13 +10,10 @@
 
 
 # Secondary API
-* getBlock (detect the type smartly) EntryBlock/AdminBlock/FactoidBlock/EntryCreditBlock structure
-* list transactions from a FactoidBlock? Necessary?
 
 # Non critical
 ## Inspired by Factom-cli
 
-* get head
 * abheight, dbheight, ecbheight, fbheight => heights
 * pendingentries, pendingtransactions
 * receipt: what's a receipt?

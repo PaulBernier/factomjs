@@ -35,7 +35,7 @@ describe('Get information from Factom blockchain', function() {
     });
 
     it('should get Transaction', async function() {
-        const transaction = Transaction.Builder()
+        const transaction = Transaction.builder()
             .timestamp(1520567488868)
             .input('Fs3BhggPYJBNJRzbLMce94FYyzEA3PDnsEJFwEsr37gYDN9QgFdh', 12001)
             .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH', 1)

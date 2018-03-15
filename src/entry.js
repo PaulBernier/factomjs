@@ -13,7 +13,7 @@ class Entry {
             this.extIds = Object.freeze(builder._extIds);
             Object.freeze(this);
         } else {
-            throw new Error('Use `Entry.Builder()` syntax to create a new Entry');
+            throw new Error('Use `Entry.builder()` syntax to create a new Entry');
         }
     }
 
@@ -48,7 +48,7 @@ class Entry {
         return Buffer.concat([header, externalIds, this.content]);
     }
 
-    static Builder(entry) {
+    static builder(entry) {
         return new EntryBuilder(entry);
     }
 }

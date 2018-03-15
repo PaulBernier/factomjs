@@ -61,7 +61,7 @@ async function getAllEntriesOfEntryBlock(factomd, keymr) {
 }
 
 function toEntry(entry) {
-    return Entry.Builder()
+    return Entry.builder()
         .chainId(entry.chainid, 'hex')
         .extIds(entry.extids, 'hex')
         .content(entry.content, 'hex')
@@ -114,6 +114,7 @@ function getEntryCreditRate(factomd) {
         .then(r => r.rate);
 }
 
+// TODO: rename head?
 function getDirectoryBlockHead(factomd) {
     return factomd.directoryBlockHead()
         .then(r => getDirectoryBlock(factomd, r.keymr));
