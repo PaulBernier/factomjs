@@ -64,8 +64,12 @@ class FactomCli {
         return get.getBalance(this.factomd, address);
     }
 
-    getProperties() {
+    getNodeProperties() {
         return get.getProperties(this.factomd);
+    }
+
+    getWalletProperties() {
+        return get.getProperties(this.walletd);
     }
 
     chainExists(chainId) {
@@ -123,24 +127,32 @@ class FactomCli {
         return this.walletd(camelCase[api])(...args);
     }
 
+    getHeights() {
+        return get.getHeights(this.factomd);
+    }
+
     getDirectoryBlockHead() {
         return get.getDirectoryBlockHead(this.factomd);
     }
 
-    getDirectoryBlock(keymr) {
-        return get.getDirectoryBlock(this.factomd, keymr);
+    getDirectoryBlock(arg) {
+        return get.getDirectoryBlock(this.factomd, arg);
     }
 
-    getEntryBlock(keymr) {
-        return get.getEntryBlock(this.factomd, keymr);
+    getAdminBlock(arg) {
+        return get.getAdminBlock(this.factomd, arg);
     }
 
-    getFactoidBlock(keymr) {
-        return get.getFactoidBlock(this.factomd, keymr);
+    getEntryBlock(keyMR) {
+        return get.getEntryBlock(this.factomd, keyMR);
     }
 
-    getEntryCreditBlock(keymr) {
-        return get.getEntryCreditBlock(this.factomd, keymr);
+    getFactoidBlock(arg) {
+        return get.getFactoidBlock(this.factomd, arg);
+    }
+
+    getEntryCreditBlock(arg) {
+        return get.getEntryCreditBlock(this.factomd, arg);
     }
 }
 

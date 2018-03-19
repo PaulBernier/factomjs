@@ -7,8 +7,8 @@ const {
 const Promise = require('bluebird');
 
 const cli = new FactomCli({
-    host: 'courtesy-node.factom.com',
-    port: 80
+    host: '52.202.51.229',
+    port: 8088
 });
 
 // const e = Entry.builder()
@@ -19,12 +19,14 @@ const cli = new FactomCli({
 // cli.addChain(c, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym').then(console.log)
 
 async function aa() {
-    const head = await cli.getDirectoryBlockHead();
+    const head = await cli.getEntryBlock('3944669331eea620f7f3ec67864a03a646a104f17e36aec3e0f5bdf638f16883').catch(console.error);
+    console.log(head)
+    // const head2 = await cli.getEntryCreditBlock(21628).catch(console.error);
 
-    console.log(head.getEntryCreditBlockKeymr())
-    const ecb = await cli.getEntryCreditBlock(head.getEntryCreditBlockKeymr());
-    ecb.commits.forEach(c => console.log(c.ecPublicKey))
-   
+    // const a = await cli.factomdApi('fblock-by-height', 21658).catch(console.error);
+    // console.log(a)
+    const b = await cli.factomdApi('entry-block', '3944669331eea620f7f3ec67864a03a646a104f17e36aec3e0f5bdf638f16883').catch(console.error);
+    console.log(JSON.stringify(b, null, 4))
 }
 
 aa();

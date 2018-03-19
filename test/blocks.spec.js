@@ -13,7 +13,7 @@ describe('Test Blocks', function() {
         assert.equal(ecb.bodyHash, '164f3d2a9fdfbf5c5c6dfe0814ac9b522620ae486619d44d076eaea97e2e9482');
         assert.equal(ecb.previousHeaderHash, 'e716f2ef7baa5663e52aebeac46a6548c71fe4a2e7a9e687014afea862f2a836');
         assert.equal(ecb.previousFullHash, '952856e6e35afb8e5cfa8c893a6d383695562b4ea3c4981290c7da3fef03a2f7');
-        assert.equal(ecb.height, 132099);
+        assert.equal(ecb.directoryBlockHeight, 132099);
         assert.equal(ecb.headerExpansionArea, '');
         assert.equal(ecb.objectCount, 59);
         assert.equal(ecb.bodySize, 6733);

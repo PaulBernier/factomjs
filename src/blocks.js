@@ -6,47 +6,85 @@ const { Transaction } = require('./transaction'), { publicECKeyToHumanAddress } 
 } = require('./constant');
 
 class DirectoryBlock {
-    // TODO: why I have to pass it extra keymr?
-    constructor(block, keymr) {
-        this.keymr = keymr;
-        this.height = block.header.sequencenumber;
-        this.timestamp = block.header.timestamp;
-        this.previousBlockKeymr = block.header.prevblockkeymr;
-        this.entryBlockRefs = block.entryblocklist.map(eb => ({
+    constructor(block, keyMR) {
+        let entries = [];
+        if (block.dblock) {
+            const dblock = block.dblock;
+
+            this.keyMR = dblock.keymr;
+            this.height = dblock.header.dbheight;
+            this.previousBlockKeyMR = dblock.header.prevkeymr;
+            this.timestamp = dblock.header.timestamp * 60;
+            entries = dblock.dbentries;
+
+            // Extra fields
+            this.fullHash = dblock.dbhash;
+            this.previousFullHash = dblock.header.prevfullhash;
+            this.bodyKeyMR = dblock.header.bodymr;
+        } else {
+            this.keyMR = keyMR;
+            this.height = block.header.sequencenumber;
+            this.timestamp = block.header.timestamp;
+            this.previousBlockKeyMR = block.header.prevblockkeymr;
+            entries = block.entryblocklist;
+        }
+
+        // TODO: remove special blocks from here and store them aside?  getRegularEntryBlockRefs() would become unecessary
+        this.entryBlockRefs = entries.map(eb => ({
             chainId: eb.chainid,
-            keymr: eb.keymr
+            keyMR: eb.keymr
         }));
+
         Object.freeze(this);
     }
 
-    getAdminBlockKeymr() {
-        return this.entryBlockRefs.find(eb => eb.chainId === ADMIN_BLOCKS_CHAIN_ID).keymr;
+    // TODO: wrong name. should be AdminBlockHash
+    getAdminBlockKeyMR() {
+        return this.entryBlockRefs.find(eb => eb.chainId === ADMIN_BLOCKS_CHAIN_ID).keyMR;
     }
 
-    getEntryCreditBlockKeymr() {
-        return this.entryBlockRefs.find(eb => eb.chainId === ENTRY_CREDIT_BLOCKS_CHAIN_ID).keymr;
+    // TODO: wrong name. Should be EntryCreditBlockHeaderHash
+    getEntryCreditBlockKeyMR() {
+        return this.entryBlockRefs.find(eb => eb.chainId === ENTRY_CREDIT_BLOCKS_CHAIN_ID).keyMR;
     }
 
-    getFactoidBlockKeymr() {
-        return this.entryBlockRefs.find(eb => eb.chainId === FACTOID_BLOCKS_CHAIN_ID).keymr;
+    getFactoidBlockKeyMR() {
+        return this.entryBlockRefs.find(eb => eb.chainId === FACTOID_BLOCKS_CHAIN_ID).keyMR;
     }
 
     getRegularEntryBlockRefs() {
         return this.entryBlockRefs.filter(eb => !RESERVED_CHAIN_IDS.includes(eb.chainId));
     }
+}
 
+class AdminBlock {
+    constructor(block) {
+        const ab = block.ablock;
+        this.backReferenceHash = ab.backreferencehash;
+        this.lookupHash = ab.lookuphash;
+        const header = ab.header;
+        this.directoryBlockHeight = header.dbheight;
+        this.previousBackReferenceHash = header.prevbackrefhash;
+        this.headerExpansionSize = header.headerexpansionsize;
+        this.headerExpansionArea = header.headerexpansionarea;
+        this.bodySize = header.bodysize;
+        // TODO: transform
+        this.entries = ab.abentries.slice();
+        Object.freeze(this);
+    }
 }
 
 class EntryBlock {
-    constructor(block) {
-        // TODO: keymr missing??
-        this.entryRefs = block.entrylist.map(e => ({ entryHash: e.entryhash, timestamp: e.timestamp }));
+    constructor(block, keyMR) {
+        // TODO: fullhash and previousfullhash missing? ADD TEST
+        this.keyMR = keyMR;
         const header = block.header;
         this.directoryBlockHeight = header.dbheight;
         this.timestamp = header.timestamp;
-        this.previousBlockKeymr = header.prevkeymr;
+        this.previousBlockKeyMR = header.prevkeymr;
         this.chainId = header.chainid;
-        this.height = header.blocksequencenumber;
+        this.sequenceNumber = header.blocksequencenumber;
+        this.entryRefs = block.entrylist.map(e => ({ entryHash: e.entryhash, timestamp: e.timestamp }));
         Object.freeze(this);
     }
 }
@@ -54,12 +92,13 @@ class EntryBlock {
 class FactoidBlock {
     constructor(block) {
         const fb = block.fblock;
-        this.keymr = fb.keymr;
-        this.previousBlockKeymr = fb.prevkeymr;
-        this.ledgerKeymr = fb.ledgerkeymr;
-        this.previousLedgerKeymr = fb.prevledgerkeymr;
+        this.keyMR = fb.keymr;
+        this.bodyMR = fb.bodymr;
+        this.previousBlockKeyMR = fb.prevkeymr;
+        this.ledgerKeyMR = fb.ledgerkeymr;
+        this.previousLedgerKeyMR = fb.prevledgerkeymr;
         this.entryCreditRate = fb.exchrate;
-        this.height = fb.dbheight;
+        this.directoryBlockHeight = fb.dbheight;
         this.transactions = fb.transactions.map(t => new Transaction(t));
     }
 
@@ -80,7 +119,7 @@ class EntryCreditBlock {
         this.bodyHash = header.bodyhash;
         this.previousHeaderHash = header.prevheaderhash;
         this.previousFullHash = header.prevfullhash;
-        this.height = header.dbheight;
+        this.directoryBlockHeight = header.dbheight;
         this.bodySize = header.bodysize;
         this.objectCount = header.objectcount;
 
@@ -116,6 +155,7 @@ class EntryCreditBlock {
 module.exports = {
     DirectoryBlock,
     EntryBlock,
+    AdminBlock,
     FactoidBlock,
     EntryCreditBlock
 };

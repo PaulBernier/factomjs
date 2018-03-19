@@ -4,7 +4,7 @@
   "description": "High level functions to interact with Factom blockchain and Enterprise wallet",
   "main": "src/factom.js",
   "scripts": {
-    "test": "mocha test/**/*.spec.js"
+    "test": "env FACTOMD_URL='http://52.202.51.229:8088/v2' mocha test/**/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
     "camelcase": "^4.1.0",
     "elliptic": "^6.4.0",
     "factom-walletdjs": "^0.2.5",
-    "factomdjs": "0.4.0",
+    "factomdjs": "0.4.1",
     "factomjs-util": "^0.1.7",
     "lodash.flatmap": "^4.5.0",
     "winston": "3.0.0-rc1"
