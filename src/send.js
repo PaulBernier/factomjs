@@ -6,13 +6,18 @@ const Promise = require('bluebird'),
     { Transaction } = require('./transaction'),
     { getEntryCreditRate } = require('./get');
 
-async function sendTransaction(factomd, transaction) {
-    const txId = await sendTransactionNoAck(factomd, transaction);
-    await waitOnFactoidTransactionAck(factomd, txId);
+async function sendTransaction(factomd, transaction, to) {
+    const ackTimeout = to || 60;
+    const txId = await submitTransaction(factomd, transaction);
+
+    if (ackTimeout >= 0) {
+        await waitOnFactoidTransactionAck(factomd, txId, ackTimeout);
+    }
+
     return txId;
 }
 
-async function sendTransactionNoAck(factomd, transaction) {
+async function submitTransaction(factomd, transaction) {
     if (!(transaction instanceof Transaction)) {
         throw new Error('Argument must be an instance of Transaction');
     }
@@ -96,7 +101,6 @@ async function getEntryCreditPurchaseTransaction(factomd, walletd, originAddress
 
 module.exports = {
     sendTransaction,
-    sendTransactionNoAck,
     getFactoidTransaction,
     getEntryCreditPurchaseTransaction
 };

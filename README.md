@@ -1,10 +1,19 @@
 # Factom.js
 
+Library to interact easily with Factom blockchain. 
+
+* Provide higher level functionalities than bare API making it more efficient to create chains or entries, make transactions...
+* Provide structures more uniform, consistent and easy to use than the API results
+
 ## Installation
 
 ```bash
 $ npm install --save factom
 ```
+
+## Usage
+
+Important: please note than whenever a private address (EntryCredit or Factoid) is needed (typically for signing data), you can either provide a private address or a public address as an argument. If you provide a public address the library will attempt to retrieve the corresponding private address from the wallet. Thus providing private address as arguments allow you to not have to run walletd.
 
 ### Instantiate FactomCli
 
@@ -27,13 +36,32 @@ const firstEntry = Entry.builder()
     .content('Initial content')
     .build();
 const chain = new Chain(firstEntry);
-cli.addChain(chain, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwtN8kE2pMDfeMym')
+cli.addChain(chain, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym')
     .then(console.log);
 ```
 
+TODO: note about ack commit, reveal + repeated commit
+
 #### Add an entry
 
-...
+```javascript
+const myEntry = Entry.builder()
+    .chainId('9107a308f91fd7962fecb321fdadeb37e2ca7d456f1d99d24280136c0afd55f2')
+    .extId('some external ID')
+    .extId('6d79206578742069642031', 'hex')
+    .content('My new content')
+    .build();
+cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym')
+    .then(console.log);
+```
+
+```javascript
+
+cli.addEntries([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym')
+    .then(console.log);
+```
+
+TODO: note about ack commit, reveal + repeated commit
 
 ### Transactions
 
@@ -57,7 +85,7 @@ const txId = await cli.sendTransaction(tx);
 const transaction = await cli.getEntryCreditPurchaseTransaction('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X',
                                                                 'EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR',
                                                                 10);
-// You can check how much Factoshis it's going to cost you to buy those EC
+// You can check how much Factoshis it's going to cost you to buy those 10 EC
 console.log(transaction.totalInputs);
 const txId = await cli.sendTransaction(transaction);
 ```
@@ -93,12 +121,15 @@ const txId = await cli.sendTransaction(transaction);
 
 #### Transaction acknowledgement
 
-`sendTransaction` method will wait for the transaction to be acknowledge by the network before returning with a default timeout. If you don't wish to wait for acknowledgement you can use `sendTransactionNoAck` together with `waitOnFactoidTransactionAck`.
+`sendTransaction` method has a second optional argument that is the timeout in seconds to wait for the transaction acknowledgement by the network (passed the timeout an exception is thrown). If not provided or set to 0, a default timeout value of 60s is used. You are free to set a lower or higher value. If you provide a negative value the acknowledgment will be disabled (no wait).
 
 ```javascript
-const txId = await cli.sendTransactionNoAck(transaction);
-// Wait transaction ack for 20s
-await cli.waitOnFactoidTransactionAck(txId, 20);
+// Wait transaction ack for up to 60s
+const txId = await cli.sendTransaction(transaction);
+// Wait transaction ack for up to 20s
+const txId = await cli.sendTransaction(transaction, 20);
+// Disable wait for ack
+const txId = await cli.sendTransaction(transaction, -1);
 ```
 
 #### Get Transaction
@@ -119,7 +150,13 @@ const result = await cli.getTransaction(txId);
 
 ### Blocks
 
-...
+```javascript
+const db = await cli.getDirectoryBlock('f55a19d9562843b642f1a20b34fcbb71e70f438c4d98d223fc2228ca2dd0c54a');
+const ecb = await cli.getEntryCreditBlock(db.entryCreditBlockRef);
+const fb = await cli.getFactoidBlock(db.factoidBlockRef);
+const ab = await cli.getAdminBlock(db.entryCreditBlockRef);
+const eb = await cli.getEntryBlock(db.entryBlockRefs[0]);
+```
 
 ### Raw Factomd and Walletd API calls
 

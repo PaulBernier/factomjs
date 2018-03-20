@@ -150,6 +150,7 @@ function composeEntry(entry, ecPrivate) {
     };
 }
 
+// TODO: Method of Entry?
 function entrySize(entry) {
     validateEntryInstance(entry);
 
@@ -157,6 +158,7 @@ function entrySize(entry) {
     return 35 + 2 * entry.extIds.length + extIdsLength + entry.content.length;
 }
 
+// TODO: Method of Entry?
 function entryCost(entry) {
     validateEntryInstance(entry);
     // Header size (35) is not counted in the cost

@@ -22,24 +22,24 @@ function waitOnAck(factomd, hash, chainId, ackResponseField, to) {
 
     return new Promise((resolve, reject) => {
         const clearId = setInterval(async function() {
-            process.stdout.write('.');
+            let error;
             const ackResponse = await factomd.ack(hash, chainId).catch(function(e) {
                 clearInterval(clearId);
-                process.stdout.write('\n');
-                reject(e);
+                error = e;
             });
+            if (error) {
+                return reject(error);
+            }
 
             const status = ackResponseField ? ackResponse[ackResponseField].status : ackResponse.status;
 
             if (status !== 'Unknown' && status !== 'NotConfirmed') {
                 clearInterval(clearId);
-                process.stdout.write('\n');
                 resolve(status);
             }
 
             if ((Date.now() - startTime) > timeout * 1000) {
                 clearInterval(clearId);
-                process.stdout.write('\n');
                 reject('Ack timeout');
             }
 

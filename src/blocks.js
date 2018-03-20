@@ -1,8 +1,7 @@
 const { Transaction } = require('./transaction'), { publicECKeyToHumanAddress } = require('factomjs-util'), {
     ADMIN_BLOCKS_CHAIN_ID,
     ENTRY_CREDIT_BLOCKS_CHAIN_ID,
-    FACTOID_BLOCKS_CHAIN_ID,
-    RESERVED_CHAIN_IDS
+    FACTOID_BLOCKS_CHAIN_ID
 } = require('./constant');
 
 class DirectoryBlock {
@@ -29,31 +28,27 @@ class DirectoryBlock {
             entries = block.entryblocklist;
         }
 
-        // TODO: remove special blocks from here and store them aside?  getRegularEntryBlockRefs() would become unecessary
-        this.entryBlockRefs = entries.map(eb => ({
-            chainId: eb.chainid,
-            keyMR: eb.keymr
-        }));
+        this.entryBlockRefs = [];
+        for (const entry of entries) {
+            switch (entry.chainid) {
+                case ADMIN_BLOCKS_CHAIN_ID:
+                    this.adminBlockRef = entry.keymr;
+                    break;
+                case ENTRY_CREDIT_BLOCKS_CHAIN_ID:
+                    this.entryCreditBlockRef = entry.keymr;
+                    break;
+                case FACTOID_BLOCKS_CHAIN_ID:
+                    this.factoidBlockRef = entry.keymr;
+                    break;
+                default:
+                    this.entryBlockRefs.push({
+                        chainId: entry.chainid,
+                        keyMR: entry.keymr
+                    });
+            }
+        }
 
         Object.freeze(this);
-    }
-
-    // TODO: wrong name. should be AdminBlockHash
-    getAdminBlockKeyMR() {
-        return this.entryBlockRefs.find(eb => eb.chainId === ADMIN_BLOCKS_CHAIN_ID).keyMR;
-    }
-
-    // TODO: wrong name. Should be EntryCreditBlockHeaderHash
-    getEntryCreditBlockKeyMR() {
-        return this.entryBlockRefs.find(eb => eb.chainId === ENTRY_CREDIT_BLOCKS_CHAIN_ID).keyMR;
-    }
-
-    getFactoidBlockKeyMR() {
-        return this.entryBlockRefs.find(eb => eb.chainId === FACTOID_BLOCKS_CHAIN_ID).keyMR;
-    }
-
-    getRegularEntryBlockRefs() {
-        return this.entryBlockRefs.filter(eb => !RESERVED_CHAIN_IDS.includes(eb.chainId));
     }
 }
 

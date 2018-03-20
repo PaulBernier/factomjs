@@ -69,7 +69,10 @@ describe('Get information from Factom blockchain', function() {
         assert.equal(db.height, 21537);
         assert.equal(db.previousBlockKeyMR, 'b37bf4eee21547773c74fa099c643588835e4ada9a4a8c22f0dd171e22710bf5');
         assert.equal(db.timestamp, 1521348840);
-        assert.lengthOf(db.entryBlockRefs, 26);
+        assert.equal(db.adminBlockRef, '643f3a4f0a5fd7a44374affe47fd052a845a078482319ad6540aa7f1f714bb9e');
+        assert.equal(db.entryCreditBlockRef, 'f4540b4170666a47b1287c4d0843b91d5a0ebcf8433c40b674d017f146503256');
+        assert.equal(db.factoidBlockRef, 'baf6e92932f4ba0f81baacf7b7d7726d6f7f3a4da0c43bfdaf846a843c8f2301');
+        assert.lengthOf(db.entryBlockRefs, 23);
     }
 
     it('should get Directory Block', async function() {

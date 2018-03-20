@@ -22,9 +22,9 @@ class FactomCli {
 
     // Add
 
-    async addChain(chain, ecAddress) {
+    async addChain(chain, ecAddress, commitAckTimeout, revealAckTimeout) {
         const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
-        return add.addChain(this.factomd, chain, ecPrivate);
+        return add.addChain(this.factomd, chain, ecPrivate, commitAckTimeout, revealAckTimeout);
     }
 
     async addChains(chains, ecAddress) {
@@ -32,14 +32,32 @@ class FactomCli {
         return add.addChains(this.factomd, chains, ecPrivate);
     }
 
-    async addEntry(entry, ecAddress) {
+    async commitChain(chain, ecAddress, commitAckTimeout) {
         const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
-        return add.addEntry(this.factomd, entry, ecPrivate);
+        return add.commitChain(this.factomd, chain, ecPrivate, commitAckTimeout);
+    }
+
+    async revealChain(chain, revealAckTimeout) {
+        return add.revealChain(this.factomd, chain, revealAckTimeout);
+    }
+
+    async addEntry(entry, ecAddress, commitAckTimeout, revealAckTimeout) {
+        const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
+        return add.addEntry(this.factomd, entry, ecPrivate, commitAckTimeout, revealAckTimeout);
     }
 
     async addEntries(entries, ecAddress) {
         const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
         return add.addEntries(this.factomd, entries, ecPrivate);
+    }
+
+    async commitEntry(entry, ecAddress, commitAckTimeout) {
+        const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
+        return add.commitEntry(this.factomd, entry, ecPrivate, commitAckTimeout);
+    }
+
+    async revealEntry(entry, revealAckTimeout) {
+        return add.revealEntry(this.factomd, entry, revealAckTimeout);
     }
 
     // Get
@@ -86,12 +104,8 @@ class FactomCli {
 
     // Send transactions
 
-    sendTransaction(transaction) {
-        return send.sendTransaction(this.factomd, transaction);
-    }
-
-    sendTransactionNoAck(transaction) {
-        return send.sendTransactionNoAck(this.factomd, transaction);
+    sendTransaction(transaction, ackTimeout) {
+        return send.sendTransaction(this.factomd, transaction, ackTimeout);
     }
 
     getFactoidTransaction(originAddress, recipientAddress, amount, fees) {

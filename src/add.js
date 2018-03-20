@@ -1,44 +1,72 @@
 const Promise = require('bluebird'),
+    { waitOnCommitAck, waitOnRevealAck } = require('./ack'),
     { isValidEcPrivateAddress } = require('./addresses'),
-    { validateChainInstance, composeChain } = require('./chain'),
-    { validateEntryInstance, composeEntry } = require('./entry');
+    { validateChainInstance, composeChainCommit, composeChainReveal } = require('./chain'),
+    { validateEntryInstance, composeEntryCommit, composeEntryReveal } = require('./entry');
 
 
-// TODO: addEntry and addChain are exactly the same besides composeChain/commitChain
-// TODO: safe/unsafe version ==> NO unsafe version for addChain?
-// A prudent user will not broadcast their first Entry until the Federated server acknowledges the Chain Commit. 
-// If they do not wait, a peer on the P2P network can put their Entry as the first one in that Chain.
-// Options to wait on commit and/or reveal
-async function addChain(factomd, chain, ecPrivate) {
+// TODO: unify addEntry and addChain 
+async function addChain(factomd, chain, ecPrivate, commitAckTo, revealAckTo) {
     validateChainInstance(chain);
     if (!isValidEcPrivateAddress(ecPrivate)) {
         throw new Error(`${ecPrivate} is not a valid EC private address`);
     }
+    const commitAckTimeout = commitAckTo || 60;
+    const revealAckTimeout = revealAckTo || 60;
 
-    const composed = composeChain(chain, ecPrivate);
-    composed.commit = composed.commit.toString('hex');
-    composed.reveal = composed.reveal.toString('hex');
+    let committed, revealed;
+    if (commitAckTimeout < 0) {
+        const result = await Promise.all([
+            commitChain(factomd, chain, ecPrivate, commitAckTimeout),
+            revealChain(factomd, chain, revealAckTimeout)
+        ]);
+        committed = result[0];
+        revealed = result[1];
+    } else {
+        committed = await commitChain(factomd, chain, ecPrivate, commitAckTimeout);
+        revealed = await revealChain(factomd, chain, revealAckTimeout);
+    }
 
-    const commitPromise = factomd.commitChain(composed.commit).catch(function(e) {
+    return Object.assign({}, committed, revealed);
+}
+
+// TODO: unify commitEntry and commitChain 
+async function commitChain(factomd, chain, ecPrivate, to) {
+    const ackTimeout = to || 60;
+    const commit = composeChainCommit(chain, ecPrivate).toString('hex');
+
+    let repeatedCommit = false;
+    const committed = await factomd.commitChain(commit).catch(function(e) {
         if (e.message === 'Repeated Commit') {
-            //log.warn(e);
+            repeatedCommit = true;
         } else {
             throw e;
         }
     });
 
-    const [committed, revealed] = await Promise.all([
-        commitPromise,
-        factomd.revealChain(composed.reveal)
-    ]);
+    if (committed && ackTimeout >= 0) {
+        await waitOnCommitAck(factomd, committed.txid, ackTimeout);
+    }
 
-    // console.log(committed);
-    // console.log(revealed);
+    return {
+        txId: committed ? committed.txid : undefined,
+        repeatedCommit: repeatedCommit
+    };
+}
 
-    // TODO: return committed data?
+// TODO: unify revealEntry and revealChain 
+async function revealChain(factomd, chain, to) {
+    const ackTimeout = to || 60;
+    const reveal = composeChainReveal(chain).toString('hex');
+
+    const revealed = await factomd.revealChain(reveal);
+    if (ackTimeout >= 0) {
+        await waitOnRevealAck(factomd, revealed.entryhash, revealed.chainid, ackTimeout);
+    }
+
     return {
         chainId: revealed.chainid,
-        entryHash: revealed.entryhash
+        entryHash: revealed.entryhash,
     };
 }
 
@@ -46,35 +74,70 @@ function addChains(factomd, chains, ecAddress) {
     return Promise.map(chains, chain => addChain(factomd, chain, ecAddress));
 }
 
-// TODO: safe/unsage version
-async function addEntry(factomd, entry, ecPrivate) {
+async function addEntry(factomd, entry, ecPrivate, commitAckTo, revealAckTo) {
     validateEntryInstance(entry);
-
+    if (!entry.chainId.length) {
+        throw new Error('Entry doesn\'t contain a chainId to add entry');
+    }
     if (!isValidEcPrivateAddress(ecPrivate)) {
         throw new Error(`${ecPrivate} is not a valid EC private address`);
     }
 
-    const composed = composeEntry(entry, ecPrivate);
-    composed.commit = composed.commit.toString('hex');
-    composed.reveal = composed.reveal.toString('hex');
+    const commitAckTimeout = commitAckTo || 60;
+    const revealAckTimeout = revealAckTo || 60;
 
-    const commitPromise = factomd.commitEntry(composed.commit).catch(function(e) {
+    let committed, revealed;
+    if (commitAckTimeout < 0) {
+        const result = await Promise.all([
+            commitEntry(factomd, entry, ecPrivate, commitAckTimeout),
+            revealEntry(factomd, entry, revealAckTimeout)
+        ]);
+        committed = result[0];
+        revealed = result[1];
+    } else {
+        committed = await commitEntry(factomd, entry, ecPrivate, commitAckTimeout);
+        revealed = await revealEntry(factomd, entry, revealAckTimeout);
+    }
+
+    return Object.assign({}, committed, revealed);
+}
+
+async function commitEntry(factomd, entry, ecPrivate, to) {
+    const ackTimeout = to || 60;
+    const commit = composeEntryCommit(entry, ecPrivate).toString('hex');
+
+    let repeatedCommit = false;
+    const committed = await factomd.commitEntry(commit).catch(function(e) {
         if (e.message === 'Repeated Commit') {
-            //log.warn(e);
+            repeatedCommit = true;
         } else {
             throw e;
         }
     });
 
-    const [committed, revealed] = await Promise.all([
-        commitPromise,
-        factomd.revealEntry(composed.reveal)
-    ]);
+    if (committed && ackTimeout >= 0) {
+        await waitOnCommitAck(factomd, committed.txid, ackTimeout);
+    }
 
-    // log.debug(committed);
-    // log.debug(revealed);
+    return {
+        txId: committed ? committed.txid : undefined,
+        repeatedCommit: repeatedCommit
+    };
+}
 
-    return Promise.resolve(revealed.entryhash);
+async function revealEntry(factomd, entry, to) {
+    const ackTimeout = to || 60;
+    const reveal = composeEntryReveal(entry).toString('hex');
+
+    const revealed = await factomd.revealChain(reveal);
+    if (ackTimeout >= 0) {
+        await waitOnRevealAck(factomd, revealed.entryhash, revealed.chainid, ackTimeout);
+    }
+
+    return {
+        chainId: revealed.chainid,
+        entryHash: revealed.entryhash,
+    };
 }
 
 function addEntries(factomd, entries, ecAddress) {
@@ -85,5 +148,9 @@ module.exports = {
     addChain,
     addChains,
     addEntry,
-    addEntries
+    addEntries,
+    commitEntry,
+    revealEntry,
+    commitChain,
+    revealChain
 };
