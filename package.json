@@ -1,41 +1,51 @@
 {
-  "name": "factom",
-  "version": "0.1.0-rc.4",
-  "description": "High level functions to interact with Factom blockchain and Enterprise wallet",
-  "main": "src/factom.js",
-  "scripts": {
-    "test": "env FACTOMD_URL='http://52.202.51.229:8088/v2' mocha test/**/*.spec.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/PaulBernier/factomjs.git"
-  },
-  "keywords": [
-    "factom",
-    "blockchain",
-    "factomdjs",
-    "factom-walletdjs",
-    "factom-cli"
-  ],
-  "author": "Paul Bernier",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/PaulBernier/factomjs/issues"
-  },
-  "homepage": "https://github.com/PaulBernier/factomjs#readme",
-  "dependencies": {
-    "bluebird": "^3.5.1",
-    "bn.js": "^4.11.8",
-    "camelcase": "^4.1.0",
-    "elliptic": "^6.4.0",
-    "factom-walletdjs": "^0.2.5",
-    "factomdjs": "0.4.1",
-    "factomjs-util": "^0.1.7",
-    "lodash.flatmap": "^4.5.0",
-    "winston": "3.0.0-rc1"
-  },
-  "devDependencies": {
-    "chai": "^4.1.2",
-    "mocha": "^5.0.1"
-  }
+    "name": "factom",
+    "version": "0.1.0-rc.4",
+    "description": "High level functions to interact with Factom blockchain and wallet",
+    "main": "src/factom.js",
+    "scripts": {
+        "lint": "eslint src/",
+        "build": "gulp",
+        "test": "env FACTOMD_URL='http://52.202.51.229:8088/v2' mocha test/**/*.spec.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/PaulBernier/factomjs.git"
+    },
+    "keywords": [
+        "factom",
+        "blockchain",
+        "factomdjs",
+        "factom-walletdjs",
+        "factom-cli"
+    ],
+    "author": "Paul Bernier",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/PaulBernier/factomjs/issues"
+    },
+    "homepage": "https://github.com/PaulBernier/factomjs#readme",
+    "dependencies": {
+        "bluebird": "^3.5.1",
+        "bn.js": "^4.11.8",
+        "camelcase": "^4.1.0",
+        "elliptic": "^6.4.0",
+        "factom-walletdjs": "^0.2.5",
+        "factomdjs": "0.4.1",
+        "factomjs-util": "^0.1.7",
+        "lodash.flatmap": "^4.5.0"
+    },
+    "devDependencies": {
+        "babel-core": "^6.26.0",
+        "babel-plugin-transform-async-to-generator": "^6.24.1",
+        "babel-preset-es2015": "^6.24.1",
+        "babelify": "^8.0.0",
+        "browserify": "^16.1.1",
+        "chai": "^4.1.2",
+        "eslint": "^4.19.0",
+        "gulp": "^3.9.1",
+        "mocha": "^5.0.1",
+        "vinyl-buffer": "^1.0.1",
+        "vinyl-source-stream": "^2.0.0"
+    }
 }

@@ -152,7 +152,7 @@ class TransactionBuilder {
 
     output(publicAddress, amount) {
         if (!isValidPublicAddress(publicAddress)) {
-            throw new TypeError('First argument must be either a Factoid or EntryCredit public address');
+            throw new TypeError('First argument must be a valid Factoid or EntryCredit public address');
         }
         if (!amount || typeof amount !== 'number') {
             throw new TypeError('Second argument must be a non null amount in Factoshis');
@@ -186,5 +186,5 @@ class TransactionBuilder {
 }
 
 module.exports = {
-    Transaction,
+    Transaction
 };
