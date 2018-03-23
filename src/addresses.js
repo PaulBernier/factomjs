@@ -33,20 +33,20 @@ function isValidFctPublicAddress(address) {
     return isValidAddress(address) && address.substring(0, 2) === 'FA';
 }
 
+// TODO: optimize performance
 function getPublicAddress(address) {
     if (!isValidAddress(address)) {
         throw new Error(`Invalid address ${address}`);
     }
 
-    const prefix = address.substring(0, 2);
-    if (['EC', 'FA'].includes(prefix)) {
+    if (address[1] !== 's') {
         return address;
     }
 
     const secret = privateHumanAddressStringToPrivate(address);
     const pub = privateKeyToPublicKey(secret);
 
-    return prefix[0] === 'F' ? publicFactoidKeyToHumanAddress(pub) : publicECKeyToHumanAddress(pub);
+    return address[0] === 'F' ? publicFactoidKeyToHumanAddress(pub) : publicECKeyToHumanAddress(pub);
 }
 
 module.exports = {

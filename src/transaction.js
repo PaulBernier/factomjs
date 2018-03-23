@@ -3,20 +3,18 @@
 
 const EdDSA = require('elliptic').eddsa,
     flatMap = require('lodash.flatmap'),
-    { encodeVarInt } = require('./util'),
+    { RCD_TYPE_1, encodeVarInt, sha256d } = require('./util'),
     { MAX_TRANSACTION_SIZE } = require('./constant'),
-    { publicHumanAddressStringToRCD, privateHumanAddressStringToPrivate, publicFactoidKeyToHumanAddress } = require('factomjs-util'),
-    { isValidFctPrivateAddress, isValidPublicAddress } = require('./addresses');
+    { publicHumanAddressStringToRCD, privateHumanAddressStringToPrivate } = require('factomjs-util'),
+    { isValidFctAddress, isValidPublicAddress, getPublicAddress } = require('./addresses');
 
 const ec = new EdDSA('ed25519');
 
-const RCD_TYPE = Buffer.from('01', 'hex');
-
 class TransactionAddress {
     constructor(address, amount) {
-        this.rcdHash = publicHumanAddressStringToRCD(address);
         this.address = address;
         this.amount = amount;
+        this.rcdHash = publicHumanAddressStringToRCD(address);
         Object.freeze(this);
     }
 
@@ -33,9 +31,21 @@ class Transaction {
             this.factoidOutputs = builder._factoidOutputs;
             this.entryCreditOutputs = builder._entryCreditOutputs;
 
-            this.rcds = builder._keys.map(key => Buffer.concat([RCD_TYPE, Buffer.from(key.getPublic())]));
             const data = this.marshalBinarySig();
-            this.signatures = builder._keys.map(key => Buffer.from(key.sign(data).toBytes()));
+
+            if (builder._keys.length !== 0) {
+                this.rcds = builder._keys.map(key => Buffer.concat([RCD_TYPE_1, Buffer.from(key.getPublic())]));
+                this.signatures = builder._keys.map(key => Buffer.from(key.sign(data).toBytes()));
+            } else {
+                this.rcds = builder._rcds;
+                this.signatures = builder._signatures;
+
+                if (this.rcds.length !== 0 && this.signatures.length !== 0) {
+                    // Validate manually entered RCDs and signatures
+                    validateRcds(this.inputs, this.rcds);
+                    validateSignatures(data, this.rcds, this.signatures);
+                }
+            }
 
         } else if (typeof builder === 'object') {
             // Building transaction from the result of transaction API
@@ -50,6 +60,10 @@ class Transaction {
             throw new Error('Use `Transaction.builder()` syntax to create a new Transaction');
         }
 
+        if (this.signatures.length !== 0 && this.inputs.length !== this.signatures.length) {
+            throw new Error('All inputs must be signed or none of them');
+        }
+
         this.totalInputs = this.inputs.reduce((acc, value) => acc + value.amount, 0);
         this.totalFactoidOutputs = this.factoidOutputs.reduce((acc, value) => acc + value.amount, 0);
         this.totalEntryCreditOutputs = this.entryCreditOutputs.reduce((acc, value) => acc + value.amount, 0);
@@ -62,6 +76,10 @@ class Transaction {
         Object.freeze(this);
     }
 
+    isSigned() {
+        return this.signatures.length !== 0;
+    }
+
     validateFees(ecRate) {
         return this.feesRequired(ecRate) <= this.feesPaid;
     }
@@ -72,6 +90,10 @@ class Transaction {
     }
 
     ecFeesRequired() {
+        if (!this.isSigned()) {
+            throw new Error('Cannot compute EC fees of an unsigned Transaction ');
+        }
+
         const size = this.marshalBinary().length;
 
         if (size > MAX_TRANSACTION_SIZE) {
@@ -86,6 +108,10 @@ class Transaction {
     }
 
     marshalBinary() {
+        if (!this.isSigned()) {
+            throw new Error('Cannot marshal an unsigned Transaction');
+        }
+
         const data = this.marshalBinarySig();
         const result = [data];
         for (let i = 0; i < this.rcds.length; ++i) {
@@ -116,37 +142,47 @@ class Transaction {
         ]);
     }
 
-    static builder() {
-        return new TransactionBuilder();
+    static builder(transaction) {
+        return new TransactionBuilder(transaction);
     }
 
 }
 
 class TransactionBuilder {
-    constructor() {
+    constructor(transaction) {
+        this._timestamp;
         this._inputs = [];
         this._factoidOutputs = [];
         this._entryCreditOutputs = [];
+
         this._keys = [];
-        this._ecRate = 0;
-        this._addFeesInputIndex = 0;
-        this._overrideFees;
-        this._timestamp;
+        this._rcds = [];
+        this._signatures = [];
+
+        if (transaction instanceof Transaction) {
+            this._timestamp = transaction.timestamp;
+            this._inputs = transaction.inputs;
+            this._factoidOutputs = transaction.factoidOutputs;
+            this._entryCreditOutputs = transaction.entryCreditOutputs;
+        }
     }
 
-    input(fctPrivateAddress, amount) {
-        if (!isValidFctPrivateAddress(fctPrivateAddress)) {
-            throw new TypeError('First argument must be a valid private factoid address');
+    input(fctAddress, amount) {
+        if (!isValidFctAddress(fctAddress)) {
+            throw new TypeError('First argument must be a valid Factoid address');
         }
         if (!amount || typeof amount !== 'number') {
-            throw new TypeError('Second argument must be a non null amount in Factoshis');
+            throw new TypeError('Second argument must be a non null amount of Factoshis');
         }
 
-        const secret = privateHumanAddressStringToPrivate(fctPrivateAddress);
-        const key = ec.keyFromSecret(secret);
+        if (fctAddress[1] === 's') {
+            const secret = privateHumanAddressStringToPrivate(fctAddress);
+            const key = ec.keyFromSecret(secret);
+            this._keys.push(key);
+        }
 
-        this._inputs.push(new TransactionAddress(publicFactoidKeyToHumanAddress(Buffer.from(key.getPublic())), amount));
-        this._keys.push(key);
+        this._inputs.push(new TransactionAddress(getPublicAddress(fctAddress), amount));
+
         return this;
     }
 
@@ -155,7 +191,7 @@ class TransactionBuilder {
             throw new TypeError('First argument must be a valid Factoid or EntryCredit public address');
         }
         if (!amount || typeof amount !== 'number') {
-            throw new TypeError('Second argument must be a non null amount in Factoshis');
+            throw new TypeError('Second argument must be a non null amount of Factoshis');
         }
 
         const transactionAddress = new TransactionAddress(publicAddress, amount);
@@ -168,20 +204,56 @@ class TransactionBuilder {
         return this;
     }
 
+    rcdSignature(rcd, signature) {
+        this._rcds.push(Buffer.from(rcd, 'hex'));
+        this._signatures.push(Buffer.from(signature, 'hex'));
+        return this;
+    }
+
     timestamp(timestamp) {
         this._timestamp = timestamp;
         return this;
     }
 
-    adjustFeesOnInput(ecRate, addFeesInputIndex, overrideFees) {
-        this._ecRate = ecRate;
-        this._addFeesInputIndex = addFeesInputIndex || 0;
-        this._overrideFees = overrideFees;
-        return this;
-    }
-
     build() {
         return new Transaction(this);
+    }
+}
+
+function validateRcds(inputs, rcds) {
+    if (rcds.length !== inputs.length) {
+        throw new Error(`The number of RCDs (${rcds.length}) does not equal the number of inputs (${inputs.length})`);
+    }
+    for (let i = 0; i < rcds.length; ++i) {
+        validateRcd(inputs[i], rcds[i]);
+    }
+}
+
+function validateRcd(input, rcd) {
+    if (!sha256d(rcd).equals(input.rcdHash)) {
+        throw new Error(`RCD does not match the RCD hash from input address ${input.address}`);
+    }
+}
+
+function validateSignatures(data, rcds, signatures) {
+    if (rcds.length !== signatures.length) {
+        throw new Error(`The number of RCDs (${rcds.length}) does not equal the number of signatures (${signatures.length})`);
+    }
+    for (let i = 0; i < signatures.length; ++i) {
+        validateSignature(data, rcds[i], signatures[i]);
+    }
+}
+
+function validateSignature(data, rcd, signature) {
+    if (rcd[0] !== 1) {
+        throw new Error(`Only RCD type 1 is currently supported. Invalid RCD: ${rcd}`);
+    }
+
+    const publicKey = [...Buffer.from(rcd, 1)].slice(1);
+    const key = ec.keyFromPublic(publicKey);
+
+    if (!key.verify(data, [...signature])) {
+        throw new Error('Signature of Transaction is invalid');
     }
 }
 

@@ -35,12 +35,11 @@ const firstEntry = Entry.builder()
     .extId('6d79206578742069642031', 'hex')
     .content('Initial content')
     .build();
+
 const chain = new Chain(firstEntry);
 cli.addChain(chain, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym')
     .then(console.log);
 ```
-
-TODO: note about ack commit, reveal + repeated commit
 
 #### Add an entry
 
@@ -61,13 +60,30 @@ cli.addEntries([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pM
     .then(console.log);
 ```
 
-TODO: note about ack commit, reveal + repeated commit
+#### Commit/reveal acknowledgment when submitting chains or entries
+
+Factom protocol uses a [commit/reveal commitment scheme](https://en.wikipedia.org/wiki/Commitment_scheme). By default when using `addChain` or `addEntry` the library will sequentially wait for an acknowledgment (ack) of the commit by the network and then wait for the ack of the reveal, both for up to 60s. The library allows you to customize the timeouts of those acks and also to not wait for the acks at all. Please read [Factom whitepaper](https://www.factom.com/devs/docs/guide/factom-white-paper-1-0) about commit/reveal scheme and what are the potential risks to not wait for network acknowledgments.
+
+```javascript
+// Default behavior waits for both commit and reveal up to 60s
+cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym');
+// Change the timeout for commit ack to 120s and the timeout for reveal ack to 20s
+cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', 120, 20);
+// By providing a negative number the library will not wait for any acknowledgment. 
+// In below example the wait on reveal ack is disabled (it'll wait up to 50s on the commit ack).
+cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', 50, -1);
+```
+
+#### Repeated commit
+
+If you commit twice an entry or a chain and that the second time the fees paid are lower or equal to the first commit you are in a 'repeated commit' case and the second commit will be rejected (and you won't be charged for it). If this scenario happens (which it should probably not) the output of `addEntry` or `addChain` will have the field `repeatedCommit` set to `true` and the field `txId` will be undefined.
 
 ### Transactions
 
 #### Simple Factoid transaction
 ```javascript
-// Send 1000000 Factoshis (10^-8 Factoids) from Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X to FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw
+// Send 1000000 Factoshis (10^-8 Factoids) from Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X 
+// to FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw
 const transaction = await cli.getFactoidTransaction('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X',
                                                     'FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw', 
                                                     1000000);
@@ -81,7 +97,8 @@ const txId = await cli.sendTransaction(tx);
 #### Buy EntryCredit
 
 ```javascript
-// Buy 10 EC with address Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X and credited to EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR
+// Buy 10 EC with address Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X and credited 
+// to EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR
 const transaction = await cli.getEntryCreditPurchaseTransaction('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X',
                                                                 'EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR',
                                                                 10);
@@ -103,7 +120,8 @@ const requiredFees = Transaction.builder()
     .input('Fs3BhggPYJBNJRzbLMce94FYyzEA3PDnsEJFwEsr37gYDN9QgFrh', 1010000)
     .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg5uH', 5000000)
     .output('FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZteF', 10000000)
-    .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e3QR', 10000)// Please note this line is to buy EntryCredit (see the address type) and the amount is in Factoshis like others (it is *not* the number of EntryCredit you are purchasing)
+    // Please note this line is to buy EntryCredit (see the address type) and the amount is in Factoshis like others (it is *not* the number of EntryCredit you are purchasing)
+    .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e3QR', 10000)
     .build()
     .feesRequired(ecRate);
 
@@ -118,6 +136,32 @@ const transaction = Transaction.builder()
 
 const txId = await cli.sendTransaction(transaction);
 ```
+
+#### Unsigned transaction and manual signature
+
+If you build your Transaction using private Factoid addresses for inputs the library will take care for you to properly sign the transaction so that it's immediately ready to be submitted to the network. In some cases you may want to delegate the signature to another component (for instance an external cryptographic hardware storing your keys - such as Ledger device for instance): you will need to first build an unsigned transaction and later append the signatures and RCDs. The library will take care of validating the RCDs and signatures manually provided to guarantee the consistency and validity of the transaction.
+
+```javascript
+// You can create an unsigned transaction by using a public Factoid address for the inputs
+const unsignedTx = Transaction.builder()
+    .timestamp(now)
+    .input('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH', 14000000)
+    .output('FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw', 5000000)
+    .build();
+
+console.log(unsignedTx.isSigned()); // false
+
+// Delegate signature to an external component
+const {rcd, signature} = getRcdSignatureFromSecureComponent(unsignedTx.marshalBinarySig());
+
+// The builder below will copy timestamp, inputs and outputs. Then the RCD and signature are appended.
+// When the transaction is built the library verifies the validity of the RCD and signature. (exception throw if any of them is invalid)
+const signedTx = Transaction.builder(unsignedTx)
+    .rcdSignature(rcd, signature)
+    .build();
+```
+
+Side note: helper functions `getFactoidTransaction` and `getEntryCreditPurchaseTransaction` cannot generate unsigned transactions because they compute fees automatically and to do so need the complete transaction. Therefore if the user provides a public Factoid address as input for those functions the library will attempt to retrieve the corresponding private address from the wallet in order to build a signed transaction.
 
 #### Transaction acknowledgement
 

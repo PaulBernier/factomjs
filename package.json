@@ -1,6 +1,6 @@
 {
     "name": "factom",
-    "version": "0.1.0-rc.4",
+    "version": "0.1.0-rc.5",
     "description": "High level functions to interact with Factom blockchain and wallet",
     "main": "src/factom.js",
     "scripts": {
@@ -23,6 +23,18 @@
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/PaulBernier/factomjs/issues"
+    },
+    "browserify": {
+        "transform": [
+            [
+                "babelify",
+                {
+                    "presets": [
+                        "es2015"
+                    ]
+                }
+            ]
+        ]
     },
     "homepage": "https://github.com/PaulBernier/factomjs#readme",
     "dependencies": {

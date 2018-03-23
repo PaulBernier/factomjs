@@ -32,10 +32,6 @@ function privateKeyToPublicKey(privateKey, enc) {
     return Buffer.from(key.getPublic());
 }
 
-function keyToRCD1(key) {
-    return sha256d(Buffer.concat([RCD_TYPE_1, key]));
-}
-
 // Reference implementation:
 // https://github.com/FactomProject/factomd/blob/master/common/primitives/varint.go#L78-L105
 function encodeVarInt(val) {
@@ -72,11 +68,11 @@ function encodeVarInt(val) {
 }
 
 module.exports = {
+    RCD_TYPE_1,
     sha256,
     sha512,
     sha256d,
     toHex,
     encodeVarInt,
-    privateKeyToPublicKey,
-    keyToRCD1
+    privateKeyToPublicKey
 };
