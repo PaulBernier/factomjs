@@ -13,7 +13,7 @@ $ npm install --save factom
 
 ## Usage
 
-Important: please note than whenever a private address (EntryCredit or Factoid) is needed (typically for signing data), you can either provide a private address or a public address as an argument. If you provide a public address the library will attempt to retrieve the corresponding private address from the wallet. Thus providing private address as arguments allow you to not have to run walletd.
+Important: please note than whenever a private (EntryCredit or Factoid) address is needed in this library (typically for signing data), you can either provide a private address or a public address as an argument. If you provide a public address the library will attempt to retrieve the corresponding private address from the wallet. Thus providing private address as arguments allow you to not have to run walletd.
 
 ### Instantiate FactomCli
 
