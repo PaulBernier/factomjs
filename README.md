@@ -115,15 +115,16 @@ For multi inputs/outputs you have to build your Transaction object yourself and 
 const { Transaction } = require('factom');
 
 const ecRate = await cli.getEntryCreditRate();
-const requiredFees = Transaction.builder()
+const tmpTx = Transaction.builder()
     .input('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav37X', 14000000)
     .input('Fs3BhggPYJBNJRzbLMce94FYyzEA3PDnsEJFwEsr37gYDN9QgFrh', 1010000)
     .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg5uH', 5000000)
     .output('FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZteF', 10000000)
     // Please note this line is to buy EntryCredit (see the address type) and the amount is in Factoshis like others (it is *not* the number of EntryCredit you are purchasing)
     .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e3QR', 10000)
-    .build()
-    .feesRequired(ecRate);
+    .build();
+
+const requiredFees = tmpTx.computeRequiredFees(ecRate);
 
 // Now that you know the required fees for your transaction you are free to add to any inputs or substract it from any outputs
 const transaction = Transaction.builder()

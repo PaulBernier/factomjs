@@ -82,15 +82,15 @@ class Transaction {
     }
 
     validateFees(ecRate) {
-        return this.feesRequired(ecRate) <= this.feesPaid;
+        return this.computeRequiredFees(ecRate) <= this.feesPaid;
     }
 
 
-    feesRequired(ecRate) {
-        return this.ecFeesRequired() * ecRate;
+    computeRequiredFees(ecRate) {
+        return this.computeEcRequiredFees() * ecRate;
     }
 
-    ecFeesRequired() {
+    computeEcRequiredFees() {
         if (!this.isSigned()) {
             throw new Error('Cannot compute EC fees of an unsigned Transaction ');
         }

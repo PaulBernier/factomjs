@@ -29,7 +29,7 @@ async function submitTransaction(factomd, transaction, force) {
     }
 
     const ecRate = await getEntryCreditRate(factomd);
-    const minimumRequiresFees = transaction.feesRequired(ecRate);
+    const minimumRequiresFees = transaction.computeRequiredFees(ecRate);
 
     if (minimumRequiresFees > transaction.feesPaid) {
         throw new Error(`Insufficient fees for the transaction (paid: ${transaction.feesPaid}, minimum required: ${minimumRequiresFees}, current EC rate: ${ecRate})`);
@@ -61,7 +61,7 @@ async function getFactoidTransaction(factomd, walletd, originAddress, recipientA
         .input(originPrivateAddress, amount)
         .output(recipientAddress, amount)
         .build()
-        .feesRequired(ecRate);
+        .computeRequiredFees(ecRate);
 
     let finalFees = requiredFees;
     if (fees && fees < requiredFees) {
@@ -91,7 +91,7 @@ async function getEntryCreditPurchaseTransaction(factomd, walletd, originAddress
         .input(originPrivateAddress, amount)
         .output(recipientAddress, amount)
         .build()
-        .feesRequired(ecRate);
+        .computeRequiredFees(ecRate);
 
     let finalFees = requiredFees;
     if (fees && fees < requiredFees) {
