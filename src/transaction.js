@@ -3,7 +3,7 @@
 
 const EdDSA = require('elliptic').eddsa,
     flatMap = require('lodash.flatmap'),
-    { RCD_TYPE_1, encodeVarInt, sha256d } = require('./util'),
+    { RCD_TYPE_1, encodeVarInt, sha256, sha256d } = require('./util'),
     { MAX_TRANSACTION_SIZE } = require('./constant'),
     { publicHumanAddressStringToRCD, privateHumanAddressStringToPrivate } = require('factomjs-util'),
     { isValidFctAddress, isValidPublicAddress, getPublicAddress } = require('./addresses');
@@ -73,6 +73,7 @@ class Transaction {
             throw new Error(`Outputs (${totalOutputs}) are greater than inputs (${this.totalInputs})`);
         }
 
+        this.id = sha256(this.marshalBinarySig()).toString('hex');
         Object.freeze(this);
     }
 
