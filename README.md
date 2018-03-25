@@ -137,6 +137,24 @@ const transaction = Transaction.builder()
 const txId = await cli.sendTransaction(transaction);
 ```
 
+#### On fees
+
+By default the library will reject a transaction over paying the minimum required fees by a factor 10 as it is most likely a user input error. If you wish to force the transaction to be accepted you can pass the `force` option to `sendTransaction`;
+
+```javascript
+// Transaction largely over paid
+const transaction = Transaction.builder()
+    .timestamp(now)
+    .input('Fs28CkYaV5AVsmhiWZWupUVKF4sTe8eQcJvtQ5mpB6UnjquxnU3c', 99999999999999999)
+    .output('FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw', 12000)
+    .build();
+
+// Will throw an exception
+await cli.sendTransaction(transaction);
+// Set flag 'force' to true to bypass the over paying protection
+await cli.sendTransaction(transaction, {force: true});
+```
+
 #### Unsigned transaction and manual signature
 
 If you build your Transaction using private Factoid addresses for inputs the library will take care for you to properly sign the transaction so that it's immediately ready to be submitted to the network. In some cases you may want to delegate the signature to another component (for instance an external cryptographic hardware storing your keys - such as Ledger device for instance): you will need to first build an unsigned transaction and later append the signatures and RCDs. The library will take care of validating the RCDs and signatures manually provided to guarantee the consistency and validity of the transaction.
@@ -165,15 +183,15 @@ Side note: helper functions `getFactoidTransaction` and `getEntryCreditPurchaseT
 
 #### Transaction acknowledgement
 
-`sendTransaction` method has a second optional argument that is the timeout in seconds to wait for the transaction acknowledgement by the network (passed the timeout an exception is thrown). If not provided or set to 0, a default timeout value of 60s is used. You are free to set a lower or higher value. If you provide a negative value the acknowledgment will be disabled (no wait).
+`sendTransaction` options argument allows you to pass the timeout in seconds to wait for the transaction acknowledgement by the network (the timeout expired an exception is thrown). If not provided or set to 0, a default timeout value of 60s is used. You are free to set a lower or higher value. If you provide a negative value the acknowledgment will be disabled (no wait).
 
 ```javascript
 // Wait transaction ack for up to 60s
 const txId = await cli.sendTransaction(transaction);
 // Wait transaction ack for up to 20s
-const txId = await cli.sendTransaction(transaction, 20);
+const txId = await cli.sendTransaction(transaction, {timeout: 20});
 // Disable wait for ack
-const txId = await cli.sendTransaction(transaction, -1);
+const txId = await cli.sendTransaction(transaction, {timeout: -1});
 ```
 
 #### Get Transaction

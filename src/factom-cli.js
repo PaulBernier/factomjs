@@ -104,8 +104,8 @@ class FactomCli {
 
     // Send transactions
 
-    sendTransaction(transaction, ackTimeout) {
-        return send.sendTransaction(this.factomd, transaction, ackTimeout);
+    sendTransaction(transaction, options) {
+        return send.sendTransaction(this.factomd, transaction, options);
     }
 
     getFactoidTransaction(originAddress, recipientAddress, amount, fees) {

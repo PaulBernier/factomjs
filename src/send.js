@@ -6,9 +6,12 @@ const Promise = require('bluebird'),
     { Transaction } = require('./transaction'),
     { getEntryCreditRate } = require('./get');
 
-async function sendTransaction(factomd, transaction, to) {
-    const ackTimeout = to || 60;
-    const txId = await submitTransaction(factomd, transaction);
+const MAX_OVERPAYING_FACTOR = 10;
+
+async function sendTransaction(factomd, transaction, opts) {
+    const options = opts || {};
+    const ackTimeout = options.timeout || 60;
+    const txId = await submitTransaction(factomd, transaction, !!options.force);
 
     if (ackTimeout >= 0) {
         await waitOnFactoidTransactionAck(factomd, txId, ackTimeout);
@@ -17,20 +20,27 @@ async function sendTransaction(factomd, transaction, to) {
     return txId;
 }
 
-async function submitTransaction(factomd, transaction) {
+async function submitTransaction(factomd, transaction, force) {
     if (!(transaction instanceof Transaction)) {
         throw new Error('Argument must be an instance of Transaction');
     }
+    if (!transaction.isSigned()) {
+        throw new Error('Connot submit an unsigned transaction');
+    }
 
     const ecRate = await getEntryCreditRate(factomd);
-    if (!transaction.validateFees(ecRate)) {
-        throw new Error(`Insufficient fees for the transaction (paid: ${transaction.feesPaid}, minimum required: ${transaction.feesRequired(ecRate)}, current EC rate: ${ecRate})`);
+    const minimumRequiresFees = transaction.feesRequired(ecRate);
+
+    if (minimumRequiresFees > transaction.feesPaid) {
+        throw new Error(`Insufficient fees for the transaction (paid: ${transaction.feesPaid}, minimum required: ${minimumRequiresFees}, current EC rate: ${ecRate})`);
+    } else if (!force && minimumRequiresFees * MAX_OVERPAYING_FACTOR < transaction.feesPaid) {
+        throw new Error(`Transaction is overpaying required fees by more than 10 times (paid: ${transaction.feesPaid}, minimum required: ${minimumRequiresFees}, current EC rate: ${ecRate})`);
     }
 
     await Promise.each(transaction.inputs, input => validateFunds(factomd, publicFactoidRCDHashToHumanAddress(input.rcdHash), input.amount));
 
-    return factomd.factoidSubmit(transaction.marshalBinary().toString('hex'))
-        .then(r => r.txid);
+    // return factomd.factoidSubmit(transaction.marshalBinary().toString('hex'))
+    //     .then(r => r.txid);
 }
 
 async function validateFunds(factomd, publicFctAddress, amount) {
