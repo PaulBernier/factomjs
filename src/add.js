@@ -6,11 +6,13 @@ const Promise = require('bluebird'),
 
 
 // TODO: unify addEntry and addChain 
-async function addChain(factomd, chain, ecPrivate, options) {
+async function addChain(factomd, chain, ecPrivate, opts) {
     validateChainInstance(chain);
     if (!isValidEcPrivateAddress(ecPrivate)) {
         throw new Error(`${ecPrivate} is not a valid EC private address`);
     }
+
+    const options = opts || {};
     const commitAckTimeout = options.commitTimeout || 60;
     const revealAckTimeout = options.revealTimeout || 60;
 
@@ -74,7 +76,7 @@ function addChains(factomd, chains, ecAddress, options) {
     return Promise.map(chains, chain => addChain(factomd, chain, ecAddress, options));
 }
 
-async function addEntry(factomd, entry, ecPrivate, options) {
+async function addEntry(factomd, entry, ecPrivate, opts) {
     validateEntryInstance(entry);
     if (!entry.chainId.length) {
         throw new Error('Entry doesn\'t contain a chainId to add entry');
@@ -82,7 +84,7 @@ async function addEntry(factomd, entry, ecPrivate, options) {
     if (!isValidEcPrivateAddress(ecPrivate)) {
         throw new Error(`${ecPrivate} is not a valid EC private address`);
     }
-
+    const options = opts || {};
     const commitAckTimeout = options.commitTimeout || 60;
     const revealAckTimeout = options.revealTimeout || 60;
 
