@@ -39,8 +39,8 @@ async function submitTransaction(factomd, transaction, force) {
 
     await Promise.each(transaction.inputs, input => validateFunds(factomd, publicFactoidRCDHashToHumanAddress(input.rcdHash), input.amount));
 
-    // return factomd.factoidSubmit(transaction.marshalBinary().toString('hex'))
-    //     .then(r => r.txid);
+    return factomd.factoidSubmit(transaction.marshalBinary().toString('hex'))
+        .then(r => r.txid);
 }
 
 async function validateFunds(factomd, publicFctAddress, amount) {

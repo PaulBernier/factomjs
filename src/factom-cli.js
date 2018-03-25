@@ -22,14 +22,14 @@ class FactomCli {
 
     // Add
 
-    async addChain(chain, ecAddress, commitAckTimeout, revealAckTimeout) {
+    async addChain(chain, ecAddress, options) {
         const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
-        return add.addChain(this.factomd, chain, ecPrivate, commitAckTimeout, revealAckTimeout);
+        return add.addChain(this.factomd, chain, ecPrivate, options);
     }
 
-    async addChains(chains, ecAddress) {
+    async addChains(chains, ecAddress, options) {
         const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
-        return add.addChains(this.factomd, chains, ecPrivate);
+        return add.addChains(this.factomd, chains, ecPrivate, options);
     }
 
     async commitChain(chain, ecAddress, commitAckTimeout) {
@@ -41,14 +41,14 @@ class FactomCli {
         return add.revealChain(this.factomd, chain, revealAckTimeout);
     }
 
-    async addEntry(entry, ecAddress, commitAckTimeout, revealAckTimeout) {
+    async addEntry(entry, ecAddress, options) {
         const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
-        return add.addEntry(this.factomd, entry, ecPrivate, commitAckTimeout, revealAckTimeout);
+        return add.addEntry(this.factomd, entry, ecPrivate, options);
     }
 
-    async addEntries(entries, ecAddress) {
+    async addEntries(entries, ecAddress, options) {
         const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
-        return add.addEntries(this.factomd, entries, ecPrivate);
+        return add.addEntries(this.factomd, entries, ecPrivate, options);
     }
 
     async commitEntry(entry, ecAddress, commitAckTimeout) {

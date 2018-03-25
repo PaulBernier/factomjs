@@ -62,16 +62,16 @@ cli.addEntries([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pM
 
 #### Commit/reveal acknowledgment when submitting chains or entries
 
-Factom protocol uses a [commit/reveal commitment scheme](https://en.wikipedia.org/wiki/Commitment_scheme). By default when using `addChain` or `addEntry` the library will sequentially wait for an acknowledgment (ack) of the commit by the network and then wait for the ack of the reveal, both for up to 60s. The library allows you to customize the timeouts of those acks and also to not wait for the acks at all. Please read [Factom whitepaper](https://www.factom.com/devs/docs/guide/factom-white-paper-1-0) about commit/reveal scheme and what are the potential risks to not wait for network acknowledgments.
+Factom protocol uses a [commit/reveal commitment scheme](https://en.wikipedia.org/wiki/Commitment_scheme). By default when using `addChain` or `addEntry` the library will sequentially wait for an acknowledgment (ack) of the commit by the network and then wait for the ack of the reveal, both for up to 60s. The library allows you to customize the timeouts of those acks and also to not wait for the acks at all when creating a Chain or an Entry. Please read [Factom whitepaper](https://www.factom.com/devs/docs/guide/factom-white-paper-1-0) about commit/reveal scheme and what are the potential risks to not wait for network acknowledgments.
 
 ```javascript
 // Default behavior waits for both commit and reveal up to 60s
 cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym');
 // Change the timeout for commit ack to 120s and the timeout for reveal ack to 20s
-cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', 120, 20);
+cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', {commitTimeout: 120, revealTimeout: 20});
 // By providing a negative number the library will not wait for any acknowledgment. 
-// In below example the wait on reveal ack is disabled (it'll wait up to 50s on the commit ack).
-cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', 50, -1);
+// In below example the wait on reveal ack is disabled (it'll still wait up to 60s on the commit ack).
+cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', {revealTimeout: -1});
 ```
 
 #### Repeated commit

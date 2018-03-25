@@ -6,13 +6,13 @@ const Promise = require('bluebird'),
 
 
 // TODO: unify addEntry and addChain 
-async function addChain(factomd, chain, ecPrivate, commitAckTo, revealAckTo) {
+async function addChain(factomd, chain, ecPrivate, options) {
     validateChainInstance(chain);
     if (!isValidEcPrivateAddress(ecPrivate)) {
         throw new Error(`${ecPrivate} is not a valid EC private address`);
     }
-    const commitAckTimeout = commitAckTo || 60;
-    const revealAckTimeout = revealAckTo || 60;
+    const commitAckTimeout = options.commitTimeout || 60;
+    const revealAckTimeout = options.revealTimeout || 60;
 
     let committed, revealed;
     if (commitAckTimeout < 0) {
@@ -70,11 +70,11 @@ async function revealChain(factomd, chain, to) {
     };
 }
 
-function addChains(factomd, chains, ecAddress) {
-    return Promise.map(chains, chain => addChain(factomd, chain, ecAddress));
+function addChains(factomd, chains, ecAddress, options) {
+    return Promise.map(chains, chain => addChain(factomd, chain, ecAddress, options));
 }
 
-async function addEntry(factomd, entry, ecPrivate, commitAckTo, revealAckTo) {
+async function addEntry(factomd, entry, ecPrivate, options) {
     validateEntryInstance(entry);
     if (!entry.chainId.length) {
         throw new Error('Entry doesn\'t contain a chainId to add entry');
@@ -83,8 +83,8 @@ async function addEntry(factomd, entry, ecPrivate, commitAckTo, revealAckTo) {
         throw new Error(`${ecPrivate} is not a valid EC private address`);
     }
 
-    const commitAckTimeout = commitAckTo || 60;
-    const revealAckTimeout = revealAckTo || 60;
+    const commitAckTimeout = options.commitTimeout || 60;
+    const revealAckTimeout = options.revealTimeout || 60;
 
     let committed, revealed;
     if (commitAckTimeout < 0) {
@@ -140,8 +140,8 @@ async function revealEntry(factomd, entry, to) {
     };
 }
 
-function addEntries(factomd, entries, ecAddress) {
-    return Promise.map(entries, entry => addEntry(factomd, entry, ecAddress));
+function addEntries(factomd, entries, ecAddress, options) {
+    return Promise.map(entries, entry => addEntry(factomd, entry, ecAddress, options));
 }
 
 module.exports = {
