@@ -19,9 +19,27 @@ Important: please note than whenever a private address (EntryCredit or Factoid) 
 
 ```javascript
 const { FactomCli } = require('factom');
+
+// Default factomd connection to localhost:8088
+// and walletd connection to localhost:8089
+const cli = new FactomCli();
+
+// You can override factomd connection parameters
 const cli = new FactomCli({
     host: '52.202.51.228',
     port: 8088
+});
+
+// You can also override both factomd and walletd connection parameters
+const cli = new FactomCli({
+    factomd: {
+        host: '52.202.51.229',
+        port: 8088
+    },
+    walletd: {
+        host: '52.202.51.229',
+        port: 8089
+    }
 });
 ```
 

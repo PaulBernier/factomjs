@@ -9,11 +9,13 @@ const add = require('./add'),
     wallet = require('./wallet');
 
 class FactomCli {
-    constructor(opt) {
-        const factomd = new factomdjs.Factomd();
-        factomd.setFactomNode(`http://${opt.host}:${opt.port}/v2`);
-        this.factomd = factomd;
-        this.walletd = walletd;
+    constructor(opts) {
+        const options = opts || {};
+        const factomdConf = options.factomd || options;
+        const walletdConf = options.walletd;
+
+        this.factomd = getFactomd(factomdConf);
+        this.walletd = getWalletd(walletdConf);
     }
 
     //////////////////
@@ -168,6 +170,26 @@ class FactomCli {
     getEntryCreditBlock(arg) {
         return get.getEntryCreditBlock(this.factomd, arg);
     }
+}
+
+function getFactomd(conf) {
+    const factomd = new factomdjs.Factomd();
+
+    const configuration = conf || {};
+    const host = configuration.host || 'localhost';
+    const port = configuration.port || 8088;
+    factomd.setFactomNode(`http://${host}:${port}/v2`);
+
+    return factomd;
+}
+
+function getWalletd(conf) {
+    const configuration = conf || {};
+    const host = configuration.host || 'localhost';
+    const port = configuration.port || 8089;
+    walletd.setFactomNode(`http://${host}:${port}/v2`);
+
+    return walletd;
 }
 
 module.exports = {
