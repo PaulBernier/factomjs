@@ -50,6 +50,7 @@ class Transaction {
         } else if (typeof builder === 'object') {
             // Building transaction from the result of transaction API
             this.timestamp = builder.millitimestamp;
+            // TODO: handle null? Pending https://github.com/FactomProject/factomd/issues/444
             this.inputs = builder.inputs.map(input => new TransactionAddress(input.useraddress, input.amount));
             this.factoidOutputs = builder.outputs.map(output => new TransactionAddress(output.useraddress, output.amount));
             this.entryCreditOutputs = builder.outecs.map(output => new TransactionAddress(output.useraddress, output.amount));
