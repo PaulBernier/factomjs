@@ -174,7 +174,9 @@ await cli.sendTransaction(transaction);
 await cli.sendTransaction(transaction, {force: true});
 ```
 
-#### Unsigned transaction and manual signature
+#### Unsigned transactions
+
+##### Manual signature
 
 If you build your Transaction using private Factoid addresses for inputs the library will take care for you to properly sign the transaction so that it's immediately ready to be submitted to the network. In some cases you may want to delegate the signature to another component (for instance an external cryptographic hardware storing your keys - such as Ledger device for instance): you will need to first build an unsigned transaction and later append the signatures and RCDs. The library will take care of validating the RCDs and signatures manually provided to guarantee the consistency and validity of the transaction.
 
@@ -199,6 +201,22 @@ const signedTx = Transaction.builder(unsignedTx)
 ```
 
 Side note: helper functions `getFactoidTransaction` and `getEntryCreditPurchaseTransaction` cannot generate unsigned transactions because they compute fees automatically and to do so need the complete transaction. Therefore if the user provides a public Factoid address as input for those functions the library will attempt to retrieve the corresponding private address from the wallet in order to build a signed transaction.
+
+##### Fees computation
+
+Knowledge about the RCDs and signatures are required to compute fees of a transaction (see section fees of [factom data structures doc](https://www.factom.com/devs/docs/guide/factom-data-structures)). You can still compute the fees of an unsigned transaction using the library by either:
+* providing the length in bytes of the RCD reveal/signature section and the number of signatures (generic use case)
+
+```javascript
+tx.computeEcRequiredFees({rcdSignatureLength: 2 * (33 + 64), numberOfSignatures: 2});
+tx.computeRequiredFees(ecRate, {rcdSignatureLength: 2 * (33 + 64), numberOfSignatures: 2});
+```
+* providing a single RCD type for the transaction (only works for RCD type 1 as of today)
+
+```javascript
+tx.computeEcRequiredFees({rcdType: 1});
+tx.computeRequiredFees(ecRate, {rcdType: 1});
+```
 
 #### Transaction acknowledgement
 

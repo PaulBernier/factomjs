@@ -87,16 +87,28 @@ class Transaction {
     }
 
 
-    computeRequiredFees(ecRate) {
-        return this.computeEcRequiredFees() * ecRate;
+    computeRequiredFees(ecRate, opts) {
+        return this.computeEcRequiredFees(opts) * ecRate;
     }
 
-    computeEcRequiredFees() {
-        if (!this.isSigned()) {
-            throw new Error('Cannot compute EC fees of an unsigned Transaction ');
-        }
+    computeEcRequiredFees(opts) {
+        const options = opts || {};
 
-        const size = this.marshalBinary().length;
+        let size, numberOfSignatures;
+        if (this.isSigned()) {
+            size = this.marshalBinary().length;
+            numberOfSignatures = this.signatures.length;
+        } else {
+            if (typeof options.rcdSignatureLength === 'number' && typeof options.numberOfSignatures === 'number') {
+                size = this.marshalBinarySig().length + options.rcdSignatureLength;
+                numberOfSignatures = options.numberOfSignatures;
+            } else if (options.rcdType === 1) {
+                size = this.marshalBinarySig().length + this.inputs.length * 97;
+                numberOfSignatures = this.inputs.length;      
+            } else {
+                throw new Error('Missing parameters to compute fees of unsigned transaction');
+            }
+        }
 
         if (size > MAX_TRANSACTION_SIZE) {
             throw new Error(`Transaction size is bigger than the maximum (${MAX_TRANSACTION_SIZE} bytes)`);
@@ -104,7 +116,7 @@ class Transaction {
 
         let fee = Math.floor((size + 1023) / 1024);
         fee += 10 * (this.factoidOutputs.length + this.entryCreditOutputs.length);
-        fee += this.signatures.length;
+        fee += numberOfSignatures;
 
         return fee;
     }

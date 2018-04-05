@@ -49,6 +49,8 @@ describe('Create Factoid transactions', function() {
         assert.lengthOf(tx.rcds, 0);
         assert.lengthOf(tx.signatures, 0);
         assert.isFalse(tx.isSigned());
+        assert.equal(tx.computeEcRequiredFees({rcdType: 1}), 23);
+        assert.equal(tx.computeRequiredFees(1000, {rcdType: 1}), 23000);
     });
 
     function assertTransaction(tx) {
@@ -73,6 +75,22 @@ describe('Create Factoid transactions', function() {
         assert.equal(tx.entryCreditOutputs[0].address, 'EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR');
         assert.equal(tx.entryCreditOutputs[0].amount, 6000000);
     }
+
+    it('should compute fees of generic unsigned transaction', async function() {
+        const timestamp = 1521693377958;
+
+        const tx = Transaction.builder()
+            .timestamp(timestamp)
+            .input('FA3HZDE4MdXAthauFoA3aKYpx33U4fT2kAABmfwk7NBqyLT2zed5', 14000000)
+            .input('FA2vj6RNSijgB7Zufg2po9XVJYmQm6bLYo721Yv5LEuMe8ijH1yq', 11000000)
+            .output('FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw', 5000000)
+            .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR', 6000000)
+            .build();
+
+        assert.isFalse(tx.isSigned());
+        assert.equal(tx.computeEcRequiredFees({rcdSignatureLength: 2 * (33 + 64), numberOfSignatures: 2}), 23);
+        assert.equal(tx.computeRequiredFees(1000, {rcdSignatureLength: 2 * (33 + 64), numberOfSignatures: 2}), 23000);
+    });
 
     it('should copy transaction without signature', async function() {
         const timestamp = 1521693377958;
