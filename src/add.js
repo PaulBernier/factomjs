@@ -6,6 +6,7 @@ const Promise = require('bluebird'),
 
 
 // TODO: unify addEntry and addChain 
+// Create unique function add()?
 async function addChain(factomd, chain, ecPrivate, opts) {
     validateChainInstance(chain);
     if (!isValidEcPrivateAddress(ecPrivate)) {

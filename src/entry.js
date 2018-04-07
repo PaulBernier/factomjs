@@ -1,6 +1,6 @@
 const fctUtils = require('factomjs-util'),
     EdDSA = require('elliptic').eddsa,
-    { MAX_ENTRY_SIZE } = require('./constant'),
+    { MAX_ENTRY_PAYLOAD_SIZE } = require('./constant'),
     { sha256, sha512 } = require('./util');
 
 const ec = new EdDSA('ed25519');
@@ -10,15 +10,12 @@ class Entry {
         if (builder instanceof EntryBuilder) {
             this.chainId = builder._chainId;
             this.content = builder._content;
+            this.timestamp = builder._timestamp || Date.now();
             this.extIds = Object.freeze(builder._extIds);
             Object.freeze(this);
         } else {
             throw new Error('Use `Entry.builder()` syntax to create a new Entry');
         }
-    }
-
-    get size() {
-        return this.content.length + this.extIds.reduce((acc, value) => acc + value.length, 0);
     }
 
     get contentHex() {
@@ -33,12 +30,47 @@ class Entry {
         return this.chainId.toString('hex');
     }
 
-    get hash() {
-        const data = this.marshalBinary;
+    size() {
+        // Header size is 35 for the first 127 versions
+        return 35 + this.payloadSize();
+    }
+
+    payloadSize() {
+        return this.rawDataSize() + 2 * this.extIds.length;
+    }
+
+    rawDataSize() {
+        return this.content.length + this.extIds.reduce((acc, value) => acc + value.length, 0);
+    }
+
+    remainingFreeBytes() {
+        const size = this.payloadSize();
+        if (size === 0) {
+            return 1024;
+        }
+        const remainder = size % 1024;
+        return remainder ? 1024 - remainder : 0;
+    }
+
+    remainingMaxBytes() {
+        const remainingMaxBytes = MAX_ENTRY_PAYLOAD_SIZE - this.payloadSize();
+        if (remainingMaxBytes < 0) {
+            throw new Error('Entry cannot be larger than 10Kb');
+        }
+
+        return remainingMaxBytes;
+    }
+
+    hash() {
+        const data = this.marshalBinary();
         return sha256(Buffer.concat([sha512(data), data]));
     }
 
-    get marshalBinary() {
+    hashHex() {
+        return this.hash().toString('hex');
+    }
+
+    marshalBinary() {
         if (this.chainId.length === 0) {
             throw new Error('ChainId is missing to marshal the entry');
         }
@@ -46,6 +78,19 @@ class Entry {
         const externalIds = marshalExternalIdsBinary(this.extIds);
         const header = marshalHeaderBinary(this.chainId, externalIds.length);
         return Buffer.concat([header, externalIds, this.content]);
+    }
+
+    marshalBinaryHex() {
+        return this.marshalBinary().toString('hex');
+    }
+
+    ecCost() {
+        const dataLength = this.payloadSize();
+        if (dataLength > MAX_ENTRY_PAYLOAD_SIZE) {
+            throw new Error('Entry cannot be larger than 10Kb');
+        }
+
+        return Math.ceil(dataLength / 1024);
     }
 
     static builder(entry) {
@@ -59,34 +104,40 @@ class EntryBuilder {
             this._extIds = entry.extIds;
             this._content = entry.content;
             this._chainId = entry.chainId;
+            this._timestamp = entry.timestamp;
         } else {
             this._extIds = [];
             this._content = Buffer.from('');
             this._chainId = Buffer.from('');
+            this._timestamp;
         }
     }
     content(content, enc) {
         if (content) {
-            this._content = Buffer.from(content, enc);
+            this._content = Buffer.from(content, enc || 'hex');
         }
         return this;
     }
     chainId(chainId, enc) {
         if (chainId) {
-            this._chainId = Buffer.from(chainId, enc);
+            this._chainId = Buffer.from(chainId, enc || 'hex');
         }
         return this;
     }
     extIds(extIds, enc) {
         if (Array.isArray(extIds)) {
-            this._extIds = extIds.map(extId => Buffer.from(extId, enc));
+            this._extIds = extIds.map(extId => Buffer.from(extId, enc || 'hex'));
         }
         return this;
     }
     extId(extId, enc) {
         if (extId) {
-            this._extIds.push(Buffer.from(extId, enc));
+            this._extIds.push(Buffer.from(extId, enc || 'hex'));
         }
+        return this;
+    }
+    timestamp(timestamp) {
+        this._timestamp = timestamp;
         return this;
     }
     build() {
@@ -119,15 +170,9 @@ function marshalExternalIdsBinary(extIds) {
 function composeEntryCommit(entry, ecPrivate) {
     validateEntryInstance(entry);
 
-    const cost = entryCost(entry);
-    const buffer = Buffer.alloc(40);
+    const buffer = composeEntryLedger(entry);
 
-    buffer.writeInt8(0);
-    buffer.writeIntBE(Date.now(), 1, 6);
-    entry.hash.copy(buffer, 7);
-    buffer.writeInt8(cost, 39);
-
-    // Signing commit
+    // Sign commit
     const secret = fctUtils.privateHumanAddressStringToPrivate(ecPrivate);
     const key = ec.keyFromSecret(secret);
     const signature = Buffer.from(key.sign(buffer).toBytes());
@@ -136,9 +181,25 @@ function composeEntryCommit(entry, ecPrivate) {
     return Buffer.concat([buffer, ecPublic, signature]);
 }
 
+function computeEntryTxId(entry) {
+    validateEntryInstance(entry);
+    return sha256(composeEntryLedger(entry));
+}
+
+function composeEntryLedger(entry) {
+    const buffer = Buffer.alloc(40);
+
+    buffer.writeInt8(0);
+    buffer.writeIntBE(entry.timestamp, 1, 6);
+    entry.hash().copy(buffer, 7);
+    buffer.writeInt8(entry.ecCost(), 39);
+
+    return buffer;
+}
+
 function composeEntryReveal(entry) {
     validateEntryInstance(entry);
-    return entry.marshalBinary;
+    return entry.marshalBinary();
 }
 
 function composeEntry(entry, ecPrivate) {
@@ -150,26 +211,6 @@ function composeEntry(entry, ecPrivate) {
     };
 }
 
-// TODO: Method of Entry?
-function entrySize(entry) {
-    validateEntryInstance(entry);
-
-    const extIdsLength = entry.extIds.reduce((acc, val) => acc + val.length, 0);
-    return 35 + 2 * entry.extIds.length + extIdsLength + entry.content.length;
-}
-
-// TODO: Method of Entry?
-function entryCost(entry) {
-    validateEntryInstance(entry);
-    // Header size (35) is not counted in the cost
-    const dataLength = entrySize(entry) - 35;
-    if (dataLength > MAX_ENTRY_SIZE) {
-        throw new Error('Entry cannot be larger than 10Kb');
-    }
-
-    return Math.ceil(dataLength / 1024);
-}
-
 function validateEntryInstance(entry) {
     if (!(entry instanceof Entry)) {
         throw new Error('Argument must be an instance of Entry');
@@ -178,10 +219,9 @@ function validateEntryInstance(entry) {
 
 module.exports = {
     Entry,
+    computeEntryTxId,
     validateEntryInstance,
     composeEntryCommit,
     composeEntryReveal,
-    composeEntry,
-    entrySize,
-    entryCost
+    composeEntry
 };

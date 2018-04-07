@@ -49,9 +49,9 @@ const cli = new FactomCli({
 
 ```javascript
 const firstEntry = Entry.builder()
-    .extId('my ext id 1')
-    .extId('6d79206578742069642031', 'hex')
-    .content('Initial content')
+    .extId('6d79206578742069642031') // If no encoding parameter is passed 'hex' is used
+    .extId('my ext id 1', 'utf8') // Explicit the encoding. Or you can pass directly a Buffer
+    .content('Initial content', 'utf8')
     .build();
 
 const chain = new Chain(firstEntry);
@@ -64,9 +64,9 @@ cli.addChain(chain, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym')
 ```javascript
 const myEntry = Entry.builder()
     .chainId('9107a308f91fd7962fecb321fdadeb37e2ca7d456f1d99d24280136c0afd55f2')
-    .extId('some external ID')
-    .extId('6d79206578742069642031', 'hex')
-    .content('My new content')
+    .extId('6d79206578742069642031')
+    .extId('some external ID', 'utf8')
+    .content('My new content',  'utf8')
     .build();
 cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym')
     .then(console.log);
@@ -204,7 +204,7 @@ Side note: helper functions `getFactoidTransaction` and `getEntryCreditPurchaseT
 
 ##### Fees computation
 
-Knowledge about the RCDs and signatures are required to compute fees of a transaction (see section fees of [factom data structures doc](https://www.factom.com/devs/docs/guide/factom-data-structures)). You can still compute the fees of an unsigned transaction using the library by either:
+Knowledge about the RCDs and signatures is required to compute fees of a transaction (see section fees of [factom data structures doc](https://www.factom.com/devs/docs/guide/factom-data-structures)). You can still compute the fees of an unsigned transaction using the library by either:
 * providing the length in bytes of the RCD reveal/signature section and the number of signatures (generic use case)
 
 ```javascript
