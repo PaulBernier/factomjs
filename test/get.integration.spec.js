@@ -9,6 +9,7 @@ const factomd = new factomdjs.Factomd();
 if (process.env.FACTOMD_URL) {
     factomd.setFactomNode(process.env.FACTOMD_URL);
 }
+const PAYING_FCT_ADDRESS = process.env.PAYING_FCT_ADDRESS;
 
 describe('Get information from Factom blockchain', function() {
 
@@ -38,9 +39,11 @@ describe('Get information from Factom blockchain', function() {
     });
 
     it('should get Transaction', async function() {
+        this.timeout(5000);
+
         const transaction = Transaction.builder()
             .timestamp(1520567488868)
-            .input('Fs3BhggPYJBNJRzbLMce94FYyzEA3PDnsEJFwEsr37gYDN9QgFdh', 12001)
+            .input(PAYING_FCT_ADDRESS, 12001)
             .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH', 1)
             .build();
 
