@@ -1,5 +1,5 @@
-const fctUtils = require('factomjs-util'),
-    EdDSA = require('elliptic').eddsa,
+const EdDSA = require('elliptic').eddsa,
+    { addressToKey, isValidEcPrivateAddress } = require('./addresses'),
     { MAX_ENTRY_PAYLOAD_SIZE } = require('./constant'),
     { sha256, sha512 } = require('./util');
 
@@ -169,11 +169,14 @@ function marshalExternalIdsBinary(extIds) {
 
 function composeEntryCommit(entry, ecPrivate) {
     validateEntryInstance(entry);
+    if (!isValidEcPrivateAddress(ecPrivate)) {
+        throw new Error(`${ecPrivate} is not a valid EC private address`);
+    }
 
     const buffer = composeEntryLedger(entry);
 
     // Sign commit
-    const secret = fctUtils.privateHumanAddressStringToPrivate(ecPrivate);
+    const secret = addressToKey(ecPrivate);
     const key = ec.keyFromSecret(secret);
     const signature = Buffer.from(key.sign(buffer).toBytes());
     const ecPublic = Buffer.from(key.getPublic());

@@ -1,5 +1,5 @@
 const EdDSA = require('elliptic').eddsa,
-    fctUtils = require('factomjs-util'),
+    { addressToKey, isValidEcPrivateAddress } = require('./addresses'),
     { Entry } = require('./entry'),
     { sha256, sha256d } = require('./util'),
     { CHAIN_CREATION_COST } = require('./constant');
@@ -41,11 +41,14 @@ function computeChainId(firstEntry) {
 
 function composeChainCommit(chain, ecPrivate) {
     validateChainInstance(chain);
+    if (!isValidEcPrivateAddress(ecPrivate)) {
+        throw new Error(`${ecPrivate} is not a valid EC private address`);
+    }
 
     const buffer = composeChainLedger(chain);
 
     // Sign commit
-    const secret = fctUtils.privateHumanAddressStringToPrivate(ecPrivate);
+    const secret = addressToKey(ecPrivate);
     const key = ec.keyFromSecret(secret);
     const signature = Buffer.from(key.sign(buffer).toBytes());
     const ecPublic = Buffer.from(key.getPublic());
