@@ -139,8 +139,8 @@ class FactomCli {
         return this.factomd[camelCase(api)](...args);
     }
 
-    walletdApi(api, args) {
-        return this.walletd(camelCase[api])(...args);
+    walletdApi(api, ...args) {
+        return this.walletd[camelCase(api)](...args);
     }
 
     getHeights() {
