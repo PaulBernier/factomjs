@@ -7,7 +7,11 @@ const Promise = require('bluebird'),
     { toHex } = require('./util');
 
 function getChainHead(factomd, chainId) {
-    return factomd.chainHead(toHex(chainId));
+    return factomd.chainHead(toHex(chainId))
+        .then(ch => ({
+            keyMR: ch.chainhead,
+            chainInProcessList: ch.chaininprocesslist
+        }));
 }
 
 async function getEntry(factomd, entryHash) {
@@ -39,7 +43,7 @@ async function getEntryBlockContext(factomd, entryHash) {
 
 async function getFirstEntry(factomd, chainId) {
     const chainHead = await getChainHead(factomd, chainId);
-    let keyMR = chainHead.chainhead;
+    let keyMR = chainHead.keyMR;
     let entryBlock;
     while (keyMR !== NULL_HASH) {
         entryBlock = await factomd.entryBlock(keyMR);
@@ -53,7 +57,7 @@ async function getAllEntriesOfChain(factomd, chainId) {
     const allEntries = [];
     const chainHead = await getChainHead(factomd, chainId);
 
-    if (chainHead.chainhead === '' && chainHead.chaininprocesslist) {
+    if (chainHead.keyMR === '' && chainHead.chainInProcessList) {
         throw new Error('Chain not yet included in a Directory Block');
     }
 
