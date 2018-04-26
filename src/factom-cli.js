@@ -76,6 +76,10 @@ class FactomCli {
         return get.getEntry(this.factomd, entryHash);
     }
 
+    getEntryBlockContext(entryHash) {
+        return get.getEntryBlockContext(this.factomd, entryHash);
+    }
+
     getFirstEntry(chainId) {
         return get.getFirstEntry(this.factomd, chainId);
     }

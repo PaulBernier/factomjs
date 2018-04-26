@@ -15,6 +15,28 @@ async function getEntry(factomd, entryHash) {
         .then(toEntry);
 }
 
+async function getEntryBlockContext(factomd, entryHash) {
+    const chainId = await factomd.entry(toHex(entryHash)).then(e => e.chainid);
+    let keyMR = await factomd.chainHead(chainId).then(ch => ch.chainhead);
+
+    while (keyMR !== NULL_HASH) {
+        const entryBlock = await factomd.entryBlock(keyMR);
+        const entryFound = entryBlock.entrylist.find(e => e.entryhash === entryHash);
+
+        if (entryFound) {
+            return {
+                entryTimestamp: entryFound.timestamp,
+                directoryBlockHeight: entryBlock.header.dbheight,
+                entryBlockTimestamp: entryBlock.header.timestamp,
+                entryBlockSequenceNumber: entryBlock.header.blocksequencenumber,
+                entryBlockKeyMR: keyMR
+            };
+        } else {
+            keyMR = entryBlock.prevkeymr;
+        }
+    }
+}
+
 async function getFirstEntry(factomd, chainId) {
     const chainHead = await getChainHead(factomd, chainId);
     let keyMR = chainHead.chainhead;
@@ -79,7 +101,6 @@ function getBalance(factomd, address) {
 function getProperties(cli) {
     return cli.properties();
 }
-
 
 async function chainExists(factomd, chainId) {
     return factomd.chainHead(toHex(chainId))
@@ -218,6 +239,7 @@ function getAdminBlock(factomd, arg) {
 }
 module.exports = {
     getEntry,
+    getEntryBlockContext,
     getAllEntriesOfChain,
     getFirstEntry,
     getChainHead,
