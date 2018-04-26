@@ -14,9 +14,9 @@ function getChainHead(factomd, chainId) {
         }));
 }
 
-async function getEntry(factomd, entryHash) {
+async function getEntry(factomd, entryHash, entryBlockContext) {
     return factomd.entry(toHex(entryHash))
-        .then(toEntry);
+        .then(e => toEntry(e, entryBlockContext));
 }
 
 async function getEntryBlockContext(factomd, entryHash) {
@@ -28,13 +28,7 @@ async function getEntryBlockContext(factomd, entryHash) {
         const entryFound = entryBlock.entrylist.find(e => e.entryhash === entryHash);
 
         if (entryFound) {
-            return {
-                entryTimestamp: entryFound.timestamp,
-                directoryBlockHeight: entryBlock.header.dbheight,
-                entryBlockTimestamp: entryBlock.header.timestamp,
-                entryBlockSequenceNumber: entryBlock.header.blocksequencenumber,
-                entryBlockKeyMR: keyMR
-            };
+            return buildEntryBlockContext(keyMR, entryBlock, entryFound.timestamp);
         } else {
             keyMR = entryBlock.prevkeymr;
         }
@@ -44,14 +38,26 @@ async function getEntryBlockContext(factomd, entryHash) {
 async function getFirstEntry(factomd, chainId) {
     const chainHead = await getChainHead(factomd, chainId);
     let keyMR = chainHead.keyMR;
-    let entryBlock;
+    let entryBlock, latestNonNullKeyMR;
     while (keyMR !== NULL_HASH) {
+        latestNonNullKeyMR = keyMR;
         entryBlock = await factomd.entryBlock(keyMR);
         keyMR = entryBlock.header.prevkeymr;
     }
-
-    return getEntry(factomd, entryBlock.entrylist[0].entryhash);
+    const firstEntry = entryBlock.entrylist[0];
+    return getEntry(factomd, firstEntry.entryhash, buildEntryBlockContext(latestNonNullKeyMR, entryBlock, firstEntry.timestamp));
 }
+
+function buildEntryBlockContext(entryBlockKeyMR, entryBlock, entryTimestamp) {
+    return {
+        entryTimestamp: entryTimestamp,
+        directoryBlockHeight: entryBlock.header.dbheight,
+        entryBlockTimestamp: entryBlock.header.timestamp,
+        entryBlockSequenceNumber: entryBlock.header.blocksequencenumber,
+        entryBlockKeyMR: entryBlockKeyMR
+    };
+}
+
 
 async function getAllEntriesOfChain(factomd, chainId) {
     const allEntries = [];
@@ -61,7 +67,7 @@ async function getAllEntriesOfChain(factomd, chainId) {
         throw new Error('Chain not yet included in a Directory Block');
     }
 
-    let keyMR = chainHead.chainhead;
+    let keyMR = chainHead.keyMR;
     while (keyMR !== NULL_HASH) {
         const {
             entries,
@@ -78,7 +84,9 @@ async function getAllEntriesOfChain(factomd, chainId) {
 async function getAllEntriesOfEntryBlock(factomd, keyMR) {
     const entryBlock = await factomd.entryBlock(keyMR);
 
-    const entries = await Promise.map(entryBlock.entrylist.map(e => e.entryhash), getEntry.bind(null, factomd));
+    const entries = await Promise.map(
+        entryBlock.entrylist,
+        e => getEntry(factomd, e.entryhash, buildEntryBlockContext(keyMR, entryBlock, e.timestamp)));
 
     return {
         entries: entries,
@@ -86,11 +94,12 @@ async function getAllEntriesOfEntryBlock(factomd, keyMR) {
     };
 }
 
-function toEntry(entry) {
+function toEntry(entry, entryBlockContext) {
     return Entry.builder()
         .chainId(entry.chainid, 'hex')
         .extIds(entry.extids, 'hex')
         .content(entry.content, 'hex')
+        .entryBlockContext(entryBlockContext)
         .build();
 }
 
