@@ -70,9 +70,6 @@ class Transaction {
         this.totalEntryCreditOutputs = this.entryCreditOutputs.reduce((acc, value) => acc + value.amount, 0);
         const totalOutputs = this.totalFactoidOutputs + this.totalEntryCreditOutputs;
         this.feesPaid = this.totalInputs - totalOutputs;
-        if (this.feesPaid < 0) {
-            throw new Error(`Outputs (${totalOutputs}) are greater than inputs (${this.totalInputs})`);
-        }
 
         this.id = sha256(this.marshalBinarySig()).toString('hex');
         Object.freeze(this);
