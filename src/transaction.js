@@ -69,7 +69,7 @@ class Transaction {
         this.totalFactoidOutputs = this.factoidOutputs.reduce((acc, value) => acc + value.amount, 0);
         this.totalEntryCreditOutputs = this.entryCreditOutputs.reduce((acc, value) => acc + value.amount, 0);
         const totalOutputs = this.totalFactoidOutputs + this.totalEntryCreditOutputs;
-        this.feesPaid = this.totalInputs - totalOutputs;
+        this.feesPaid = Math.max(this.totalInputs - totalOutputs, 0); // Coinbase transactions have 0 fee
 
         this.id = sha256(this.marshalBinarySig()).toString('hex');
         Object.freeze(this);
