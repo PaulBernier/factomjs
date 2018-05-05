@@ -5,7 +5,6 @@ const assert = require('chai').assert,
     factomdjs = require('factomdjs');
 
 const nconf = require('nconf').file({ file: `${__dirname}/config.json` });
-
 const factomd = new factomdjs.Factomd();
 factomd.setFactomNode(nconf.get('factomd-url'));
 const PAYING_EC_ADDRESS = nconf.get('ec-private-address');

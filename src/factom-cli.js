@@ -109,7 +109,7 @@ class FactomCli {
     }
 
     getTransactionWithBlockContext(txId) {
-        return get.getTransactionWithBlockContext(this.factomd, txId);   
+        return get.getTransactionWithBlockContext(this.factomd, txId);
     }
 
     // Send transactions
@@ -118,12 +118,14 @@ class FactomCli {
         return send.sendTransaction(this.factomd, transaction, options);
     }
 
-    getFactoidTransaction(originAddress, recipientAddress, amount, fees) {
-        return send.getFactoidTransaction(this.factomd, this.walletd, originAddress, recipientAddress, amount, fees);
+    async getFactoidTransaction(originAddress, recipientAddress, amount, fees) {
+        const originPrivateAddress = await wallet.getPrivateAddress(this.walletd, originAddress);
+        return send.getFactoidTransaction(this.factomd, originPrivateAddress, recipientAddress, amount, fees);
     }
 
-    getEntryCreditPurchaseTransaction(originAddress, recipientAddress, ecAmount, fees) {
-        return send.getEntryCreditPurchaseTransaction(this.factomd, this.walletd, originAddress, recipientAddress, ecAmount, fees);
+    async getEntryCreditPurchaseTransaction(originAddress, recipientAddress, ecAmount, fees) {
+        const originPrivateAddress = await wallet.getPrivateAddress(this.walletd, originAddress);
+        return send.getEntryCreditPurchaseTransaction(this.factomd, originPrivateAddress, recipientAddress, ecAmount, fees);
     }
 
     // Ack

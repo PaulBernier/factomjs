@@ -2,7 +2,6 @@ const Promise = require('bluebird'),
     { waitOnFactoidTransactionAck } = require('./ack'),
     { publicFactoidRCDHashToHumanAddress } = require('factomjs-util'),
     { isValidFctPublicAddress, isValidEcPublicAddress } = require('./addresses'),
-    { getPrivateAddress } = require('./wallet'),
     { Transaction } = require('./transaction'),
     { getEntryCreditRate } = require('./get');
 
@@ -25,7 +24,7 @@ async function submitTransaction(factomd, transaction, force) {
         throw new Error('Argument must be an instance of Transaction');
     }
     if (!transaction.isSigned()) {
-        throw new Error('Connot submit an unsigned transaction');
+        throw new Error('Cannot submit an unsigned transaction');
     }
 
     const ecRate = await getEntryCreditRate(factomd);
@@ -50,43 +49,27 @@ async function validateFunds(factomd, publicFctAddress, amount) {
     }
 }
 
-async function getFactoidTransaction(factomd, walletd, originAddress, recipientAddress, amount, fees) {
-    const originPrivateAddress = await getPrivateAddress(walletd, originAddress);
+async function getFactoidTransaction(factomd, originPrivateAddress, recipientAddress, amount, fees) {
     if (!isValidFctPublicAddress(recipientAddress)) {
-        throw new Error('Recipient address is not a valid Factoid public address');
+        throw new Error(`Recipient address [${recipientAddress}] is not a valid Factoid public address`);
     }
 
     const ecRate = await getEntryCreditRate(factomd);
-    const requiredFees = Transaction.builder()
-        .input(originPrivateAddress, amount)
-        .output(recipientAddress, amount)
-        .build()
-        .computeRequiredFees(ecRate);
-
-    let finalFees = requiredFees;
-    if (fees && fees < requiredFees) {
-        throw new Error(`Cannot set fees to ${fees} factoshis because the minimum required fees are ${requiredFees}`);
-    } else if (fees) {
-        finalFees = fees;
-    }
-
-    const transaction = Transaction.builder()
-        .input(originPrivateAddress, amount + finalFees)
-        .output(recipientAddress, amount)
-        .build();
-
-    return transaction;
+    return buildTransactionWithFees(originPrivateAddress, recipientAddress, amount, ecRate, fees);
 }
 
-async function getEntryCreditPurchaseTransaction(factomd, walletd, originAddress, recipientAddress, ecAmount, fees) {
-    const originPrivateAddress = await getPrivateAddress(walletd, originAddress);
+async function getEntryCreditPurchaseTransaction(factomd, originPrivateAddress, recipientAddress, ecAmount, fees) {
     if (!isValidEcPublicAddress(recipientAddress)) {
-        throw new Error('Recipient address is not a valid Entry Credit public address');
+        throw new Error(`Recipient address [${recipientAddress}] is not a valid Entry Credit public address`);
     }
 
     const ecRate = await getEntryCreditRate(factomd);
     const amount = ecAmount * ecRate;
 
+    return buildTransactionWithFees(originPrivateAddress, recipientAddress, amount, ecRate, fees);
+}
+
+function buildTransactionWithFees(originPrivateAddress, recipientAddress, amount, ecRate, fees) {
     const requiredFees = Transaction.builder()
         .input(originPrivateAddress, amount)
         .output(recipientAddress, amount)
@@ -107,7 +90,6 @@ async function getEntryCreditPurchaseTransaction(factomd, walletd, originAddress
 
     return transaction;
 }
-
 
 module.exports = {
     sendTransaction,
