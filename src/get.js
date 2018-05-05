@@ -127,7 +127,7 @@ async function chainExists(factomd, chainId) {
         });
 }
 
-async function getTransaction(factomd, txId) {
+async function getTransactionWithBlockContext(factomd, txId) {
     if (typeof txId !== 'string') {
         throw new Error(`Argument is not a transaction ID: ${txId}`);
     }
@@ -142,6 +142,11 @@ async function getTransaction(factomd, txId) {
                 includedInDirectoryBlockHeight: result.includedindirectoryblockheight
             };
         });
+}
+
+async function getTransaction(factomd, txId) {
+    const txWithContext = await getTransactionWithBlockContext(factomd, txId);
+    return txWithContext.transaction;
 }
 
 function getEntryCreditRate(factomd) {
@@ -260,6 +265,7 @@ module.exports = {
     chainExists,
     getEntryCreditRate,
     getTransaction,
+    getTransactionWithBlockContext,
     getBalance,
     getProperties,
     getHeights,

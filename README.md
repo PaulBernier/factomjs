@@ -234,9 +234,10 @@ const txId = await cli.sendTransaction(transaction, {timeout: -1});
 #### Get Transaction
 
 ```javascript
-const result = await cli.getTransaction(txId);
+const transaction = await cli.getTransaction(txId);
+const transactionWithBlockContext = await cli.getTransactionWithBlockContext(txId);
 /* 
-    Output structure: 
+    Output structure of transaction with block context: 
 
     { 
         transaction: Transaction,

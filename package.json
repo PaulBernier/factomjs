@@ -1,13 +1,13 @@
 {
     "name": "factom",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "High level functions to interact with Factom blockchain and wallet",
     "main": "src/factom.js",
     "scripts": {
         "lint": "eslint src/",
         "build": "gulp",
-        "test": "env FACTOMD_URL='http://52.202.51.229:8088/v2' mocha test/*.spec.js",
-        "test:integration": "env FACTOMD_URL='http://52.202.51.229:8088/v2' mocha test/*.integration.spec.js",
+        "test": "mocha test/*.spec.js",
+        "test:integration": "mocha test/*.integration.spec.js",
         "test:unit": "mocha test/*unit.spec.js"
     },
     "repository": {
@@ -60,6 +60,7 @@
         "eslint": "^4.19.1",
         "gulp": "^3.9.1",
         "mocha": "^5.0.5",
+        "nconf": "^0.10.0",
         "vinyl-buffer": "^1.0.1",
         "vinyl-source-stream": "^2.0.0"
     }

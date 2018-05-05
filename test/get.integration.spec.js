@@ -2,14 +2,11 @@ const assert = require('chai').assert,
     { Transaction } = require('../src/transaction'),
     { DirectoryBlock, EntryCreditBlock, FactoidBlock, AdminBlock, EntryBlock } = require('../src/blocks'),
     get = require('../src/get'),
-    send = require('../src/send'),
     factomdjs = require('factomdjs');
 
+const nconf = require('nconf').file({ file: `${__dirname}/config.json` });
 const factomd = new factomdjs.Factomd();
-if (process.env.FACTOMD_URL) {
-    factomd.setFactomNode(process.env.FACTOMD_URL);
-}
-const PAYING_FCT_ADDRESS = process.env.PAYING_FCT_ADDRESS;
+factomd.setFactomNode(nconf.get('factomd-url'));
 
 describe('Get information from Factom blockchain', function() {
 
@@ -41,16 +38,35 @@ describe('Get information from Factom blockchain', function() {
     it('should get Transaction', async function() {
         this.timeout(5000);
 
-        const transaction = Transaction.builder()
-            .timestamp(1520567488868)
-            .input(PAYING_FCT_ADDRESS, 12001)
-            .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH', 1)
-            .build();
+        const transaction = await get.getTransaction(factomd, '63fe4275064427f11e0dcfc3ff2d56adf88ba12c2646bc0d03d03a02ff7d2727');
 
-        const txId = await send.sendTransaction(factomd, transaction);
-        const result = await get.getTransaction(factomd, txId);
+        assert.instanceOf(transaction, Transaction);
+        assert.equal(transaction.id, '63fe4275064427f11e0dcfc3ff2d56adf88ba12c2646bc0d03d03a02ff7d2727');
+        assert.equal(transaction.timestamp, 1525490539106);
+        assert.equal(transaction.totalInputs, 400012000);
+        assert.equal(transaction.totalFactoidOutputs, 400000000);
+        assert.equal(transaction.totalEntryCreditOutputs, 0);
+        assert.equal(transaction.feesPaid, 12000);
+        assert.lengthOf(transaction.inputs, 1);
+        assert.lengthOf(transaction.factoidOutputs, 1);
+        assert.lengthOf(transaction.entryCreditOutputs, 0);
+        assert.equal(transaction.rcds[0].toString('hex'), '011bcb4c8a771c2869ddf554655414e56bdf360663f33960039a9aa43ac5820306')
+        assert.equal(transaction.signatures[0].toString('hex'), '8a3f90a2b47efda21b801d2dc7f8dbbbfe9c0a65cb37aea4a998632ab7578aa965c8b5893f069030c4411a76dddc357270c0d835a31ea4fd34290a925d4c5501')
+        assert.equal(transaction.inputs[0].address, 'FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH');
+        assert.equal(transaction.inputs[0].amount, 400012000);
+        assert.equal(transaction.factoidOutputs[0].address, 'FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw');
+        assert.equal(transaction.factoidOutputs[0].amount, 400000000);
+    });
 
-        assert.isTrue(result.transaction.marshalBinary().equals(transaction.marshalBinary()));
+    it('should get Transaction with block context', async function() {
+        this.timeout(5000);
+
+        const txWithContext = await get.getTransactionWithBlockContext(factomd, 'ba6865982698f552739109335ad27f94a482c9c85839344f0833c058662d7d90');
+
+        assert.instanceOf(txWithContext.transaction, Transaction);
+        assert.equal(txWithContext.includedInTransactionBlock, 'e3a598d40526f45fc44c19891962813f61479b530fe9866d69ffd9fecec7cf49');
+        assert.equal(txWithContext.includedInDirectoryBlock, '964e83ab665169d44f270eca8e6a403a7fbcddd049d200f0fef9d071c83a47f3');
+        assert.equal(txWithContext.includedInDirectoryBlockHeight, 27615);
     });
 
     it('should get heights', async function() {

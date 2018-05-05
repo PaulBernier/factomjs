@@ -4,17 +4,16 @@ const assert = require('chai').assert,
     add = require('../src/add'),
     factomdjs = require('factomdjs');
 
-const factomd = new factomdjs.Factomd();
-if (process.env.FACTOMD_URL) {
-    factomd.setFactomNode(process.env.FACTOMD_URL);
-}
+const nconf = require('nconf').file({ file: `${__dirname}/config.json` });
 
-const PAYING_EC_ADDRESS = process.env.PAYING_EC_ADDRESS;
+const factomd = new factomdjs.Factomd();
+factomd.setFactomNode(nconf.get('factomd-url'));
+const PAYING_EC_ADDRESS = nconf.get('ec-private-address');
 
 describe('Add chains and entries in Factom blockchain', function() {
 
     it('should add chain', async function() {
-        this.timeout(5000);
+        this.timeout(10000);
 
         const e = Entry.builder()
             .extId('factom.js')
@@ -33,7 +32,7 @@ describe('Add chains and entries in Factom blockchain', function() {
     });
 
     it('should add entry', async function() {
-        this.timeout(5000);
+        this.timeout(10000);
 
         const e = Entry.builder()
             .chainId('3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791')

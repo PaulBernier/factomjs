@@ -69,24 +69,4 @@ describe('Test FactomCli', function() {
         // assert.equal(cli.walletd.getFactomNode(), 'http://88.202.51.229:5656/v2');
     });
 
-    it('should call raw factomd API', async function() {
-        const cli = new FactomCli({
-            host: '52.202.51.229',
-            port: 8088
-        });
-
-        assert.ok(await cli.factomdApi('properties'));
-    });
-
-    it('should call raw walletd API', async function() {
-        const cli = new FactomCli({
-            walletd: {
-                host: 'localhost',
-                port: 8089
-            }
-        });
-
-        assert.ok(await cli.walletdApi('properties'));
-    });
-
 });
