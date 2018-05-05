@@ -13,7 +13,12 @@ describe('Get information from Factom blockchain', function() {
     it('should get entry', async function() {
         const entry = await get.getEntry(factomd, 'ec92aa51b34b992b3472c54ce005a3baf7fbdddd8bb6d786aad19304830559b0');
 
+        assert.isUndefined(entry.timestamp);
+        assert.isUndefined(entry.entryBlockContext);
+        assert.equal(entry.chainId.toString('hex'), 'e36c51b43d979f10792ab14d8b4e87f2870962e0bdb4d2c3cc5aba6c3fb4d7d2');
+        assert.lengthOf(entry.extIds, 3);
         assert.equal(entry.extIds[0].toString(), 'PrimeNumbers.txt');
+        assert.equal(entry.content.toString(), '53746, 662369, 12\r\n'); 
     });
 
     it('should get all entries', async function() {

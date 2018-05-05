@@ -16,6 +16,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         this.timeout(10000);
 
         const e = Entry.builder()
+            .timestamp(Date.now())
             .extId('factom.js')
             .extId('add chain test', 'utf8')
             .extId(Date.now().toString(), 'utf8')
@@ -36,6 +37,7 @@ describe('Add chains and entries in Factom blockchain', function() {
 
         const e = Entry.builder()
             .chainId('3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791')
+            .timestamp(Date.now())
             .extId('factom.js', 'utf8')
             .extId('add entry test', 'utf8')
             .extId(Date.now().toString(), 'utf8')

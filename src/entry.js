@@ -10,7 +10,7 @@ class Entry {
         if (builder instanceof EntryBuilder) {
             this.chainId = builder._chainId;
             this.content = builder._content;
-            this.timestamp = builder._timestamp || Date.now();
+            this.timestamp = builder._timestamp;
             this.extIds = Object.freeze(builder._extIds);
             this.entryBlockContext = Object.freeze(builder._entryBlockContext);
             Object.freeze(this);
@@ -198,7 +198,7 @@ function composeEntryLedger(entry) {
     const buffer = Buffer.alloc(40);
 
     buffer.writeInt8(0);
-    buffer.writeIntBE(entry.timestamp, 1, 6);
+    buffer.writeIntBE(entry.timestamp || Date.now(), 1, 6);
     entry.hash().copy(buffer, 7);
     buffer.writeInt8(entry.ecCost(), 39);
 

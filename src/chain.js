@@ -62,7 +62,7 @@ function composeChainLedger(chain) {
     const buffer = Buffer.alloc(104);
 
     buffer.writeInt8(0);
-    buffer.writeIntBE(firstEntry.timestamp, 1, 6);
+    buffer.writeIntBE(firstEntry.timestamp || Date.now(), 1, 6);
     const chainIdHash = sha256d(chain.id);
     chainIdHash.copy(buffer, 7);
     const commitWeld = sha256d(Buffer.concat([entryHash, chain.id]));
