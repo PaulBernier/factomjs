@@ -6,7 +6,7 @@
     "scripts": {
         "lint": "eslint src/",
         "build": "gulp",
-        "test": "mocha test/*.spec.js",
+        "test": "nyc --reporter=html --reporter=text mocha test/*.spec.js",
         "test:integration": "mocha test/*.integration.spec.js",
         "test:unit": "mocha test/*unit.spec.js"
     },
@@ -61,6 +61,7 @@
         "gulp": "^3.9.1",
         "mocha": "^5.0.5",
         "nconf": "^0.10.0",
+        "nyc": "^11.7.1",
         "vinyl-buffer": "^1.0.1",
         "vinyl-source-stream": "^2.0.0"
     }
