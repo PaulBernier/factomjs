@@ -14,11 +14,26 @@ describe('Get information from Factom blockchain', function() {
         const entry = await get.getEntry(factomd, 'ec92aa51b34b992b3472c54ce005a3baf7fbdddd8bb6d786aad19304830559b0');
 
         assert.isUndefined(entry.timestamp);
-        assert.isUndefined(entry.entryBlockContext);
+        assert.isUndefined(entry.blockContext);
         assert.equal(entry.chainId.toString('hex'), 'e36c51b43d979f10792ab14d8b4e87f2870962e0bdb4d2c3cc5aba6c3fb4d7d2');
         assert.lengthOf(entry.extIds, 3);
         assert.equal(entry.extIds[0].toString(), 'PrimeNumbers.txt');
-        assert.equal(entry.content.toString(), '53746, 662369, 12\r\n'); 
+        assert.equal(entry.content.toString(), '53746, 662369, 12\r\n');
+    });
+
+    it('should get first entry', async function() {
+        const entry = await get.getFirstEntry(factomd, 'f48d2160c5d8178720d8c83b89a62599ab6a8b9dbec9fbece5229f787d1e8b44');
+
+        assert.equal(entry.hashHex(), 'ed909db55c0abc861a5a164d1dac7be70ffd117e6f1545491e6a253764f52bb2');
+        assert.equal(entry.extIds[0].toString(), 'factom-testnet-pioneers');
+        // Entries retrieved via getFirstEntry should have a Block context
+        assert.isNumber(entry.timestamp);
+        assert.isObject(entry.blockContext);
+    });
+
+    it('should get entry with block context', async function() {
+        const entry = await get.getEntryWithBlockContext(factomd, 'caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42');
+        assertEntryWithBlockContext(entry);
     });
 
     it('should get all entries', async function() {
@@ -26,7 +41,21 @@ describe('Get information from Factom blockchain', function() {
         const entries = await get.getAllEntriesOfChain(factomd, 'f48d2160c5d8178720d8c83b89a62599ab6a8b9dbec9fbece5229f787d1e8b44');
 
         assert.isAtLeast(entries.length, 7);
+        // Entries retrieved via getAllEntriesOfChain should have a Block context
+        const entry = entries[1];
+        assertEntryWithBlockContext(entry);
     });
+
+    function assertEntryWithBlockContext(entry) {
+        assert.equal(entry.hashHex(), 'caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42');
+        assert.equal(entry.timestamp, 1518286500000);
+        assert.isObject(entry.blockContext);
+        assert.equal(entry.blockContext.entryTimestamp, 1518286500);
+        assert.equal(entry.blockContext.directoryBlockHeight, 7042);
+        assert.equal(entry.blockContext.entryBlockTimestamp, 1518286440);
+        assert.equal(entry.blockContext.entryBlockSequenceNumber, 1);
+        assert.equal(entry.blockContext.entryBlockKeyMR, 'a13ac9df4153903f5a07093effe6434bdeb35fea0ff4bd402f323e486bea6ea4');
+    }
 
     it('should get balance', async function() {
         const ecBalance = await get.getBalance(factomd, 'EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD');

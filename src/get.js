@@ -19,18 +19,19 @@ async function getEntry(factomd, entryHash, entryBlockContext) {
         .then(e => toEntry(e, entryBlockContext));
 }
 
-async function getEntryBlockContext(factomd, entryHash) {
+async function getEntryWithBlockContext(factomd, entryHash) {
     const chainId = await factomd.entry(toHex(entryHash)).then(e => e.chainid);
     let keyMR = await factomd.chainHead(chainId).then(ch => ch.chainhead);
 
     while (keyMR !== NULL_HASH) {
+
         const entryBlock = await factomd.entryBlock(keyMR);
         const entryFound = entryBlock.entrylist.find(e => e.entryhash === entryHash);
 
         if (entryFound) {
-            return buildEntryBlockContext(keyMR, entryBlock, entryFound.timestamp);
+            return getEntry(factomd, entryHash, buildEntryBlockContext(keyMR, entryBlock, entryFound.timestamp));
         } else {
-            keyMR = entryBlock.prevkeymr;
+            keyMR = entryBlock.header.prevkeymr;
         }
     }
 }
@@ -47,17 +48,6 @@ async function getFirstEntry(factomd, chainId) {
     const firstEntry = entryBlock.entrylist[0];
     return getEntry(factomd, firstEntry.entryhash, buildEntryBlockContext(latestNonNullKeyMR, entryBlock, firstEntry.timestamp));
 }
-
-function buildEntryBlockContext(entryBlockKeyMR, entryBlock, entryTimestamp) {
-    return {
-        entryTimestamp: entryTimestamp,
-        directoryBlockHeight: entryBlock.header.dbheight,
-        entryBlockTimestamp: entryBlock.header.timestamp,
-        entryBlockSequenceNumber: entryBlock.header.blocksequencenumber,
-        entryBlockKeyMR: entryBlockKeyMR
-    };
-}
-
 
 async function getAllEntriesOfChain(factomd, chainId) {
     const allEntries = [];
@@ -94,13 +84,23 @@ async function getAllEntriesOfEntryBlock(factomd, keyMR) {
     };
 }
 
+function buildEntryBlockContext(entryBlockKeyMR, entryBlock, entryTimestamp) {
+    return {
+        entryTimestamp: entryTimestamp,
+        directoryBlockHeight: entryBlock.header.dbheight,
+        entryBlockTimestamp: entryBlock.header.timestamp,
+        entryBlockSequenceNumber: entryBlock.header.blocksequencenumber,
+        entryBlockKeyMR: entryBlockKeyMR
+    };
+}
+
 function toEntry(entry, entryBlockContext) {
     return Entry.builder()
         .chainId(entry.chainid, 'hex')
         .extIds(entry.extids, 'hex')
         .content(entry.content, 'hex')
         .entryBlockContext(entryBlockContext)
-        .timestamp(entryBlockContext ? entryBlockContext.timestamp * 1000 : undefined)
+        .timestamp(entryBlockContext ? entryBlockContext.entryTimestamp * 1000 : undefined)
         .build();
 }
 
@@ -258,7 +258,7 @@ function getAdminBlock(factomd, arg) {
 }
 module.exports = {
     getEntry,
-    getEntryBlockContext,
+    getEntryWithBlockContext,
     getAllEntriesOfChain,
     getFirstEntry,
     getChainHead,

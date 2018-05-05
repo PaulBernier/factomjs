@@ -12,7 +12,7 @@ class Entry {
             this.content = builder._content;
             this.timestamp = builder._timestamp;
             this.extIds = Object.freeze(builder._extIds);
-            this.entryBlockContext = Object.freeze(builder._entryBlockContext);
+            this.blockContext = Object.freeze(builder._blockContext);
             Object.freeze(this);
         } else {
             throw new Error('Use `Entry.builder()` syntax to create a new Entry');
@@ -106,7 +106,7 @@ class EntryBuilder {
             this._content = entry.content;
             this._chainId = entry.chainId;
             this._timestamp = entry.timestamp;
-            this._entryBlockContext = entry._entryBlockContext;
+            this._blockContext = entry._blockContext;
         } else {
             this._extIds = [];
             this._content = Buffer.from('');
@@ -141,8 +141,8 @@ class EntryBuilder {
         this._timestamp = timestamp;
         return this;
     }
-    entryBlockContext(entryBlockContext) {
-        this._entryBlockContext = entryBlockContext;
+    entryBlockContext(blockContext) {
+        this._blockContext = blockContext;
         return this;
     }
     build() {

@@ -100,6 +100,33 @@ cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', {r
 
 If you commit twice an entry or a chain and that the second time the fees paid are lower or equal to the first commit you are in a 'repeated commit' case and the second commit will be rejected (and you won't be charged for it). If this scenario happens (which it should probably not) the output of `addEntry` or `addChain` will have the field `repeatedCommit` set to `true` and the field `txId` will be undefined.
 
+#### Getting entries and block context
+
+The simplest and fastest way to retrieve an Entry is to query it by its hash.
+
+```javascript
+cli.getEntry('caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42');
+```
+
+You may notice that the entry returned doesn't have a timestamp populated. That's because the timestamp is actually stored in the Entry Block that contained this Entry. The way to retrieve this information is to rewind the chain this entry is part of until finding the Entry Block it was part of. The library offers a convenient way to do that:
+
+```javascript
+cli.getEntryWithBlockContext('caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42');
+```
+
+As stated above `getEntryWithBlockContext` has to rewind the blockchain until finding the Entry Block which makes this method much more expensive (depending on how far back the entry is in the chain). The entry returned will have its timestamp populated and an additional `blockContext` field that is structured as follow:
+
+```javascript
+// Note that the timestamps here are in epoch seconds whereas the timestamp attribute of the Entry itself is in timestamp milliseconds
+{ entryTimestamp: 1518286500,
+  directoryBlockHeight: 7042,
+  entryBlockTimestamp: 1518286440,
+  entryBlockSequenceNumber: 1,
+  entryBlockKeyMR: 'a13ac9df4153903f5a07093effe6434bdeb35fea0ff4bd402f323e486bea6ea4' }
+```
+
+Besides `getEntryWithBlockContext` entries returned by `getFirstEntry` and `getAllEntriesOfChain` have a `blockContext` populated (because those methods are already rewinding the blockchain anyway).
+
 ### Transactions
 
 #### Simple Factoid transaction
