@@ -5,6 +5,10 @@ Library to interact easily with Factom blockchain.
 * Provide higher level functionalities than bare API making it more efficient to create chains or entries, make transactions...
 * Provide structures more uniform, consistent and easy to use than the API results
 
+## State of development
+
+**Important**: This library is at an early development stage and being actively worked on . You should expect breaking changes in interface definitions in newer versions until we reach a more stable stage.
+
 ## Installation
 
 ```bash
