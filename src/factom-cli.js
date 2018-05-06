@@ -108,10 +108,6 @@ class FactomCli {
         return get.getTransaction(this.factomd, txId);
     }
 
-    getTransactionWithBlockContext(txId) {
-        return get.getTransactionWithBlockContext(this.factomd, txId);
-    }
-
     // Send transactions
 
     sendTransaction(transaction, options) {

@@ -266,17 +266,14 @@ const txId = await cli.sendTransaction(transaction, {timeout: -1});
 
 ```javascript
 const transaction = await cli.getTransaction(txId);
-const transactionWithBlockContext = await cli.getTransactionWithBlockContext(txId);
-/* 
-    Output structure of transaction with block context: 
+```
 
-    { 
-        transaction: Transaction,
-        includedInTransactionBlock: String,
-        includedInDirectoryBlock: String,
-        includedInDirectoryBlockHeight: Number 
-    }
-*/
+Transactions retrieved via `getTransaction` have an addition field `blockContext` that has the following structure:
+
+```javascript
+   { factoidBlockKeyMR: '9954300904152e688c52306c7cd86d1f1b96ec35be5da29541b0e3c24e3be306',
+     directoryBlockKeyMR: 'c2e9a3f643683a093349f43bdbc11122f3b26aebfed6efc410e670f77c8419fa',
+     directoryBlockHeight: 27735 }
 ```
 
 ### Blocks

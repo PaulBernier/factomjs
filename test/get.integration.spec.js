@@ -11,6 +11,8 @@ factomd.setFactomNode(nconf.get('factomd-url'));
 describe('Get information from Factom blockchain', function() {
 
     it('should get entry', async function() {
+        this.timeout(5000);
+
         const entry = await get.getEntry(factomd, 'ec92aa51b34b992b3472c54ce005a3baf7fbdddd8bb6d786aad19304830559b0');
 
         assert.isUndefined(entry.timestamp);
@@ -22,6 +24,8 @@ describe('Get information from Factom blockchain', function() {
     });
 
     it('should get first entry', async function() {
+        this.timeout(5000);
+
         const entry = await get.getFirstEntry(factomd, 'f48d2160c5d8178720d8c83b89a62599ab6a8b9dbec9fbece5229f787d1e8b44');
 
         assert.equal(entry.hashHex(), 'ed909db55c0abc861a5a164d1dac7be70ffd117e6f1545491e6a253764f52bb2');
@@ -32,6 +36,8 @@ describe('Get information from Factom blockchain', function() {
     });
 
     it('should get entry with block context', async function() {
+        this.timeout(5000);
+
         const entry = await get.getEntryWithBlockContext(factomd, 'caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42');
         assertEntryWithBlockContext(entry);
     });
@@ -90,17 +96,10 @@ describe('Get information from Factom blockchain', function() {
         assert.equal(transaction.inputs[0].amount, 400012000);
         assert.equal(transaction.factoidOutputs[0].address, 'FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw');
         assert.equal(transaction.factoidOutputs[0].amount, 400000000);
-    });
-
-    it('should get Transaction with block context', async function() {
-        this.timeout(5000);
-
-        const txWithContext = await get.getTransactionWithBlockContext(factomd, 'ba6865982698f552739109335ad27f94a482c9c85839344f0833c058662d7d90');
-
-        assert.instanceOf(txWithContext.transaction, Transaction);
-        assert.equal(txWithContext.includedInTransactionBlock, 'e3a598d40526f45fc44c19891962813f61479b530fe9866d69ffd9fecec7cf49');
-        assert.equal(txWithContext.includedInDirectoryBlock, '964e83ab665169d44f270eca8e6a403a7fbcddd049d200f0fef9d071c83a47f3');
-        assert.equal(txWithContext.includedInDirectoryBlockHeight, 27615);
+        assert.isObject(transaction.blockContext);
+        assert.equal(transaction.blockContext.directoryBlockHeight, 27618);
+        assert.equal(transaction.blockContext.directoryBlockKeyMR, 'bb971007b95ac7474a573276d010cb0e7cf1d04bc93765c90e757f2555cc90e7');
+        assert.equal(transaction.blockContext.factoidBlockKeyMR, 'bb622dc852a278ede8fbfd0144ae49d6576e621a1267932dfd198c2cea73b403');
     });
 
     it('should get heights', async function() {

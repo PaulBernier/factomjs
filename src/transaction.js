@@ -24,7 +24,7 @@ class TransactionAddress {
 }
 
 class Transaction {
-    constructor(builder) {
+    constructor(builder, blockContext) {
         if (builder instanceof TransactionBuilder) {
             this.timestamp = builder._timestamp || Date.now();
             this.inputs = builder._inputs;
@@ -58,7 +58,7 @@ class Transaction {
             this.entryCreditOutputs = builder.outecs.map(output => new TransactionAddress(output.useraddress, output.amount));
             this.rcds = builder.rcds.map(rcd => Buffer.from(rcd, 'hex'));
             this.signatures = flatMap(builder.sigblocks, sb => sb.signatures).map(signature => Buffer.from(signature, 'hex'));
-
+            this.blockContext = blockContext;
         } else {
             throw new Error('Use `Transaction.builder()` syntax to create a new Transaction');
         }
