@@ -114,14 +114,14 @@ class FactomCli {
         return send.sendTransaction(this.factomd, transaction, options);
     }
 
-    async getFactoidTransaction(originAddress, recipientAddress, amount, fees) {
+    async createFactoidTransaction(originAddress, recipientAddress, amount, fees) {
         const originPrivateAddress = await wallet.getPrivateAddress(this.walletd, originAddress);
-        return send.getFactoidTransaction(this.factomd, originPrivateAddress, recipientAddress, amount, fees);
+        return send.createFactoidTransaction(this.factomd, originPrivateAddress, recipientAddress, amount, fees);
     }
 
-    async getEntryCreditPurchaseTransaction(originAddress, recipientAddress, ecAmount, fees) {
+    async createEntryCreditPurchaseTransaction(originAddress, recipientAddress, ecAmount, fees) {
         const originPrivateAddress = await wallet.getPrivateAddress(this.walletd, originAddress);
-        return send.getEntryCreditPurchaseTransaction(this.factomd, originPrivateAddress, recipientAddress, ecAmount, fees);
+        return send.createEntryCreditPurchaseTransaction(this.factomd, originPrivateAddress, recipientAddress, ecAmount, fees);
     }
 
     // Ack

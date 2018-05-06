@@ -49,7 +49,7 @@ async function validateFunds(factomd, publicFctAddress, amount) {
     }
 }
 
-async function getFactoidTransaction(factomd, originPrivateAddress, recipientAddress, amount, fees) {
+async function createFactoidTransaction(factomd, originPrivateAddress, recipientAddress, amount, fees) {
     if (!isValidFctPublicAddress(recipientAddress)) {
         throw new Error(`Recipient address [${recipientAddress}] is not a valid Factoid public address`);
     }
@@ -58,7 +58,7 @@ async function getFactoidTransaction(factomd, originPrivateAddress, recipientAdd
     return buildTransactionWithFees(originPrivateAddress, recipientAddress, amount, ecRate, fees);
 }
 
-async function getEntryCreditPurchaseTransaction(factomd, originPrivateAddress, recipientAddress, ecAmount, fees) {
+async function createEntryCreditPurchaseTransaction(factomd, originPrivateAddress, recipientAddress, ecAmount, fees) {
     if (!isValidEcPublicAddress(recipientAddress)) {
         throw new Error(`Recipient address [${recipientAddress}] is not a valid Entry Credit public address`);
     }
@@ -93,6 +93,6 @@ function buildTransactionWithFees(originPrivateAddress, recipientAddress, amount
 
 module.exports = {
     sendTransaction,
-    getFactoidTransaction,
-    getEntryCreditPurchaseTransaction
+    createFactoidTransaction,
+    createEntryCreditPurchaseTransaction
 };

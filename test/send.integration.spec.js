@@ -15,7 +15,7 @@ describe('Send transactions', function() {
     it('should send Factoid Transaction', async function() {
         this.timeout(10000);
 
-        const transaction = await send.getFactoidTransaction(factomd, PAYING_FCT_ADDRESS, RECEIVING_FCT_ADDRESS, 1);
+        const transaction = await send.createFactoidTransaction(factomd, PAYING_FCT_ADDRESS, RECEIVING_FCT_ADDRESS, 1);
         await send.sendTransaction(factomd, transaction);
     });
 
@@ -23,7 +23,7 @@ describe('Send transactions', function() {
         this.timeout(10000);
 
         try {
-            await send.getFactoidTransaction(factomd, PAYING_FCT_ADDRESS, RECEIVING_FCT_ADDRESS, 1, 1);
+            await send.createFactoidTransaction(factomd, PAYING_FCT_ADDRESS, RECEIVING_FCT_ADDRESS, 1, 1);
         } catch (e) {
             assert.instanceOf(e, Error);
             assert.include(e.message, 'Cannot set fees to ');
@@ -36,7 +36,7 @@ describe('Send transactions', function() {
         this.timeout(10000);
 
         try {
-            const tx = await send.getFactoidTransaction(factomd, PAYING_FCT_ADDRESS, RECEIVING_FCT_ADDRESS, 1, 99999999999);
+            const tx = await send.createFactoidTransaction(factomd, PAYING_FCT_ADDRESS, RECEIVING_FCT_ADDRESS, 1, 99999999999);
             await send.sendTransaction(factomd, tx);
         } catch (e) {
             assert.instanceOf(e, Error);
@@ -49,7 +49,7 @@ describe('Send transactions', function() {
     it('should send Entry Credit purchase Transaction', async function() {
         this.timeout(10000);
 
-        const transaction = await send.getEntryCreditPurchaseTransaction(factomd, PAYING_FCT_ADDRESS, RECEIVING_EC_ADDRESS, 1);
+        const transaction = await send.createEntryCreditPurchaseTransaction(factomd, PAYING_FCT_ADDRESS, RECEIVING_EC_ADDRESS, 1);
         await send.sendTransaction(factomd, transaction);
 
     });
