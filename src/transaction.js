@@ -31,11 +31,12 @@ class Transaction {
             this.factoidOutputs = builder._factoidOutputs;
             this.entryCreditOutputs = builder._entryCreditOutputs;
 
-            const data = this.marshalBinarySig();
+            this.marshalBinarySig = marshalBinarySig(this.timestamp, this.inputs, this.factoidOutputs, this.entryCreditOutputs);
+            this.id = sha256(this.marshalBinarySig).toString('hex');
 
             if (builder._keys.length !== 0) {
                 this.rcds = builder._keys.map(key => Buffer.concat([RCD_TYPE_1, Buffer.from(key.getPublic())]));
-                this.signatures = builder._keys.map(key => Buffer.from(key.sign(data).toBytes()));
+                this.signatures = builder._keys.map(key => Buffer.from(key.sign(this.marshalBinarySig).toBytes()));
             } else {
                 this.rcds = builder._rcds;
                 this.signatures = builder._signatures;
@@ -43,12 +44,13 @@ class Transaction {
                 if (this.rcds.length !== 0 && this.signatures.length !== 0) {
                     // Validate manually entered RCDs and signatures
                     validateRcds(this.inputs, this.rcds);
-                    validateSignatures(data, this.rcds, this.signatures);
+                    validateSignatures(this.marshalBinarySig, this.rcds, this.signatures);
                 }
             }
 
         } else if (typeof builder === 'object') {
             // Building transaction from the result of transaction API
+            this.id = builder.txid;
             this.timestamp = builder.millitimestamp;
             // TODO: handle null? Pending https://github.com/FactomProject/factomd/issues/444
             this.inputs = builder.inputs.map(input => new TransactionAddress(input.useraddress, input.amount));
@@ -71,7 +73,6 @@ class Transaction {
         const totalOutputs = this.totalFactoidOutputs + this.totalEntryCreditOutputs;
         this.feesPaid = Math.max(this.totalInputs - totalOutputs, 0); // Coinbase transactions have 0 fee
 
-        this.id = sha256(this.marshalBinarySig()).toString('hex');
         Object.freeze(this);
     }
 
@@ -97,11 +98,11 @@ class Transaction {
             numberOfSignatures = this.signatures.length;
         } else {
             if (typeof options.rcdSignatureLength === 'number' && typeof options.numberOfSignatures === 'number') {
-                size = this.marshalBinarySig().length + options.rcdSignatureLength;
+                size = this.marshalBinarySig.length + options.rcdSignatureLength;
                 numberOfSignatures = options.numberOfSignatures;
             } else if (options.rcdType === 1) {
-                size = this.marshalBinarySig().length + this.inputs.length * 97;
-                numberOfSignatures = this.inputs.length;      
+                size = this.marshalBinarySig.length + this.inputs.length * 97;
+                numberOfSignatures = this.inputs.length;
             } else {
                 throw new Error('Missing parameters to compute fees of unsigned transaction');
             }
@@ -123,7 +124,7 @@ class Transaction {
             throw new Error('Cannot marshal an unsigned Transaction');
         }
 
-        const data = this.marshalBinarySig();
+        const data = this.marshalBinarySig;
         const result = [data];
         for (let i = 0; i < this.rcds.length; ++i) {
             result.push(this.rcds[i]);
@@ -133,30 +134,31 @@ class Transaction {
         return Buffer.concat(result);
     }
 
-    marshalBinarySig() {
-        const header = Buffer.alloc(10);
-        header.writeInt8(2);
-        header.writeIntBE(this.timestamp, 1, 6);
-        header.writeInt8(this.inputs.length, 7);
-        header.writeInt8(this.factoidOutputs.length, 8);
-        header.writeInt8(this.entryCreditOutputs.length, 9);
-
-        const marshalledInput = this.inputs.map(address => address.marshalBinary());
-        const marshalledFactoidOutputs = this.factoidOutputs.map(address => address.marshalBinary());
-        const marshalledEntryCreditOutputs = this.entryCreditOutputs.map(address => address.marshalBinary());
-
-        return Buffer.concat([
-            header,
-            ...marshalledInput,
-            ...marshalledFactoidOutputs,
-            ...marshalledEntryCreditOutputs
-        ]);
-    }
-
     static builder(transaction) {
         return new TransactionBuilder(transaction);
     }
 
+}
+
+function marshalBinarySig(timestamp, inputs, factoidOutputs, entryCreditOutputs) {
+
+    const header = Buffer.alloc(10);
+    header.writeInt8(2);
+    header.writeIntBE(timestamp, 1, 6);
+    header.writeInt8(inputs.length, 7);
+    header.writeInt8(factoidOutputs.length, 8);
+    header.writeInt8(entryCreditOutputs.length, 9);
+
+    const marshalledInput = inputs.map(address => address.marshalBinary());
+    const marshalledFactoidOutputs = factoidOutputs.map(address => address.marshalBinary());
+    const marshalledEntryCreditOutputs = entryCreditOutputs.map(address => address.marshalBinary());
+
+    return Buffer.concat([
+        header,
+        ...marshalledInput,
+        ...marshalledFactoidOutputs,
+        ...marshalledEntryCreditOutputs
+    ]);
 }
 
 class TransactionBuilder {

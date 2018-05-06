@@ -5,7 +5,7 @@ const assert = require('chai').assert,
 
 const ec = new EdDSA('ed25519');
 
-describe('Create Factoid transactions', function() {
+describe('Test Factoid transaction creation', function() {
 
     it('should build signed transaction', async function() {
         const timestamp = 1521693377958;
@@ -30,7 +30,7 @@ describe('Create Factoid transactions', function() {
         for (let i = 0; i < tx.signatures.length; ++i) {
             assert.isTrue(sha256d(tx.rcds[i]).equals(tx.inputs[i].rcdHash));
             const key = ec.keyFromPublic([...Buffer.from(tx.rcds[i], 1)].slice(1));
-            assert.isTrue(key.verify(tx.marshalBinarySig(), [...tx.signatures[i]]));
+            assert.isTrue(key.verify(tx.marshalBinarySig, [...tx.signatures[i]]));
         }
     });
 
@@ -64,7 +64,7 @@ describe('Create Factoid transactions', function() {
         assert.equal(tx.totalEntryCreditOutputs, 6000000);
         assert.equal(tx.feesPaid, 14000000);
 
-        assert.equal(tx.marshalBinarySig().toString('hex'), '0201624bfe45a602010186d6bf00ada661a0c8f36a31ee89054001f2b283f05fbcbb40076bc7a8a7e2fc6ec05cb6859fb1407e5a8f7716e9bed9db6289dfe9b9b2d8393ebbc68b9b0546df8e1145dd964c3382b19640d954883481f3aa501f3f5d4f9e796bafe8aa01bfe89780771e733d6396f8fb9b82ee9b005d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b6');
+        assert.equal(tx.marshalBinarySig.toString('hex'), '0201624bfe45a602010186d6bf00ada661a0c8f36a31ee89054001f2b283f05fbcbb40076bc7a8a7e2fc6ec05cb6859fb1407e5a8f7716e9bed9db6289dfe9b9b2d8393ebbc68b9b0546df8e1145dd964c3382b19640d954883481f3aa501f3f5d4f9e796bafe8aa01bfe89780771e733d6396f8fb9b82ee9b005d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b6');
 
         assert.equal(tx.inputs[0].address, 'FA3HZDE4MdXAthauFoA3aKYpx33U4fT2kAABmfwk7NBqyLT2zed5');
         assert.equal(tx.inputs[0].amount, 14000000);
