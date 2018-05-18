@@ -1,16 +1,21 @@
 const base58 = require('base-58'),
     { RCD_TYPE_1, privateKeyToPublicKey, sha256d } = require('./util');
 
-const FACTOID_PUBLIC_PREFIX = Buffer.from('5fb1', 'hex'),
-    FACTOID_PRIVATE_PREFIX = Buffer.from('6478', 'hex'),
-    ENTRYCREDIT_PUBLIC_PREFIX = Buffer.from('592a', 'hex'),
-    ENTRYCREDIT_PRIVATE_PREFIX = Buffer.from('5db6', 'hex');
-
-const VALID_PREFIXES = ['Fs', 'FA', 'EC', 'Es'];
+const {
+    FACTOID_PUBLIC_PREFIX,
+    FACTOID_PRIVATE_PREFIX,
+    ENTRYCREDIT_PUBLIC_PREFIX,
+    ENTRYCREDIT_PRIVATE_PREFIX,
+    VALID_PREFIXES,
+    PUBLIC_ADDRESS_VALID_PREFIXES,
+    PRIVATE_ADDRESS_VALID_PREFIXES,
+    EC_ADDRESS_VALID_PREFIXES,
+    FCT_ADDRESS_VALID_PREFIXES
+} = require('./constant');
 
 function isValidAddress(address) {
     try {
-        if (!VALID_PREFIXES.includes(address.slice(0, 2))) {
+        if (!VALID_PREFIXES.has(address.slice(0, 2))) {
             return false;
         }
 
@@ -32,11 +37,16 @@ function isValidAddress(address) {
 
 
 function isValidPublicAddress(address) {
-    return isValidAddress(address) && ['EC', 'FA'].includes(address.substring(0, 2));
+    return isValidAddress(address) && PUBLIC_ADDRESS_VALID_PREFIXES.has(address.substring(0, 2));
 }
 
+function isValidPrivateAddress(address) {
+    return isValidAddress(address) && PRIVATE_ADDRESS_VALID_PREFIXES.has(address.substring(0, 2));
+}
+
+
 function isValidEcAddress(address) {
-    return isValidAddress(address) && ['EC', 'Es'].includes(address.substring(0, 2));
+    return isValidAddress(address) && EC_ADDRESS_VALID_PREFIXES.has(address.substring(0, 2));
 }
 
 function isValidEcPublicAddress(address) {
@@ -48,15 +58,15 @@ function isValidEcPrivateAddress(address) {
 }
 
 function isValidFctAddress(address) {
-    return isValidAddress(address) && ['FA', 'Fs'].includes(address.substring(0, 2));
-}
-
-function isValidFctPrivateAddress(address) {
-    return isValidAddress(address) && address.substring(0, 2) === 'Fs';
+    return isValidAddress(address) && FCT_ADDRESS_VALID_PREFIXES.has(address.substring(0, 2));
 }
 
 function isValidFctPublicAddress(address) {
     return isValidAddress(address) && address.substring(0, 2) === 'FA';
+}
+
+function isValidFctPrivateAddress(address) {
+    return isValidAddress(address) && address.substring(0, 2) === 'Fs';
 }
 
 function getPublicAddress(address) {
@@ -120,6 +130,7 @@ module.exports = {
     isValidAddress,
     addressToKey,
     isValidPublicAddress,
+    isValidPrivateAddress,
     isValidEcAddress,
     isValidEcPublicAddress,
     isValidEcPrivateAddress,
