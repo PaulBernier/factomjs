@@ -7,7 +7,7 @@ const Promise = require('bluebird'),
     { toHex } = require('./util');
 
 function getChainHead(factomd, chainId) {
-    return factomd.chainHead(toHex(chainId))
+    return factomd.call('chain-head', { chainid: toHex(chainId) })
         .then(ch => ({
             keyMR: ch.chainhead,
             chainInProcessList: ch.chaininprocesslist
@@ -15,17 +15,18 @@ function getChainHead(factomd, chainId) {
 }
 
 async function getEntry(factomd, entryHash, entryBlockContext) {
-    return factomd.entry(toHex(entryHash))
+    return factomd.call('entry', { 'hash': toHex(entryHash) })
         .then(e => toEntry(e, entryBlockContext));
 }
 
 async function getEntryWithBlockContext(factomd, entryHash) {
-    const chainId = await factomd.entry(toHex(entryHash)).then(e => e.chainid);
-    let keyMR = await factomd.chainHead(chainId).then(ch => ch.chainhead);
+    const chainId = await factomd.call('entry', { hash: toHex(entryHash) })
+        .then(e => e.chainid);
+    let keyMR = await getChainHead(factomd, chainId).then(r => r.keyMR);
 
     while (keyMR !== NULL_HASH) {
 
-        const entryBlock = await factomd.entryBlock(keyMR);
+        const entryBlock = await factomd.call('entry-block', { keymr: keyMR });
         const entryFound = entryBlock.entrylist.find(e => e.entryhash === entryHash);
 
         if (entryFound) {
@@ -42,7 +43,7 @@ async function getFirstEntry(factomd, chainId) {
     let entryBlock, latestNonNullKeyMR;
     while (keyMR !== NULL_HASH) {
         latestNonNullKeyMR = keyMR;
-        entryBlock = await factomd.entryBlock(keyMR);
+        entryBlock = await factomd.call('entry-block', { 'keymr': keyMR });
         keyMR = entryBlock.header.prevkeymr;
     }
     const firstEntry = entryBlock.entrylist[0];
@@ -72,7 +73,7 @@ async function getAllEntriesOfChain(factomd, chainId) {
 }
 
 async function getAllEntriesOfEntryBlock(factomd, keyMR) {
-    const entryBlock = await factomd.entryBlock(keyMR);
+    const entryBlock = await factomd.call('entry-block', { keymr: keyMR });
 
     const entries = await Promise.map(
         entryBlock.entrylist,
@@ -107,17 +108,20 @@ function toEntry(entry, entryBlockContext) {
 function getBalance(factomd, address) {
     const publicAddress = getPublicAddress(address);
 
-    const balance = publicAddress[0] === 'E' ? factomd.entryCreditBalance : factomd.factoidBalance;
-    return balance.call(factomd, publicAddress)
+    const balance = publicAddress[0] === 'E' ?
+        factomd.call.bind(factomd, 'entry-credit-balance') :
+        factomd.call.bind(factomd, 'factoid-balance');
+
+    return balance({ address: publicAddress })
         .then(res => res.balance);
 }
 
 function getProperties(cli) {
-    return cli.properties();
+    return cli.call('properties');
 }
 
-async function chainExists(factomd, chainId) {
-    return factomd.chainHead(toHex(chainId))
+function chainExists(factomd, chainId) {
+    return factomd.call('chain-head', { chainid: toHex(chainId) })
         .then(() => true)
         .catch(function(err) {
             if (err.code === -32009) {
@@ -132,36 +136,35 @@ async function getTransaction(factomd, txId) {
         throw new Error(`Argument is not a transaction ID: ${txId}`);
     }
 
-    return factomd.transaction(txId)
-        .then(function(result) {
+    const tx = await factomd.call('transaction', { hash: txId });
 
-            if (result.factoidtransaction) {
-                return new Transaction(result.factoidtransaction, {
-                    factoidBlockKeyMR: result.includedintransactionblock,
-                    directoryBlockKeyMR: result.includedindirectoryblock,
-                    directoryBlockHeight: result.includedindirectoryblockheight
-                });
-            }
+    if (tx.factoidtransaction) {
+        return new Transaction(tx.factoidtransaction, {
+            factoidBlockKeyMR: tx.includedintransactionblock,
+            directoryBlockKeyMR: tx.includedindirectoryblock,
+            directoryBlockHeight: tx.includedindirectoryblockheight
         });
+    }
 }
 
 function getEntryCreditRate(factomd) {
-    return factomd.entryCreditRate()
+    return factomd.call('entry-credit-rate')
         .then(r => r.rate);
 }
 
-function getHeights(factomd) {
-    return factomd.heights()
-        .then(h => ({
-            directoryBlockHeight: h.directoryblockheight,
-            leaderHeight: h.leaderheight,
-            entryBlockHeight: h.entryblockheight,
-            entryHeight: h.entryheight
-        }));
+async function getHeights(factomd) {
+    const heights = await factomd.call('heights');
+
+    return {
+        directoryBlockHeight: heights.directoryblockheight,
+        leaderHeight: heights.leaderheight,
+        entryBlockHeight: heights.entryblockheight,
+        entryHeight: heights.entryheight
+    };
 }
 
 function getDirectoryBlockHead(factomd) {
-    return factomd.directoryBlockHead()
+    return factomd.call('directory-block-head')
         .then(r => getDirectoryBlock(factomd, r.keymr));
 }
 
@@ -173,10 +176,10 @@ function getDirectoryBlock(factomd, arg) {
             if (arg < 0) {
                 throw new RangeError('Directory Block height out of range');
             }
-            dbPromise = factomd.dblockByHeight(arg);
+            dbPromise = factomd.call('dblock-by-height', { height: arg });
             break;
         case 'string':
-            dbPromise = factomd.directoryBlock(arg);
+            dbPromise = factomd.call('directory-block', { keymr: arg });
             break;
         default:
             throw Error(`Invalid argument: ${arg}`);
@@ -189,7 +192,7 @@ function getEntryBlock(factomd, keyMR) {
     if (typeof keyMR !== 'string') {
         throw new Error('Argument should be the KeyMR of the Entry Block');
     }
-    return factomd.entryBlock(keyMR)
+    return factomd.call('entry-block', { keymr: keyMR })
         .then(r => new EntryBlock(r, keyMR));
 }
 
@@ -201,10 +204,10 @@ function getFactoidBlock(factomd, arg) {
             if (arg < 0) {
                 throw new RangeError('Factoid Block height out of range');
             }
-            fbPromise = factomd.fblockByHeight(arg);
+            fbPromise = factomd.call('fblock-by-height', { height: arg });
             break;
         case 'string':
-            fbPromise = factomd.factoidBlock(arg);
+            fbPromise = factomd.call('factoid-block', { keymr: arg });
             break;
         default:
             throw Error(`Invalid argument: ${arg}`);
@@ -221,10 +224,10 @@ function getEntryCreditBlock(factomd, arg) {
             if (arg < 0) {
                 throw new RangeError('Entry Credit Block height out of range');
             }
-            ecbPromise = factomd.ecblockByHeight(arg);
+            ecbPromise = factomd.call('ecblock-by-height', { height: arg });
             break;
         case 'string':
-            ecbPromise = factomd.entrycreditBlock(arg);
+            ecbPromise = factomd.call('entrycredit-block', { keymr: arg });
             break;
         default:
             throw Error(`Invalid argument: ${arg}`);
@@ -241,10 +244,10 @@ function getAdminBlock(factomd, arg) {
             if (arg < 0) {
                 throw new RangeError('Admin Block height out of range');
             }
-            abPromise = factomd.ablockByHeight(arg);
+            abPromise = factomd.call('ablock-by-height', { height: arg });
             break;
         case 'string':
-            abPromise = factomd.adminBlock(arg);
+            abPromise = factomd.call('admin-block', { keymr: arg });
             break;
         default:
             throw Error(`Invalid argument: ${arg}`);

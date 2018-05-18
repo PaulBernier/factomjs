@@ -28,20 +28,26 @@ const { FactomCli } = require('factom');
 // and walletd connection to localhost:8089
 const cli = new FactomCli();
 
-// You can override factomd connection parameters
+// You can override factomd connection parameters and retry strategy
 const cli = new FactomCli({
     host: '52.202.51.228',
-    port: 8088
+    port: 8088,
+    retry: {
+        retries: 4,
+        factor: 2,
+        minTimeout: 500,
+        maxTimeout: 2000
+    }
 });
 
-// You can also override both factomd and walletd connection parameters
+// You can also override both factomd and walletd options
 const cli = new FactomCli({
     factomd: {
-        host: '52.202.51.229',
+        host: '52.202.51.228',
         port: 8088
     },
     walletd: {
-        host: '52.202.51.229',
+        host: '52.202.51.228',
         port: 8089
     }
 });
@@ -289,8 +295,20 @@ const eb = await cli.getEntryBlock(db.entryBlockRefs[0]);
 ### Raw Factomd and Walletd API calls
 
 ```javascript
-// First argument is the API, then follow the args for the API call
-cli.factomdApi('directory-block', "faf2a058cc475c5cb8ec13e8ba979118f7cde9db38bcfeb7e35744bcf5f6134b");
-cli.walletdApi('address', "FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q");
-
+// First argument is the API method name, followed by the params object for that API 
+// Check https://docs.factom.com/api for the details of APIs
+cli.factomdApi('directory-block', { keymr: 'faf2a058cc475c5cb8ec13e8ba979118f7cde9db38bcfeb7e35744bcf5f6134b' });
+// It also supports factomd debug API calls
+cli.factomdApi('federated-servers');
+cli.walletdApi('address', { address: 'FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q' });
 ```
+
+ You can also directly instanciate a FactomdCli or WalletdCli.
+ ```javascript
+const { FactomdCli, WalletdCli } = require('factom');
+// Options of connection and retry strategy can be passed to the construtor the same way as FactomCli
+const factomd = new FactomdCli();
+const walletd = new WalletdCli();
+factomd.call('directory-block', { keymr: 'faf2a058cc475c5cb8ec13e8ba979118f7cde9db38bcfeb7e35744bcf5f6134b' });
+walletd.call('address', { address:'FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q' });
+ ```

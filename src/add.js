@@ -39,7 +39,7 @@ async function commitChain(factomd, chain, ecPrivate, to) {
     const commit = composeChainCommit(chain, ecPrivate).toString('hex');
 
     let repeatedCommit = false;
-    const committed = await factomd.commitChain(commit).catch(function(e) {
+    const committed = await factomd.call('commit-chain', { message: commit }).catch(function(e) {
         if (e.message === 'Repeated Commit') {
             repeatedCommit = true;
         } else {
@@ -62,7 +62,7 @@ async function revealChain(factomd, chain, to) {
     const ackTimeout = to || 60;
     const reveal = composeChainReveal(chain).toString('hex');
 
-    const revealed = await factomd.revealChain(reveal);
+    const revealed = await factomd.call('reveal-chain', { entry: reveal });
     if (ackTimeout >= 0) {
         await waitOnRevealAck(factomd, revealed.entryhash, revealed.chainid, ackTimeout);
     }
@@ -110,13 +110,14 @@ async function commitEntry(factomd, entry, ecPrivate, to) {
     const commit = composeEntryCommit(entry, ecPrivate).toString('hex');
 
     let repeatedCommit = false;
-    const committed = await factomd.commitEntry(commit).catch(function(e) {
-        if (e.message === 'Repeated Commit') {
-            repeatedCommit = true;
-        } else {
-            throw e;
-        }
-    });
+    const committed = await factomd.call('commit-entry', { message: commit })
+        .catch(function(e) {
+            if (e.message === 'Repeated Commit') {
+                repeatedCommit = true;
+            } else {
+                throw e;
+            }
+        });
 
     if (committed && ackTimeout >= 0) {
         await waitOnCommitAck(factomd, committed.txid, ackTimeout);
@@ -132,7 +133,7 @@ async function revealEntry(factomd, entry, to) {
     const ackTimeout = to || 60;
     const reveal = composeEntryReveal(entry).toString('hex');
 
-    const revealed = await factomd.revealChain(reveal);
+    const revealed = await factomd.call('reveal-entry', { entry: reveal });
     if (ackTimeout >= 0) {
         await waitOnRevealAck(factomd, revealed.entryhash, revealed.chainid, ackTimeout);
     }

@@ -1,7 +1,7 @@
 const { isValidAddress } = require('./addresses');
 
 function getAddress(walletd, address) {
-    return walletd.address(address);
+    return walletd.call('address', { address: address });
 }
 
 function getPrivateAddress(walletd, address) {

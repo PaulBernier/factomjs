@@ -1,4 +1,5 @@
-const { toHex } = require('./util');
+const Promise = require('bluebird'),
+    { toHex } = require('./util');
 
 function waitOnCommitAck(factomd, txid, timeout) {
     return waitOnAck(factomd, txid, 'c', 'commitdata', timeout);
@@ -23,7 +24,7 @@ function waitOnAck(factomd, hash, chainId, ackResponseField, to) {
     return new Promise((resolve, reject) => {
         const clearId = setInterval(async function() {
             let error;
-            const ackResponse = await factomd.ack(hash, chainId).catch(function(e) {
+            const ackResponse = await factomd.call('ack', { hash: hash, chainid: chainId }).catch(function(e) {
                 clearInterval(clearId);
                 error = e;
             });

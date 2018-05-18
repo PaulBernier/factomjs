@@ -38,12 +38,12 @@ async function submitTransaction(factomd, transaction, force) {
 
     await Promise.each(transaction.inputs, input => validateFunds(factomd, publicFactoidRCDHashToHumanAddress(input.rcdHash), input.amount));
 
-    return factomd.factoidSubmit(transaction.marshalBinary().toString('hex'))
+    return factomd.call('factoid-submit', { transaction: transaction.marshalBinary().toString('hex') })
         .then(r => r.txid);
 }
 
 async function validateFunds(factomd, publicFctAddress, amount) {
-    const { balance } = await factomd.factoidBalance(publicFctAddress);
+    const { balance } = await factomd.call('factoid-balance', { address: publicFctAddress });
     if (balance < amount) {
         throw new Error(`Address ${publicFctAddress} doesn't have sufficient funds (balance: ${balance})`);
     }

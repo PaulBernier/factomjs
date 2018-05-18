@@ -1,11 +1,10 @@
 const assert = require('chai').assert,
+    { FactomdCli } = require('../src/apis-cli'),
     { Transaction } = require('../src/transaction'),
-    send = require('../src/send'),
-    factomdjs = require('factomdjs');
+    send = require('../src/send');
 
 const nconf = require('nconf').file({ file: `${__dirname}/config.json` });
-const factomd = new factomdjs.Factomd();
-factomd.setFactomNode(nconf.get('factomd-url'));
+const factomd = new FactomdCli({ host: nconf.get('factomd-host'), port: nconf.get('factomd-port') });
 const PAYING_FCT_ADDRESS = nconf.get('fct-private-address');
 const RECEIVING_FCT_ADDRESS = 'FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH';
 const RECEIVING_EC_ADDRESS = 'EC3MVTBYTo2Y1HrEKxeEGfNNoKhLZ9ZYQhb26zQUzngJ6SLUVRX9';
@@ -78,7 +77,7 @@ describe('Send transactions', function() {
     it('should send multi output Transaction', async function() {
         this.timeout(10000);
 
-        const rate = await factomd.entryCreditRate()
+        const rate = await factomd.call('entry-credit-rate')
             .then(r => r.rate);
 
         const fees = Transaction.builder()

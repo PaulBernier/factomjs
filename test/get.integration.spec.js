@@ -1,12 +1,11 @@
 const assert = require('chai').assert,
+    { FactomdCli } = require('../src/apis-cli'),
     { Transaction } = require('../src/transaction'),
     { DirectoryBlock, EntryCreditBlock, FactoidBlock, AdminBlock, EntryBlock } = require('../src/blocks'),
-    get = require('../src/get'),
-    factomdjs = require('factomdjs');
+    get = require('../src/get');
 
 const nconf = require('nconf').file({ file: `${__dirname}/config.json` });
-const factomd = new factomdjs.Factomd();
-factomd.setFactomNode(nconf.get('factomd-url'));
+const factomd = new FactomdCli({ host: nconf.get('factomd-host'), port: nconf.get('factomd-port') });
 
 describe('Get information from Factom blockchain', function() {
 
@@ -141,26 +140,24 @@ describe('Get information from Factom blockchain', function() {
 
     function assertEntryCreditBlock(ecb) {
         assert.instanceOf(ecb, EntryCreditBlock);
-        assert.equal(ecb.fullHash, 'b6d6252f0abef42feee77706cceee490c7ade1f1e6574ede2e2f9979e96282a5');
-        assert.equal(ecb.headerHash, '29692e986e12fbc6d9cf688cedb40a73caa0e04611a7fec39ba1227ffa03aefc');
-        assert.equal(ecb.bodyHash, '50527bd50bb3e8e39e941f582601e58f2529bae0dfb68da0cc1a0ab7c5f0e889');
-        assert.equal(ecb.previousFullHash, 'ec9dad3cd4e8dfa9ac6c9637a2a310b87ef57594af2e9959010fe1f29a0934f5');
-        assert.equal(ecb.previousHeaderHash, 'a111e3d4ca813450e8f987ac868ba7e01687e9b108321b1dfa5d0f0e612a0f6c');
-        assert.equal(ecb.directoryBlockHeight, 21650);
+        assert.equal(ecb.fullHash, '4cf58af96b2dcdf416217cbdb195d67f1a511a8ab95a8e37aebeb8e643cb8f3c');
+        assert.equal(ecb.headerHash, '96ad20412e7799e80f3979c425bfa5641282563371cd40049492701f9c09e338');
+        assert.equal(ecb.bodyHash, 'd9b5f08c5002bfa70c7b98a61c02eddaa3544299eb498840641b3a9e6d771bda');
+        assert.equal(ecb.previousFullHash, 'ae8ab99b07b9d367a36f8a54fe0020532fbb20c71f65dfa2dacdee5bceb1b332');
+        assert.equal(ecb.previousHeaderHash, '48ff34b7bf9807e59e07c2c3d9a96c2442fcde8446952b258223b65b4d75190b');
+        assert.equal(ecb.directoryBlockHeight, 17997);
         assert.equal(ecb.headerExpansionArea, '');
-        assert.equal(ecb.bodySize, 239633);
-        assert.equal(ecb.objectCount, 1759);
-        assert.lengthOf(ecb.commits, 1749);
+        assert.equal(ecb.bodySize, 11939);
+        assert.equal(ecb.objectCount, 97);
+        assert.lengthOf(ecb.commits, 87);
         assert.lengthOf(ecb.minuteIndexes, 11);
     }
 
     it('should get Entry Credit Block', async function() {
-        this.timeout(5000);
-
-        const byHeaderHash = await get.getEntryCreditBlock(factomd, '29692e986e12fbc6d9cf688cedb40a73caa0e04611a7fec39ba1227ffa03aefc');
+        const byHeaderHash = await get.getEntryCreditBlock(factomd, '96ad20412e7799e80f3979c425bfa5641282563371cd40049492701f9c09e338');
         assertEntryCreditBlock(byHeaderHash);
 
-        const byHeight = await get.getEntryCreditBlock(factomd, 21650);
+        const byHeight = await get.getEntryCreditBlock(factomd, 17997);
         assertEntryCreditBlock(byHeight);
     });
 

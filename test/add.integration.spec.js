@@ -1,12 +1,11 @@
 const assert = require('chai').assert,
+    { FactomdCli } = require('../src/apis-cli'),
     { Entry, computeEntryTxId } = require('../src/entry'),
     { Chain, computeChainTxId } = require('../src/chain'),
-    add = require('../src/add'),
-    factomdjs = require('factomdjs');
+    add = require('../src/add');
 
 const nconf = require('nconf').file({ file: `${__dirname}/config.json` });
-const factomd = new factomdjs.Factomd();
-factomd.setFactomNode(nconf.get('factomd-url'));
+const factomd = new FactomdCli({ host: nconf.get('factomd-host'), port: nconf.get('factomd-port') });
 const PAYING_EC_ADDRESS = nconf.get('ec-private-address');
 
 describe('Add chains and entries in Factom blockchain', function() {

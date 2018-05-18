@@ -1,6 +1,4 @@
-const factomdjs = require('factomdjs'),
-    camelCase = require('camelcase'),
-    walletd = require('factom-walletdjs');
+const { FactomdCli, WalletdCli } = require('./apis-cli');
 
 const add = require('./add'),
     send = require('./send'),
@@ -14,8 +12,8 @@ class FactomCli {
         const factomdConf = options.factomd || options;
         const walletdConf = options.walletd;
 
-        this.factomd = getFactomd(factomdConf);
-        this.walletd = getWalletd(walletdConf);
+        this.factomd = new FactomdCli(factomdConf);
+        this.walletd = new WalletdCli(walletdConf);
     }
 
     //////////////////
@@ -141,12 +139,12 @@ class FactomCli {
     // Secondary API //
     //////////////////
 
-    factomdApi(api, ...args) {
-        return this.factomd[camelCase(api)](...args);
+    factomdApi(method, params) {
+        return this.factomd.call(method, params);
     }
 
-    walletdApi(api, ...args) {
-        return this.walletd[camelCase(api)](...args);
+    walletdApi(method, params) {
+        return this.walletd.call(method, params);
     }
 
     getHeights() {
@@ -176,26 +174,6 @@ class FactomCli {
     getEntryCreditBlock(arg) {
         return get.getEntryCreditBlock(this.factomd, arg);
     }
-}
-
-function getFactomd(conf) {
-    const factomd = new factomdjs.Factomd();
-
-    const configuration = conf || {};
-    const host = configuration.host || 'localhost';
-    const port = configuration.port || 8088;
-    factomd.setFactomNode(`http://${host}:${port}/v2`);
-
-    return factomd;
-}
-
-function getWalletd(conf) {
-    const configuration = conf || {};
-    const host = configuration.host || 'localhost';
-    const port = configuration.port || 8089;
-    walletd.setFactomNode(`http://${host}:${port}/v2`);
-
-    return walletd;
 }
 
 module.exports = {
