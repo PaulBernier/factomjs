@@ -71,9 +71,7 @@ function getPublicAddress(address) {
     const secret = base58.decode(address).slice(2, 34);
     const pub = privateKeyToPublicKey(secret);
 
-    const publicAddress = address[0] === 'F' ? Buffer.concat([FACTOID_PUBLIC_PREFIX, keyToRCD1(pub)]) : Buffer.concat([ENTRYCREDIT_PUBLIC_PREFIX, pub]);
-    const checksum = sha256d(publicAddress).slice(0, 4);
-    return base58.encode(Buffer.concat([publicAddress, checksum]));
+    return address[0] === 'F' ? keyToPublicFctAddress(pub) : keyToPublicEcAddress(pub);
 }
 
 function keyToRCD1(key) {
@@ -87,6 +85,37 @@ function addressToKey(address) {
     return Buffer.from(base58.decode(address).slice(2, 34));
 }
 
+function keyToAddress(key, prefix, computeRCD) {
+    const keyBuffer = Buffer.from(key, 'hex');
+    if (keyBuffer.length !== 32) {
+        throw new Error(`Key ${keyBuffer} is not 32 bytes long.`);
+    }
+
+    const address = Buffer.concat([prefix, computeRCD ? keyToRCD1(keyBuffer) : keyBuffer]);
+    const checksum = sha256d(address).slice(0, 4);
+    return base58.encode(Buffer.concat([address, checksum]));
+}
+
+function keyToPublicFctAddress(key) {
+    return keyToAddress(key, FACTOID_PUBLIC_PREFIX, true);
+}
+
+function rcdHashToPublicFctAddress(rcdHash) {
+    return keyToAddress(rcdHash, FACTOID_PUBLIC_PREFIX);
+}
+
+function keyToPrivateFctAddress(key) {
+    return keyToAddress(key, FACTOID_PRIVATE_PREFIX);
+}
+
+function keyToPublicEcAddress(key) {
+    return keyToAddress(key, ENTRYCREDIT_PUBLIC_PREFIX);
+}
+
+function keyToPrivateEcAddress(key) {
+    return keyToAddress(key, ENTRYCREDIT_PRIVATE_PREFIX);
+}
+
 module.exports = {
     isValidAddress,
     addressToKey,
@@ -97,5 +126,10 @@ module.exports = {
     isValidFctAddress,
     isValidFctPublicAddress,
     isValidFctPrivateAddress,
-    getPublicAddress
+    getPublicAddress,
+    keyToPublicFctAddress,
+    rcdHashToPublicFctAddress,
+    keyToPrivateFctAddress,
+    keyToPublicEcAddress,
+    keyToPrivateEcAddress
 };

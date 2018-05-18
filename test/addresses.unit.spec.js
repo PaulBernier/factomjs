@@ -26,4 +26,37 @@ describe('Test addresses', function() {
         assert.equal(addresses.getPublicAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'), 'FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG');
     });
 
+    it('should get public Factoid address out of key', function() {
+        const key = Buffer.from('776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80', 'hex');
+
+        assert.equal(addresses.keyToPublicFctAddress(key), 'FA3qqJ2gFngBYc4AkvcBYWXTh6Bv1jdUMEmafxsLgw1jZ3dGq1ye');
+        assert.equal(addresses.keyToPublicFctAddress(key).toString('hex'), 'FA3qqJ2gFngBYc4AkvcBYWXTh6Bv1jdUMEmafxsLgw1jZ3dGq1ye');
+    });
+
+    it('should get public Factoid address out of RCD hash', function() {
+        const key = Buffer.from('776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80', 'hex');
+
+        assert.equal(addresses.rcdHashToPublicFctAddress(key), 'FA2sfxwHGxz5kVXnKy2osu14mV8xZ3zhLs76DekB6LdgmBy5uz1q');
+        assert.equal(addresses.rcdHashToPublicFctAddress(key).toString('hex'), 'FA2sfxwHGxz5kVXnKy2osu14mV8xZ3zhLs76DekB6LdgmBy5uz1q');
+    });
+
+    it('should get private Factoid address out of key', function() {
+        const key = Buffer.from('776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80', 'hex');
+
+        assert.equal(addresses.keyToPrivateFctAddress(key), 'Fs2E6iXCLAKDiPqVtfxtuQCKsTe7o6DJFDnht1wST53s4ibtdu9f');
+        assert.equal(addresses.keyToPrivateFctAddress(key).toString('hex'), 'Fs2E6iXCLAKDiPqVtfxtuQCKsTe7o6DJFDnht1wST53s4ibtdu9f');
+    });
+
+    it('should get public Entry Credit address out of key', function() {
+        const key = Buffer.from('776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80', 'hex');
+        assert.equal(addresses.keyToPublicEcAddress(key), 'EC2fkBUHv13xLBhio8QfD69CjFXubnJa9z5kKzSk8GeWiapAw457');
+        assert.equal(addresses.keyToPublicEcAddress(key).toString('hex'), 'EC2fkBUHv13xLBhio8QfD69CjFXubnJa9z5kKzSk8GeWiapAw457');
+    });
+
+    it('should get private Entry Credit address out of key', function() {
+        const key = Buffer.from('776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80', 'hex');
+
+        assert.equal(addresses.keyToPrivateEcAddress(key), 'Es3LFXNj5vHBw8c9kM98HKR69CJjUTyTPv4BdxoRbMQJ8zifxkgV');
+        assert.equal(addresses.keyToPrivateEcAddress(key).toString('hex'), 'Es3LFXNj5vHBw8c9kM98HKR69CJjUTyTPv4BdxoRbMQJ8zifxkgV');
+    });
 });

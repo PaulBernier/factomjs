@@ -133,6 +133,30 @@ As stated above `getEntryWithBlockContext` has to rewind the blockchain until fi
 
 Besides `getEntryWithBlockContext` entries returned by `getFirstEntry` and `getAllEntriesOfChain` have a `blockContext` populated (because those methods are already rewinding the blockchain anyway).
 
+### Addresses
+
+Factom.js offers a bunch of util functions around FCT/EC addresses and cryptographic keys, namely:
+
+```javascript
+{
+    isValidAddress,
+    addressToKey,
+    isValidPublicAddress,
+    isValidEcAddress,
+    isValidEcPublicAddress,
+    isValidEcPrivateAddress,
+    isValidFctAddress,
+    isValidFctPublicAddress,
+    isValidFctPrivateAddress,
+    getPublicAddress,
+    keyToPublicFctAddress,
+    rcdHashToPublicFctAddress,
+    keyToPrivateFctAddress,
+    keyToPublicEcAddress,
+    keyToPrivateEcAddress
+}
+```
+
 ### Transactions
 
 #### Simple Factoid transaction
