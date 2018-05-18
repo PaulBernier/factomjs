@@ -1,7 +1,6 @@
 const Promise = require('bluebird'),
     { waitOnFactoidTransactionAck } = require('./ack'),
-    { publicFactoidRCDHashToHumanAddress } = require('factomjs-util'),
-    { isValidFctPublicAddress, isValidEcPublicAddress } = require('./addresses'),
+    { isValidFctPublicAddress, isValidEcPublicAddress, rcdHashToPublicFctAddress } = require('./addresses'),
     { Transaction } = require('./transaction'),
     { getEntryCreditRate } = require('./get');
 
@@ -36,7 +35,7 @@ async function submitTransaction(factomd, transaction, force) {
         throw new Error(`Transaction is overpaying required fees by more than 10 times (paid: ${transaction.feesPaid}, minimum required: ${minimumRequiresFees}, current EC rate: ${ecRate})`);
     }
 
-    await Promise.each(transaction.inputs, input => validateFunds(factomd, publicFactoidRCDHashToHumanAddress(input.rcdHash), input.amount));
+    await Promise.each(transaction.inputs, input => validateFunds(factomd, rcdHashToPublicFctAddress(input.rcdHash), input.amount));
 
     return factomd.call('factoid-submit', { transaction: transaction.marshalBinary().toString('hex') })
         .then(r => r.txid);

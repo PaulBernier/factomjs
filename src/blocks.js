@@ -1,4 +1,4 @@
-const { Transaction } = require('./transaction'), { publicECKeyToHumanAddress } = require('factomjs-util'), {
+const { Transaction } = require('./transaction'), { keyToPublicEcAddress } = require('./addresses'), {
     ADMIN_BLOCKS_CHAIN_ID,
     ENTRY_CREDIT_BLOCKS_CHAIN_ID,
     FACTOID_BLOCKS_CHAIN_ID
@@ -130,7 +130,7 @@ class EntryCreditBlock {
                     millis: parseInt(entry.millitime, 16),
                     entryHash: Buffer.from(entry.entryhash, 'hex'),
                     credits: entry.credits,
-                    ecPublicKey: publicECKeyToHumanAddress(Buffer.from(entry.ecpubkey, 'hex')),
+                    ecPublicKey: keyToPublicEcAddress(entry.ecpubkey),
                     signature: Buffer.from(entry.sig, 'hex')
                 });
             }

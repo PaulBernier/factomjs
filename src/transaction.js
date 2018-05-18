@@ -5,8 +5,7 @@ const EdDSA = require('elliptic').eddsa,
     flatMap = require('lodash.flatmap'),
     { RCD_TYPE_1, encodeVarInt, sha256, sha256d } = require('./util'),
     { MAX_TRANSACTION_SIZE } = require('./constant'),
-    { publicHumanAddressStringToRCD, privateHumanAddressStringToPrivate } = require('factomjs-util'),
-    { isValidFctAddress, isValidPublicAddress, getPublicAddress } = require('./addresses');
+    { isValidFctAddress, isValidPublicAddress, getPublicAddress, addressToKey } = require('./addresses');
 
 const ec = new EdDSA('ed25519');
 
@@ -14,7 +13,7 @@ class TransactionAddress {
     constructor(address, amount) {
         this.address = address;
         this.amount = amount;
-        this.rcdHash = publicHumanAddressStringToRCD(address);
+        this.rcdHash = addressToKey(address);
         Object.freeze(this);
     }
 
@@ -189,7 +188,7 @@ class TransactionBuilder {
         }
 
         if (fctAddress[1] === 's') {
-            const secret = privateHumanAddressStringToPrivate(fctAddress);
+            const secret = addressToKey(fctAddress);
             const key = ec.keyFromSecret(secret);
             this._keys.push(key);
         }
