@@ -37,11 +37,11 @@ class BaseCli {
 
             operation.attempt(() => {
                 axios.post(endpoint, {
-                        jsonrpc: '2.0',
-                        id: this.apiCounter(),
-                        method: method,
-                        params: params
-                    })
+                    jsonrpc: '2.0',
+                    id: this.apiCounter(),
+                    method: method,
+                    params: params
+                })
                     .then(r => resolve(r.data.result))
                     .catch(function(error) {
                         let rejection;
