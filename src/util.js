@@ -67,6 +67,8 @@ function encodeVarInt(val) {
     return Buffer.from(bytes);
 }
 
+const flatMap = (a, f) => [].concat(...a.map(f));
+
 module.exports = {
     RCD_TYPE_1,
     sha256,
@@ -74,5 +76,6 @@ module.exports = {
     sha256d,
     toHex,
     encodeVarInt,
+    flatMap,
     privateKeyToPublicKey
 };

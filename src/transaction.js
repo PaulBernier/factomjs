@@ -2,8 +2,7 @@
 // https://github.com/FactomProject/factoid/blob/3ee9763f86849036723d1b059216e08a6d34b184/transaction.go
 
 const EdDSA = require('elliptic').eddsa,
-    flatMap = require('lodash.flatmap'),
-    { RCD_TYPE_1, encodeVarInt, sha256, sha256d } = require('./util'),
+    { RCD_TYPE_1, encodeVarInt, sha256, sha256d, flatMap } = require('./util'),
     { MAX_TRANSACTION_SIZE } = require('./constant'),
     { isValidFctAddress, isValidPublicAddress, getPublicAddress, addressToKey } = require('./addresses');
 
