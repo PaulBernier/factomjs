@@ -190,7 +190,7 @@ Transaction {
 
     totalInputs: 12000, // Sum of all the inputs in factoshis
     totalFactoidOutputs: 1, // Sum of all factoid outputs in factoshis
-    totalEntryCreditOutputs: 0, // Sum of all entry credit outputs in factoshis
+    totalEntryCreditOutputs: 10000, // Sum of all entry credit outputs in factoshis
     feesPaid: 11999 // Fees paid by this transaction in factoshis
 }
 
