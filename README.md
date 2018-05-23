@@ -160,6 +160,42 @@ Factom.js offers a bunch of util functions around FCT/EC addresses and cryptogra
 
 ### Transactions
 
+#### Transaction object
+
+Note that all the amounts are in factoshis (10^-8 Factoids).
+
+```javascript
+Transaction {
+    timestamp: 1527092064498,
+    inputs: [TransactionAddress {
+        address: 'FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH',// Paying FCT address
+        amount: 12000, // Amount in factoshis
+        rcdHash: < Buffer fb cc 9 b c3 02 cc b8 c3 0 c 69 0 c 70 e4 12 f0 05 53 cc f8 5e 4 b 6 c 2 a b6 0e ce db 12 fe 9 d fe aa >
+    }],
+    factoidOutputs: [TransactionAddress {
+        address: 'FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw',// Receiving FCT address
+        amount: 1, // Amount in factoshis
+        rcdHash: < Buffer d9 54 88 34 81 f3 aa 50 1 f 3 f 5 d 4 f 9e 79 6 b af e8 aa 01 bf e8 97 80 77 1e 73 3 d 63 96 f8 fb 9 b >
+    }],
+    entryCreditOutputs: [TransactionAddress {
+        address: 'EC3MVTBYTo2Y1HrEKxeEGfNNoKhLZ9ZYQhb26zQUzngJ6SLUVRX9',// Receiving EC address
+        amount: 10000, // Amount in factoshis
+        rcdHash: < Buffer d1 aa eb 70 6 c 79 47 5 d b8 8e 01 d9 e4 17 e7 83 2 b 20 df 5 c c6 fd a6 7 f 09 b8 8 b 89 36 64 2 a 9 f >
+    }],
+    marshalBinarySig: < Buffer 02 01 63 8 d c7 b0 f2 01 01 01 dd 60 fb cc 9 b c3 02 cc b8 c3 0 c 69 0 c 70 e4 12 f0 05 53 cc f8 5e 4 b 6 c 2 a b6 0e ce db 12 fe 9 d fe aa 01 d9 54 88 34 81... > ,
+    id: '40dee7fde9747e4b4a8e9d4685c64044d1a7513734f6adf63698b1533b57461d',
+
+    rcds: [ < Buffer 01 1 b cb 4 c 8 a 77 1 c 28 69 dd f5 54 65 54 14 e5 6 b df 36 06 63 f3 39 60 03 9 a 9 a a4 3 a c5 82 03 06 > ],
+    signatures: [ < Buffer 4 b d5 bc 2 a 4 d e0 a0 06 2 b 30 28 d3 34 90 31 f7 e4 93 5e a2 6 a db 20 f1 0e c8 92 9 c db 7e 62 f2 c4 9 b 0 f 14 e5 cd 6 d fe 28 22 1e c1 9 a bb 32 aa 70 83... > ],
+
+    totalInputs: 12000, // Sum of all the inputs in factoshis
+    totalFactoidOutputs: 1, // Sum of all factoid outputs in factoshis
+    totalEntryCreditOutputs: 0, // Sum of all entry credit outputs in factoshis
+    feesPaid: 11999 // Fees paid by this transaction in factoshis
+}
+
+```
+
 #### Simple Factoid transaction
 ```javascript
 // Send 1000000 Factoshis (10^-8 Factoids) from Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X 
@@ -182,7 +218,7 @@ const txId = await cli.sendTransaction(tx);
 const transaction = await cli.createEntryCreditPurchaseTransaction('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X',
                                                                 'EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR',
                                                                 10);
-// You can check how much Factoshis it's going to cost you to buy those 10 EC
+// You can check how many Factoshis it's going to cost you to buy those 10 EC
 console.log(transaction.totalInputs);
 const txId = await cli.sendTransaction(transaction);
 ```
@@ -200,7 +236,7 @@ const tmpTx = Transaction.builder()
     .input('Fs3BhggPYJBNJRzbLMce94FYyzEA3PDnsEJFwEsr37gYDN9QgFrh', 1010000)
     .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg5uH', 5000000)
     .output('FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZteF', 10000000)
-    // Please note this line is to buy EntryCredit (see the address type) and the amount is in Factoshis like others (it is *not* the number of EntryCredit you are purchasing)
+    // Note this line is to buy EntryCredit (see the address type) and the amount is in Factoshis like others (it is *not* the number of EntryCredit you are purchasing)
     .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e3QR', 10000)
     .build();
 
@@ -293,7 +329,7 @@ const txId = await cli.sendTransaction(transaction, {timeout: 20});
 const txId = await cli.sendTransaction(transaction, {timeout: -1});
 ```
 
-#### Get Transaction
+#### Get existing Transaction
 
 ```javascript
 const transaction = await cli.getTransaction(txId);
