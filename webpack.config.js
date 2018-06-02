@@ -7,7 +7,7 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: 'factom.js',
         library: 'factom',
-        libraryTarget: 'var'
+        libraryTarget: 'umd'
     },
     module: {
         rules: [{

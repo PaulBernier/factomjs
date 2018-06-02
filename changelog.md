@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.2.1] 2018-06-01
+## [0.2.2] 2018-06-01
 
 ### Fixed
 * Fix the `dist/factom.js` file. Now using webpack to build.

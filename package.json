@@ -1,12 +1,12 @@
 {
     "name": "factom",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "High level functions to interact with Factom blockchain and wallet",
     "main": "src/factom.js",
     "scripts": {
         "lint": "eslint src/",
         "build": "webpack",
-        "prepublishOnly": "npm run lint && npm run test && npm run build",
+        "prepublishOnly": "npm run lint && npm run build",
         "test": "nyc --reporter=html --reporter=text mocha test/*.spec.js",
         "test:integration": "mocha test/*.integration.spec.js",
         "test:unit": "mocha test/*unit.spec.js"
