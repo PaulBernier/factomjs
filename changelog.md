@@ -1,8 +1,11 @@
-# 0.2.1
+# Changelog
 
-Fix the `dist/factom.js` file. Now using webpack to build.
+## [0.2.1] 2018-06-01
 
-# 0.2
+### Fixed
+* Fix the `dist/factom.js` file. Now using webpack to build.
+
+## [0.2] 2018-05-24
 
 * More robust API calls: replaced factomdjs and factom-walletdjs by custom implementation with retry strategy. Possitibilty to customize retry strategy.
 * Usage of `factomdApi` and `walletdApi` now mimics the raw API interfaces.
