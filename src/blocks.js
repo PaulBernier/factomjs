@@ -1,4 +1,5 @@
-const { Transaction } = require('./transaction'), { keyToPublicEcAddress } = require('./addresses'), {
+const { Transaction } = require('./transaction'), { keyToPublicEcAddress, rcdHashToPublicFctAddress } = require('./addresses'), {
+    ADMIN_ID_TO_CODE,
     ADMIN_BLOCKS_CHAIN_ID,
     ENTRY_CREDIT_BLOCKS_CHAIN_ID,
     FACTOID_BLOCKS_CHAIN_ID
@@ -63,10 +64,75 @@ class AdminBlock {
         this.headerExpansionSize = header.headerexpansionsize;
         this.headerExpansionArea = header.headerexpansionarea;
         this.bodySize = header.bodysize;
-        // TODO: transform
-        this.entries = ab.abentries.slice();
+        this.entries = ab.abentries.map(transformAdminBlockEntry);
         Object.freeze(this);
     }
+
+    getEntriesOfTypes(...types) {
+        const set = new Set(types);
+        return this.entries.filter(e => set.has(e.adminId) || set.has(e.adminCode));
+    }
+}
+
+// https://github.com/FactomProject/factomd/tree/3871e26d562c3ed920a1a8fc0e61e50d49f1cf9b/common/adminBlock
+function transformAdminBlockEntry(entry) {
+
+    const base = {
+        adminId: entry.adminidtype,
+        adminCode: ADMIN_ID_TO_CODE.get(entry.adminidtype)
+    };
+
+    let data = {};
+    switch (base.adminId) {
+        case 1:
+            data.identityChainId = entry.identityadminchainid;
+            data.previousDirectoryBlockSignature = { publicKey: entry.prevdbsig.pub, signature: entry.prevdbsig.sig };
+            break;
+        case 2:
+        case 3:
+            data.identityChainId = entry.identitychainid;
+            data.matryoshkaHash = entry.mhash;
+            break;
+        case 4:
+            data.amount = entry.amount;
+            break;
+        case 5:
+        case 6:
+        case 7:
+            data.identityChainId = entry.identitychainid;
+            data.directoryBlockHeight = entry.dbheight;
+            break;
+        case 8:
+            data.identityChainId = entry.identitychainid;
+            data.keyPriority = entry.keypriority;
+            data.publicKey = entry.publickey;
+            data.directoryBlockHeight = entry.dbheight;
+            break;
+        case 9:
+            data.identityChainId = entry.identitychainid;
+            data.keyPriority = entry.keypriority;
+            data.keyType = entry.keytype;
+            data.ecdsaPublicKey = entry.ecdsapublickey;
+            break;
+        case 11:
+            data.outputs = entry.Outputs.map(o => ({ address: o.useraddress, rcdHash: o.address, amount: o.amount }));
+            break;
+        case 12:
+            data.descriptorHeight = entry.descriptor_height;
+            data.descriptorIndex = entry.descriptor_index;
+            break;
+        case 13:
+            data.identityChainId = entry.IdentityChainID;
+            data.rcdHash = entry.FactoidAddress;
+            data.factoidAddress = rcdHashToPublicFctAddress(entry.FactoidAddress);
+            break;
+        case 14:
+            data.identityChainId = entry.IdentityChainID;
+            data.efficiency = entry.Efficiency / 100;
+            break;
+    }
+
+    return Object.assign(base, data);
 }
 
 class EntryBlock {

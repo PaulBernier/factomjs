@@ -1,5 +1,6 @@
 const assert = require('chai').assert,
-    { EntryCreditBlock } = require('../src/blocks');
+    { EntryCreditBlock, AdminBlock } = require('../src/blocks');
+
 
 describe('Test Blocks', function() {
 
@@ -40,4 +41,145 @@ describe('Test Blocks', function() {
         assert.equal(commit.ecPublicKey, 'EC3PH2S2iXP4WpfoLuU5ETWRNfNZnmNUF5epWoFweYmBx9m4xK3z');
     });
 
+    it('should parse AdminBlock', function() {
+        const adminBlocks = require('./data/admin-blocks.json');
+
+        const ablock1 = new AdminBlock(adminBlocks['15a887568ba62cfe0df15b27956a0c65a3862688e96d550519b3d3cb07b4c070']);
+        assert.equal(ablock1.lookupHash, '15a887568ba62cfe0df15b27956a0c65a3862688e96d550519b3d3cb07b4c070');
+        assert.equal(ablock1.backReferenceHash, 'a93018e3032bc783d317a9c38a3e927f40017a212b0c73b732386f14750174ec');
+        assert.equal(ablock1.directoryBlockHeight, 31096);
+        assert.equal(ablock1.previousBackReferenceHash, 'ed78955c3d3dc91d9cc55be8d30171b1685d2984c0940c89edc14ec2cce067ef');
+        assert.equal(ablock1.headerExpansionSize, 0);
+        assert.equal(ablock1.headerExpansionArea, '');
+        assert.equal(ablock1.bodySize, 1032);
+        assert.lengthOf(ablock1.entries, 8);
+        assert.lengthOf(ablock1.getEntriesOfTypes(1), 8);
+        assert.lengthOf(ablock1.getEntriesOfTypes('DIRECTORY_BLOCK_SIGNATURE'), 8);
+
+        const ablock2 = new AdminBlock(adminBlocks['8a0a37bd123b0e210eeed8a6cad22fb742bd52d123d9b42af4e9901052a66a0d']);
+        assert.lengthOf(ablock2.getEntriesOfTypes(1), 9);
+        assert.lengthOf(ablock2.getEntriesOfTypes(6), 1);
+        assert.lengthOf(ablock2.getEntriesOfTypes('ADD_REPLACE_MATRYOSHKA_HASH'), 1);
+
+    });
+
+    it('should parse AdminBlock entry type 1', function() {
+        const adminBlocks = require('./data/admin-blocks.json');
+
+        const ablock = new AdminBlock(adminBlocks['15a887568ba62cfe0df15b27956a0c65a3862688e96d550519b3d3cb07b4c070']);
+        const entry = ablock.entries[0];
+        assert.equal(entry.adminId, 1);
+        assert.equal(entry.adminCode, 'DIRECTORY_BLOCK_SIGNATURE');
+        assert.equal(entry.identityChainId, '8888881c98618455b818cbe56b924374d87445ffdc7263363302292974dc3f94');
+        assert.equal(entry.previousDirectoryBlockSignature.publicKey, '0de6369919f526225a14c38b7cf7081287e4029471e000b5c4336c041b233253');
+        assert.equal(entry.previousDirectoryBlockSignature.signature, 'ccdf572fd75b6618ce182096e395974717d0b1b9306b50660b8958f0e45961b495484894ea6b51cd8b77aed0909f965c0ee5566a2d54d58dc7c7f19a2dfb1f0a');
+    });
+
+    it('should parse AdminBlock entry type 3', function() {
+        const adminBlocks = require('./data/admin-blocks.json');
+
+        const ablock = new AdminBlock(adminBlocks['8a0a37bd123b0e210eeed8a6cad22fb742bd52d123d9b42af4e9901052a66a0d']);
+        const entry = ablock.getEntriesOfTypes('ADD_REPLACE_MATRYOSHKA_HASH')[0];
+        assert.equal(entry.adminId, 3);
+        assert.equal(entry.adminCode, 'ADD_REPLACE_MATRYOSHKA_HASH');
+        assert.equal(entry.identityChainId, '8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282');
+        assert.equal(entry.matryoshkaHash, '4e99c3725c51d4cecf7de78e3196166e6de12a12f68b437b9c43f71b459979c6');
+    });
+
+    it('should parse AdminBlock entry type 5', function() {
+        const adminBlocks = require('./data/admin-blocks.json');
+
+        const ablock = new AdminBlock(adminBlocks['60df6174ef83475e54fe01f246710f8ea1cb29b2681433bbabd57ed8081f9739']);
+        const entry = ablock.getEntriesOfTypes('ADD_FEDERATED_SERVER')[0];
+        assert.equal(entry.adminId, 5);
+        assert.equal(entry.adminCode, 'ADD_FEDERATED_SERVER');
+        assert.equal(entry.identityChainId, '8888881c98618455b818cbe56b924374d87445ffdc7263363302292974dc3f94');
+        assert.equal(entry.directoryBlockHeight, 30943);
+    });
+    
+
+    it('should parse AdminBlock entry type 6', function() {
+        const adminBlocks = require('./data/admin-blocks.json');
+
+        const ablock = new AdminBlock(adminBlocks['8a0a37bd123b0e210eeed8a6cad22fb742bd52d123d9b42af4e9901052a66a0d']);
+        const entry = ablock.getEntriesOfTypes('ADD_AUDIT_SERVER')[0];
+        assert.equal(entry.adminId, 6);
+        assert.equal(entry.adminCode, 'ADD_AUDIT_SERVER');
+        assert.equal(entry.identityChainId, '8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282');
+        assert.equal(entry.directoryBlockHeight, 30896);
+    });
+
+    it('should parse AdminBlock entry type 7', function() {
+        const adminBlocks = require('./data/admin-blocks.json');
+
+        const ablock = new AdminBlock(adminBlocks['957919e27b7252423db4038db168bf4dfc3ce17b493ee0866e4fb91ae3c6edd3']);
+        const entry = ablock.getEntriesOfTypes('REMOVE_FEDERATED_SERVER')[0];
+        assert.equal(entry.adminId, 7);
+        assert.equal(entry.adminCode, 'REMOVE_FEDERATED_SERVER');
+        assert.equal(entry.identityChainId, '888888b9f4fe1fea85d9ab55f84e1ec06aa135a905ef0865848d947c9c798f1f');
+        assert.equal(entry.directoryBlockHeight, 30751);
+    });
+
+    it('should parse AdminBlock entry type 8', function() {
+        const adminBlocks = require('./data/admin-blocks.json');
+
+        const ablock = new AdminBlock(adminBlocks['8a0a37bd123b0e210eeed8a6cad22fb742bd52d123d9b42af4e9901052a66a0d']);
+        const entry = ablock.getEntriesOfTypes('ADD_FEDERATED_SERVER_SIGNING_KEY')[0];
+        assert.equal(entry.adminId, 8);
+        assert.equal(entry.adminCode, 'ADD_FEDERATED_SERVER_SIGNING_KEY');
+        assert.equal(entry.identityChainId, '8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282');
+        assert.equal(entry.publicKey, '08ec6928e010c1694763d571e9a0142c697f524cc40d33ca7bd911d8685a1921');
+        assert.equal(entry.keyPriority, 0);
+        assert.equal(entry.directoryBlockHeight, 30896);
+    });
+
+    it('should parse AdminBlock entry type 9', function() {
+        const adminBlocks = require('./data/admin-blocks.json');
+
+        const ablock = new AdminBlock(adminBlocks['8a0a37bd123b0e210eeed8a6cad22fb742bd52d123d9b42af4e9901052a66a0d']);
+        const entry = ablock.getEntriesOfTypes('ADD_FEDERATED_SERVER_BITCOIN_ANCHOR_KEY')[0];
+        assert.equal(entry.adminId, 9);
+        assert.equal(entry.adminCode, 'ADD_FEDERATED_SERVER_BITCOIN_ANCHOR_KEY');
+        assert.equal(entry.identityChainId, '8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282');
+        assert.equal(entry.ecdsaPublicKey, '45185ad9f6453ac56a7572dbd9abbe2d421b0692');
+        assert.equal(entry.keyPriority, 0);
+        assert.equal(entry.keyType, 0);
+    });
+
+    it('should parse AdminBlock entry type 11', function() {
+        const adminBlocks = require('./data/admin-blocks.json');
+
+        const ablock = new AdminBlock(adminBlocks['8a0a37bd123b0e210eeed8a6cad22fb742bd52d123d9b42af4e9901052a66a0d']);
+        const entry = ablock.getEntriesOfTypes('COINBASE_DESCRIPTOR')[0];
+        assert.equal(entry.adminId, 11);
+        assert.equal(entry.adminCode, 'COINBASE_DESCRIPTOR');
+        assert.lengthOf(entry.outputs, 9);
+        assert.equal(entry.outputs[0].address, 'FA3NCrf7W6CV4A7HKLQd4eveHhzfrayE3CXd85axLQrD4zYr4XbW');
+        assert.equal(entry.outputs[0].rcdHash, 'b834c8637b2b8c7f18e92243383391fba263a25d49f7a6280807e6824224dd28');
+        assert.equal(entry.outputs[0].amount, 320000000);
+    });
+
+    it('should parse AdminBlock entry type 13', function() {
+        const adminBlocks = require('./data/admin-blocks.json');
+
+        const ablock = new AdminBlock(adminBlocks['8a0a37bd123b0e210eeed8a6cad22fb742bd52d123d9b42af4e9901052a66a0d']);
+        const entry = ablock.getEntriesOfTypes('ADD_AUTHORITY_FACTOID_ADDRESS')[0];
+        assert.equal(entry.adminId, 13);
+        assert.equal(entry.adminCode, 'ADD_AUTHORITY_FACTOID_ADDRESS');
+        assert.equal(entry.identityChainId, '8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282');
+        assert.equal(entry.factoidAddress, 'FA3NCrf7W6CV4A7HKLQd4eveHhzfrayE3CXd85axLQrD4zYr4XbW');
+        assert.equal(entry.rcdHash, 'b834c8637b2b8c7f18e92243383391fba263a25d49f7a6280807e6824224dd28');
+    });
+
+    it('should parse AdminBlock entry type 14', function() {
+        const adminBlocks = require('./data/admin-blocks.json');
+
+        const ablock = new AdminBlock(adminBlocks['8a0a37bd123b0e210eeed8a6cad22fb742bd52d123d9b42af4e9901052a66a0d']);
+        const entry = ablock.getEntriesOfTypes('ADD_AUTHORITY_EFFICIENCY')[0];
+        assert.equal(entry.adminId, 14);
+        assert.equal(entry.adminCode, 'ADD_AUTHORITY_EFFICIENCY');
+        assert.equal(entry.identityChainId, '8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282');
+        assert.equal(entry.efficiency, 50);
+  
+    });
 });

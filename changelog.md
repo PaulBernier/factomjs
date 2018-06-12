@@ -1,8 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+* Parse Admin Block entries
+
 ## [0.2.2] 2018-06-01
 
 ### Fixed
+
 * Fix the `dist/factom.js` file. Now using webpack to build.
 
 ## [0.2] 2018-05-24
