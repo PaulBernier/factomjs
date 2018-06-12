@@ -1,11 +1,7 @@
 const { isValidAddress } = require('./addresses');
 const { PRIVATE_ADDRESS_VALID_PREFIXES } = require('./constant');
 
-function getAddress(walletd, address) {
-    return walletd.call('address', { address: address });
-}
-
-function getPrivateAddress(walletd, address) {
+async function getPrivateAddress(walletd, address) {
     if (!isValidAddress(address)) {
         throw new Error(`${address} is not a valid address`);
     }
@@ -14,11 +10,10 @@ function getPrivateAddress(walletd, address) {
         return address;
     }
 
-    return getAddress(walletd, address)
-        .then(r => r.secret);
+    const walletAddress = await walletd.call('address', { address: address });
+    return walletAddress.secret;
 }
 
 module.exports = {
-    getAddress,
     getPrivateAddress
 };
