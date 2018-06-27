@@ -101,7 +101,7 @@ class Entry {
 
 class EntryBuilder {
     constructor(entry) {
-        if (entry instanceof Entry) {
+        if (entry instanceof Object) {
             this._extIds = entry.extIds;
             this._content = entry.content;
             this._chainId = entry.chainId;
