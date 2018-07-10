@@ -29,19 +29,29 @@ class BaseCli {
         this.protocol = conf.protocol || 'http';
         this.apiCounter = newCounter();
         this.retry = conf.retry || DEFAULT_RETRY_STRATEGY;
+        const user = conf.user || '';
+        const password = conf.password || '';
+        this.authentication = Buffer.from(`${user}:${password}`).toString('base64');
     }
 
     call(endpoint, method, params) {
         return new Promise((resolve, reject) => {
             const operation = retry.operation(this.retry);
 
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Basic ${this.authentication}`
+            };
+
             operation.attempt(() => {
                 axios.post(endpoint, {
-                    jsonrpc: '2.0',
-                    id: this.apiCounter(),
-                    method: method,
-                    params: params
-                })
+                        jsonrpc: '2.0',
+                        id: this.apiCounter(),
+                        method: method,
+                        params: params
+                    }, {
+                        headers: headers
+                    })
                     .then(r => resolve(r.data.result))
                     .catch(function(error) {
                         let rejection;
@@ -82,6 +92,7 @@ class FactomdCli extends BaseCli {
         this.endpoint = `${this.protocol}://${this.host}:${this.port}`;
         this.apiEnpoint = `${this.endpoint}/v2`;
         this.debugApiEnpoint = `${this.endpoint}/debug`;
+        Object.freeze(this);
     }
 
     call(method, params) {
@@ -98,6 +109,7 @@ class WalletdCli extends BaseCli {
         this.port = configuration.port || 8089;
         this.endpoint = `${this.protocol}://${this.host}:${this.port}`;
         this.apiEnpoint = `${this.endpoint}/v2`;
+        Object.freeze(this);
     }
 
     call(method, params) {

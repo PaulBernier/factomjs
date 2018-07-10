@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+
+* Add support for RPC user/password basic authentication
+
 ## [0.2.3] 2018-06-26
 
 ### Changed

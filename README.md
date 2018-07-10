@@ -32,6 +32,8 @@ const cli = new FactomCli();
 const cli = new FactomCli({
     host: '52.202.51.228',
     port: 8088,
+    user: 'paul', // RPC basic authentication
+    password: 'pwd'
     retry: {
         retries: 4,
         factor: 2,
