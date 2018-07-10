@@ -24,34 +24,40 @@ class ApiError extends Error {
 
 class BaseCli {
 
-    constructor(conf) {
-        this.host = conf.host || 'localhost';
-        this.protocol = conf.protocol || 'http';
-        this.apiCounter = newCounter();
-        this.retry = conf.retry || DEFAULT_RETRY_STRATEGY;
+    constructor(conf, defaultPort) {
+        const host = conf.host || 'localhost';
+        const protocol = conf.protocol || 'http';
+        const port = conf.port || defaultPort;
+        const baseURL = `${protocol}://${host}:${port}`;
         const user = conf.user || '';
         const password = conf.password || '';
-        this.authentication = Buffer.from(`${user}:${password}`).toString('base64');
+        const authentication = Buffer.from(`${user}:${password}`).toString('base64');
+
+        this.httpCli = axios.create({
+            baseURL,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Basic ${authentication}`
+            }
+        });
+
+        this.apiCounter = newCounter();
+        this.retry = conf.retry || DEFAULT_RETRY_STRATEGY;
     }
 
-    call(endpoint, method, params) {
+    call(url, method, params) {
         return new Promise((resolve, reject) => {
             const operation = retry.operation(this.retry);
 
-            const headers = {
-                'Content-Type': 'application/json',
-                'Authorization': `Basic ${this.authentication}`
+            const data = {
+                jsonrpc: '2.0',
+                id: this.apiCounter(),
+                method: method,
+                params: params
             };
 
             operation.attempt(() => {
-                axios.post(endpoint, {
-                        jsonrpc: '2.0',
-                        id: this.apiCounter(),
-                        method: method,
-                        params: params
-                    }, {
-                        headers: headers
-                    })
+                this.httpCli.post(url, data)
                     .then(r => resolve(r.data.result))
                     .catch(function(error) {
                         let rejection;
@@ -87,17 +93,12 @@ class FactomdCli extends BaseCli {
 
     constructor(conf) {
         const configuration = conf || {};
-        super(configuration);
-        this.port = configuration.port || 8088;
-        this.endpoint = `${this.protocol}://${this.host}:${this.port}`;
-        this.apiEnpoint = `${this.endpoint}/v2`;
-        this.debugApiEnpoint = `${this.endpoint}/debug`;
-        Object.freeze(this);
+        super(configuration, 8088);
     }
 
     call(method, params) {
-        const endpoint = DEBUG_API_CALLS.has(method) ? this.debugApiEnpoint : this.apiEnpoint;
-        return super.call(endpoint, method, params);
+        const url = DEBUG_API_CALLS.has(method) ? '/debug' : '/v2';
+        return super.call(url, method, params);
     }
 }
 
@@ -105,15 +106,11 @@ class WalletdCli extends BaseCli {
 
     constructor(conf) {
         const configuration = conf || {};
-        super(configuration);
-        this.port = configuration.port || 8089;
-        this.endpoint = `${this.protocol}://${this.host}:${this.port}`;
-        this.apiEnpoint = `${this.endpoint}/v2`;
-        Object.freeze(this);
+        super(configuration, 8089);
     }
 
     call(method, params) {
-        return super.call(this.apiEnpoint, method, params);
+        return super.call('/v2', method, params);
     }
 }
 

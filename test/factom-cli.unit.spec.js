@@ -5,8 +5,7 @@ describe('Test FactomCli', function() {
 
     it('should set default factomd endpoint and port', function() {
         const cli = new FactomCli();
-        assert.equal(cli.factomd.apiEnpoint, 'http://localhost:8088/v2');
-        assert.equal(cli.factomd.debugApiEnpoint, 'http://localhost:8088/debug');
+        assert.equal(cli.factomd.httpCli.defaults.baseURL, 'http://localhost:8088');
     });
 
     it('should set factomd endpoint and port', function() {
@@ -14,21 +13,21 @@ describe('Test FactomCli', function() {
             host: '52.202.51.229',
             port: 1777
         });
-        assert.equal(cli.factomd.apiEnpoint, 'http://52.202.51.229:1777/v2');
+        assert.equal(cli.factomd.httpCli.defaults.baseURL, 'http://52.202.51.229:1777');
     });
 
     it('should set factomd endpoint and default port', function() {
         const cli = new FactomCli({
             host: '52.202.51.229'
         });
-        assert.equal(cli.factomd.apiEnpoint, 'http://52.202.51.229:8088/v2');
+        assert.equal(cli.factomd.httpCli.defaults.baseURL, 'http://52.202.51.229:8088');
     });
 
     it('should set factomd port and default endpoint', function() {
         const cli = new FactomCli({
             port: 9888
         });
-        assert.equal(cli.factomd.apiEnpoint, 'http://localhost:9888/v2');
+        assert.equal(cli.factomd.httpCli.defaults.baseURL, 'http://localhost:9888');
     });
 
     it('should set factomd endpoint and port', function() {
@@ -38,7 +37,7 @@ describe('Test FactomCli', function() {
                 port: 1777
             }
         });
-        assert.equal(cli.factomd.apiEnpoint, 'http://52.202.51.229:1777/v2');
+        assert.equal(cli.factomd.httpCli.defaults.baseURL, 'http://52.202.51.229:1777');
     });
 
     it('should set walletd endpoint and port', function() {
@@ -48,8 +47,8 @@ describe('Test FactomCli', function() {
                 port: 3111
             }
         });
-        assert.equal(cli.factomd.apiEnpoint, 'http://localhost:8088/v2');
-        assert.equal(cli.walletd.apiEnpoint, 'http://52.202.51.229:3111/v2');
+        assert.equal(cli.factomd.httpCli.defaults.baseURL, 'http://localhost:8088');
+        assert.equal(cli.walletd.httpCli.defaults.baseURL, 'http://52.202.51.229:3111');
     });
 
     it('should set both factomd and walletd endpoint and port', function() {
@@ -63,8 +62,8 @@ describe('Test FactomCli', function() {
                 port: 5656
             }
         });
-        assert.equal(cli.factomd.apiEnpoint, 'http://52.202.51.229:1777/v2');
-        assert.equal(cli.walletd.apiEnpoint, 'http://88.202.51.229:5656/v2');
+        assert.equal(cli.factomd.httpCli.defaults.baseURL, 'http://52.202.51.229:1777');
+        assert.equal(cli.walletd.httpCli.defaults.baseURL, 'http://88.202.51.229:5656');
     });
 
 });
