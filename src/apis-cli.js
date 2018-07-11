@@ -1,4 +1,5 @@
 const axios = require('axios'),
+    HttpsAgent = require('https').Agent,
     Promise = require('bluebird'),
     retry = require('retry');
 
@@ -33,13 +34,21 @@ class BaseCli {
         const password = conf.password || '';
         const authentication = Buffer.from(`${user}:${password}`).toString('base64');
 
-        this.httpCli = axios.create({
+        const httpCliOptions = {
             baseURL,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Basic ${authentication}`
             }
-        });
+        };
+
+        if (protocol === 'https' && typeof conf.rejectUnauthorized !== 'undefined') {
+            httpCliOptions.httpsAgent = new HttpsAgent({
+                rejectUnauthorized: conf.rejectUnauthorized,
+            });
+        }
+
+        this.httpCli = axios.create(httpCliOptions);
 
         this.apiCounter = newCounter();
         this.retry = conf.retry || DEFAULT_RETRY_STRATEGY;

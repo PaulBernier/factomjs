@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 * Add support for RPC user/password basic authentication
+* Add option 'rejectUnauthorized' to allow connection to https nodes with self-signed certificates
 
 ## [0.2.3] 2018-06-26
 
