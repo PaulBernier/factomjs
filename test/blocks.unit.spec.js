@@ -18,7 +18,6 @@ describe('Test Blocks', function() {
         assert.equal(ecb.headerExpansionArea, '');
         assert.equal(ecb.objectCount, 59);
         assert.equal(ecb.bodySize, 6733);
-        assert.equal(ecb.fullHash, '7772b118e454c2730286647801b7e5e543163db0dcfe96de64d08a4322614012');
 
         assert.lengthOf(ecb.commits, 49);
         assert.lengthOf(ecb.getCommitsForMinute(1), 1);
@@ -39,6 +38,32 @@ describe('Test Blocks', function() {
         assert.equal(commit.credits, 1);
         assert.ok(commit.signature.equals(Buffer.from('3e6e7d85a201b398d6bc056213f698d6fed7d1e82813105b7310b843618b228c2559dd1f3a22f1dd28d97f2fdcde86cff59415753fc4b826b2bfe5f7425b780d', 'hex')))
         assert.equal(commit.ecPublicKey, 'EC3PH2S2iXP4WpfoLuU5ETWRNfNZnmNUF5epWoFweYmBx9m4xK3z');
+    });
+
+    it('should populate M1 EntryCreditBlock', function() {
+        const ecb = new EntryCreditBlock(require('./data/m1-entry-credit-block.json'));
+
+        assert.instanceOf(ecb, EntryCreditBlock);
+        assert.equal(ecb.headerHash, 'b9202c7882f5e3f11f806bdb9bec287f3674888c974fd1168710043ef1210052');
+        assert.equal(ecb.fullHash, 'c57abb3398fd718d8aef3d9e75aba3b0e051403be42eb0503730ad2fa68912a4');
+
+        assert.equal(ecb.bodyHash, '4b0fcbae01e6aeff813b87a7b1e621eb210fad39135d7fd467636af037c6f83b');
+        assert.equal(ecb.previousHeaderHash, '3ce8487a8e2c71ae4d2f130c7b7ebfe30bad632dcf6cad689b2a66de218a169a');
+        assert.equal(ecb.previousFullHash, 'f887c945240496c8ec865100bbdad292d034ee7881f88d7452b949e48c022227');
+        assert.equal(ecb.directoryBlockHeight, 53037);
+        assert.equal(ecb.headerExpansionArea, '');
+        assert.equal(ecb.objectCount, 147);
+        assert.equal(ecb.bodySize, 18586);
+
+        assert.lengthOf(ecb.commits, 135);
+
+        const commit = ecb.getCommitsForMinute(1)[0];
+        assert.equal(commit.version, 0);
+        assert.equal(commit.millis, 1473040801697);
+        assert.ok(commit.entryHash.equals(Buffer.from('df72b3c35f3ac80820b1196570d5028e66e04f8cb5a3b90b5dd486a60743e014', 'hex')));
+        assert.equal(commit.credits, 1);
+        assert.ok(commit.signature.equals(Buffer.from('07a2c43f156117ca3567dedd42533b66b718ab991a7b8fa86bbc0307b007a6e03837a38311b0b7515643e46714b8e6bc0a417cd4f899fe75cd4a29cfdfbef209', 'hex')))
+        assert.equal(commit.ecPublicKey, 'EC2LXsumFsDK36ueRdNZC5Q3zMhxCzoZXM52JRtsgCfyQUruYXLY');
     });
 
     it('should parse AdminBlock', function() {
