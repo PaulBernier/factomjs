@@ -1,9 +1,15 @@
 # Changelog
 
-## [Unreleased]
+## [0.2.4] 2018-07-12
+
+### Added
 
 * Add support for RPC user/password basic authentication
 * Add option 'rejectUnauthorized' to allow connection to https nodes with self-signed certificates
+
+### Fixed
+
+* Fix M1 EntryCredit blocks parsing https://github.com/PaulBernier/factomjs/issues/1
 
 ## [0.2.3] 2018-06-26
 
