@@ -2,9 +2,10 @@
 // https://github.com/FactomProject/factoid/blob/3ee9763f86849036723d1b059216e08a6d34b184/transaction.go
 
 const EdDSA = require('elliptic').eddsa,
+    base58 = require('base-58'),
     { RCD_TYPE_1, encodeVarInt, sha256, sha256d, flatMap } = require('./util'),
     { MAX_TRANSACTION_SIZE } = require('./constant'),
-    { isValidFctAddress, isValidPublicAddress, getPublicAddress, addressToKey } = require('./addresses');
+    { isValidFctAddress, isValidPublicAddress, getPublicAddress, addressToKey, addressToRcd } = require('./addresses');
 
 const ec = new EdDSA('ed25519');
 
@@ -12,12 +13,11 @@ class TransactionAddress {
     constructor(address, amount) {
         this.address = address;
         this.amount = amount;
-        this.rcdHash = addressToKey(address);
         Object.freeze(this);
     }
 
     marshalBinary() {
-        return Buffer.concat([encodeVarInt(this.amount), this.rcdHash]);
+        return Buffer.concat([encodeVarInt(this.amount), Buffer.from(base58.decode(this.address).slice(2, 34))]);
     }
 }
 
@@ -241,7 +241,7 @@ function validateRcds(inputs, rcds) {
 }
 
 function validateRcd(input, rcd) {
-    if (!sha256d(rcd).equals(input.rcdHash)) {
+    if (!sha256d(rcd).equals(addressToRcd(input.address))) {
         throw new Error(`RCD does not match the RCD hash from input address ${input.address}`);
     }
 }

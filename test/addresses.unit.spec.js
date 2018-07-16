@@ -59,4 +59,15 @@ describe('Test addresses', function() {
         assert.equal(addresses.keyToPrivateEcAddress(key), 'Es3LFXNj5vHBw8c9kM98HKR69CJjUTyTPv4BdxoRbMQJ8zifxkgV');
         assert.equal(addresses.keyToPrivateEcAddress(key).toString('hex'), 'Es3LFXNj5vHBw8c9kM98HKR69CJjUTyTPv4BdxoRbMQJ8zifxkgV');
     });
+
+    it('should reject to get public key from public Factoid addresses', function() {
+        assert.throws(() => addresses.addressToKey('FA3qqJ2gFngBYc4AkvcBYWXTh6Bv1jdUMEmafxsLgw1jZ3dGq1ye'), Error);
+    });
+
+    it('should extract cryptographic keys from addresses', function() {
+        assert.equal(addresses.addressToKey('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD').toString('hex'), '98fb8ffa591adc5f20ee4887affe06c18ca3b97cbda1a74a12944c1c26fdf864');
+        assert.equal(addresses.addressToKey('Es3LFXNj5vHBw8c9kM98HKR69CJjUTyTPv4BdxoRbMQJ8zifxkgV').toString('hex'), '776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80');
+        assert.equal(addresses.addressToKey('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X').toString('hex'), 'd48189215e445ea7e8dbf707c48922ab25a23552d8eae40cc5e9cd6b1a36963c');
+    });
+    
 });

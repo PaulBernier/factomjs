@@ -143,7 +143,8 @@ Factom.js offers a bunch of util functions around FCT/EC addresses and cryptogra
 ```javascript
 {
     isValidAddress,
-    addressToKey,
+    addressToKey, // For EC, Es, Fs addresse
+    addressToRcd, // For FA addresses
     isValidPublicAddress,
     isValidPrivateAddress,
     isValidEcAddress,

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.5] 2018-07-15
+
+### Changed
+
+* `addressToKey` doesn't accept public Factoid addresses anymore. Created explicit `addressToRcd` function to handle public Factoid addresses. (breaking change)
+
 ## [0.2.4] 2018-07-12
 
 ### Added

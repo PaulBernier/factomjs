@@ -42,7 +42,7 @@ describe('Get information from Factom blockchain', function() {
     });
 
     it('should get all entries', async function() {
-        this.timeout(5000);
+        this.timeout(10000);
         const entries = await get.getAllEntriesOfChain(factomd, 'f48d2160c5d8178720d8c83b89a62599ab6a8b9dbec9fbece5229f787d1e8b44');
 
         assert.isAtLeast(entries.length, 7);
@@ -127,6 +127,8 @@ describe('Get information from Factom blockchain', function() {
     }
 
     it('should get Directory Block', async function() {
+        this.timeout(5000);
+
         const byKeyMR = await get.getDirectoryBlock(factomd, 'f55a19d9562843b642f1a20b34fcbb71e70f438c4d98d223fc2228ca2dd0c54a');
         assertDirectoryBlock(byKeyMR);
 
@@ -154,6 +156,8 @@ describe('Get information from Factom blockchain', function() {
     }
 
     it('should get Entry Credit Block', async function() {
+        this.timeout(5000);
+
         const byHeaderHash = await get.getEntryCreditBlock(factomd, '96ad20412e7799e80f3979c425bfa5641282563371cd40049492701f9c09e338');
         assertEntryCreditBlock(byHeaderHash);
 
@@ -175,6 +179,8 @@ describe('Get information from Factom blockchain', function() {
     }
 
     it('should get Factoid Block', async function() {
+        this.timeout(5000);
+
         const byKeyMR = await get.getFactoidBlock(factomd, 'e0715c82f88423a5ce23eb4c8d71700f3dacc5e557adea4d166f5c51683c950a');
         assertFactoidBlock(byKeyMR);
 
@@ -183,6 +189,7 @@ describe('Get information from Factom blockchain', function() {
     });
 
     it('should get Entry Block', async function() {
+        this.timeout(5000);
 
         const eb = await get.getEntryBlock(factomd, '3944669331eea620f7f3ec67864a03a646a104f17e36aec3e0f5bdf638f16883');
 

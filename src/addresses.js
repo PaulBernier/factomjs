@@ -71,7 +71,7 @@ function isValidFctPrivateAddress(address) {
 
 function getPublicAddress(address) {
     if (!isValidAddress(address)) {
-        throw new Error(`Invalid address ${address}`);
+        throw new Error(`Invalid address ${address}.`);
     }
 
     if (address[1] !== 's') {
@@ -90,7 +90,17 @@ function keyToRCD1(key) {
 
 function addressToKey(address) {
     if (!isValidAddress(address)) {
-        throw new Error(`Invalid address ${address}`);
+        throw new Error(`Invalid address ${address}.`);
+    }
+    if (address.startsWith('FA')) {
+        throw new Error('A public Factoid address does not hold a public key but a RCD hash. Use addressToRcd function instead.');
+    }
+    return Buffer.from(base58.decode(address).slice(2, 34));
+}
+
+function addressToRcd(address) {
+    if (!isValidFctPublicAddress(address)) {
+        throw new Error(`Address ${address} is not a valid public Factoid address`);
     }
     return Buffer.from(base58.decode(address).slice(2, 34));
 }
@@ -129,6 +139,7 @@ function keyToPrivateEcAddress(key) {
 module.exports = {
     isValidAddress,
     addressToKey,
+    addressToRcd,
     isValidPublicAddress,
     isValidPrivateAddress,
     isValidEcAddress,
