@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+* `addEntries` and `addChains` chunk the list of entries/chains to bound the number of concurrent promises started (default to 200). Can be controlled with an attribute `chunkSize` of the `options` argument of those methods.
+
 ## [0.2.5] 2018-07-15
 
 ### Changed

@@ -1,4 +1,6 @@
 const Promise = require('bluebird'),
+    chunk = require('lodash.chunk'),
+    { flatMap } = require('./util'),
     { waitOnCommitAck, waitOnRevealAck } = require('./ack'),
     { isValidEcPrivateAddress } = require('./addresses'),
     { validateChainInstance, composeChainCommit, composeChainReveal } = require('./chain'),
@@ -73,8 +75,11 @@ async function revealChain(factomd, chain, to) {
     };
 }
 
-function addChains(factomd, chains, ecAddress, options) {
-    return Promise.map(chains, chain => addChain(factomd, chain, ecAddress, options));
+function addChains(factomd, chains, ecAddress, opts) {
+    const options = opts || {};
+    return Promise.mapSeries(chunk(chains, options.chunkSize || 200),
+        sublist => Promise.map(sublist, chain => addChain(factomd, chain, ecAddress, options))
+    ).then(r => flatMap(r, i => i));
 }
 
 async function addEntry(factomd, entry, ecPrivate, opts) {
@@ -144,8 +149,11 @@ async function revealEntry(factomd, entry, to) {
     };
 }
 
-function addEntries(factomd, entries, ecAddress, options) {
-    return Promise.map(entries, entry => addEntry(factomd, entry, ecAddress, options));
+function addEntries(factomd, entries, ecAddress, opts) {
+    const options = opts || {};
+    return Promise.mapSeries(chunk(entries, options.chunkSize || 200),
+        sublist => Promise.map(sublist, entry => addEntry(factomd, entry, ecAddress, options))
+    ).then(r => flatMap(r, i => i));
 }
 
 module.exports = {
