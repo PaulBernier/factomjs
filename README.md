@@ -62,14 +62,13 @@ const cli = new FactomCli({
 
 ```javascript
 const firstEntry = Entry.builder()
-    .extId('6d79206578742069642031') // If no encoding parameter is passed 'hex' is used
+    .extId('6d79206578742069642031') // If no encoding parameter is passed as 2nd argument, 'hex' is used
     .extId('my ext id 1', 'utf8') // Explicit the encoding. Or you can pass directly a Buffer
     .content('Initial content', 'utf8')
     .build();
 
 const chain = new Chain(firstEntry);
-cli.addChain(chain, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym')
-    .then(console.log);
+cli.add(chain, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym');
 ```
 
 #### Add an entry
@@ -77,37 +76,38 @@ cli.addChain(chain, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym')
 ```javascript
 const myEntry = Entry.builder()
     .chainId('9107a308f91fd7962fecb321fdadeb37e2ca7d456f1d99d24280136c0afd55f2')
-    .extId('6d79206578742069642031')
+    .extId('6d79206578742069642031') // If no encoding parameter is passed as 2nd argument, 'hex' is used
     .extId('some external ID', 'utf8')
     .content('My new content',  'utf8')
     .build();
-cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym')
-    .then(console.log);
+cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym');
 ```
 
 ```javascript
+// Add multiples entries. The library will chunk the input list to not have an unbounded number of concurrent promises being resolved at the same time.
+cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym');
 
-cli.addEntries([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym')
-    .then(console.log);
+// The size of the chunks can be customized (default value is 200).
+cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', { chunkSize: 1 });
 ```
 
 #### Commit/reveal acknowledgment when submitting chains or entries
 
-Factom protocol uses a [commit/reveal commitment scheme](https://en.wikipedia.org/wiki/Commitment_scheme). By default when using `addChain` or `addEntry` the library will sequentially wait for an acknowledgment (ack) of the commit by the network and then wait for the ack of the reveal, both for up to 60s. The library allows you to customize the timeouts of those acks and also to not wait for the acks at all when creating a Chain or an Entry. Please read [Factom whitepaper](https://www.factom.com/devs/docs/guide/factom-white-paper-1-0) about commit/reveal scheme and what are the potential risks to not wait for network acknowledgments.
+Factom protocol uses a [commit/reveal commitment scheme](https://en.wikipedia.org/wiki/Commitment_scheme). By default when using `add` the library will sequentially wait for an acknowledgment (ack) of the commit by the network and then wait for the ack of the reveal, both for up to 60s. The library allows you to customize the timeouts of those acks and also to not wait for the acks at all when creating a Chain or an Entry. Please read [Factom whitepaper](https://www.factom.com/devs/docs/guide/factom-white-paper-1-0) about commit/reveal scheme and what are the potential risks to not wait for network acknowledgments.
 
 ```javascript
 // Default behavior waits for both commit and reveal up to 60s
-cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym');
+cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym');
 // Change the timeout for commit ack to 120s and the timeout for reveal ack to 20s
-cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', {commitTimeout: 120, revealTimeout: 20});
+cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', { commitTimeout: 120, revealTimeout: 20});
 // By providing a negative number the library will not wait for any acknowledgment. 
 // In below example the wait on reveal ack is disabled (it'll still wait up to 60s on the commit ack).
-cli.addEntry(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', {revealTimeout: -1});
+cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', { revealTimeout: -1});
 ```
 
 #### Repeated commit
 
-If you commit twice an entry or a chain and that the second time the fees paid are lower or equal to the first commit you are in a 'repeated commit' case and the second commit will be rejected (and you won't be charged for it). If this scenario happens (which it should probably not) the output of `addEntry` or `addChain` will have the field `repeatedCommit` set to `true` and the field `txId` will be undefined.
+If you commit twice an entry or a chain and that the second time the fees paid are lower or equal to the first commit you are in a 'repeated commit' case and the second commit will be rejected (and you won't be charged for it). If this scenario happens (which it should probably not) the output of `add` will have the field `repeatedCommit` set to `true` and the field `txId` will be undefined.
 
 #### Getting entries and block context
 
@@ -117,7 +117,7 @@ The simplest and fastest way to retrieve an Entry is to query it by its hash.
 cli.getEntry('caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42');
 ```
 
-You may notice that the entry returned doesn't have a timestamp populated. That's because the timestamp is actually stored in the Entry Block that contained this Entry. The way to retrieve this information is to rewind the chain this entry is part of until finding the Entry Block it was part of. The library offers a convenient way to do that:
+You may notice that the entry returned doesn't have a timestamp populated. That's because the timestamp is actually stored in the Entry Block that contains this Entry. The way to retrieve this information is to rewind the chain this entry is part of until finding the Entry Block it was part of. The library offers a convenient way to do that:
 
 ```javascript
 cli.getEntryWithBlockContext('caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42');

@@ -1,10 +1,15 @@
 # Changelog
 
-## [Unreleased]
+## [0.2.6] 2018-07-26
 
 ### Added
 
-* `addEntries` and `addChains` chunk the list of entries/chains to bound the number of concurrent promises started (default to 200). Can be controlled with an attribute `chunkSize` of the `options` argument of those methods.
+* New universal `add(obj, ecAddress)` function that can take as a first argument an Entry, a Chain, or an iterable containing any of those classes (can be mixed). Meant to replace the use of `addEntry`, `addChain`, `addEntries` and `addChains` (kept for backward compatibility).
+* New `commit` and `reveal` functions that can take as a first argument an Entry or a Chain. Meant to replace the use of `commitEntry`/`commitChain` and `revealEntry`/`revealChain` respectively.
+
+### Changed
+
+* When used with list of Entries or Chains `add` chunks the list to bound the number of concurrent promises started (default to 200). Can be controlled with an attribute `chunkSize` of the `options` argument of this method.
 
 ## [0.2.5] 2018-07-15
 

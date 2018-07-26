@@ -67,6 +67,13 @@ function encodeVarInt(val) {
     return Buffer.from(bytes);
 }
 
+function isIterable(obj) {
+    if (obj == null) {
+        return false;
+    }
+    return typeof obj[Symbol.iterator] === 'function';
+}
+
 const flatMap = (a, f) => [].concat(...a.map(f));
 
 module.exports = {
@@ -76,6 +83,7 @@ module.exports = {
     sha256d,
     toHex,
     encodeVarInt,
+    isIterable,
     flatMap,
     privateKeyToPublicKey
 };

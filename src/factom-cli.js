@@ -20,7 +20,39 @@ class FactomCli {
     // Primary API //
     ////////////////
 
-    // Add
+    // Commit, reveal, add
+
+    async commit(obj, ecAddress, commitAckTimeout) {
+        const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
+        return add.commit(this.factomd, obj, ecPrivate, commitAckTimeout);
+    }
+
+    async commitChain(chain, ecAddress, commitAckTimeout) {
+        const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
+        return add.commitChain(this.factomd, chain, ecPrivate, commitAckTimeout);
+    }
+
+    async commitEntry(entry, ecAddress, commitAckTimeout) {
+        const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
+        return add.commitEntry(this.factomd, entry, ecPrivate, commitAckTimeout);
+    }
+
+    async reveal(obj, revealAckTimeout) {
+        return add.reveal(this.factomd, obj, revealAckTimeout);
+    }
+
+    async revealChain(chain, revealAckTimeout) {
+        return add.revealChain(this.factomd, chain, revealAckTimeout);
+    }
+
+    async revealEntry(entry, revealAckTimeout) {
+        return add.revealEntry(this.factomd, entry, revealAckTimeout);
+    }
+
+    async add(obj, ecAddress, options) {
+        const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
+        return add.add(this.factomd, obj, ecPrivate, options);
+    }
 
     async addChain(chain, ecAddress, options) {
         const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
@@ -32,15 +64,6 @@ class FactomCli {
         return add.addChains(this.factomd, chains, ecPrivate, options);
     }
 
-    async commitChain(chain, ecAddress, commitAckTimeout) {
-        const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
-        return add.commitChain(this.factomd, chain, ecPrivate, commitAckTimeout);
-    }
-
-    async revealChain(chain, revealAckTimeout) {
-        return add.revealChain(this.factomd, chain, revealAckTimeout);
-    }
-
     async addEntry(entry, ecAddress, options) {
         const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
         return add.addEntry(this.factomd, entry, ecPrivate, options);
@@ -49,15 +72,6 @@ class FactomCli {
     async addEntries(entries, ecAddress, options) {
         const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
         return add.addEntries(this.factomd, entries, ecPrivate, options);
-    }
-
-    async commitEntry(entry, ecAddress, commitAckTimeout) {
-        const ecPrivate = await wallet.getPrivateAddress(this.walletd, ecAddress);
-        return add.commitEntry(this.factomd, entry, ecPrivate, commitAckTimeout);
-    }
-
-    async revealEntry(entry, revealAckTimeout) {
-        return add.revealEntry(this.factomd, entry, revealAckTimeout);
     }
 
     // Get
