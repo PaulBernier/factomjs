@@ -2,11 +2,14 @@ const path = require('path');
 
 module.exports = {
     mode: 'production',
-    entry: './src/factom.js',
+    entry: { 
+        'factom': './src/factom.js',
+        'factom-struct': './src/factom-struct'
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'factom.js',
-        library: 'factom',
+        filename: '[name].js',
+        library: '[name]',
         libraryTarget: 'umd'
     },
     module: {

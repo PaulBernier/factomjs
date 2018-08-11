@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+
+* Create a second webpack bundle `factom-struct` containing only factom.js data structures, excluding all online calls related components (FactomCli...). Util for client side applications (browser).
+
 ## [0.2.6] 2018-07-26
 
 ### Added
