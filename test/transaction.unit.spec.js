@@ -1,6 +1,5 @@
 const assert = require('chai').assert,
     EdDSA = require('elliptic').eddsa,
-    { sha256d } = require('../src/util'),
     { Transaction } = require('../src/transaction');
 
 const ec = new EdDSA('ed25519');

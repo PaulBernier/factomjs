@@ -11,6 +11,11 @@ const ec = new EdDSA('ed25519');
 
 class TransactionAddress {
     constructor(address, amount) {
+        if (!isValidPublicAddress(address)) {
+            throw new TypeError('Address must be a valid Factoid or EntryCredit public address.');
+        }
+        validateAmount(amount);
+
         this.address = address;
         this.amount = amount;
         Object.freeze(this);
@@ -18,6 +23,16 @@ class TransactionAddress {
 
     marshalBinary() {
         return Buffer.concat([encodeVarInt(this.amount), Buffer.from(base58.decode(this.address).slice(2, 34))]);
+    }
+}
+
+function validateAmount(amount) {
+    if (Number.isSafeInteger(amount)) {
+        if (amount < 0) {
+            throw new Error('Amount must be a positive number.');
+        }
+    } else {
+        throw new Error('Amount must be a safe integer (less than 2^53 - 1).');
     }
 }
 
@@ -58,17 +73,22 @@ class Transaction {
             this.signatures = flatMap(builder.sigblocks, sb => sb.signatures).map(signature => Buffer.from(signature, 'hex'));
             this.blockContext = blockContext;
         } else {
-            throw new Error('Use `Transaction.builder()` syntax to create a new Transaction');
+            throw new Error('Use `Transaction.builder()` syntax to create a new Transaction.');
         }
 
         if (this.signatures.length !== 0 && this.inputs.length !== this.signatures.length) {
-            throw new Error('All inputs must be signed or none of them');
+            throw new Error('All inputs must be signed or none of them.');
         }
 
         this.totalInputs = this.inputs.reduce((acc, value) => acc + value.amount, 0);
         this.totalFactoidOutputs = this.factoidOutputs.reduce((acc, value) => acc + value.amount, 0);
         this.totalEntryCreditOutputs = this.entryCreditOutputs.reduce((acc, value) => acc + value.amount, 0);
         const totalOutputs = this.totalFactoidOutputs + this.totalEntryCreditOutputs;
+        
+        if (!Number.isSafeInteger(this.totalInputs) || !Number.isSafeInteger(totalOutputs)) {
+            throw new Error('Total inputs/outputs are not safe integers (too big to be handled by the library).');
+        }
+
         this.feesPaid = Math.max(this.totalInputs - totalOutputs, 0); // Coinbase transactions have 0 fee
 
         Object.freeze(this);
@@ -102,12 +122,12 @@ class Transaction {
                 size = this.marshalBinarySig.length + this.inputs.length * 97;
                 numberOfSignatures = this.inputs.length;
             } else {
-                throw new Error('Missing parameters to compute fees of unsigned transaction');
+                throw new Error('Missing parameters to compute fees of unsigned transaction.');
             }
         }
 
         if (size > MAX_TRANSACTION_SIZE) {
-            throw new Error(`Transaction size is bigger than the maximum (${MAX_TRANSACTION_SIZE} bytes)`);
+            throw new Error(`Transaction size is bigger than the maximum (${MAX_TRANSACTION_SIZE} bytes).`);
         }
 
         let fee = Math.floor((size + 1023) / 1024);
@@ -119,7 +139,7 @@ class Transaction {
 
     marshalBinary() {
         if (!this.isSigned()) {
-            throw new Error('Cannot marshal an unsigned Transaction');
+            throw new Error('Cannot marshal an unsigned Transaction.');
         }
 
         const data = this.marshalBinarySig;
@@ -180,11 +200,10 @@ class TransactionBuilder {
 
     input(fctAddress, amount) {
         if (!isValidFctAddress(fctAddress)) {
-            throw new TypeError('First argument must be a valid Factoid address');
+            throw new TypeError('First argument must be a valid Factoid address.');
         }
-        if (!amount || typeof amount !== 'number') {
-            throw new TypeError('Second argument must be a non null amount of Factoshis');
-        }
+
+        this._inputs.push(new TransactionAddress(getPublicAddress(fctAddress), amount));
 
         if (fctAddress[1] === 's') {
             const secret = addressToKey(fctAddress);
@@ -192,19 +211,10 @@ class TransactionBuilder {
             this._keys.push(key);
         }
 
-        this._inputs.push(new TransactionAddress(getPublicAddress(fctAddress), amount));
-
         return this;
     }
 
     output(publicAddress, amount) {
-        if (!isValidPublicAddress(publicAddress)) {
-            throw new TypeError('First argument must be a valid Factoid or EntryCredit public address');
-        }
-        if (!amount || typeof amount !== 'number') {
-            throw new TypeError('Second argument must be a non null amount of Factoshis');
-        }
-
         const transactionAddress = new TransactionAddress(publicAddress, amount);
         if (publicAddress[0] === 'F') {
             this._factoidOutputs.push(transactionAddress);
@@ -233,7 +243,7 @@ class TransactionBuilder {
 
 function validateRcds(inputs, rcds) {
     if (rcds.length !== inputs.length) {
-        throw new Error(`The number of RCDs (${rcds.length}) does not equal the number of inputs (${inputs.length})`);
+        throw new Error(`The number of RCDs (${rcds.length}) does not equal the number of inputs (${inputs.length}).`);
     }
     for (let i = 0; i < rcds.length; ++i) {
         validateRcd(inputs[i], rcds[i]);
@@ -242,7 +252,7 @@ function validateRcds(inputs, rcds) {
 
 function validateRcd(input, rcd) {
     if (!sha256d(rcd).equals(addressToRcd(input.address))) {
-        throw new Error(`RCD does not match the RCD hash from input address ${input.address}`);
+        throw new Error(`RCD does not match the RCD hash from input address ${input.address}.`);
     }
 }
 
@@ -257,14 +267,14 @@ function validateSignatures(data, rcds, signatures) {
 
 function validateSignature(data, rcd, signature) {
     if (rcd[0] !== 1) {
-        throw new Error(`Only RCD type 1 is currently supported. Invalid RCD: ${rcd}`);
+        throw new Error(`Only RCD type 1 is currently supported. Invalid RCD: ${rcd}.`);
     }
 
     const publicKey = [...Buffer.from(rcd, 1)].slice(1);
     const key = ec.keyFromPublic(publicKey);
 
     if (!key.verify(data, [...signature])) {
-        throw new Error('Signature of Transaction is invalid');
+        throw new Error('Signature of Transaction is invalid.');
     }
 }
 

@@ -1,9 +1,9 @@
 const EdDSA = require('elliptic').eddsa,
-    BN = require('bn.js'),
+    Long = require('long'),
     crypto = require('crypto');
 
 const RCD_TYPE_1 = Buffer.from('01', 'hex'),
-    MSB = new BN('8000000000000000', 16);
+    MSB = Long.fromString('8000000000000000', true, 16);
 
 const ec = new EdDSA('ed25519');
 
@@ -37,11 +37,11 @@ function privateKeyToPublicKey(privateKey, enc) {
 function encodeVarInt(val) {
     const bytes = [];
 
-    if (val === 0) {
+    if (val === 0 || val === '0') {
         bytes.push(0);
     }
 
-    const h = new BN(val);
+    let h = Long.fromValue(val, true);
     let start = false;
 
     if (!h.and(MSB).isZero()) {
@@ -50,7 +50,7 @@ function encodeVarInt(val) {
     }
 
     for (let i = 0; i < 9; ++i) {
-        let b = h.shrn(56).maskn(8).toNumber();
+        let b = h.shiftRightUnsigned(56).toNumber();
 
         if (b || start) {
             start = true;
@@ -61,7 +61,7 @@ function encodeVarInt(val) {
             }
             bytes.push(b);
         }
-        h.ishln(7);
+        h = h.shiftLeft(7);
     }
 
     return Buffer.from(bytes);
