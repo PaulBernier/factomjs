@@ -139,7 +139,7 @@ class EntryBuilder {
         this._timestamp = timestamp;
         return this;
     }
-    entryBlockContext(blockContext) {
+    blockContext(blockContext) {
         this._blockContext = blockContext;
         return this;
     }

@@ -100,7 +100,7 @@ function toEntry(entry, entryBlockContext) {
         .chainId(entry.chainid, 'hex')
         .extIds(entry.extids, 'hex')
         .content(entry.content, 'hex')
-        .entryBlockContext(entryBlockContext)
+        .blockContext(entryBlockContext)
         .timestamp(entryBlockContext ? entryBlockContext.entryTimestamp * 1000 : undefined)
         .build();
 }
