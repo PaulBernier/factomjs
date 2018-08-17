@@ -10,6 +10,7 @@
 ### Changed
 
 * Replaced dependency on `bn.js` by `long`.
+* Replaced dependency on `elliptic` by `tweetnacl`. Tweetnacl is lighter and formally audited.
 
 ## [0.2.6] 2018-07-26
 

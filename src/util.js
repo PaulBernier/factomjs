@@ -1,11 +1,9 @@
-const EdDSA = require('elliptic').eddsa,
+const nacl = require('tweetnacl/nacl-fast').sign,
     Long = require('long'),
     crypto = require('crypto');
 
 const RCD_TYPE_1 = Buffer.from('01', 'hex'),
     MSB = Long.fromString('8000000000000000', true, 16);
-
-const ec = new EdDSA('ed25519');
 
 function sha256(data) {
     const hash = crypto.createHash('sha256');
@@ -27,9 +25,9 @@ function toHex(arg) {
     return Buffer.isBuffer(arg) ? arg.toString('hex') : arg;
 }
 
-function privateKeyToPublicKey(privateKey, enc) {
-    const key = ec.keyFromSecret(Buffer.from(privateKey, enc));
-    return Buffer.from(key.getPublic());
+function secretToPublicKey(secret) {
+    const key = nacl.keyPair.fromSeed(secret);
+    return Buffer.from(key.publicKey);
 }
 
 // Reference implementation:
@@ -85,5 +83,5 @@ module.exports = {
     encodeVarInt,
     isIterable,
     flatMap,
-    privateKeyToPublicKey
+    secretToPublicKey
 };

@@ -1,13 +1,11 @@
 // https://github.com/FactomProject/FactomDocs/blob/master/factomDataStructureDetails.md#factoid-transaction
 // https://github.com/FactomProject/factoid/blob/3ee9763f86849036723d1b059216e08a6d34b184/transaction.go
 
-const EdDSA = require('elliptic').eddsa,
+const nacl = require('tweetnacl/nacl-fast').sign,
     base58 = require('base-58'),
     { RCD_TYPE_1, encodeVarInt, sha256, sha256d, flatMap } = require('./util'),
     { MAX_TRANSACTION_SIZE } = require('./constant'),
     { isValidFctAddress, isValidPublicAddress, getPublicAddress, addressToKey, addressToRcd } = require('./addresses');
-
-const ec = new EdDSA('ed25519');
 
 class TransactionAddress {
     constructor(address, amount) {
@@ -48,8 +46,8 @@ class Transaction {
             this.id = sha256(this.marshalBinarySig).toString('hex');
 
             if (builder._keys.length !== 0) {
-                this.rcds = builder._keys.map(key => Buffer.concat([RCD_TYPE_1, Buffer.from(key.getPublic())]));
-                this.signatures = builder._keys.map(key => Buffer.from(key.sign(this.marshalBinarySig).toBytes()));
+                this.rcds = builder._keys.map(key => Buffer.concat([RCD_TYPE_1, Buffer.from(key.publicKey)]));
+                this.signatures = builder._keys.map(key => Buffer.from(nacl.detached(this.marshalBinarySig, key.secretKey)));
             } else {
                 this.rcds = builder._rcds;
                 this.signatures = builder._signatures;
@@ -84,7 +82,7 @@ class Transaction {
         this.totalFactoidOutputs = this.factoidOutputs.reduce((acc, value) => acc + value.amount, 0);
         this.totalEntryCreditOutputs = this.entryCreditOutputs.reduce((acc, value) => acc + value.amount, 0);
         const totalOutputs = this.totalFactoidOutputs + this.totalEntryCreditOutputs;
-        
+
         if (!Number.isSafeInteger(this.totalInputs) || !Number.isSafeInteger(totalOutputs)) {
             throw new Error('Total inputs/outputs are not safe integers (too big to be handled by the library).');
         }
@@ -207,7 +205,7 @@ class TransactionBuilder {
 
         if (fctAddress[1] === 's') {
             const secret = addressToKey(fctAddress);
-            const key = ec.keyFromSecret(secret);
+            const key = nacl.keyPair.fromSeed(secret);
             this._keys.push(key);
         }
 
@@ -270,10 +268,9 @@ function validateSignature(data, rcd, signature) {
         throw new Error(`Only RCD type 1 is currently supported. Invalid RCD: ${rcd}.`);
     }
 
-    const publicKey = [...Buffer.from(rcd, 1)].slice(1);
-    const key = ec.keyFromPublic(publicKey);
+    const publicKey = Buffer.from(rcd, 1).slice(1);
 
-    if (!key.verify(data, [...signature])) {
+    if (!nacl.detached.verify(data, signature, publicKey)) {
         throw new Error('Signature of Transaction is invalid.');
     }
 }

@@ -1,5 +1,5 @@
 const base58 = require('base-58'),
-    { RCD_TYPE_1, privateKeyToPublicKey, sha256d } = require('./util');
+    { RCD_TYPE_1, secretToPublicKey, sha256d } = require('./util');
 
 const {
     FACTOID_PUBLIC_PREFIX,
@@ -79,7 +79,7 @@ function getPublicAddress(address) {
     }
 
     const secret = base58.decode(address).slice(2, 34);
-    const pub = privateKeyToPublicKey(secret);
+    const pub = secretToPublicKey(secret);
 
     return address[0] === 'F' ? keyToPublicFctAddress(pub) : keyToPublicEcAddress(pub);
 }

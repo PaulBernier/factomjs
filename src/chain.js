@@ -1,10 +1,8 @@
-const EdDSA = require('elliptic').eddsa,
+const nacl = require('tweetnacl/nacl-fast').sign,
     { addressToKey, isValidEcPrivateAddress } = require('./addresses'),
     { Entry } = require('./entry'),
     { sha256, sha256d } = require('./util'),
     { CHAIN_CREATION_COST } = require('./constant');
-
-const ec = new EdDSA('ed25519');
 
 class Chain {
     constructor(firstEntry) {
@@ -49,9 +47,9 @@ function composeChainCommit(chain, ecPrivate) {
 
     // Sign commit
     const secret = addressToKey(ecPrivate);
-    const key = ec.keyFromSecret(secret);
-    const signature = Buffer.from(key.sign(buffer).toBytes());
-    const ecPublic = Buffer.from(key.getPublic());
+    const key = nacl.keyPair.fromSeed(secret);
+    const ecPublic = Buffer.from(key.publicKey);
+    const signature = Buffer.from(nacl.detached(buffer, key.secretKey));
 
     return Buffer.concat([buffer, ecPublic, signature]);
 }

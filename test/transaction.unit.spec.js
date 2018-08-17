@@ -1,12 +1,10 @@
 const assert = require('chai').assert,
-    EdDSA = require('elliptic').eddsa,
+    nacl = require('tweetnacl/nacl-fast').sign,
     { Transaction } = require('../src/transaction');
 
-const ec = new EdDSA('ed25519');
+describe('Test Factoid transaction creation', function () {
 
-describe('Test Factoid transaction creation', function() {
-
-    it('should build signed transaction', async function() {
+    it('should build signed transaction', async function () {
         const timestamp = 1521693377958;
 
         const tx = Transaction.builder()
@@ -27,12 +25,11 @@ describe('Test Factoid transaction creation', function() {
         assert.equal(tx.marshalBinary().toString('hex'), '0201624bfe45a602010186d6bf00ada661a0c8f36a31ee89054001f2b283f05fbcbb40076bc7a8a7e2fc6ec05cb6859fb1407e5a8f7716e9bed9db6289dfe9b9b2d8393ebbc68b9b0546df8e1145dd964c3382b19640d954883481f3aa501f3f5d4f9e796bafe8aa01bfe89780771e733d6396f8fb9b82ee9b005d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b601a4a8befef8404ab4d68a0e65ed121190ffb60ad5c99f9c7d252fb99748f8258f8154d661fbc2a95a4451ee2a00d4f613f066741ffcd52c74466c349ae779f967431bcaa3047982c2172cab74386ee49e5986c053a1b7c1be4b39856bc370eb020137dc52975d81dc28c827fedeae5e0527027e766064179382854169a5aaf5256f624da47b578221aee786d83f8aff3d37aeb585b421f7a243c8915a0779c8a18aa30283c0286aea07ecebdeb4c177dfd190f2398eebe63b96d939233a026e2503');
 
         for (let i = 0; i < tx.signatures.length; ++i) {
-            const key = ec.keyFromPublic([...Buffer.from(tx.rcds[i], 1)].slice(1));
-            assert.isTrue(key.verify(tx.marshalBinarySig, [...tx.signatures[i]]));
+            assert.isTrue(nacl.detached.verify(tx.marshalBinarySig, tx.signatures[i], Buffer.from(tx.rcds[i], 1).slice(1)));
         }
     });
 
-    it('should build unsigned transaction', async function() {
+    it('should build unsigned transaction', async function () {
         const timestamp = 1521693377958;
 
         const tx = Transaction.builder()
@@ -47,8 +44,8 @@ describe('Test Factoid transaction creation', function() {
         assert.lengthOf(tx.rcds, 0);
         assert.lengthOf(tx.signatures, 0);
         assert.isFalse(tx.isSigned());
-        assert.equal(tx.computeEcRequiredFees({rcdType: 1}), 23);
-        assert.equal(tx.computeRequiredFees(1000, {rcdType: 1}), 23000);
+        assert.equal(tx.computeEcRequiredFees({ rcdType: 1 }), 23);
+        assert.equal(tx.computeRequiredFees(1000, { rcdType: 1 }), 23000);
     });
 
     function assertTransaction(tx) {
@@ -74,7 +71,7 @@ describe('Test Factoid transaction creation', function() {
         assert.equal(tx.entryCreditOutputs[0].amount, 6000000);
     }
 
-    it('should compute fees of generic unsigned transaction', async function() {
+    it('should compute fees of generic unsigned transaction', async function () {
         const timestamp = 1521693377958;
 
         const tx = Transaction.builder()
@@ -86,11 +83,11 @@ describe('Test Factoid transaction creation', function() {
             .build();
 
         assert.isFalse(tx.isSigned());
-        assert.equal(tx.computeEcRequiredFees({rcdSignatureLength: 2 * (33 + 64), numberOfSignatures: 2}), 23);
-        assert.equal(tx.computeRequiredFees(1000, {rcdSignatureLength: 2 * (33 + 64), numberOfSignatures: 2}), 23000);
+        assert.equal(tx.computeEcRequiredFees({ rcdSignatureLength: 2 * (33 + 64), numberOfSignatures: 2 }), 23);
+        assert.equal(tx.computeRequiredFees(1000, { rcdSignatureLength: 2 * (33 + 64), numberOfSignatures: 2 }), 23000);
     });
 
-    it('should copy transaction without signature', async function() {
+    it('should copy transaction without signature', async function () {
         const timestamp = 1521693377958;
 
         const tx = Transaction.builder()
@@ -114,7 +111,7 @@ describe('Test Factoid transaction creation', function() {
         assert.equal(unsignedCopy.totalEntryCreditOutputs, 6000000);
     });
 
-    it('should manually signed transaction', async function() {
+    it('should manually signed transaction', async function () {
         const timestamp = 1521693377958;
 
         const tx = Transaction.builder()
