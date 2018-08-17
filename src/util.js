@@ -1,24 +1,21 @@
 const nacl = require('tweetnacl/nacl-fast').sign,
     Long = require('long'),
-    crypto = require('crypto');
+    hashSha256 = require('hash.js/lib/hash/sha/256'),
+    hashSha512 = require('hash.js/lib/hash/sha/512');
 
 const RCD_TYPE_1 = Buffer.from('01', 'hex'),
     MSB = Long.fromString('8000000000000000', true, 16);
 
 function sha256(data) {
-    const hash = crypto.createHash('sha256');
-    hash.update(data);
-    return hash.digest();
+    return Buffer.from(hashSha256().update(data).digest());
 }
 
 function sha256d(data) {
-    return sha256(sha256(data));
+    return Buffer.from(hashSha256().update(hashSha256().update(data).digest()).digest());
 }
 
 function sha512(data) {
-    const hash = crypto.createHash('sha512');
-    hash.update(data);
-    return hash.digest();
+    return Buffer.from(hashSha512().update(data).digest());
 }
 
 function toHex(arg) {
