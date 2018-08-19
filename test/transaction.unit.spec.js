@@ -125,7 +125,7 @@ describe('Test Factoid transaction creation', function () {
             .rcdSignature(tx.rcds[0], tx.signatures[0])
             .build();
 
-        assert.isTrue(manuallySignedCopy.marshalBinary().equals(tx.marshalBinary()));
+        assert.deepEqual(manuallySignedCopy.marshalBinary(), tx.marshalBinary());
 
     });
 

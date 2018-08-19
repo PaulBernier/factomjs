@@ -107,13 +107,13 @@ describe('Get information from Factom blockchain', function() {
         const heights = await get.getHeights(factomd);
 
         assert.isNumber(heights.directoryBlockHeight);
-        assert.ok(heights.directoryBlockHeight !== 0);
+        assert.notEqual(heights.directoryBlockHeight, 0);
         assert.isNumber(heights.leaderHeight);
-        assert.ok(heights.leaderHeight !== 0);
+        assert.notEqual(heights.leaderHeight, 0);
         assert.isNumber(heights.entryBlockHeight);
-        assert.ok(heights.entryBlockHeight !== 0);
+        assert.notEqual(heights.entryBlockHeight, 0);
         assert.isNumber(heights.entryHeight);
-        assert.ok(heights.entryHeight !== 0);
+        assert.notEqual(heights.entryHeight, 0);
     });
 
     function assertDirectoryBlock(db) {
