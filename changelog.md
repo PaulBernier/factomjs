@@ -9,6 +9,7 @@
 
 ### Changed
 
+* `Entry.Builder(entry)` now makes a deep copy of entry.
 * `entryBlockContext` method of the Entry builder renamed `blockContext`.
 * Replaced dependency on `bn.js` by `long`.
 * Replaced dependency on `elliptic` by `tweetnacl`. Tweetnacl is lighter and formally audited.

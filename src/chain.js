@@ -4,6 +4,10 @@ const nacl = require('tweetnacl/nacl-fast').sign,
     { sha256, sha256d } = require('./util'),
     { CHAIN_CREATION_COST } = require('./constant');
 
+/**********************
+ * Chain class
+ **********************/
+
 class Chain {
     constructor(firstEntry) {
         if (firstEntry instanceof Entry) {
@@ -27,15 +31,9 @@ class Chain {
     }
 }
 
-function computeChainId(firstEntry) {
-    if (firstEntry.extIds.length === 0) {
-        throw new Error('First entry of a chain must contain at least 1 external id');
-    }
-
-    const extIdsHashes = firstEntry.extIds.map(sha256);
-    const hashes = Buffer.concat(extIdsHashes);
-    return sha256(hashes);
-}
+/**********************
+ * Compose
+ **********************/
 
 function composeChainCommit(chain, ecPrivate) {
     validateChainInstance(chain);
@@ -71,11 +69,6 @@ function composeChainLedger(chain) {
     return buffer;
 }
 
-function computeChainTxId(chain) {
-    validateChainInstance(chain);
-    return sha256(composeChainLedger(chain));
-}
-
 function composeChainReveal(chain) {
     validateChainInstance(chain);
     return chain.firstEntry.marshalBinary();
@@ -90,10 +83,29 @@ function composeChain(chain, ecPrivate) {
     };
 }
 
+/**********************
+ * Other functions
+ **********************/
+
 function validateChainInstance(chain) {
     if (!(chain instanceof Chain)) {
         throw new Error('Argument must be an instance of Chain');
     }
+}
+
+function computeChainTxId(chain) {
+    validateChainInstance(chain);
+    return sha256(composeChainLedger(chain));
+}
+
+function computeChainId(firstEntry) {
+    if (firstEntry.extIds.length === 0) {
+        throw new Error('First entry of a chain must contain at least 1 external id');
+    }
+
+    const extIdsHashes = firstEntry.extIds.map(sha256);
+    const hashes = Buffer.concat(extIdsHashes);
+    return sha256(hashes);
 }
 
 module.exports = {

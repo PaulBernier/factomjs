@@ -41,15 +41,30 @@ describe('Test Entry', function() {
 
     it('should copy Entry', function() {
         const entry = Entry.builder()
+            .chainId('cfb5d93e747d20433e3b14603f90a5eb152d0399e7278f9671ecf9763f8780e8')
             .extId('extId', 'utf8')
             .extId('extId2', 'utf8')
             .content('hello', 'utf8')
+            .timestamp(1523072354)
             .build();
 
         const copy = Entry.builder(entry).build();
 
         assert.notEqual(entry, copy);
+        assert.notEqual(entry.extIds[0], copy.extIds[0]);
+        assert.notEqual(entry.content, copy.content);
         assert.deepEqual(entry, copy);
+    });
+
+    it('should copy empty Entry', function() {
+        const entry = Entry.builder().build();
+
+        const copy = Entry.builder(entry).build();
+
+        assert.notEqual(entry, copy);
+        assert.deepEqual(copy.chainId, Buffer.from(''));
+        assert.deepEqual(copy.extIds, []);
+        assert.deepEqual(copy.content, Buffer.from(''));
     });
 
     it('should get sizes without ext ids', function() {

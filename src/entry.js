@@ -3,6 +3,11 @@ const nacl = require('tweetnacl/nacl-fast').sign,
     { MAX_ENTRY_PAYLOAD_SIZE } = require('./constant'),
     { sha256, sha512 } = require('./util');
 
+
+/**********************
+ * Entry class
+ **********************/
+
 class Entry {
     constructor(builder) {
         if (builder instanceof EntryBuilder) {
@@ -97,14 +102,17 @@ class Entry {
     }
 }
 
+/**********************
+ * Entry builder class
+ **********************/
+
 class EntryBuilder {
     constructor(entry) {
         if (entry instanceof Object) {
-            this._extIds = entry.extIds;
-            this._content = entry.content;
-            this._chainId = entry.chainId;
+            this._chainId = entry.chainId ? Buffer.from(entry.chainId, 'hex') : Buffer.from('');
+            this._extIds = Array.isArray(entry.extIds) ? entry.extIds.map(extId => Buffer.from(extId, 'hex')) : [];
+            this._content = entry.content ? Buffer.from(entry.content, 'hex') : Buffer.from('');
             this._timestamp = entry.timestamp;
-            this._blockContext = entry._blockContext;
         } else {
             this._extIds = [];
             this._content = Buffer.from('');
@@ -148,6 +156,10 @@ class EntryBuilder {
     }
 }
 
+/**********************
+ * Marshal and compose
+ **********************/
+
 function marshalHeaderBinary(chainId, extIdsSize) {
     const header = Buffer.alloc(35);
     header.writeInt8(0);
@@ -187,11 +199,6 @@ function composeEntryCommit(entry, ecPrivate) {
     return Buffer.concat([buffer, ecPublic, signature]);
 }
 
-function computeEntryTxId(entry) {
-    validateEntryInstance(entry);
-    return sha256(composeEntryLedger(entry));
-}
-
 function composeEntryLedger(entry) {
     const buffer = Buffer.alloc(40);
 
@@ -217,10 +224,19 @@ function composeEntry(entry, ecPrivate) {
     };
 }
 
+/**********************
+ * Other functions
+ **********************/
+
 function validateEntryInstance(entry) {
     if (!(entry instanceof Entry)) {
         throw new Error('Argument must be an instance of Entry');
     }
+}
+
+function computeEntryTxId(entry) {
+    validateEntryInstance(entry);
+    return sha256(composeEntryLedger(entry));
 }
 
 module.exports = {
