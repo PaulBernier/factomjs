@@ -104,4 +104,23 @@ describe('Test Chain', function() {
         assert.instanceOf(txId, Buffer);
         assert.equal(txId.toString('hex'), '3c22e7bb1b69818508d47056230317a9791158d96e7adb83b4596d77b6548a00');
     });
+
+
+    it('should copy chain', function() {
+        const e = Entry.builder()
+            .extId('extId', 'utf8')
+            .extId('extId++', 'utf8')
+            .content('heloooooooooo', 'utf8')
+            .timestamp(1523241150229)
+            .build();
+
+        const chain = new Chain(e);
+        const chainCopy = new Chain(chain);
+
+        assert.instanceOf(chainCopy, Chain);
+        assert.notEqual(chain, chainCopy);
+        assert.notEqual(chain.firstEntry, chainCopy.firstEntry);
+        assert.deepEqual(chain, chainCopy);
+        assert.deepEqual(chain.firstEntry, chainCopy.firstEntry);
+    });
 });

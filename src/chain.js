@@ -9,17 +9,23 @@ const nacl = require('tweetnacl/nacl-fast').sign,
  **********************/
 
 class Chain {
-    constructor(firstEntry) {
-        if (firstEntry instanceof Entry) {
-            const chainId = computeChainId(firstEntry);
-            this.firstEntry = Entry.builder(firstEntry)
+    constructor(arg) {
+        if (arg instanceof Entry) {
+            const chainId = computeChainId(arg);
+            this.firstEntry = Entry.builder(arg)
                 .chainId(chainId)
                 .build();
             this.id = chainId;
-            Object.freeze(this);
+        } else if (arg.firstEntry instanceof Entry) {
+            const chainId = computeChainId(arg.firstEntry);
+            this.firstEntry = Entry.builder(arg.firstEntry)
+                .chainId(chainId)
+                .build();
+            this.id = chainId;
         } else {
             throw new Error('Argument on Chain constructor should be an instance of Entry');
         }
+        Object.freeze(this);
     }
 
     get idHex() {
