@@ -7,6 +7,7 @@
 * Create a second webpack bundle `factom-struct` containing only factom.js data structures, excluding all online calls related components (FactomCli...). Util for client side applications (browser).
 * Check that transaction amounts are JS safe integers.
 * `Chain` constructor now accepts another Chain to create a deep copy of it.
+* FactomCli exposes `getPrivateAddress(address)`
 
 ### Changed
 
