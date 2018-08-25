@@ -22,7 +22,13 @@ async function getEntry(factomd, entryHash, entryBlockContext) {
 async function getEntryWithBlockContext(factomd, entryHash) {
     const chainId = await factomd.call('entry', { hash: toHex(entryHash) })
         .then(e => e.chainid);
-    let keyMR = await getChainHead(factomd, chainId).then(r => r.keyMR);
+    const chainHead = await getChainHead(factomd, chainId);
+
+    if (chainHead.keyMR === '' && chainHead.chainInProcessList) {
+        throw new Error('Chain not yet included in a Directory Block');
+    }
+
+    let keyMR = chainHead.keyMR;
 
     while (keyMR !== NULL_HASH) {
 
@@ -39,6 +45,11 @@ async function getEntryWithBlockContext(factomd, entryHash) {
 
 async function getFirstEntry(factomd, chainId) {
     const chainHead = await getChainHead(factomd, chainId);
+
+    if (chainHead.keyMR === '' && chainHead.chainInProcessList) {
+        throw new Error('Chain not yet included in a Directory Block');
+    }
+
     let keyMR = chainHead.keyMR;
     let entryBlock, latestNonNullKeyMR;
     while (keyMR !== NULL_HASH) {
@@ -123,7 +134,7 @@ function getProperties(cli) {
 function chainExists(factomd, chainId) {
     return factomd.call('chain-head', { chainid: toHex(chainId) })
         .then(() => true)
-        .catch(function(err) {
+        .catch(function (err) {
             if (err.code === -32009) {
                 return false;
             }

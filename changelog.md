@@ -16,6 +16,10 @@
 * Replaced dependency on `bn.js` by `long`.
 * Replaced dependency on `elliptic` by `tweetnacl`. Tweetnacl is lighter and formally audited.
 
+### Fixed
+
+* Fixed blunt error when calling `getFirstEntry` and `getEntryWithBlockContext` for a chain that is not yet included in a Directory Block.
+
 ## [0.2.6] 2018-07-26
 
 ### Added
