@@ -1,5 +1,7 @@
 test/config.json
 *.code-workspace
+test.js
+todo.md
 
 # Logs
 logs
