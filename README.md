@@ -5,15 +5,15 @@ Library to interact easily with Factom blockchain.
 * Provide higher level functionalities than bare API making it more efficient to create chains or entries, make transactions...
 * Provide structures more uniform, consistent and easy to use than the API results
 
-## State of development
-
-**Important**: This library is at an early development stage and being actively worked on . You should expect breaking changes in interface definitions in newer versions until we reach a more stable stage.
-
 ## Installation
 
 ```bash
 $ npm install --save factom
 ```
+
+## Web browser
+
+Two versions of factom.js are being bundled for usage in a web browser and can be found in the `dist` folder. `dist/factom.js` is a bundle containing all the exposed components of the library. `dist/factom-struct.js` is a lighter bundle that contains factom structures such as Entry, Chain and Transaction, and all the utily functions related to FCT/EC addresses and fundamental constants. `factom-struct` bundle doesn't include any component that makes API calls.
 
 ## Usage
 
@@ -107,7 +107,7 @@ cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', { revea
 
 #### Repeated commit
 
-If you commit twice an entry or a chain and that the second time the fees paid are lower or equal to the first commit you are in a 'repeated commit' case and the second commit will be rejected (and you won't be charged for it). If this scenario happens (which it should probably not) the output of `add` will have the field `repeatedCommit` set to `true` and the field `txId` will be undefined.
+If you commit twice an entry or a chain and that the second time the fees paid are lower or equal to the first commit you are in a 'repeated commit' case and the second commit will be rejected (and you won't be charged for it). If this scenario happens the output of `add` will have the field `repeatedCommit` set to `true` and the field `txId` will be undefined. See [Factom doc]{https://docs.factom.com/api#repeated-commit}.
 
 #### Getting entries and block context
 

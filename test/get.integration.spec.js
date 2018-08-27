@@ -23,7 +23,7 @@ describe('Get information from Factom blockchain', function() {
     });
 
     it('should get first entry', async function() {
-        this.timeout(5000);
+        this.timeout(10000);
 
         const entry = await get.getFirstEntry(factomd, 'f48d2160c5d8178720d8c83b89a62599ab6a8b9dbec9fbece5229f787d1e8b44');
 
@@ -35,14 +35,14 @@ describe('Get information from Factom blockchain', function() {
     });
 
     it('should get entry with block context', async function() {
-        this.timeout(5000);
+        this.timeout(10000);
 
         const entry = await get.getEntryWithBlockContext(factomd, 'caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42');
         assertEntryWithBlockContext(entry);
     });
 
     it('should get all entries', async function() {
-        this.timeout(10000);
+        this.timeout(15000);
         const entries = await get.getAllEntriesOfChain(factomd, 'f48d2160c5d8178720d8c83b89a62599ab6a8b9dbec9fbece5229f787d1e8b44');
 
         assert.isAtLeast(entries.length, 7);

@@ -137,7 +137,6 @@ function transformAdminBlockEntry(entry) {
 
 class EntryBlock {
     constructor(block, keyMR) {
-        // TODO: fullhash and previousfullhash missing? ADD TEST
         this.keyMR = keyMR;
         const header = block.header;
         this.directoryBlockHeight = header.dbheight;

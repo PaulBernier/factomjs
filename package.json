@@ -1,7 +1,7 @@
 {
     "name": "factom",
-    "version": "0.2.6",
-    "description": "High level functions to interact with Factom blockchain and wallet",
+    "version": "0.3.0",
+    "description": "Components to build applications on the Factom blockchain",
     "main": "src/factom.js",
     "scripts": {
         "lint": "eslint src/",
