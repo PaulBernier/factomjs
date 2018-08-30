@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+* Renamed `addressToRcd` to `addressToRcdHash`. (breaking change)
+
+## [0.3.1] 2018-08-29
+
+### Changed
+
+* Upgrade to Babel 7 for the bundling process.
+
 ## [0.3] 2018-08-27
 
 ### Added

@@ -5,7 +5,7 @@ const nacl = require('tweetnacl/nacl-fast').sign,
     base58 = require('base-58'),
     { RCD_TYPE_1, encodeVarInt, sha256, sha256d, flatMap } = require('./util'),
     { MAX_TRANSACTION_SIZE } = require('./constant'),
-    { isValidFctAddress, isValidPublicAddress, getPublicAddress, addressToKey, addressToRcd } = require('./addresses');
+    { isValidFctAddress, isValidPublicAddress, getPublicAddress, addressToKey, addressToRcdHash } = require('./addresses');
 
 class TransactionAddress {
     constructor(address, amount) {
@@ -243,12 +243,12 @@ function validateRcds(inputs, rcds) {
         throw new Error(`The number of RCDs (${rcds.length}) does not equal the number of inputs (${inputs.length}).`);
     }
     for (let i = 0; i < rcds.length; ++i) {
-        validateRcd(inputs[i], rcds[i]);
+        validateRcdHash(inputs[i], rcds[i]);
     }
 }
 
-function validateRcd(input, rcd) {
-    if (!sha256d(rcd).equals(addressToRcd(input.address))) {
+function validateRcdHash(input, rcd) {
+    if (!sha256d(rcd).equals(addressToRcdHash(input.address))) {
         throw new Error(`RCD does not match the RCD hash from input address ${input.address}.`);
     }
 }

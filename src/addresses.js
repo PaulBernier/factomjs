@@ -84,36 +84,36 @@ function getPublicAddress(address) {
     return address[0] === 'F' ? keyToPublicFctAddress(pub) : keyToPublicEcAddress(pub);
 }
 
-function keyToRCD1(key) {
-    return sha256d(Buffer.concat([RCD_TYPE_1, key]));
-}
-
 function addressToKey(address) {
     if (!isValidAddress(address)) {
         throw new Error(`Invalid address ${address}.`);
     }
     if (address.startsWith('FA')) {
-        throw new Error('A public Factoid address does not hold a public key but a RCD hash. Use addressToRcd function instead.');
+        throw new Error('A public Factoid address does not hold a public key but a RCD hash. Use addressToRcdHash function instead.');
     }
     return Buffer.from(base58.decode(address).slice(2, 34));
 }
 
-function addressToRcd(address) {
+function addressToRcdHash(address) {
     if (!isValidFctPublicAddress(address)) {
         throw new Error(`Address ${address} is not a valid public Factoid address`);
     }
     return Buffer.from(base58.decode(address).slice(2, 34));
 }
 
-function keyToAddress(key, prefix, computeRCD) {
+function keyToAddress(key, prefix, computeRCDHash) {
     const keyBuffer = Buffer.from(key, 'hex');
     if (keyBuffer.length !== 32) {
         throw new Error(`Key ${keyBuffer} is not 32 bytes long.`);
     }
 
-    const address = Buffer.concat([prefix, computeRCD ? keyToRCD1(keyBuffer) : keyBuffer]);
+    const address = Buffer.concat([prefix, computeRCDHash ? keyToRCD1Hash(keyBuffer) : keyBuffer]);
     const checksum = sha256d(address).slice(0, 4);
     return base58.encode(Buffer.concat([address, checksum]));
+}
+
+function keyToRCD1Hash(key) {
+    return sha256d(Buffer.concat([RCD_TYPE_1, key]));
 }
 
 function keyToPublicFctAddress(key) {
@@ -139,7 +139,7 @@ function keyToPrivateEcAddress(key) {
 module.exports = {
     isValidAddress,
     addressToKey,
-    addressToRcd,
+    addressToRcdHash,
     isValidPublicAddress,
     isValidPrivateAddress,
     isValidEcAddress,
