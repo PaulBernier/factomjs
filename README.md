@@ -34,6 +34,7 @@ const cli = new FactomCli({
     port: 8088,
     user: 'paul', // RPC basic authentication
     password: 'pwd',
+    protocol: 'http', // http or https. Default to http
     rejectUnauthorized: true, // Set to false to allow connection to a node with a self-signed certificate
     retry: {
         retries: 4,
@@ -61,6 +62,7 @@ const cli = new FactomCli({
 #### Add a Chain
 
 ```javascript
+const { Entry, Chain } = require('factom');
 const firstEntry = Entry.builder()
     .extId('6d79206578742069642031') // If no encoding parameter is passed as 2nd argument, 'hex' is used
     .extId('my ext id 1', 'utf8') // Explicit the encoding. Or you can pass directly a Buffer
@@ -68,27 +70,28 @@ const firstEntry = Entry.builder()
     .build();
 
 const chain = new Chain(firstEntry);
-cli.add(chain, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym');
+cli.add(chain, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym');
 ```
 
 #### Add an entry
 
 ```javascript
+const { Entry } = require('factom');
 const myEntry = Entry.builder()
     .chainId('9107a308f91fd7962fecb321fdadeb37e2ca7d456f1d99d24280136c0afd55f2')
     .extId('6d79206578742069642031') // If no encoding parameter is passed as 2nd argument, 'hex' is used
     .extId('some external ID', 'utf8')
     .content('My new content',  'utf8')
     .build();
-cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym');
+cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym');
 ```
 
 ```javascript
 // Add multiples entries. The library will chunk the input list to not have an unbounded number of concurrent promises being resolved at the same time.
-cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym');
+cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym');
 
 // The size of the chunks can be customized (default value is 200).
-cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', { chunkSize: 1 });
+cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', { chunkSize: 1 });
 ```
 
 #### Commit/reveal acknowledgment when submitting chains or entries
@@ -97,12 +100,12 @@ Factom protocol uses a [commit/reveal commitment scheme](https://en.wikipedia.or
 
 ```javascript
 // Default behavior waits for both commit and reveal up to 60s
-cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym');
+cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym');
 // Change the timeout for commit ack to 120s and the timeout for reveal ack to 20s
-cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', { commitTimeout: 120, revealTimeout: 20});
+cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', { commitTimeout: 120, revealTimeout: 20});
 // By providing a negative number the library will not wait for any acknowledgment. 
 // In below example the wait on reveal ack is disabled (it'll still wait up to 60s on the commit ack).
-cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5kZ4FXEwtN8kE2pMDfeMym', { revealTimeout: -1});
+cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', { revealTimeout: -1});
 ```
 
 #### Repeated commit
@@ -236,8 +239,8 @@ const { Transaction } = require('factom');
 
 const ecRate = await cli.getEntryCreditRate();
 const tmpTx = Transaction.builder()
-    .input('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav37X', 14000000)
-    .input('Fs3BhggPYJBNJRzbLMce94FYyzEA3PDnsEJFwEsr37gYDN9QgFrh', 1010000)
+    .input('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X', 14000000)
+    .input('Fs2E6iXCLAKDiPqVtfxtuQCKsTe7o6DJFDnht1wST53s4ibtdu9f', 1010000)
     .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg5uH', 5000000)
     .output('FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZteF', 10000000)
     // Note this line is to buy EntryCredit (see the address type) and the amount is in Factoshis like others (it is *not* the number of EntryCredit you are purchasing)
@@ -248,8 +251,8 @@ const requiredFees = tmpTx.computeRequiredFees(ecRate);
 
 // Now that you know the required fees for your transaction you are free to add to any inputs or substract it from any outputs
 const transaction = Transaction.builder()
-    .input('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav37X', 14000000)
-    .input('Fs3BhggPYJBNJRzbLMce94FYyzEA3PDnsEJFwEsr37gYDN9QgFrh', 1010000 + requiredFees)
+    .input('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X', 14000000)
+    .input('Fs2E6iXCLAKDiPqVtfxtuQCKsTe7o6DJFDnht1wST53s4ibtdu9f', 1010000 + requiredFees)
     .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg5uH', 5000000)
     .output('FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZteF', 10000000)
     .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e3QR', 10000)
@@ -263,10 +266,11 @@ const txId = await cli.sendTransaction(transaction);
 By default the library will reject a transaction over paying the minimum required fees by a factor 10 as it is most likely a user input error. If you wish to force the transaction to be accepted you can pass the `force` option to `sendTransaction`;
 
 ```javascript
+const { Transaction } = require('factom');
 // Transaction largely over paid
 const transaction = Transaction.builder()
     .timestamp(now)
-    .input('Fs28CkYaV5AVsmhiWZWupUVKF4sTe8eQcJvtQ5mpB6UnjquxnU3c', 99999999999999999)
+    .input('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X', 99999999999999999)
     .output('FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw', 12000)
     .build();
 
@@ -283,6 +287,7 @@ await cli.sendTransaction(transaction, {force: true});
 If you build your Transaction using private Factoid addresses for inputs the library will take care for you to properly sign the transaction so that it's immediately ready to be submitted to the network. In some cases you may want to delegate the signature to another component (for instance an external cryptographic hardware storing your keys - such as Ledger device for instance): you will need to first build an unsigned transaction and later append the signatures and RCDs. The library will take care of validating the RCDs and signatures manually provided to guarantee the consistency and validity of the transaction.
 
 ```javascript
+const { Transaction } = require('factom');
 // You can create an unsigned transaction by using a public Factoid address for the inputs
 const unsignedTx = Transaction.builder()
     .timestamp(now)

@@ -1,10 +1,11 @@
 # Changelog
 
-## Unreleased
+## [0.3.2] 2018-09-05
 
 ### Changed
 
 * Renamed `addressToRcd` to `addressToRcdHash`. (breaking change)
+* Fixed README.
 
 ## [0.3.1] 2018-08-29
 
