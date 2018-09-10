@@ -49,6 +49,7 @@ class BaseCli {
         }
 
         this.httpCli = axios.create(httpCliOptions);
+        this.path = conf.path || '/v2';
 
         this.apiCounter = newCounter();
         this.retry = conf.retry || DEFAULT_RETRY_STRATEGY;
@@ -103,10 +104,11 @@ class FactomdCli extends BaseCli {
     constructor(conf) {
         const configuration = conf || {};
         super(configuration, 8088);
+        this.debugPath = conf.debugPath || '/debug';
     }
 
     call(method, params) {
-        const url = DEBUG_API_CALLS.has(method) ? '/debug' : '/v2';
+        const url = DEBUG_API_CALLS.has(method) ? this.debugPath : this.path;
         return super.call(url, method, params);
     }
 }
@@ -119,7 +121,7 @@ class WalletdCli extends BaseCli {
     }
 
     call(method, params) {
-        return super.call('/v2', method, params);
+        return super.call(this.path, method, params);
     }
 }
 

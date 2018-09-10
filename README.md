@@ -32,6 +32,8 @@ const cli = new FactomCli();
 const cli = new FactomCli({
     host: '52.202.51.228',
     port: 8088,
+    path: '/v2', // Path to V2 API. Default to /v2
+    debugPath: '/debug', // Path to debug API. Default to /debug
     user: 'paul', // RPC basic authentication
     password: 'pwd',
     protocol: 'http', // http or https. Default to http

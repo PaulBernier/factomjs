@@ -42,7 +42,7 @@ describe('Get information from Factom blockchain', function() {
     });
 
     it('should get all entries', async function() {
-        this.timeout(15000);
+        this.timeout(20000);
         const entries = await get.getAllEntriesOfChain(factomd, 'f48d2160c5d8178720d8c83b89a62599ab6a8b9dbec9fbece5229f787d1e8b44');
 
         assert.isAtLeast(entries.length, 7);

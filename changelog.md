@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.3] 2018-09-10
+
+### Added
+
+* Options to override default API paths (`/v2` and `/debug`).
+
 ## [0.3.2] 2018-09-05
 
 ### Changed
