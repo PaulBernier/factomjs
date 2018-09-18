@@ -1,5 +1,5 @@
 const nacl = require('tweetnacl/nacl-fast').sign,
-    { addressToKey, isValidEcPrivateAddress } = require('./addresses'),
+    { addressToKey, isValidEcPrivateAddress, isValidEcPublicAddress } = require('./addresses'),
     { MAX_ENTRY_PAYLOAD_SIZE } = require('./constant'),
     { sha256, sha512 } = require('./util');
 
@@ -182,21 +182,34 @@ function marshalExternalIdsBinary(extIds) {
     return Buffer.concat(result);
 }
 
-function composeEntryCommit(entry, ecPrivate) {
+function composeEntryCommit(entry, ecAddress, sig) {
     validateEntryInstance(entry);
-    if (!isValidEcPrivateAddress(ecPrivate)) {
-        throw new Error(`${ecPrivate} is not a valid EC private address`);
-    }
 
     const buffer = composeEntryLedger(entry);
 
-    // Sign commit
-    const secret = addressToKey(ecPrivate);
-    const key = nacl.keyPair.fromSeed(secret);
-    const ecPublic = Buffer.from(key.publicKey);
-    const signature = Buffer.from(nacl.detached(buffer, key.secretKey));
+    let ecPublicKey, signature;
 
-    return Buffer.concat([buffer, ecPublic, signature]);
+    if (isValidEcPrivateAddress(ecAddress)) {
+        // Sign commit
+        const secret = addressToKey(ecAddress);
+        const key = nacl.keyPair.fromSeed(secret);
+        ecPublicKey = Buffer.from(key.publicKey);
+        signature = Buffer.from(nacl.detached(buffer, key.secretKey));
+    } else if (isValidEcPublicAddress(ecAddress)) {
+        // Verify the signature manually provided
+        if (!sig) {
+            throw new Error('Signature of the commit missing.');
+        }
+        ecPublicKey = addressToKey(ecAddress);
+        signature = Buffer.from(sig, 'hex');
+        if (!nacl.detached.verify(buffer, signature, ecPublicKey)) {
+            throw new Error('Invalid signature manually provided for the entry commit. (entry timestamp not fixed?)');
+        }
+    } else {
+        throw new Error(`${ecAddress} is not a valid EC address`);
+    }
+
+    return Buffer.concat([buffer, ecPublicKey, signature]);
 }
 
 function composeEntryLedger(entry) {
@@ -217,11 +230,11 @@ function composeEntryReveal(entry) {
     return entry.marshalBinary();
 }
 
-function composeEntry(entry, ecPrivate) {
+function composeEntry(entry, ecAddress, signature) {
     validateEntryInstance(entry);
 
     return {
-        commit: composeEntryCommit(entry, ecPrivate),
+        commit: composeEntryCommit(entry, ecAddress, signature),
         reveal: composeEntryReveal(entry)
     };
 }

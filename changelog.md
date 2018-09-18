@@ -1,10 +1,11 @@
 # Changelog
 
-## [Unreleased]
+## [0.3.4] 2018-09-13
 
 ### Added
 
 * Expose `composeChainLedger` and `composeEntryLedger` functions.
+* Allow manual signature of entry and chain commits (hardware wallet integration): `composeChainCommit` and `composeEntryCommit` can now take an EC public address as the 2nd argument and the commit signature as the 3rd argument.
 
 ## [0.3.3] 2018-09-10
 

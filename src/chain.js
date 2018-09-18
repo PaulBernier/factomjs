@@ -1,5 +1,5 @@
 const nacl = require('tweetnacl/nacl-fast').sign,
-    { addressToKey, isValidEcPrivateAddress } = require('./addresses'),
+    { addressToKey, isValidEcPrivateAddress, isValidEcPublicAddress } = require('./addresses'),
     { Entry } = require('./entry'),
     { sha256, sha256d } = require('./util'),
     { CHAIN_CREATION_COST } = require('./constant');
@@ -41,21 +41,33 @@ class Chain {
  * Compose
  **********************/
 
-function composeChainCommit(chain, ecPrivate) {
+function composeChainCommit(chain, ecAddress, sig) {
     validateChainInstance(chain);
-    if (!isValidEcPrivateAddress(ecPrivate)) {
-        throw new Error(`${ecPrivate} is not a valid EC private address`);
-    }
 
     const buffer = composeChainLedger(chain);
+    let ecPublicKey, signature;
 
-    // Sign commit
-    const secret = addressToKey(ecPrivate);
-    const key = nacl.keyPair.fromSeed(secret);
-    const ecPublic = Buffer.from(key.publicKey);
-    const signature = Buffer.from(nacl.detached(buffer, key.secretKey));
+    if (isValidEcPrivateAddress(ecAddress)) {
+        // Sign commit
+        const secret = addressToKey(ecAddress);
+        const key = nacl.keyPair.fromSeed(secret);
+        ecPublicKey = Buffer.from(key.publicKey);
+        signature = Buffer.from(nacl.detached(buffer, key.secretKey));
+    } else if (isValidEcPublicAddress(ecAddress)) {
+        // Verify the signature manually provided
+        if (!sig) {
+            throw new Error('Signature of the commit missing.');
+        }
+        ecPublicKey = addressToKey(ecAddress);
+        signature = Buffer.from(sig, 'hex');
+        if (!nacl.detached.verify(buffer, signature, ecPublicKey)) {
+            throw new Error('Invalid signature manually provided for the chain commit. (first entry timestamp not fixed?)');
+        }
+    } else {
+        throw new Error(`${ecAddress} is not a valid EC address`);
+    }
 
-    return Buffer.concat([buffer, ecPublic, signature]);
+    return Buffer.concat([buffer, ecPublicKey, signature]);
 }
 
 function composeChainLedger(chain) {
@@ -82,11 +94,11 @@ function composeChainReveal(chain) {
     return chain.firstEntry.marshalBinary();
 }
 
-function composeChain(chain, ecPrivate) {
+function composeChain(chain, ecAddress, signature) {
     validateChainInstance(chain);
 
     return {
-        commit: composeChainCommit(chain, ecPrivate),
+        commit: composeChainCommit(chain, ecAddress, signature),
         reveal: composeChainReveal(chain)
     };
 }
