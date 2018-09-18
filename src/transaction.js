@@ -1,7 +1,7 @@
 // https://github.com/FactomProject/FactomDocs/blob/master/factomDataStructureDetails.md#factoid-transaction
 // https://github.com/FactomProject/factoid/blob/3ee9763f86849036723d1b059216e08a6d34b184/transaction.go
 
-const nacl = require('tweetnacl/nacl-fast').sign,
+const sign = require('tweetnacl/nacl-fast').sign,
     base58 = require('base-58'),
     { RCD_TYPE_1, encodeVarInt, sha256, sha256d, flatMap } = require('./util'),
     { MAX_TRANSACTION_SIZE } = require('./constant'),
@@ -47,7 +47,7 @@ class Transaction {
 
             if (builder._keys.length !== 0) {
                 this.rcds = builder._keys.map(key => Buffer.concat([RCD_TYPE_1, Buffer.from(key.publicKey)]));
-                this.signatures = builder._keys.map(key => Buffer.from(nacl.detached(this.marshalBinarySig, key.secretKey)));
+                this.signatures = builder._keys.map(key => Buffer.from(sign.detached(this.marshalBinarySig, key.secretKey)));
             } else {
                 this.rcds = builder._rcds;
                 this.signatures = builder._signatures;
@@ -204,7 +204,7 @@ class TransactionBuilder {
 
         if (fctAddress[1] === 's') {
             const secret = addressToKey(fctAddress);
-            const key = nacl.keyPair.fromSeed(secret);
+            const key = sign.keyPair.fromSeed(secret);
             this._keys.push(key);
         }
 
@@ -269,7 +269,7 @@ function validateSignature(data, rcd, signature) {
 
     const publicKey = Buffer.from(rcd, 1).slice(1);
 
-    if (!nacl.detached.verify(data, signature, publicKey)) {
+    if (!sign.detached.verify(data, signature, publicKey)) {
         throw new Error('Signature of Transaction is invalid.');
     }
 }

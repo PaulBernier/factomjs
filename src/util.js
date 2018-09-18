@@ -1,4 +1,4 @@
-const nacl = require('tweetnacl/nacl-fast').sign,
+const sign = require('tweetnacl/nacl-fast').sign,
     Long = require('long'),
     hashSha256 = require('hash.js/lib/hash/sha/256'),
     hashSha512 = require('hash.js/lib/hash/sha/512');
@@ -23,7 +23,7 @@ function toHex(arg) {
 }
 
 function secretToPublicKey(secret) {
-    const key = nacl.keyPair.fromSeed(secret);
+    const key = sign.keyPair.fromSeed(secret);
     return Buffer.from(key.publicKey);
 }
 

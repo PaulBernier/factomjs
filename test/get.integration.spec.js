@@ -219,6 +219,8 @@ describe('Get information from Factom blockchain', function() {
     }
 
     it('should get Admin Block', async function() {
+        this.timeout(5000);
+
         const byHash = await get.getAdminBlock(factomd, 'c98beb0b3cbfbb090acdd238ca17725119eb43f1df5ef117ffbdc59f050508e6');
         assertAdminBlock(byHash);
 

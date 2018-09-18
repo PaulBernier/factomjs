@@ -1,4 +1,4 @@
-const nacl = require('tweetnacl/nacl-fast').sign,
+const sign = require('tweetnacl/nacl-fast').sign,
     { addressToKey, isValidEcPrivateAddress, isValidEcPublicAddress } = require('./addresses'),
     { MAX_ENTRY_PAYLOAD_SIZE } = require('./constant'),
     { sha256, sha512 } = require('./util');
@@ -192,9 +192,9 @@ function composeEntryCommit(entry, ecAddress, sig) {
     if (isValidEcPrivateAddress(ecAddress)) {
         // Sign commit
         const secret = addressToKey(ecAddress);
-        const key = nacl.keyPair.fromSeed(secret);
+        const key = sign.keyPair.fromSeed(secret);
         ecPublicKey = Buffer.from(key.publicKey);
-        signature = Buffer.from(nacl.detached(buffer, key.secretKey));
+        signature = Buffer.from(sign.detached(buffer, key.secretKey));
     } else if (isValidEcPublicAddress(ecAddress)) {
         // Verify the signature manually provided
         if (!sig) {
@@ -202,7 +202,7 @@ function composeEntryCommit(entry, ecAddress, sig) {
         }
         ecPublicKey = addressToKey(ecAddress);
         signature = Buffer.from(sig, 'hex');
-        if (!nacl.detached.verify(buffer, signature, ecPublicKey)) {
+        if (!sign.detached.verify(buffer, signature, ecPublicKey)) {
             throw new Error('Invalid signature manually provided for the entry commit. (entry timestamp not fixed?)');
         }
     } else {
