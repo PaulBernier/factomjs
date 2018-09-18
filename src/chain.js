@@ -59,6 +59,8 @@ function composeChainCommit(chain, ecPrivate) {
 }
 
 function composeChainLedger(chain) {
+    validateChainInstance(chain);
+
     const firstEntry = chain.firstEntry;
     const entryHash = firstEntry.hash();
     const buffer = Buffer.alloc(104);
@@ -121,5 +123,6 @@ module.exports = {
     computeChainId,
     composeChainCommit,
     composeChainReveal,
-    composeChain
+    composeChain,
+    composeChainLedger
 };

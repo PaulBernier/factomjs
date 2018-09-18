@@ -200,6 +200,8 @@ function composeEntryCommit(entry, ecPrivate) {
 }
 
 function composeEntryLedger(entry) {
+    validateEntryInstance(entry);
+
     const buffer = Buffer.alloc(40);
 
     buffer.writeInt8(0);
@@ -245,5 +247,6 @@ module.exports = {
     validateEntryInstance,
     composeEntryCommit,
     composeEntryReveal,
-    composeEntry
+    composeEntry,
+    composeEntryLedger
 };

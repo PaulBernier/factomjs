@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+* Expose `composeChainLedger` and `composeEntryLedger` functions.
+
 ## [0.3.3] 2018-09-10
 
 ### Added
