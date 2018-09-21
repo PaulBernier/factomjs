@@ -1,6 +1,6 @@
 {
     "name": "factom",
-    "version": "0.3.4-rc1",
+    "version": "0.3.4",
     "description": "Components to build applications on the Factom blockchain",
     "main": "src/factom.js",
     "scripts": {

@@ -4,6 +4,7 @@
 
 ### Added
 
+* New FacomCli method `rewindChainWhile` that allows to iterate on a chain entry by entry.
 * Expose `composeChainLedger` and `composeEntryLedger` functions.
 * Allow manual signature of entry and chain commits (hardware wallet integration): `composeChainCommit` and `composeEntryCommit` can now take an EC public address as the 2nd argument and the commit signature as the 3rd argument.
 

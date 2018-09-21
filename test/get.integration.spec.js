@@ -1,4 +1,5 @@
 const assert = require('chai').assert,
+    { Entry } = require('../src/entry'),
     { FactomdCli } = require('../src/apis-cli'),
     { Transaction } = require('../src/transaction'),
     { DirectoryBlock, EntryCreditBlock, FactoidBlock, AdminBlock, EntryBlock } = require('../src/blocks'),
@@ -7,9 +8,9 @@ const assert = require('chai').assert,
 const nconf = require('nconf').file({ file: `${__dirname}/config.json` });
 const factomd = new FactomdCli({ host: nconf.get('factomd-host'), port: nconf.get('factomd-port') });
 
-describe('Get information from Factom blockchain', function() {
+describe('Get information from Factom blockchain', function () {
 
-    it('should get entry', async function() {
+    it('should get entry', async function () {
         this.timeout(5000);
 
         const entry = await get.getEntry(factomd, 'ec92aa51b34b992b3472c54ce005a3baf7fbdddd8bb6d786aad19304830559b0');
@@ -22,7 +23,7 @@ describe('Get information from Factom blockchain', function() {
         assert.equal(entry.content.toString(), '53746, 662369, 12\r\n');
     });
 
-    it('should get first entry', async function() {
+    it('should get first entry', async function () {
         this.timeout(10000);
 
         const entry = await get.getFirstEntry(factomd, 'f48d2160c5d8178720d8c83b89a62599ab6a8b9dbec9fbece5229f787d1e8b44');
@@ -34,14 +35,14 @@ describe('Get information from Factom blockchain', function() {
         assert.isObject(entry.blockContext);
     });
 
-    it('should get entry with block context', async function() {
-        this.timeout(10000);
+    it('should get entry with block context', async function () {
+        this.timeout(15000);
 
         const entry = await get.getEntryWithBlockContext(factomd, 'caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42');
         assertEntryWithBlockContext(entry);
     });
 
-    it('should get all entries', async function() {
+    it('should get all entries', async function () {
         this.timeout(20000);
         const entries = await get.getAllEntriesOfChain(factomd, 'f48d2160c5d8178720d8c83b89a62599ab6a8b9dbec9fbece5229f787d1e8b44');
 
@@ -62,7 +63,7 @@ describe('Get information from Factom blockchain', function() {
         assert.equal(entry.blockContext.entryBlockKeyMR, 'a13ac9df4153903f5a07093effe6434bdeb35fea0ff4bd402f323e486bea6ea4');
     }
 
-    it('should get balance', async function() {
+    it('should get balance', async function () {
         this.timeout(5000);
 
         const ecBalance = await get.getBalance(factomd, 'EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD');
@@ -76,7 +77,7 @@ describe('Get information from Factom blockchain', function() {
         assert.typeOf(fctBalance2, 'number');
     });
 
-    it('should get Transaction', async function() {
+    it('should get Transaction', async function () {
         this.timeout(5000);
 
         const transaction = await get.getTransaction(factomd, '63fe4275064427f11e0dcfc3ff2d56adf88ba12c2646bc0d03d03a02ff7d2727');
@@ -103,7 +104,7 @@ describe('Get information from Factom blockchain', function() {
         assert.equal(transaction.blockContext.factoidBlockKeyMR, 'bb622dc852a278ede8fbfd0144ae49d6576e621a1267932dfd198c2cea73b403');
     });
 
-    it('should get heights', async function() {
+    it('should get heights', async function () {
         const heights = await get.getHeights(factomd);
 
         assert.isNumber(heights.directoryBlockHeight);
@@ -128,7 +129,7 @@ describe('Get information from Factom blockchain', function() {
         assert.lengthOf(db.entryBlockRefs, 23);
     }
 
-    it('should get Directory Block', async function() {
+    it('should get Directory Block', async function () {
         this.timeout(5000);
 
         const byKeyMR = await get.getDirectoryBlock(factomd, 'f55a19d9562843b642f1a20b34fcbb71e70f438c4d98d223fc2228ca2dd0c54a');
@@ -157,7 +158,7 @@ describe('Get information from Factom blockchain', function() {
         assert.lengthOf(ecb.minuteIndexes, 11);
     }
 
-    it('should get Entry Credit Block', async function() {
+    it('should get Entry Credit Block', async function () {
         this.timeout(5000);
 
         const byHeaderHash = await get.getEntryCreditBlock(factomd, '96ad20412e7799e80f3979c425bfa5641282563371cd40049492701f9c09e338');
@@ -180,7 +181,7 @@ describe('Get information from Factom blockchain', function() {
 
     }
 
-    it('should get Factoid Block', async function() {
+    it('should get Factoid Block', async function () {
         this.timeout(5000);
 
         const byKeyMR = await get.getFactoidBlock(factomd, 'e0715c82f88423a5ce23eb4c8d71700f3dacc5e557adea4d166f5c51683c950a');
@@ -190,7 +191,7 @@ describe('Get information from Factom blockchain', function() {
         assertFactoidBlock(byHeight);
     });
 
-    it('should get Entry Block', async function() {
+    it('should get Entry Block', async function () {
         this.timeout(5000);
 
         const eb = await get.getEntryBlock(factomd, '3944669331eea620f7f3ec67864a03a646a104f17e36aec3e0f5bdf638f16883');
@@ -218,7 +219,7 @@ describe('Get information from Factom blockchain', function() {
         assert.lengthOf(ab.entries, 3);
     }
 
-    it('should get Admin Block', async function() {
+    it('should get Admin Block', async function () {
         this.timeout(5000);
 
         const byHash = await get.getAdminBlock(factomd, 'c98beb0b3cbfbb090acdd238ca17725119eb43f1df5ef117ffbdc59f050508e6');
@@ -226,6 +227,43 @@ describe('Get information from Factom blockchain', function() {
 
         const byHeight = await get.getAdminBlock(factomd, 21662);
         assertAdminBlock(byHeight);
+    });
+
+    // TODO: fragile test, should be set up against local factomd rather than testnet
+    it('should rewind chain entry by entry (forEach)', async function () {
+        this.timeout(20000);
+
+        let counter = 0;
+        await get.rewindChainWhile(factomd, '106fa1e435be6cff0e167da35a186b141e4dfcea204e1500bf694c88b9214f68', () => true, function (entry) {
+            assert.instanceOf(entry, Entry);
+            counter++;
+        });
+        assert.equal(counter, 5);
+    });
+
+    it('should not rewind chain ', async function () {
+        this.timeout(20000);
+
+        await get.rewindChainWhile(factomd, '106fa1e435be6cff0e167da35a186b141e4dfcea204e1500bf694c88b9214f68', () => false, function () {
+            throw new Error('Should not be entered');
+        });
+    });
+
+    // TODO: fragile test, should be set up against local factomd rather than testnet
+    it('should rewind chain and find entry', async function () {
+        this.timeout(20000);
+
+        let search = true, found, counter = 0;
+        await get.rewindChainWhile(factomd, '106fa1e435be6cff0e167da35a186b141e4dfcea204e1500bf694c88b9214f68', () => search, function(entry) {
+            counter++;
+            if (entry.content.toString('hex') === '0b70b3b0fd865bd903461bf8f3d9cd782ebfa92e26238079eaf58bbdf2b4a1c0') {
+                found = entry;
+                search = false;
+            }
+        });
+
+        assert.equal(counter, 3);
+        assert.equal(found.hash().toString('hex'), '0ef649d17f4f1e961a0e5d0d7f294ae151253d72564958763821aee1dc6ac37f');
     });
 
 });

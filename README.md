@@ -141,6 +141,32 @@ As stated above `getEntryWithBlockContext` has to rewind the blockchain until fi
 
 Besides `getEntryWithBlockContext` entries returned by `getFirstEntry` and `getAllEntriesOfChain` have a `blockContext` populated (because those methods are already rewinding the blockchain anyway).
 
+#### Iterating entries of a chain
+
+The FactomCli method `getAllEntriesOfChain` fetches all the entries of the chain before returning the result: in case of long chains in can be impractical. In some cases you may want to iterate only through a portion of the chain. For those cases FactomCli exposes the method `rewindChainWhile(chainId, function predicate(entry) {}, function body(entry) {})` that iterates a chain from the most recent entry to the oldest one as long as the `predicate` function returns true and that the end of the chain has not been reached. At each iteration the `body` function is called with the current entry as its argument. 
+
+*Example 1. Iterating a long chain entry by entry*
+
+```javascript
+await cli.rewindChainWhile('caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42',
+    () => true,
+    entry => // Process entry
+```
+
+*Example 2. Searching an entry in a chain*
+
+```javascript
+let search = true, found;
+await cli.rewindChainWhile('caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42', 
+    () => search, 
+    function(entry) {
+        if (entry.extId[0].toString() === 'Find me!') {
+            search = false;
+            found = entry;
+        }
+    });
+```
+
 ### Addresses
 
 Factom.js offers a bunch of util functions around FCT/EC addresses and cryptographic keys, namely:

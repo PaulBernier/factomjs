@@ -124,6 +124,10 @@ class FactomCli {
         return get.getTransaction(this.factomd, txId);
     }
 
+    rewindChainWhile(chainId, predicate, func) {
+        return get.rewindChainWhile(this.factomd, chainId, predicate, func);
+    }
+
     // Send transactions
 
     sendTransaction(transaction, options) {

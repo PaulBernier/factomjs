@@ -83,6 +83,43 @@ async function getAllEntriesOfChain(factomd, chainId) {
     return Promise.resolve(allEntries.reverse());
 }
 
+async function rewindChainWhile(factomd, chainId, predicate, func) {
+    if (typeof predicate !== 'function') {
+        throw new Error(`${predicate} is not a function`);
+    }
+    if (typeof func !== 'function') {
+        throw new Error(`${func} is not a function`);
+    }
+
+    const chainHead = await getChainHead(factomd, chainId);
+
+    if (chainHead.keyMR === '' && chainHead.chainInProcessList) {
+        throw new Error('Chain not yet included in a Directory Block');
+    }
+
+    let keyMR = chainHead.keyMR;
+    while (keyMR !== NULL_HASH) {
+        const {
+            entries,
+            previousKeyMR
+        } = await getAllEntriesOfEntryBlock(factomd, keyMR);
+
+        let i = entries.length - 1;
+        while (i >= 0 && await predicate(entries[i])) {
+            await func(entries[i]);
+            i--;
+        }
+
+        // If the loop index is greater or equal to 0 it means the predicate was evaluted to false
+        // And we must stop iterating entry blocks
+        if (i >= 0) {
+            break;
+        }
+
+        keyMR = previousKeyMR;
+    }
+}
+
 async function getAllEntriesOfEntryBlock(factomd, keyMR) {
     const entryBlock = await factomd.call('entry-block', { keymr: keyMR });
 
@@ -283,5 +320,6 @@ module.exports = {
     getEntryBlock,
     getAdminBlock,
     getFactoidBlock,
-    getEntryCreditBlock
+    getEntryCreditBlock,
+    rewindChainWhile
 };
