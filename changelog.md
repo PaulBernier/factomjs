@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.5] 2018-09-26
+
+### Fixed
+
+* Parsing of the descriptor index in an Admin block coinbase cancel entry.
+
 ## [0.3.4] 2018-09-13
 
 ### Added

@@ -119,7 +119,7 @@ function transformAdminBlockEntry(entry) {
             break;
         case 12:
             data.descriptorHeight = entry.descriptor_height;
-            data.descriptorIndex = entry.descriptor_index;
+            data.descriptorIndex = entry.DescriptorIndex;
             break;
         case 13:
             data.identityChainId = entry.IdentityChainID;

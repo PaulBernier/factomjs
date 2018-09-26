@@ -1,710 +1,813 @@
 {
-    "15a887568ba62cfe0df15b27956a0c65a3862688e96d550519b3d3cb07b4c070": {
-      "ablock": {
-        "header": {
-          "prevbackrefhash": "ed78955c3d3dc91d9cc55be8d30171b1685d2984c0940c89edc14ec2cce067ef",
-          "dbheight": 31096,
-          "headerexpansionsize": 0,
-          "headerexpansionarea": "",
-          "messagecount": 8,
-          "bodysize": 1032,
-          "adminchainid": "000000000000000000000000000000000000000000000000000000000000000a",
-          "chainid": "000000000000000000000000000000000000000000000000000000000000000a"
-        },
-        "abentries": [
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888881c98618455b818cbe56b924374d87445ffdc7263363302292974dc3f94",
-            "prevdbsig": {
-              "pub": "0de6369919f526225a14c38b7cf7081287e4029471e000b5c4336c041b233253",
-              "sig": "ccdf572fd75b6618ce182096e395974717d0b1b9306b50660b8958f0e45961b495484894ea6b51cd8b77aed0909f965c0ee5566a2d54d58dc7c7f19a2dfb1f0a"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888208ac88cfa432c02d2a239c6d8a775478972c56bb3f0317dac741b155c",
-            "prevdbsig": {
-              "pub": "b45430e61e0704bf63f41c63f3955d61ed7dc36d34ec2e7e62ab606645add001",
-              "sig": "d31fdcfdba9969789cc76cf599e4ebc112c3eeeaffeb53e2b589e64956df16f56e5e2d03c1bdb64769796f0a68913a089d3f7a959010d2d2417be109d8fe4f02"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888551291c87240b682dba9b867fde1314c38cb48556c4a6b39dd3683a2da",
-            "prevdbsig": {
-              "pub": "deff2d401502847efcc3c6fbd100bc88d3ab9c1b71a06b31b2ed620fe23bfef8",
-              "sig": "6361c5456543bc2795d23eed5d79253261b5e2dd2c558ceb832b129858f99a6babcd84cc79fc389172e000f5eb2c26587dab32721c2681c11c67476ba00cef0f"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888745c880f62e73da38a03519134c895cbc806feebc73f321cc00681b126",
-            "prevdbsig": {
-              "pub": "dcaf4ab9040b17248fa15defcfecdd7bdbd018776c5a01b92c7e391077658699",
-              "sig": "d3c440b61a6686dac1ba254dd45fe21291d52a17556d0d380227125fed77258364e7047ad3da0805c17f5cd1b27fd990361d5c9ed2ba82b0795dacb894ac1a01"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888888d5b46f09cc2ad501889119a7d41a7616f765cb1a9710bd94e9a867556",
-            "prevdbsig": {
-              "pub": "bb4e0379fb294422c556d4b7c3b95cf2b11e7faef27d38dad49b2f139158d80a",
-              "sig": "80459eb64e5a8c8ae6714c8bf3400abe92a5deeddd04f4e9d8dc0561446303e3d77e0e16d2904216cdb3a8ee13ea6be36880c96bd71e8512385b0e4698a0ae08"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888889fff41615e89c718e6a08d28107ff50aa99e72197c6efd40fb202a5803",
-            "prevdbsig": {
-              "pub": "6d9be060bed2a53a3498a2918934a62768b0c109c3ceb3d0b3697d2f5c92f8a0",
-              "sig": "24b2ca077ea08e5b1c4714d170c11b68e908469fb11b3687e088c69d68ef5ad4b88ce64c6a61906f613c90751a1fd9f6cc43d1be3e5b1e0205660c2a4495b108"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888dc16a02e27f184353ac046e8ca2e052be873809af3dc86907bdae98b96",
-            "prevdbsig": {
-              "pub": "db0429a7caf8b93b387688e5172df591731acc862ac7440d85c01657c672b2c0",
-              "sig": "a3d7102aa56904c2a3fe78c70f3b7978fb82841301a73bb3d1552d6d2c4e669ef64b317ddbdfd7a60108681770ec131266e6d15778a82ca723ef091aeeea8706"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888880fc082ace22b1dbe53609424071852f969afd19c54a1c7b30c65cbcbc4",
-            "prevdbsig": {
-              "pub": "2a6c201572cbdd8861623d6d247dc8fe2d6a3839a1ab22f5347803baa69d44af",
-              "sig": "2200d38f0fbc8eb294293368431253d5ca4f9cbcb9c1cfe519de54682fcac0ac0b770f688a4a010ad8479bf6abefbdb80cf4de304e1030606ade94b2d3a33001"
-            }
+  "15a887568ba62cfe0df15b27956a0c65a3862688e96d550519b3d3cb07b4c070": {
+    "ablock": {
+      "header": {
+        "prevbackrefhash": "ed78955c3d3dc91d9cc55be8d30171b1685d2984c0940c89edc14ec2cce067ef",
+        "dbheight": 31096,
+        "headerexpansionsize": 0,
+        "headerexpansionarea": "",
+        "messagecount": 8,
+        "bodysize": 1032,
+        "adminchainid": "000000000000000000000000000000000000000000000000000000000000000a",
+        "chainid": "000000000000000000000000000000000000000000000000000000000000000a"
+      },
+      "abentries": [
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888881c98618455b818cbe56b924374d87445ffdc7263363302292974dc3f94",
+          "prevdbsig": {
+            "pub": "0de6369919f526225a14c38b7cf7081287e4029471e000b5c4336c041b233253",
+            "sig": "ccdf572fd75b6618ce182096e395974717d0b1b9306b50660b8958f0e45961b495484894ea6b51cd8b77aed0909f965c0ee5566a2d54d58dc7c7f19a2dfb1f0a"
           }
-        ],
-        "backreferencehash": "a93018e3032bc783d317a9c38a3e927f40017a212b0c73b732386f14750174ec",
-        "lookuphash": "15a887568ba62cfe0df15b27956a0c65a3862688e96d550519b3d3cb07b4c070"
-      }
-    },
-    "8a0a37bd123b0e210eeed8a6cad22fb742bd52d123d9b42af4e9901052a66a0d": {
-      "ablock": {
-        "header": {
-          "prevbackrefhash": "ef3b0eeb6ba4553d41db22089b1a1b0bda882250d7bbe3b67fcbfb49f75b35e3",
-          "dbheight": 30895,
-          "headerexpansionsize": 0,
-          "headerexpansionarea": "",
-          "messagecount": 16,
-          "bodysize": 1828,
-          "adminchainid": "000000000000000000000000000000000000000000000000000000000000000a",
-          "chainid": "000000000000000000000000000000000000000000000000000000000000000a"
         },
-        "abentries": [
-          {
-            "adminidtype": 6,
-            "identitychainid": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
-            "dbheight": 30896
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
-            "prevdbsig": {
-              "pub": "08ec6928e010c1694763d571e9a0142c697f524cc40d33ca7bd911d8685a1921",
-              "sig": "92c47c2c241e5e0a1028f4a0b2d237e5c59f7a4499c79784840051df03439012b9fd476a22657b67aa54ef4ba90c82200510dece2cc4841737c7349a8a30af01"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888880fc082ace22b1dbe53609424071852f969afd19c54a1c7b30c65cbcbc4",
-            "prevdbsig": {
-              "pub": "2a6c201572cbdd8861623d6d247dc8fe2d6a3839a1ab22f5347803baa69d44af",
-              "sig": "c606791d1bf71895b40a8ab0bcdf5f4917815bb19d2452f7eb677fd004bc5952a503568261b06b2bd6b623ef7ab4daf935bd3d03ff67f6288c790a273673660c"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888208ac88cfa432c02d2a239c6d8a775478972c56bb3f0317dac741b155c",
-            "prevdbsig": {
-              "pub": "b45430e61e0704bf63f41c63f3955d61ed7dc36d34ec2e7e62ab606645add001",
-              "sig": "a0b7ff0d84f80df81904a2c52c97469af7d8df93ddf68cdefb19f8f1a7dd4532e26c423d2237ec45816c059993598af57808686f53979ab15ece3b2fe75bd40a"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888551291c87240b682dba9b867fde1314c38cb48556c4a6b39dd3683a2da",
-            "prevdbsig": {
-              "pub": "deff2d401502847efcc3c6fbd100bc88d3ab9c1b71a06b31b2ed620fe23bfef8",
-              "sig": "2e67cb919b944519b9b6bf40dc29d1da185bb9e2439b4fcc98e4f1162e48edcd413a3698688a73c56a1df4ba89020e41529dee8d78e4ea694fbb532ae611c000"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888745c880f62e73da38a03519134c895cbc806feebc73f321cc00681b126",
-            "prevdbsig": {
-              "pub": "dcaf4ab9040b17248fa15defcfecdd7bdbd018776c5a01b92c7e391077658699",
-              "sig": "13781779a718c45da551e74a078e4988fb351d3d8848a7174857cb6a23a28830a012b27d1f88cf1198927f37d259ac7ef9fb9ba4adc0495d045ca31c05d9e40a"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888888d5b46f09cc2ad501889119a7d41a7616f765cb1a9710bd94e9a867556",
-            "prevdbsig": {
-              "pub": "bb4e0379fb294422c556d4b7c3b95cf2b11e7faef27d38dad49b2f139158d80a",
-              "sig": "5bb3d9acac83416511b372f5a07cc9f95557ad55ccf0286d56e607e6303074f2b8aa7169c11440420ed060a2fc25180db33612574ba3b6e10bfca1a375f5860c"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888888de45074fb3505cfdc942f80f4c9ef1ddd5c4633cd21a940288ffc89f3",
-            "prevdbsig": {
-              "pub": "d7f968a9ee264b92b6002098a6072fd8619a572c18d80f55fff4790665b061dd",
-              "sig": "d0e5ae6c79c2386bc53831d616e7d7ae6d84d9a2f9a33ba61193781b8e250a6fdcb829302b1ee2cbd70d29d6e65e004d46226cc6d2024e9ff4535fecf4e65a0b"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888889fff41615e89c718e6a08d28107ff50aa99e72197c6efd40fb202a5803",
-            "prevdbsig": {
-              "pub": "6d9be060bed2a53a3498a2918934a62768b0c109c3ceb3d0b3697d2f5c92f8a0",
-              "sig": "969edd42c4f7f021dace4fb9008b6d7f5031f7cfddd5591e387d65d8291faf698d998bfcdd7de14c25e9e9e9fa1a48a7c023421137e742b522b42164ea248a06"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888dc16a02e27f184353ac046e8ca2e052be873809af3dc86907bdae98b96",
-            "prevdbsig": {
-              "pub": "db0429a7caf8b93b387688e5172df591731acc862ac7440d85c01657c672b2c0",
-              "sig": "e52976c0c8fbb535fc077a4d1ebc88439dcfed94b99ca013ffe518de5c25bf5d20e330de5941448c20fcb77162a008887a9a67bfc45145855ec76c3ef68ab40d"
-            }
-          },
-          {
-            "adminidtype": 11,
-            "Outputs": [
-              {
-                "amount": 320000000,
-                "address": "b834c8637b2b8c7f18e92243383391fba263a25d49f7a6280807e6824224dd28",
-                "useraddress": "FA3NCrf7W6CV4A7HKLQd4eveHhzfrayE3CXd85axLQrD4zYr4XbW"
-              },
-              {
-                "amount": 576000000,
-                "address": "e8e41a1c7ca7c29dc928e509cae82cae1a4711eb12fddc8bde25bf1733069efc",
-                "useraddress": "FA3jeSpDq6JSNmizDS8TWwdxKS9EiKFeRCXyZNYrfH6eqX1K9o8u"
-              },
-              {
-                "amount": 320000000,
-                "address": "2b20273033acf00b40e88848a853a56dd0543570f4f28d30b050634d1e28bd6e",
-                "useraddress": "FA2J59Eb8xyizJLachFn8LuRXVsSNkoW2uPKrna8X4UrtyVwztgY"
-              },
-              {
-                "amount": 561472000,
-                "address": "94fc3c50add88dd87b5337999e5a06c1ad61775a24df36bba558f713fda6d394",
-                "useraddress": "FA36hBnEibeWk4diroU754n76So6NrfbYkDfLJkkb3gSR1AFqqSi"
-              },
-              {
-                "amount": 512000000,
-                "address": "37f8b555abae52974691c97fb18c6eb1504c96482c628ce5d97d97d839b139cc",
-                "useraddress": "FA2PjGspxvLGHEcsEtPiZYdFCk4APHJiDb3RmRRCMr1ra97Ugjvb"
-              },
-              {
-                "amount": 320000000,
-                "address": "95804d4c7b91bee78bff0892b02f74c38f7d5c7c6e23fb122843900c32e49c5b",
-                "useraddress": "FA36vN5aQU2DAofpisurQhDSvx73MVatA53kSstTgcts8h2T9cvx"
-              },
-              {
-                "amount": 320000000,
-                "address": "7e73ae9e7c31c632697e9c9207075a66f099f82f5d1da2aec157146d48c75533",
-                "useraddress": "FA2vmboi6PbPHdGjqG5PfRhCG1hcpkXqNkVigAmmjq9atUAA2NpZ"
-              },
-              {
-                "amount": 627072000,
-                "address": "0c0aed44446538b251f418b6cdf61408f9f08f56a1d80be32bd7c8085d9bd499",
-                "useraddress": "FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZyeF"
-              },
-              {
-                "amount": 320000000,
-                "address": "f35f478bd4a1409ac653c90efcf94ee3588f63be807b8cb9aee66077ca0eb260",
-                "useraddress": "FA3pGAzaaGL3jy6tHyzKGaTfJNY6MJEprAvEnDjetWDPkgdUKYpx"
-              }
-            ]
-          },
-          {
-            "adminidtype": 3,
-            "identitychainid": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
-            "mhash": "4e99c3725c51d4cecf7de78e3196166e6de12a12f68b437b9c43f71b459979c6"
-          },
-          {
-            "adminidtype": 8,
-            "identitychainid": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
-            "keypriority": 0,
-            "publickey": "08ec6928e010c1694763d571e9a0142c697f524cc40d33ca7bd911d8685a1921",
-            "dbheight": 30896
-          },
-          {
-            "adminidtype": 9,
-            "identitychainid": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
-            "keypriority": 0,
-            "keytype": 0,
-            "ecdsapublickey": "45185ad9f6453ac56a7572dbd9abbe2d421b0692"
-          },
-          {
-            "adminidtype": 13,
-            "IdentityChainID": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
-            "FactoidAddress": "b834c8637b2b8c7f18e92243383391fba263a25d49f7a6280807e6824224dd28"
-          },
-          {
-            "adminidtype": 14,
-            "IdentityChainID": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
-            "Efficiency": 5000
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888208ac88cfa432c02d2a239c6d8a775478972c56bb3f0317dac741b155c",
+          "prevdbsig": {
+            "pub": "b45430e61e0704bf63f41c63f3955d61ed7dc36d34ec2e7e62ab606645add001",
+            "sig": "d31fdcfdba9969789cc76cf599e4ebc112c3eeeaffeb53e2b589e64956df16f56e5e2d03c1bdb64769796f0a68913a089d3f7a959010d2d2417be109d8fe4f02"
           }
-        ],
-        "backreferencehash": "1dd90a1b11f6edb8a7125ed5e9aa9a519f1ebd58044b35887813a009d1b110d0",
-        "lookuphash": "8a0a37bd123b0e210eeed8a6cad22fb742bd52d123d9b42af4e9901052a66a0d"
-      }
-    },
-    "60df6174ef83475e54fe01f246710f8ea1cb29b2681433bbabd57ed8081f9739": {
-      "ablock": {
-        "header": {
-          "prevbackrefhash": "673d4ed8ae5cde019c3c0ef789895d07dee18182b11ce032a5d133f3c7b0783f",
-          "dbheight": 30942,
-          "headerexpansionsize": 0,
-          "headerexpansionarea": "",
-          "messagecount": 10,
-          "bodysize": 1106,
-          "adminchainid": "000000000000000000000000000000000000000000000000000000000000000a",
-          "chainid": "000000000000000000000000000000000000000000000000000000000000000a"
         },
-        "abentries": [
-          {
-            "adminidtype": 6,
-            "identitychainid": "8888888de45074fb3505cfdc942f80f4c9ef1ddd5c4633cd21a940288ffc89f3",
-            "dbheight": 30943
-          },
-          {
-            "adminidtype": 5,
-            "identitychainid": "8888881c98618455b818cbe56b924374d87445ffdc7263363302292974dc3f94",
-            "dbheight": 30943
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888745c880f62e73da38a03519134c895cbc806feebc73f321cc00681b126",
-            "prevdbsig": {
-              "pub": "dcaf4ab9040b17248fa15defcfecdd7bdbd018776c5a01b92c7e391077658699",
-              "sig": "dd7822edcd5cb826479161742fa2f856cd3d56b647490e168f5c4dd80c173ab059f593a0858497dcafd670b3d0295d9908d48591162613bdca95d0384f938103"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888888d5b46f09cc2ad501889119a7d41a7616f765cb1a9710bd94e9a867556",
-            "prevdbsig": {
-              "pub": "bb4e0379fb294422c556d4b7c3b95cf2b11e7faef27d38dad49b2f139158d80a",
-              "sig": "0dd374fb7dc76b0c53ca5a1ef878561c1a1b933aa30c16c72f4830080097f1b8f2c144eb2ecf785bf9a5e0cbffdda0581fc5ee96ce3573972585f43439787b0b"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888888de45074fb3505cfdc942f80f4c9ef1ddd5c4633cd21a940288ffc89f3",
-            "prevdbsig": {
-              "pub": "d7f968a9ee264b92b6002098a6072fd8619a572c18d80f55fff4790665b061dd",
-              "sig": "7975a2f79bb65a49e64beb3ed7b2b86e022e42448986ebe897de1831067c27168b51d6b737ed351507d36d4ba8f7ddb346e56d50b4f708a32639bcf5eaf62a0b"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888889fff41615e89c718e6a08d28107ff50aa99e72197c6efd40fb202a5803",
-            "prevdbsig": {
-              "pub": "6d9be060bed2a53a3498a2918934a62768b0c109c3ceb3d0b3697d2f5c92f8a0",
-              "sig": "69764864e8d2a869f5b9bbe69ba48ee93f589fb85ab104f402d1222db030c308ec205eb7f12d7e98477550c59d30f2bc650f4fb9ecfa009b5c32cc519d2a5108"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888dc16a02e27f184353ac046e8ca2e052be873809af3dc86907bdae98b96",
-            "prevdbsig": {
-              "pub": "db0429a7caf8b93b387688e5172df591731acc862ac7440d85c01657c672b2c0",
-              "sig": "9650ff907788adc342e43b34911e54708a1462518eb1f733ed6b6bf487441a5c7eaec79a70eaea41651fa8a484a553bd026e894f6110d4e893acd4b0d8dc1e03"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888880fc082ace22b1dbe53609424071852f969afd19c54a1c7b30c65cbcbc4",
-            "prevdbsig": {
-              "pub": "2a6c201572cbdd8861623d6d247dc8fe2d6a3839a1ab22f5347803baa69d44af",
-              "sig": "4a7c24e7b8253a4198b1b74a8a8accc58ebe065677a4cd9b62b3d88637d13e649b5fdc73e3f8b3ef96fe64d6c349530e68381ba5e8b1550acec867dd6242e802"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888208ac88cfa432c02d2a239c6d8a775478972c56bb3f0317dac741b155c",
-            "prevdbsig": {
-              "pub": "b45430e61e0704bf63f41c63f3955d61ed7dc36d34ec2e7e62ab606645add001",
-              "sig": "612c8e620c8ed939a30b650adca269961763acd83a67d73f2bde0b42531399bd00d7f30df8134d70f922862ac792e005e7db50ae1543d199835912443b9a2307"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888551291c87240b682dba9b867fde1314c38cb48556c4a6b39dd3683a2da",
-            "prevdbsig": {
-              "pub": "deff2d401502847efcc3c6fbd100bc88d3ab9c1b71a06b31b2ed620fe23bfef8",
-              "sig": "ba196baa523c01271821f537ec3d02f057dd48a1d3aceca40033d6602311c14b14523ad1f488a54ecb545b9e8fdc4e10159a4922f362ba3b4cdca6cc040c9a09"
-            }
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888551291c87240b682dba9b867fde1314c38cb48556c4a6b39dd3683a2da",
+          "prevdbsig": {
+            "pub": "deff2d401502847efcc3c6fbd100bc88d3ab9c1b71a06b31b2ed620fe23bfef8",
+            "sig": "6361c5456543bc2795d23eed5d79253261b5e2dd2c558ceb832b129858f99a6babcd84cc79fc389172e000f5eb2c26587dab32721c2681c11c67476ba00cef0f"
           }
-        ],
-        "backreferencehash": "da2b6d0eb7e51debd86319c0bd5e7a649f56e7ae0861e7fbe8d24eabd3dc1dce",
-        "lookuphash": "60df6174ef83475e54fe01f246710f8ea1cb29b2681433bbabd57ed8081f9739"
-      }
-    },
-    "957919e27b7252423db4038db168bf4dfc3ce17b493ee0866e4fb91ae3c6edd3": {
-      "ablock": {
-        "header": {
-          "prevbackrefhash": "82708fc201c5fe270bd2fec6d73488bed66dde10525793a01cd79847a15bea00",
-          "dbheight": 30750,
-          "headerexpansionsize": 0,
-          "headerexpansionarea": "",
-          "messagecount": 25,
-          "bodysize": 2306,
-          "adminchainid": "000000000000000000000000000000000000000000000000000000000000000a",
-          "chainid": "000000000000000000000000000000000000000000000000000000000000000a"
         },
-        "abentries": [
-          {
-            "adminidtype": 7,
-            "identitychainid": "888888b9f4fe1fea85d9ab55f84e1ec06aa135a905ef0865848d947c9c798f1f",
-            "dbheight": 30751
-          },
-          {
-            "adminidtype": 7,
-            "identitychainid": "888888ff038f41f8dc7a7e50d37315c340fe0a806aee1374e2b9e6a85be37841",
-            "dbheight": 30751
-          },
-          {
-            "adminidtype": 7,
-            "identitychainid": "8888888e4fbf665d5cc3be39e5c5418e01e6d348b915a5b290576cb4d0eea650",
-            "dbheight": 30751
-          },
-          {
-            "adminidtype": 6,
-            "identitychainid": "888888dcb1aacf764c1d15e1f6bc883831160db626cb8f46bdc86c1fcf5c019e",
-            "dbheight": 30751
-          },
-          {
-            "adminidtype": 6,
-            "identitychainid": "8888889822cf1d5889aa8dc11ad210b67d582812152de568fabc5f8505989c0f",
-            "dbheight": 30751
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888745c880f62e73da38a03519134c895cbc806feebc73f321cc00681b126",
-            "prevdbsig": {
-              "pub": "dcaf4ab9040b17248fa15defcfecdd7bdbd018776c5a01b92c7e391077658699",
-              "sig": "a0b15215f696c77c7c06015aa13dd36ee78b23b92dee1ac5b42bff5d9f24bb7dc2b6a1a4637f18c59c8dd66afbec31547a3307a953c8a8023571d35e63680b03"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888888d5b46f09cc2ad501889119a7d41a7616f765cb1a9710bd94e9a867556",
-            "prevdbsig": {
-              "pub": "bb4e0379fb294422c556d4b7c3b95cf2b11e7faef27d38dad49b2f139158d80a",
-              "sig": "6597cb9d425793789b4d6517bd3978aab46c1923c760542657620e316a99dbe3a152caed7b3d8abf019e91b20151bc7c4452a399f6d54770555c8727bdd61d05"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888888de45074fb3505cfdc942f80f4c9ef1ddd5c4633cd21a940288ffc89f3",
-            "prevdbsig": {
-              "pub": "d7f968a9ee264b92b6002098a6072fd8619a572c18d80f55fff4790665b061dd",
-              "sig": "a9c8caeb6258498f00d350fd439d243b9f1cfab9ee0771efc1cfec2f715d85c801cd36bd9f6bbb526c81c6386cbd611b4db96e41a4980ff341d1feaa9662fd07"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888889fff41615e89c718e6a08d28107ff50aa99e72197c6efd40fb202a5803",
-            "prevdbsig": {
-              "pub": "6d9be060bed2a53a3498a2918934a62768b0c109c3ceb3d0b3697d2f5c92f8a0",
-              "sig": "c8ea2476fad3fe8c0117a37cf7d06c5316272503370067d02f7f66f1af202d82f1e8293d4d930572b2c587a4a91b20d0c3b69efb7bb513638c3b74f66f31f50a"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888dc16a02e27f184353ac046e8ca2e052be873809af3dc86907bdae98b96",
-            "prevdbsig": {
-              "pub": "db0429a7caf8b93b387688e5172df591731acc862ac7440d85c01657c672b2c0",
-              "sig": "2a420f60c4db2e560a06ab282f8e4f3e52ab6c656b64970520ab0e085ac02c0113bcda2d44e52b31d27867cef471e6abf76746f0e1340bcaad65c7430455fd03"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
-            "prevdbsig": {
-              "pub": "08ec6928e010c1694763d571e9a0142c697f524cc40d33ca7bd911d8685a1921",
-              "sig": "5ae109a83bbe5057bee641bba6cf2d4db1bfa629d292c4060c12eadc37af463d85409f2b746b63e5039a5b0dda7a44d5401ca054e7728fdf89f787fa05aedd01"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888880fc082ace22b1dbe53609424071852f969afd19c54a1c7b30c65cbcbc4",
-            "prevdbsig": {
-              "pub": "2a6c201572cbdd8861623d6d247dc8fe2d6a3839a1ab22f5347803baa69d44af",
-              "sig": "5672db3965198d2069511a58d3780fe5abd04c2faa460fe1570fc347380efcf46510d4d3ccd85916c353a6677559ad8b65fea14f3a4562117e68bb090d9dba0b"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888208ac88cfa432c02d2a239c6d8a775478972c56bb3f0317dac741b155c",
-            "prevdbsig": {
-              "pub": "b45430e61e0704bf63f41c63f3955d61ed7dc36d34ec2e7e62ab606645add001",
-              "sig": "1fcdac56a3e5d4c590843a4f7469539729ca459ced6270be0fca876e09b9c07da2a4a2b36415d6672550f672c397ab6587fc0dfcbd256cc61b7d7014f6d3fa05"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888551291c87240b682dba9b867fde1314c38cb48556c4a6b39dd3683a2da",
-            "prevdbsig": {
-              "pub": "deff2d401502847efcc3c6fbd100bc88d3ab9c1b71a06b31b2ed620fe23bfef8",
-              "sig": "7c10514c4fae1117c8a04fc580367da54d96c3f9788c87567f85020472b196de73e4eab1260e2cd973f3de83f8cf070ff94f33b8c500922b2eda5d7b90da5306"
-            }
-          },
-          {
-            "adminidtype": 11,
-            "Outputs": [
-              {
-                "amount": 320000000,
-                "address": "b834c8637b2b8c7f18e92243383391fba263a25d49f7a6280807e6824224dd28",
-                "useraddress": "FA3NCrf7W6CV4A7HKLQd4eveHhzfrayE3CXd85axLQrD4zYr4XbW"
-              },
-              {
-                "amount": 576000000,
-                "address": "e8e41a1c7ca7c29dc928e509cae82cae1a4711eb12fddc8bde25bf1733069efc",
-                "useraddress": "FA3jeSpDq6JSNmizDS8TWwdxKS9EiKFeRCXyZNYrfH6eqX1K9o8u"
-              },
-              {
-                "amount": 320000000,
-                "address": "2b20273033acf00b40e88848a853a56dd0543570f4f28d30b050634d1e28bd6e",
-                "useraddress": "FA2J59Eb8xyizJLachFn8LuRXVsSNkoW2uPKrna8X4UrtyVwztgY"
-              },
-              {
-                "amount": 561472000,
-                "address": "94fc3c50add88dd87b5337999e5a06c1ad61775a24df36bba558f713fda6d394",
-                "useraddress": "FA36hBnEibeWk4diroU754n76So6NrfbYkDfLJkkb3gSR1AFqqSi"
-              },
-              {
-                "amount": 512000000,
-                "address": "37f8b555abae52974691c97fb18c6eb1504c96482c628ce5d97d97d839b139cc",
-                "useraddress": "FA2PjGspxvLGHEcsEtPiZYdFCk4APHJiDb3RmRRCMr1ra97Ugjvb"
-              },
-              {
-                "amount": 320000000,
-                "address": "95804d4c7b91bee78bff0892b02f74c38f7d5c7c6e23fb122843900c32e49c5b",
-                "useraddress": "FA36vN5aQU2DAofpisurQhDSvx73MVatA53kSstTgcts8h2T9cvx"
-              },
-              {
-                "amount": 320000000,
-                "address": "7e73ae9e7c31c632697e9c9207075a66f099f82f5d1da2aec157146d48c75533",
-                "useraddress": "FA2vmboi6PbPHdGjqG5PfRhCG1hcpkXqNkVigAmmjq9atUAA2NpZ"
-              },
-              {
-                "amount": 256000000,
-                "address": "82940625f29b3fa42dfabe83c525f7a5b8b1aa9b2889d661231c20d4ccf600ee",
-                "useraddress": "FA2xb173TdfAhPuFCLqmpVsJ4dnXvjwdCzG8k7NSLDvR5NYSk5Wd"
-              },
-              {
-                "amount": 448000000,
-                "address": "5bf0fb10a7af8281f3986a12cb59a101a3421688d55743d73494bf4bd32d44d1",
-                "useraddress": "FA2fa5K7wRJCyXZXUn8RKUWYaqop5MQJetEXH9mAMrefdBCgBHPG"
-              },
-              {
-                "amount": 320000000,
-                "address": "4d3aa2e09d067dfd1cdce7db730b6d00727be9bbd277632185ecb405a5d2ea45",
-                "useraddress": "FA2Z6GbL1431VUcFqvXBS9psiYxixuhqat28q8j3uaELeNVrdFtC"
-              }
-            ]
-          },
-          {
-            "adminidtype": 3,
-            "identitychainid": "8888889822cf1d5889aa8dc11ad210b67d582812152de568fabc5f8505989c0f",
-            "mhash": "cc0953051ce1180a6d81af195f47bad0fba4bb3bc6242c5898464c32a1fb3f5a"
-          },
-          {
-            "adminidtype": 3,
-            "identitychainid": "888888dcb1aacf764c1d15e1f6bc883831160db626cb8f46bdc86c1fcf5c019e",
-            "mhash": "7adbd15de7c5ffa706d20e159ea7d8d3332e5e22c39f991393ab28921a23e579"
-          },
-          {
-            "adminidtype": 8,
-            "identitychainid": "8888889822cf1d5889aa8dc11ad210b67d582812152de568fabc5f8505989c0f",
-            "keypriority": 0,
-            "publickey": "591b76f87bbea9ea5bbacb79ee10603bffac0a728999a25b2afac936fbeb3a39",
-            "dbheight": 30751
-          },
-          {
-            "adminidtype": 8,
-            "identitychainid": "888888dcb1aacf764c1d15e1f6bc883831160db626cb8f46bdc86c1fcf5c019e",
-            "keypriority": 0,
-            "publickey": "462c856ad698491eed4f59d5c848ada06a81893856d3b965a19502d2d807ad07",
-            "dbheight": 30751
-          },
-          {
-            "adminidtype": 9,
-            "identitychainid": "8888889822cf1d5889aa8dc11ad210b67d582812152de568fabc5f8505989c0f",
-            "keypriority": 0,
-            "keytype": 0,
-            "ecdsapublickey": "504c445811653cc496274408815c7c1c6ee21940"
-          },
-          {
-            "adminidtype": 9,
-            "identitychainid": "888888dcb1aacf764c1d15e1f6bc883831160db626cb8f46bdc86c1fcf5c019e",
-            "keypriority": 0,
-            "keytype": 0,
-            "ecdsapublickey": "4949dd3c193afa0499e23a175c86529752dabaa5"
-          },
-          {
-            "adminidtype": 13,
-            "IdentityChainID": "8888889822cf1d5889aa8dc11ad210b67d582812152de568fabc5f8505989c0f",
-            "FactoidAddress": "0c0aed44446538b251f418b6cdf61408f9f08f56a1d80be32bd7c8085d9bd499"
-          },
-          {
-            "adminidtype": 13,
-            "IdentityChainID": "888888dcb1aacf764c1d15e1f6bc883831160db626cb8f46bdc86c1fcf5c019e",
-            "FactoidAddress": "f35f478bd4a1409ac653c90efcf94ee3588f63be807b8cb9aee66077ca0eb260"
-          },
-          {
-            "adminidtype": 14,
-            "IdentityChainID": "8888889822cf1d5889aa8dc11ad210b67d582812152de568fabc5f8505989c0f",
-            "Efficiency": 202
-          },
-          {
-            "adminidtype": 14,
-            "IdentityChainID": "888888dcb1aacf764c1d15e1f6bc883831160db626cb8f46bdc86c1fcf5c019e",
-            "Efficiency": 5000
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888745c880f62e73da38a03519134c895cbc806feebc73f321cc00681b126",
+          "prevdbsig": {
+            "pub": "dcaf4ab9040b17248fa15defcfecdd7bdbd018776c5a01b92c7e391077658699",
+            "sig": "d3c440b61a6686dac1ba254dd45fe21291d52a17556d0d380227125fed77258364e7047ad3da0805c17f5cd1b27fd990361d5c9ed2ba82b0795dacb894ac1a01"
           }
-        ],
-        "backreferencehash": "3e6b6b00fa870a9583d666efb75801d0ee933bc90468ff33cd76538c19c9e170",
-        "lookuphash": "957919e27b7252423db4038db168bf4dfc3ce17b493ee0866e4fb91ae3c6edd3"
-      }
-    },
-    "121086e559525b3adb78ee5a24b2d44933bc011ddd80d374272ffb400a594365": {
-      "ablock": {
-        "header": {
-          "prevbackrefhash": "bf00281082e921a1826248e85527dae9dc9388a8d5c66bde2fc6a6050c9ce962",
-          "dbheight": 31095,
-          "headerexpansionsize": 0,
-          "headerexpansionarea": "",
-          "messagecount": 9,
-          "bodysize": 1368,
-          "adminchainid": "000000000000000000000000000000000000000000000000000000000000000a",
-          "chainid": "000000000000000000000000000000000000000000000000000000000000000a"
         },
-        "abentries": [
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888889fff41615e89c718e6a08d28107ff50aa99e72197c6efd40fb202a5803",
-            "prevdbsig": {
-              "pub": "6d9be060bed2a53a3498a2918934a62768b0c109c3ceb3d0b3697d2f5c92f8a0",
-              "sig": "24be96bc5ecf16feedcd10abd96e6c43c0aacec6bffa1414d804c3199231284eea5a0a04d560400df423a701e2a6b7b61410d13f506ee01f73a325b7745fe306"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888dc16a02e27f184353ac046e8ca2e052be873809af3dc86907bdae98b96",
-            "prevdbsig": {
-              "pub": "db0429a7caf8b93b387688e5172df591731acc862ac7440d85c01657c672b2c0",
-              "sig": "14b1b7fd603990d77a9815ee2f189eedc1f408d0cfbe16a282ac4685968c0a9ce3a4c6a9fb5907bbe6c50a4be6b42c3ebe5c24ad8961a7a6d23c4ceaa547120a"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888880fc082ace22b1dbe53609424071852f969afd19c54a1c7b30c65cbcbc4",
-            "prevdbsig": {
-              "pub": "2a6c201572cbdd8861623d6d247dc8fe2d6a3839a1ab22f5347803baa69d44af",
-              "sig": "b0266f10c9302284695e8f031259dbb07b4ef93b409c5e8b45b09b5a930ef8cf6a97ba7a160622d28558848830f9d0eb04db63a0253f55f3a454898f849c6e06"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888881c98618455b818cbe56b924374d87445ffdc7263363302292974dc3f94",
-            "prevdbsig": {
-              "pub": "0de6369919f526225a14c38b7cf7081287e4029471e000b5c4336c041b233253",
-              "sig": "ae9acfc65a88714a21c885e748cc9f43d4e26811e4b63d4b9d04c4ab4ef13c48e4269a90004a12b8ee3fd42c3cdef20da15e6274fe294dd01e231b0b846ebe07"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888208ac88cfa432c02d2a239c6d8a775478972c56bb3f0317dac741b155c",
-            "prevdbsig": {
-              "pub": "b45430e61e0704bf63f41c63f3955d61ed7dc36d34ec2e7e62ab606645add001",
-              "sig": "40f276075746bc96337a31f5389f02d163c96a5cf27de4b88820020c2c950b7858504b3ab3ca7efd7dad1ad67bec6e2ac388b3ce8040b0c6ee5f29cc6d169d0f"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888551291c87240b682dba9b867fde1314c38cb48556c4a6b39dd3683a2da",
-            "prevdbsig": {
-              "pub": "deff2d401502847efcc3c6fbd100bc88d3ab9c1b71a06b31b2ed620fe23bfef8",
-              "sig": "7341061cad0330b105a681ab29b0a72964c534d0d19f85ebb309c8411c06605d590e3144a357bef551c5fb332617ed023d74cf6fb2afa86a1a09740b6ed34500"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "888888745c880f62e73da38a03519134c895cbc806feebc73f321cc00681b126",
-            "prevdbsig": {
-              "pub": "dcaf4ab9040b17248fa15defcfecdd7bdbd018776c5a01b92c7e391077658699",
-              "sig": "49a1e726e54e4e284d5bd76f911a83230cb0a4064acaf3233d9e5df496883d81dca912da4a4affabe56c242d573dc1104f989c9a0e92b8eb331dfb7e8dd86209"
-            }
-          },
-          {
-            "adminidtype": 1,
-            "identityadminchainid": "8888888d5b46f09cc2ad501889119a7d41a7616f765cb1a9710bd94e9a867556",
-            "prevdbsig": {
-              "pub": "bb4e0379fb294422c556d4b7c3b95cf2b11e7faef27d38dad49b2f139158d80a",
-              "sig": "65e687e5ed3f8c35c91e20e524ee95186ebdc951d825108c376551c8c36a4bf4f9987363caaeeb7b4ad4cf216b89dde64f3013be0acc31d2cf5ae1a9566edb0e"
-            }
-          },
-          {
-            "adminidtype": 11,
-            "Outputs": [
-              {
-                "amount": 320000000,
-                "address": "b834c8637b2b8c7f18e92243383391fba263a25d49f7a6280807e6824224dd28",
-                "useraddress": "FA3NCrf7W6CV4A7HKLQd4eveHhzfrayE3CXd85axLQrD4zYr4XbW"
-              },
-              {
-                "amount": 576000000,
-                "address": "e8e41a1c7ca7c29dc928e509cae82cae1a4711eb12fddc8bde25bf1733069efc",
-                "useraddress": "FA3jeSpDq6JSNmizDS8TWwdxKS9EiKFeRCXyZNYrfH6eqX1K9o8u"
-              },
-              {
-                "amount": 320000000,
-                "address": "2b20273033acf00b40e88848a853a56dd0543570f4f28d30b050634d1e28bd6e",
-                "useraddress": "FA2J59Eb8xyizJLachFn8LuRXVsSNkoW2uPKrna8X4UrtyVwztgY"
-              },
-              {
-                "amount": 561472000,
-                "address": "94fc3c50add88dd87b5337999e5a06c1ad61775a24df36bba558f713fda6d394",
-                "useraddress": "FA36hBnEibeWk4diroU754n76So6NrfbYkDfLJkkb3gSR1AFqqSi"
-              },
-              {
-                "amount": 512000000,
-                "address": "37f8b555abae52974691c97fb18c6eb1504c96482c628ce5d97d97d839b139cc",
-                "useraddress": "FA2PjGspxvLGHEcsEtPiZYdFCk4APHJiDb3RmRRCMr1ra97Ugjvb"
-              },
-              {
-                "amount": 320000000,
-                "address": "95804d4c7b91bee78bff0892b02f74c38f7d5c7c6e23fb122843900c32e49c5b",
-                "useraddress": "FA36vN5aQU2DAofpisurQhDSvx73MVatA53kSstTgcts8h2T9cvx"
-              },
-              {
-                "amount": 320000000,
-                "address": "7e73ae9e7c31c632697e9c9207075a66f099f82f5d1da2aec157146d48c75533",
-                "useraddress": "FA2vmboi6PbPHdGjqG5PfRhCG1hcpkXqNkVigAmmjq9atUAA2NpZ"
-              },
-              {
-                "amount": 627072000,
-                "address": "0c0aed44446538b251f418b6cdf61408f9f08f56a1d80be32bd7c8085d9bd499",
-                "useraddress": "FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZyeF"
-              },
-              {
-                "amount": 320000000,
-                "address": "f35f478bd4a1409ac653c90efcf94ee3588f63be807b8cb9aee66077ca0eb260",
-                "useraddress": "FA3pGAzaaGL3jy6tHyzKGaTfJNY6MJEprAvEnDjetWDPkgdUKYpx"
-              }
-            ]
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888888d5b46f09cc2ad501889119a7d41a7616f765cb1a9710bd94e9a867556",
+          "prevdbsig": {
+            "pub": "bb4e0379fb294422c556d4b7c3b95cf2b11e7faef27d38dad49b2f139158d80a",
+            "sig": "80459eb64e5a8c8ae6714c8bf3400abe92a5deeddd04f4e9d8dc0561446303e3d77e0e16d2904216cdb3a8ee13ea6be36880c96bd71e8512385b0e4698a0ae08"
           }
-        ],
-        "backreferencehash": "ed78955c3d3dc91d9cc55be8d30171b1685d2984c0940c89edc14ec2cce067ef",
-        "lookuphash": "121086e559525b3adb78ee5a24b2d44933bc011ddd80d374272ffb400a594365"
-      }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888889fff41615e89c718e6a08d28107ff50aa99e72197c6efd40fb202a5803",
+          "prevdbsig": {
+            "pub": "6d9be060bed2a53a3498a2918934a62768b0c109c3ceb3d0b3697d2f5c92f8a0",
+            "sig": "24b2ca077ea08e5b1c4714d170c11b68e908469fb11b3687e088c69d68ef5ad4b88ce64c6a61906f613c90751a1fd9f6cc43d1be3e5b1e0205660c2a4495b108"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888dc16a02e27f184353ac046e8ca2e052be873809af3dc86907bdae98b96",
+          "prevdbsig": {
+            "pub": "db0429a7caf8b93b387688e5172df591731acc862ac7440d85c01657c672b2c0",
+            "sig": "a3d7102aa56904c2a3fe78c70f3b7978fb82841301a73bb3d1552d6d2c4e669ef64b317ddbdfd7a60108681770ec131266e6d15778a82ca723ef091aeeea8706"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888880fc082ace22b1dbe53609424071852f969afd19c54a1c7b30c65cbcbc4",
+          "prevdbsig": {
+            "pub": "2a6c201572cbdd8861623d6d247dc8fe2d6a3839a1ab22f5347803baa69d44af",
+            "sig": "2200d38f0fbc8eb294293368431253d5ca4f9cbcb9c1cfe519de54682fcac0ac0b770f688a4a010ad8479bf6abefbdb80cf4de304e1030606ade94b2d3a33001"
+          }
+        }
+      ],
+      "backreferencehash": "a93018e3032bc783d317a9c38a3e927f40017a212b0c73b732386f14750174ec",
+      "lookuphash": "15a887568ba62cfe0df15b27956a0c65a3862688e96d550519b3d3cb07b4c070"
+    }
+  },
+  "8a0a37bd123b0e210eeed8a6cad22fb742bd52d123d9b42af4e9901052a66a0d": {
+    "ablock": {
+      "header": {
+        "prevbackrefhash": "ef3b0eeb6ba4553d41db22089b1a1b0bda882250d7bbe3b67fcbfb49f75b35e3",
+        "dbheight": 30895,
+        "headerexpansionsize": 0,
+        "headerexpansionarea": "",
+        "messagecount": 16,
+        "bodysize": 1828,
+        "adminchainid": "000000000000000000000000000000000000000000000000000000000000000a",
+        "chainid": "000000000000000000000000000000000000000000000000000000000000000a"
+      },
+      "abentries": [
+        {
+          "adminidtype": 6,
+          "identitychainid": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
+          "dbheight": 30896
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
+          "prevdbsig": {
+            "pub": "08ec6928e010c1694763d571e9a0142c697f524cc40d33ca7bd911d8685a1921",
+            "sig": "92c47c2c241e5e0a1028f4a0b2d237e5c59f7a4499c79784840051df03439012b9fd476a22657b67aa54ef4ba90c82200510dece2cc4841737c7349a8a30af01"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888880fc082ace22b1dbe53609424071852f969afd19c54a1c7b30c65cbcbc4",
+          "prevdbsig": {
+            "pub": "2a6c201572cbdd8861623d6d247dc8fe2d6a3839a1ab22f5347803baa69d44af",
+            "sig": "c606791d1bf71895b40a8ab0bcdf5f4917815bb19d2452f7eb677fd004bc5952a503568261b06b2bd6b623ef7ab4daf935bd3d03ff67f6288c790a273673660c"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888208ac88cfa432c02d2a239c6d8a775478972c56bb3f0317dac741b155c",
+          "prevdbsig": {
+            "pub": "b45430e61e0704bf63f41c63f3955d61ed7dc36d34ec2e7e62ab606645add001",
+            "sig": "a0b7ff0d84f80df81904a2c52c97469af7d8df93ddf68cdefb19f8f1a7dd4532e26c423d2237ec45816c059993598af57808686f53979ab15ece3b2fe75bd40a"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888551291c87240b682dba9b867fde1314c38cb48556c4a6b39dd3683a2da",
+          "prevdbsig": {
+            "pub": "deff2d401502847efcc3c6fbd100bc88d3ab9c1b71a06b31b2ed620fe23bfef8",
+            "sig": "2e67cb919b944519b9b6bf40dc29d1da185bb9e2439b4fcc98e4f1162e48edcd413a3698688a73c56a1df4ba89020e41529dee8d78e4ea694fbb532ae611c000"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888745c880f62e73da38a03519134c895cbc806feebc73f321cc00681b126",
+          "prevdbsig": {
+            "pub": "dcaf4ab9040b17248fa15defcfecdd7bdbd018776c5a01b92c7e391077658699",
+            "sig": "13781779a718c45da551e74a078e4988fb351d3d8848a7174857cb6a23a28830a012b27d1f88cf1198927f37d259ac7ef9fb9ba4adc0495d045ca31c05d9e40a"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888888d5b46f09cc2ad501889119a7d41a7616f765cb1a9710bd94e9a867556",
+          "prevdbsig": {
+            "pub": "bb4e0379fb294422c556d4b7c3b95cf2b11e7faef27d38dad49b2f139158d80a",
+            "sig": "5bb3d9acac83416511b372f5a07cc9f95557ad55ccf0286d56e607e6303074f2b8aa7169c11440420ed060a2fc25180db33612574ba3b6e10bfca1a375f5860c"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888888de45074fb3505cfdc942f80f4c9ef1ddd5c4633cd21a940288ffc89f3",
+          "prevdbsig": {
+            "pub": "d7f968a9ee264b92b6002098a6072fd8619a572c18d80f55fff4790665b061dd",
+            "sig": "d0e5ae6c79c2386bc53831d616e7d7ae6d84d9a2f9a33ba61193781b8e250a6fdcb829302b1ee2cbd70d29d6e65e004d46226cc6d2024e9ff4535fecf4e65a0b"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888889fff41615e89c718e6a08d28107ff50aa99e72197c6efd40fb202a5803",
+          "prevdbsig": {
+            "pub": "6d9be060bed2a53a3498a2918934a62768b0c109c3ceb3d0b3697d2f5c92f8a0",
+            "sig": "969edd42c4f7f021dace4fb9008b6d7f5031f7cfddd5591e387d65d8291faf698d998bfcdd7de14c25e9e9e9fa1a48a7c023421137e742b522b42164ea248a06"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888dc16a02e27f184353ac046e8ca2e052be873809af3dc86907bdae98b96",
+          "prevdbsig": {
+            "pub": "db0429a7caf8b93b387688e5172df591731acc862ac7440d85c01657c672b2c0",
+            "sig": "e52976c0c8fbb535fc077a4d1ebc88439dcfed94b99ca013ffe518de5c25bf5d20e330de5941448c20fcb77162a008887a9a67bfc45145855ec76c3ef68ab40d"
+          }
+        },
+        {
+          "adminidtype": 11,
+          "Outputs": [
+            {
+              "amount": 320000000,
+              "address": "b834c8637b2b8c7f18e92243383391fba263a25d49f7a6280807e6824224dd28",
+              "useraddress": "FA3NCrf7W6CV4A7HKLQd4eveHhzfrayE3CXd85axLQrD4zYr4XbW"
+            },
+            {
+              "amount": 576000000,
+              "address": "e8e41a1c7ca7c29dc928e509cae82cae1a4711eb12fddc8bde25bf1733069efc",
+              "useraddress": "FA3jeSpDq6JSNmizDS8TWwdxKS9EiKFeRCXyZNYrfH6eqX1K9o8u"
+            },
+            {
+              "amount": 320000000,
+              "address": "2b20273033acf00b40e88848a853a56dd0543570f4f28d30b050634d1e28bd6e",
+              "useraddress": "FA2J59Eb8xyizJLachFn8LuRXVsSNkoW2uPKrna8X4UrtyVwztgY"
+            },
+            {
+              "amount": 561472000,
+              "address": "94fc3c50add88dd87b5337999e5a06c1ad61775a24df36bba558f713fda6d394",
+              "useraddress": "FA36hBnEibeWk4diroU754n76So6NrfbYkDfLJkkb3gSR1AFqqSi"
+            },
+            {
+              "amount": 512000000,
+              "address": "37f8b555abae52974691c97fb18c6eb1504c96482c628ce5d97d97d839b139cc",
+              "useraddress": "FA2PjGspxvLGHEcsEtPiZYdFCk4APHJiDb3RmRRCMr1ra97Ugjvb"
+            },
+            {
+              "amount": 320000000,
+              "address": "95804d4c7b91bee78bff0892b02f74c38f7d5c7c6e23fb122843900c32e49c5b",
+              "useraddress": "FA36vN5aQU2DAofpisurQhDSvx73MVatA53kSstTgcts8h2T9cvx"
+            },
+            {
+              "amount": 320000000,
+              "address": "7e73ae9e7c31c632697e9c9207075a66f099f82f5d1da2aec157146d48c75533",
+              "useraddress": "FA2vmboi6PbPHdGjqG5PfRhCG1hcpkXqNkVigAmmjq9atUAA2NpZ"
+            },
+            {
+              "amount": 627072000,
+              "address": "0c0aed44446538b251f418b6cdf61408f9f08f56a1d80be32bd7c8085d9bd499",
+              "useraddress": "FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZyeF"
+            },
+            {
+              "amount": 320000000,
+              "address": "f35f478bd4a1409ac653c90efcf94ee3588f63be807b8cb9aee66077ca0eb260",
+              "useraddress": "FA3pGAzaaGL3jy6tHyzKGaTfJNY6MJEprAvEnDjetWDPkgdUKYpx"
+            }
+          ]
+        },
+        {
+          "adminidtype": 3,
+          "identitychainid": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
+          "mhash": "4e99c3725c51d4cecf7de78e3196166e6de12a12f68b437b9c43f71b459979c6"
+        },
+        {
+          "adminidtype": 8,
+          "identitychainid": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
+          "keypriority": 0,
+          "publickey": "08ec6928e010c1694763d571e9a0142c697f524cc40d33ca7bd911d8685a1921",
+          "dbheight": 30896
+        },
+        {
+          "adminidtype": 9,
+          "identitychainid": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
+          "keypriority": 0,
+          "keytype": 0,
+          "ecdsapublickey": "45185ad9f6453ac56a7572dbd9abbe2d421b0692"
+        },
+        {
+          "adminidtype": 13,
+          "IdentityChainID": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
+          "FactoidAddress": "b834c8637b2b8c7f18e92243383391fba263a25d49f7a6280807e6824224dd28"
+        },
+        {
+          "adminidtype": 14,
+          "IdentityChainID": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
+          "Efficiency": 5000
+        }
+      ],
+      "backreferencehash": "1dd90a1b11f6edb8a7125ed5e9aa9a519f1ebd58044b35887813a009d1b110d0",
+      "lookuphash": "8a0a37bd123b0e210eeed8a6cad22fb742bd52d123d9b42af4e9901052a66a0d"
+    }
+  },
+  "60df6174ef83475e54fe01f246710f8ea1cb29b2681433bbabd57ed8081f9739": {
+    "ablock": {
+      "header": {
+        "prevbackrefhash": "673d4ed8ae5cde019c3c0ef789895d07dee18182b11ce032a5d133f3c7b0783f",
+        "dbheight": 30942,
+        "headerexpansionsize": 0,
+        "headerexpansionarea": "",
+        "messagecount": 10,
+        "bodysize": 1106,
+        "adminchainid": "000000000000000000000000000000000000000000000000000000000000000a",
+        "chainid": "000000000000000000000000000000000000000000000000000000000000000a"
+      },
+      "abentries": [
+        {
+          "adminidtype": 6,
+          "identitychainid": "8888888de45074fb3505cfdc942f80f4c9ef1ddd5c4633cd21a940288ffc89f3",
+          "dbheight": 30943
+        },
+        {
+          "adminidtype": 5,
+          "identitychainid": "8888881c98618455b818cbe56b924374d87445ffdc7263363302292974dc3f94",
+          "dbheight": 30943
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888745c880f62e73da38a03519134c895cbc806feebc73f321cc00681b126",
+          "prevdbsig": {
+            "pub": "dcaf4ab9040b17248fa15defcfecdd7bdbd018776c5a01b92c7e391077658699",
+            "sig": "dd7822edcd5cb826479161742fa2f856cd3d56b647490e168f5c4dd80c173ab059f593a0858497dcafd670b3d0295d9908d48591162613bdca95d0384f938103"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888888d5b46f09cc2ad501889119a7d41a7616f765cb1a9710bd94e9a867556",
+          "prevdbsig": {
+            "pub": "bb4e0379fb294422c556d4b7c3b95cf2b11e7faef27d38dad49b2f139158d80a",
+            "sig": "0dd374fb7dc76b0c53ca5a1ef878561c1a1b933aa30c16c72f4830080097f1b8f2c144eb2ecf785bf9a5e0cbffdda0581fc5ee96ce3573972585f43439787b0b"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888888de45074fb3505cfdc942f80f4c9ef1ddd5c4633cd21a940288ffc89f3",
+          "prevdbsig": {
+            "pub": "d7f968a9ee264b92b6002098a6072fd8619a572c18d80f55fff4790665b061dd",
+            "sig": "7975a2f79bb65a49e64beb3ed7b2b86e022e42448986ebe897de1831067c27168b51d6b737ed351507d36d4ba8f7ddb346e56d50b4f708a32639bcf5eaf62a0b"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888889fff41615e89c718e6a08d28107ff50aa99e72197c6efd40fb202a5803",
+          "prevdbsig": {
+            "pub": "6d9be060bed2a53a3498a2918934a62768b0c109c3ceb3d0b3697d2f5c92f8a0",
+            "sig": "69764864e8d2a869f5b9bbe69ba48ee93f589fb85ab104f402d1222db030c308ec205eb7f12d7e98477550c59d30f2bc650f4fb9ecfa009b5c32cc519d2a5108"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888dc16a02e27f184353ac046e8ca2e052be873809af3dc86907bdae98b96",
+          "prevdbsig": {
+            "pub": "db0429a7caf8b93b387688e5172df591731acc862ac7440d85c01657c672b2c0",
+            "sig": "9650ff907788adc342e43b34911e54708a1462518eb1f733ed6b6bf487441a5c7eaec79a70eaea41651fa8a484a553bd026e894f6110d4e893acd4b0d8dc1e03"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888880fc082ace22b1dbe53609424071852f969afd19c54a1c7b30c65cbcbc4",
+          "prevdbsig": {
+            "pub": "2a6c201572cbdd8861623d6d247dc8fe2d6a3839a1ab22f5347803baa69d44af",
+            "sig": "4a7c24e7b8253a4198b1b74a8a8accc58ebe065677a4cd9b62b3d88637d13e649b5fdc73e3f8b3ef96fe64d6c349530e68381ba5e8b1550acec867dd6242e802"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888208ac88cfa432c02d2a239c6d8a775478972c56bb3f0317dac741b155c",
+          "prevdbsig": {
+            "pub": "b45430e61e0704bf63f41c63f3955d61ed7dc36d34ec2e7e62ab606645add001",
+            "sig": "612c8e620c8ed939a30b650adca269961763acd83a67d73f2bde0b42531399bd00d7f30df8134d70f922862ac792e005e7db50ae1543d199835912443b9a2307"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888551291c87240b682dba9b867fde1314c38cb48556c4a6b39dd3683a2da",
+          "prevdbsig": {
+            "pub": "deff2d401502847efcc3c6fbd100bc88d3ab9c1b71a06b31b2ed620fe23bfef8",
+            "sig": "ba196baa523c01271821f537ec3d02f057dd48a1d3aceca40033d6602311c14b14523ad1f488a54ecb545b9e8fdc4e10159a4922f362ba3b4cdca6cc040c9a09"
+          }
+        }
+      ],
+      "backreferencehash": "da2b6d0eb7e51debd86319c0bd5e7a649f56e7ae0861e7fbe8d24eabd3dc1dce",
+      "lookuphash": "60df6174ef83475e54fe01f246710f8ea1cb29b2681433bbabd57ed8081f9739"
+    }
+  },
+  "957919e27b7252423db4038db168bf4dfc3ce17b493ee0866e4fb91ae3c6edd3": {
+    "ablock": {
+      "header": {
+        "prevbackrefhash": "82708fc201c5fe270bd2fec6d73488bed66dde10525793a01cd79847a15bea00",
+        "dbheight": 30750,
+        "headerexpansionsize": 0,
+        "headerexpansionarea": "",
+        "messagecount": 25,
+        "bodysize": 2306,
+        "adminchainid": "000000000000000000000000000000000000000000000000000000000000000a",
+        "chainid": "000000000000000000000000000000000000000000000000000000000000000a"
+      },
+      "abentries": [
+        {
+          "adminidtype": 7,
+          "identitychainid": "888888b9f4fe1fea85d9ab55f84e1ec06aa135a905ef0865848d947c9c798f1f",
+          "dbheight": 30751
+        },
+        {
+          "adminidtype": 7,
+          "identitychainid": "888888ff038f41f8dc7a7e50d37315c340fe0a806aee1374e2b9e6a85be37841",
+          "dbheight": 30751
+        },
+        {
+          "adminidtype": 7,
+          "identitychainid": "8888888e4fbf665d5cc3be39e5c5418e01e6d348b915a5b290576cb4d0eea650",
+          "dbheight": 30751
+        },
+        {
+          "adminidtype": 6,
+          "identitychainid": "888888dcb1aacf764c1d15e1f6bc883831160db626cb8f46bdc86c1fcf5c019e",
+          "dbheight": 30751
+        },
+        {
+          "adminidtype": 6,
+          "identitychainid": "8888889822cf1d5889aa8dc11ad210b67d582812152de568fabc5f8505989c0f",
+          "dbheight": 30751
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888745c880f62e73da38a03519134c895cbc806feebc73f321cc00681b126",
+          "prevdbsig": {
+            "pub": "dcaf4ab9040b17248fa15defcfecdd7bdbd018776c5a01b92c7e391077658699",
+            "sig": "a0b15215f696c77c7c06015aa13dd36ee78b23b92dee1ac5b42bff5d9f24bb7dc2b6a1a4637f18c59c8dd66afbec31547a3307a953c8a8023571d35e63680b03"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888888d5b46f09cc2ad501889119a7d41a7616f765cb1a9710bd94e9a867556",
+          "prevdbsig": {
+            "pub": "bb4e0379fb294422c556d4b7c3b95cf2b11e7faef27d38dad49b2f139158d80a",
+            "sig": "6597cb9d425793789b4d6517bd3978aab46c1923c760542657620e316a99dbe3a152caed7b3d8abf019e91b20151bc7c4452a399f6d54770555c8727bdd61d05"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888888de45074fb3505cfdc942f80f4c9ef1ddd5c4633cd21a940288ffc89f3",
+          "prevdbsig": {
+            "pub": "d7f968a9ee264b92b6002098a6072fd8619a572c18d80f55fff4790665b061dd",
+            "sig": "a9c8caeb6258498f00d350fd439d243b9f1cfab9ee0771efc1cfec2f715d85c801cd36bd9f6bbb526c81c6386cbd611b4db96e41a4980ff341d1feaa9662fd07"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888889fff41615e89c718e6a08d28107ff50aa99e72197c6efd40fb202a5803",
+          "prevdbsig": {
+            "pub": "6d9be060bed2a53a3498a2918934a62768b0c109c3ceb3d0b3697d2f5c92f8a0",
+            "sig": "c8ea2476fad3fe8c0117a37cf7d06c5316272503370067d02f7f66f1af202d82f1e8293d4d930572b2c587a4a91b20d0c3b69efb7bb513638c3b74f66f31f50a"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888dc16a02e27f184353ac046e8ca2e052be873809af3dc86907bdae98b96",
+          "prevdbsig": {
+            "pub": "db0429a7caf8b93b387688e5172df591731acc862ac7440d85c01657c672b2c0",
+            "sig": "2a420f60c4db2e560a06ab282f8e4f3e52ab6c656b64970520ab0e085ac02c0113bcda2d44e52b31d27867cef471e6abf76746f0e1340bcaad65c7430455fd03"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
+          "prevdbsig": {
+            "pub": "08ec6928e010c1694763d571e9a0142c697f524cc40d33ca7bd911d8685a1921",
+            "sig": "5ae109a83bbe5057bee641bba6cf2d4db1bfa629d292c4060c12eadc37af463d85409f2b746b63e5039a5b0dda7a44d5401ca054e7728fdf89f787fa05aedd01"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888880fc082ace22b1dbe53609424071852f969afd19c54a1c7b30c65cbcbc4",
+          "prevdbsig": {
+            "pub": "2a6c201572cbdd8861623d6d247dc8fe2d6a3839a1ab22f5347803baa69d44af",
+            "sig": "5672db3965198d2069511a58d3780fe5abd04c2faa460fe1570fc347380efcf46510d4d3ccd85916c353a6677559ad8b65fea14f3a4562117e68bb090d9dba0b"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888208ac88cfa432c02d2a239c6d8a775478972c56bb3f0317dac741b155c",
+          "prevdbsig": {
+            "pub": "b45430e61e0704bf63f41c63f3955d61ed7dc36d34ec2e7e62ab606645add001",
+            "sig": "1fcdac56a3e5d4c590843a4f7469539729ca459ced6270be0fca876e09b9c07da2a4a2b36415d6672550f672c397ab6587fc0dfcbd256cc61b7d7014f6d3fa05"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888551291c87240b682dba9b867fde1314c38cb48556c4a6b39dd3683a2da",
+          "prevdbsig": {
+            "pub": "deff2d401502847efcc3c6fbd100bc88d3ab9c1b71a06b31b2ed620fe23bfef8",
+            "sig": "7c10514c4fae1117c8a04fc580367da54d96c3f9788c87567f85020472b196de73e4eab1260e2cd973f3de83f8cf070ff94f33b8c500922b2eda5d7b90da5306"
+          }
+        },
+        {
+          "adminidtype": 11,
+          "Outputs": [
+            {
+              "amount": 320000000,
+              "address": "b834c8637b2b8c7f18e92243383391fba263a25d49f7a6280807e6824224dd28",
+              "useraddress": "FA3NCrf7W6CV4A7HKLQd4eveHhzfrayE3CXd85axLQrD4zYr4XbW"
+            },
+            {
+              "amount": 576000000,
+              "address": "e8e41a1c7ca7c29dc928e509cae82cae1a4711eb12fddc8bde25bf1733069efc",
+              "useraddress": "FA3jeSpDq6JSNmizDS8TWwdxKS9EiKFeRCXyZNYrfH6eqX1K9o8u"
+            },
+            {
+              "amount": 320000000,
+              "address": "2b20273033acf00b40e88848a853a56dd0543570f4f28d30b050634d1e28bd6e",
+              "useraddress": "FA2J59Eb8xyizJLachFn8LuRXVsSNkoW2uPKrna8X4UrtyVwztgY"
+            },
+            {
+              "amount": 561472000,
+              "address": "94fc3c50add88dd87b5337999e5a06c1ad61775a24df36bba558f713fda6d394",
+              "useraddress": "FA36hBnEibeWk4diroU754n76So6NrfbYkDfLJkkb3gSR1AFqqSi"
+            },
+            {
+              "amount": 512000000,
+              "address": "37f8b555abae52974691c97fb18c6eb1504c96482c628ce5d97d97d839b139cc",
+              "useraddress": "FA2PjGspxvLGHEcsEtPiZYdFCk4APHJiDb3RmRRCMr1ra97Ugjvb"
+            },
+            {
+              "amount": 320000000,
+              "address": "95804d4c7b91bee78bff0892b02f74c38f7d5c7c6e23fb122843900c32e49c5b",
+              "useraddress": "FA36vN5aQU2DAofpisurQhDSvx73MVatA53kSstTgcts8h2T9cvx"
+            },
+            {
+              "amount": 320000000,
+              "address": "7e73ae9e7c31c632697e9c9207075a66f099f82f5d1da2aec157146d48c75533",
+              "useraddress": "FA2vmboi6PbPHdGjqG5PfRhCG1hcpkXqNkVigAmmjq9atUAA2NpZ"
+            },
+            {
+              "amount": 256000000,
+              "address": "82940625f29b3fa42dfabe83c525f7a5b8b1aa9b2889d661231c20d4ccf600ee",
+              "useraddress": "FA2xb173TdfAhPuFCLqmpVsJ4dnXvjwdCzG8k7NSLDvR5NYSk5Wd"
+            },
+            {
+              "amount": 448000000,
+              "address": "5bf0fb10a7af8281f3986a12cb59a101a3421688d55743d73494bf4bd32d44d1",
+              "useraddress": "FA2fa5K7wRJCyXZXUn8RKUWYaqop5MQJetEXH9mAMrefdBCgBHPG"
+            },
+            {
+              "amount": 320000000,
+              "address": "4d3aa2e09d067dfd1cdce7db730b6d00727be9bbd277632185ecb405a5d2ea45",
+              "useraddress": "FA2Z6GbL1431VUcFqvXBS9psiYxixuhqat28q8j3uaELeNVrdFtC"
+            }
+          ]
+        },
+        {
+          "adminidtype": 3,
+          "identitychainid": "8888889822cf1d5889aa8dc11ad210b67d582812152de568fabc5f8505989c0f",
+          "mhash": "cc0953051ce1180a6d81af195f47bad0fba4bb3bc6242c5898464c32a1fb3f5a"
+        },
+        {
+          "adminidtype": 3,
+          "identitychainid": "888888dcb1aacf764c1d15e1f6bc883831160db626cb8f46bdc86c1fcf5c019e",
+          "mhash": "7adbd15de7c5ffa706d20e159ea7d8d3332e5e22c39f991393ab28921a23e579"
+        },
+        {
+          "adminidtype": 8,
+          "identitychainid": "8888889822cf1d5889aa8dc11ad210b67d582812152de568fabc5f8505989c0f",
+          "keypriority": 0,
+          "publickey": "591b76f87bbea9ea5bbacb79ee10603bffac0a728999a25b2afac936fbeb3a39",
+          "dbheight": 30751
+        },
+        {
+          "adminidtype": 8,
+          "identitychainid": "888888dcb1aacf764c1d15e1f6bc883831160db626cb8f46bdc86c1fcf5c019e",
+          "keypriority": 0,
+          "publickey": "462c856ad698491eed4f59d5c848ada06a81893856d3b965a19502d2d807ad07",
+          "dbheight": 30751
+        },
+        {
+          "adminidtype": 9,
+          "identitychainid": "8888889822cf1d5889aa8dc11ad210b67d582812152de568fabc5f8505989c0f",
+          "keypriority": 0,
+          "keytype": 0,
+          "ecdsapublickey": "504c445811653cc496274408815c7c1c6ee21940"
+        },
+        {
+          "adminidtype": 9,
+          "identitychainid": "888888dcb1aacf764c1d15e1f6bc883831160db626cb8f46bdc86c1fcf5c019e",
+          "keypriority": 0,
+          "keytype": 0,
+          "ecdsapublickey": "4949dd3c193afa0499e23a175c86529752dabaa5"
+        },
+        {
+          "adminidtype": 13,
+          "IdentityChainID": "8888889822cf1d5889aa8dc11ad210b67d582812152de568fabc5f8505989c0f",
+          "FactoidAddress": "0c0aed44446538b251f418b6cdf61408f9f08f56a1d80be32bd7c8085d9bd499"
+        },
+        {
+          "adminidtype": 13,
+          "IdentityChainID": "888888dcb1aacf764c1d15e1f6bc883831160db626cb8f46bdc86c1fcf5c019e",
+          "FactoidAddress": "f35f478bd4a1409ac653c90efcf94ee3588f63be807b8cb9aee66077ca0eb260"
+        },
+        {
+          "adminidtype": 14,
+          "IdentityChainID": "8888889822cf1d5889aa8dc11ad210b67d582812152de568fabc5f8505989c0f",
+          "Efficiency": 202
+        },
+        {
+          "adminidtype": 14,
+          "IdentityChainID": "888888dcb1aacf764c1d15e1f6bc883831160db626cb8f46bdc86c1fcf5c019e",
+          "Efficiency": 5000
+        }
+      ],
+      "backreferencehash": "3e6b6b00fa870a9583d666efb75801d0ee933bc90468ff33cd76538c19c9e170",
+      "lookuphash": "957919e27b7252423db4038db168bf4dfc3ce17b493ee0866e4fb91ae3c6edd3"
+    }
+  },
+  "121086e559525b3adb78ee5a24b2d44933bc011ddd80d374272ffb400a594365": {
+    "ablock": {
+      "header": {
+        "prevbackrefhash": "bf00281082e921a1826248e85527dae9dc9388a8d5c66bde2fc6a6050c9ce962",
+        "dbheight": 31095,
+        "headerexpansionsize": 0,
+        "headerexpansionarea": "",
+        "messagecount": 9,
+        "bodysize": 1368,
+        "adminchainid": "000000000000000000000000000000000000000000000000000000000000000a",
+        "chainid": "000000000000000000000000000000000000000000000000000000000000000a"
+      },
+      "abentries": [
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888889fff41615e89c718e6a08d28107ff50aa99e72197c6efd40fb202a5803",
+          "prevdbsig": {
+            "pub": "6d9be060bed2a53a3498a2918934a62768b0c109c3ceb3d0b3697d2f5c92f8a0",
+            "sig": "24be96bc5ecf16feedcd10abd96e6c43c0aacec6bffa1414d804c3199231284eea5a0a04d560400df423a701e2a6b7b61410d13f506ee01f73a325b7745fe306"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888dc16a02e27f184353ac046e8ca2e052be873809af3dc86907bdae98b96",
+          "prevdbsig": {
+            "pub": "db0429a7caf8b93b387688e5172df591731acc862ac7440d85c01657c672b2c0",
+            "sig": "14b1b7fd603990d77a9815ee2f189eedc1f408d0cfbe16a282ac4685968c0a9ce3a4c6a9fb5907bbe6c50a4be6b42c3ebe5c24ad8961a7a6d23c4ceaa547120a"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888880fc082ace22b1dbe53609424071852f969afd19c54a1c7b30c65cbcbc4",
+          "prevdbsig": {
+            "pub": "2a6c201572cbdd8861623d6d247dc8fe2d6a3839a1ab22f5347803baa69d44af",
+            "sig": "b0266f10c9302284695e8f031259dbb07b4ef93b409c5e8b45b09b5a930ef8cf6a97ba7a160622d28558848830f9d0eb04db63a0253f55f3a454898f849c6e06"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888881c98618455b818cbe56b924374d87445ffdc7263363302292974dc3f94",
+          "prevdbsig": {
+            "pub": "0de6369919f526225a14c38b7cf7081287e4029471e000b5c4336c041b233253",
+            "sig": "ae9acfc65a88714a21c885e748cc9f43d4e26811e4b63d4b9d04c4ab4ef13c48e4269a90004a12b8ee3fd42c3cdef20da15e6274fe294dd01e231b0b846ebe07"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888208ac88cfa432c02d2a239c6d8a775478972c56bb3f0317dac741b155c",
+          "prevdbsig": {
+            "pub": "b45430e61e0704bf63f41c63f3955d61ed7dc36d34ec2e7e62ab606645add001",
+            "sig": "40f276075746bc96337a31f5389f02d163c96a5cf27de4b88820020c2c950b7858504b3ab3ca7efd7dad1ad67bec6e2ac388b3ce8040b0c6ee5f29cc6d169d0f"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888551291c87240b682dba9b867fde1314c38cb48556c4a6b39dd3683a2da",
+          "prevdbsig": {
+            "pub": "deff2d401502847efcc3c6fbd100bc88d3ab9c1b71a06b31b2ed620fe23bfef8",
+            "sig": "7341061cad0330b105a681ab29b0a72964c534d0d19f85ebb309c8411c06605d590e3144a357bef551c5fb332617ed023d74cf6fb2afa86a1a09740b6ed34500"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888745c880f62e73da38a03519134c895cbc806feebc73f321cc00681b126",
+          "prevdbsig": {
+            "pub": "dcaf4ab9040b17248fa15defcfecdd7bdbd018776c5a01b92c7e391077658699",
+            "sig": "49a1e726e54e4e284d5bd76f911a83230cb0a4064acaf3233d9e5df496883d81dca912da4a4affabe56c242d573dc1104f989c9a0e92b8eb331dfb7e8dd86209"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888888d5b46f09cc2ad501889119a7d41a7616f765cb1a9710bd94e9a867556",
+          "prevdbsig": {
+            "pub": "bb4e0379fb294422c556d4b7c3b95cf2b11e7faef27d38dad49b2f139158d80a",
+            "sig": "65e687e5ed3f8c35c91e20e524ee95186ebdc951d825108c376551c8c36a4bf4f9987363caaeeb7b4ad4cf216b89dde64f3013be0acc31d2cf5ae1a9566edb0e"
+          }
+        },
+        {
+          "adminidtype": 11,
+          "Outputs": [
+            {
+              "amount": 320000000,
+              "address": "b834c8637b2b8c7f18e92243383391fba263a25d49f7a6280807e6824224dd28",
+              "useraddress": "FA3NCrf7W6CV4A7HKLQd4eveHhzfrayE3CXd85axLQrD4zYr4XbW"
+            },
+            {
+              "amount": 576000000,
+              "address": "e8e41a1c7ca7c29dc928e509cae82cae1a4711eb12fddc8bde25bf1733069efc",
+              "useraddress": "FA3jeSpDq6JSNmizDS8TWwdxKS9EiKFeRCXyZNYrfH6eqX1K9o8u"
+            },
+            {
+              "amount": 320000000,
+              "address": "2b20273033acf00b40e88848a853a56dd0543570f4f28d30b050634d1e28bd6e",
+              "useraddress": "FA2J59Eb8xyizJLachFn8LuRXVsSNkoW2uPKrna8X4UrtyVwztgY"
+            },
+            {
+              "amount": 561472000,
+              "address": "94fc3c50add88dd87b5337999e5a06c1ad61775a24df36bba558f713fda6d394",
+              "useraddress": "FA36hBnEibeWk4diroU754n76So6NrfbYkDfLJkkb3gSR1AFqqSi"
+            },
+            {
+              "amount": 512000000,
+              "address": "37f8b555abae52974691c97fb18c6eb1504c96482c628ce5d97d97d839b139cc",
+              "useraddress": "FA2PjGspxvLGHEcsEtPiZYdFCk4APHJiDb3RmRRCMr1ra97Ugjvb"
+            },
+            {
+              "amount": 320000000,
+              "address": "95804d4c7b91bee78bff0892b02f74c38f7d5c7c6e23fb122843900c32e49c5b",
+              "useraddress": "FA36vN5aQU2DAofpisurQhDSvx73MVatA53kSstTgcts8h2T9cvx"
+            },
+            {
+              "amount": 320000000,
+              "address": "7e73ae9e7c31c632697e9c9207075a66f099f82f5d1da2aec157146d48c75533",
+              "useraddress": "FA2vmboi6PbPHdGjqG5PfRhCG1hcpkXqNkVigAmmjq9atUAA2NpZ"
+            },
+            {
+              "amount": 627072000,
+              "address": "0c0aed44446538b251f418b6cdf61408f9f08f56a1d80be32bd7c8085d9bd499",
+              "useraddress": "FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZyeF"
+            },
+            {
+              "amount": 320000000,
+              "address": "f35f478bd4a1409ac653c90efcf94ee3588f63be807b8cb9aee66077ca0eb260",
+              "useraddress": "FA3pGAzaaGL3jy6tHyzKGaTfJNY6MJEprAvEnDjetWDPkgdUKYpx"
+            }
+          ]
+        }
+      ],
+      "backreferencehash": "ed78955c3d3dc91d9cc55be8d30171b1685d2984c0940c89edc14ec2cce067ef",
+      "lookuphash": "121086e559525b3adb78ee5a24b2d44933bc011ddd80d374272ffb400a594365"
+    }
+  },
+  "dcd88117e8233efe279c371eb54bc0c73bc2c8627a9c5a8be3de74b8b9afa2d4": {
+    "ablock": {
+      "header": {
+        "prevbackrefhash": "d62243cbccdd8a130188b002994d36167793f068ec05d45bf7549f636e2341db",
+        "dbheight": 46523,
+        "headerexpansionsize": 0,
+        "headerexpansionarea": "",
+        "messagecount": 11,
+        "bodysize": 1296,
+        "adminchainid": "000000000000000000000000000000000000000000000000000000000000000a",
+        "chainid": "000000000000000000000000000000000000000000000000000000000000000a"
+      },
+      "abentries": [
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888888de45074fb3505cfdc942f80f4c9ef1ddd5c4633cd21a940288ffc89f3",
+          "prevdbsig": {
+            "pub": "d7f968a9ee264b92b6002098a6072fd8619a572c18d80f55fff4790665b061dd",
+            "sig": "8f7c844fa71766d419e13223c2958ae8af4bbbef96802e008f057110fc47f946c6579d05b8c0cf9b5f8013fe146dd16b93a7adc82c750c7226ec123946f52201"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888889822cf1d5889aa8dc11ad210b67d582812152de568fabc5f8505989c0f",
+          "prevdbsig": {
+            "pub": "591b76f87bbea9ea5bbacb79ee10603bffac0a728999a25b2afac936fbeb3a39",
+            "sig": "0944a92d5710df1625e28760877ef2d3a849c52af6c28e68f71aaa2fec427545a3dcecc613e09caa467237ec453b03defd1260d44c2f1b64211b074c0de9fc0c"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888889fff41615e89c718e6a08d28107ff50aa99e72197c6efd40fb202a5803",
+          "prevdbsig": {
+            "pub": "6d9be060bed2a53a3498a2918934a62768b0c109c3ceb3d0b3697d2f5c92f8a0",
+            "sig": "c965c52fe1dcd58f35c66fb7aef756071c606f94834ee62875592c600470ef1457776d3d4629e1228138db50c8073fabb931778fd6acb54927ffafcfeaf34f08"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888dc16a02e27f184353ac046e8ca2e052be873809af3dc86907bdae98b96",
+          "prevdbsig": {
+            "pub": "db0429a7caf8b93b387688e5172df591731acc862ac7440d85c01657c672b2c0",
+            "sig": "73668add6295563d619ede67844879ab35068d512a98ff2883c82244e0d89a05393487604ae2e3c02fbf472fd57efc9402ee28e7ce0191f49203ee422233ee0e"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888dcb1aacf764c1d15e1f6bc883831160db626cb8f46bdc86c1fcf5c019e",
+          "prevdbsig": {
+            "pub": "462c856ad698491eed4f59d5c848ada06a81893856d3b965a19502d2d807ad07",
+            "sig": "4ebe31564431ab74aa59817db09edfaf69a00d9d555b9f1ede3285b872dfd630b33434eef77f1c4d30d6cba4c45ef8cbfcd5cc993d2adb437d60b5bc172c390e"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888f1dd02afef9715456811a8db5cd409619b3c5e3cd612bbfd6d16c94d48",
+          "prevdbsig": {
+            "pub": "f476310b7fa47eb6436f31710ce2a1db1caeb3a2b2638295df9eaab1370228c4",
+            "sig": "a74e5ec5b14af310fb905628d23cacad85603245e24014046eaa464f60c7153e09745e2467d4f48db70b76a8d17222339d70bc18b86aa6853bf31b6fbd36d409"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888880732ebbec169b8e583c6ac6f9a348692aca6457cab5025e104fbadc282",
+          "prevdbsig": {
+            "pub": "08ec6928e010c1694763d571e9a0142c697f524cc40d33ca7bd911d8685a1921",
+            "sig": "e909c3c0d0a65e352d5a9c9de015fe33ebebc5b42db42de2754b93703ce7e94bdcaee4d30f5b9ec7988c9d22e0ae658e27abba2c59155b0792c0ead13f480e03"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "8888881c98618455b818cbe56b924374d87445ffdc7263363302292974dc3f94",
+          "prevdbsig": {
+            "pub": "0de6369919f526225a14c38b7cf7081287e4029471e000b5c4336c041b233253",
+            "sig": "0f54b16d99e9c89ba838b55ac637d39e789e3b9ee043381abb5092cf55ec32298ed4e08ac264da09d2ecf7cb1dadba613201c9892c7f27ed256f24c66284b70d"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "888888745c880f62e73da38a03519134c895cbc806feebc73f321cc00681b126",
+          "prevdbsig": {
+            "pub": "dcaf4ab9040b17248fa15defcfecdd7bdbd018776c5a01b92c7e391077658699",
+            "sig": "2d6349dc386bfe918e73893b34ba66d74abe24f2322a935dd0627575b10a81239f3d5ac278749a7ac7f0fcdf1db6ca493ee3e2a9ed49244fd0772b8980f6ab01"
+          }
+        },
+        {
+          "adminidtype": 1,
+          "identityadminchainid": "88888877a43c37ce2ca73845684fcdda340fdc72857a6029d1f33c665dc6e092",
+          "prevdbsig": {
+            "pub": "15772114e000072a2fb703fa96aa4eb8825bf42f4b398b6de480b638fd2eb755",
+            "sig": "bc3d6ae30484651e876617acb7714d75167a6cd66985d8e7e811c5625a2e5033dbf70be8473b2c7619186992c4e6659fc47110dcf4bebb84c1a12c8c0fb2ca0e"
+          }
+        },
+        {
+          "adminidtype": 12,
+          "descriptor_height": 46460,
+          "DescriptorIndex": 8
+        }
+      ],
+      "backreferencehash": "b493590959eea4944ea51e7066a5d8c1d905f0ce4113710bba639ae660afc7bb",
+      "lookuphash": "dcd88117e8233efe279c371eb54bc0c73bc2c8627a9c5a8be3de74b8b9afa2d4"
     }
   }
+}

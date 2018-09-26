@@ -184,6 +184,17 @@ describe('Test Blocks', function() {
         assert.equal(entry.outputs[0].amount, 320000000);
     });
 
+    it('should parse AdminBlock entry type 12', function() {
+        const adminBlocks = require('./data/admin-blocks.json');
+
+        const ablock = new AdminBlock(adminBlocks['dcd88117e8233efe279c371eb54bc0c73bc2c8627a9c5a8be3de74b8b9afa2d4']);
+        const entry = ablock.getEntriesOfTypes('COINBASE_DESCRIPTOR_CANCEL')[0];
+        assert.equal(entry.adminId, 12);
+        assert.equal(entry.adminCode, 'COINBASE_DESCRIPTOR_CANCEL');
+        assert.equal(entry.descriptorHeight, 46460);
+        assert.equal(entry.descriptorIndex, 8);
+    });
+
     it('should parse AdminBlock entry type 13', function() {
         const adminBlocks = require('./data/admin-blocks.json');
 
