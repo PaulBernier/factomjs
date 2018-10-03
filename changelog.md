@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.6] 2018-10-03
+
+### Fixed
+
+* Use Babel plugin `@babel/transform-modules-commonjs` to fix integration in the browser (broke after upgrade to Babel 7).
+
 ## [0.3.5] 2018-09-26
 
 ### Fixed

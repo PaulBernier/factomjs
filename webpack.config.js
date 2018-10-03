@@ -20,7 +20,7 @@ module.exports = {
                 loader: 'babel-loader',
                 options: {
                     presets: ['@babel/env'],
-                    plugins: ['@babel/transform-runtime', '@babel/transform-async-to-generator']
+                    plugins: ['@babel/transform-runtime', '@babel/transform-async-to-generator',  '@babel/transform-modules-commonjs']
                 }
             }
         }]

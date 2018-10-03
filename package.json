@@ -1,6 +1,6 @@
 {
     "name": "factom",
-    "version": "0.3.5",
+    "version": "0.3.6",
     "description": "Components to build applications on the Factom blockchain",
     "main": "src/factom.js",
     "scripts": {
@@ -33,7 +33,7 @@
     "dependencies": {
         "axios": "^0.18.0",
         "base-58": "0.0.1",
-        "bluebird": "^3.5.1",
+        "bluebird": "^3.5.2",
         "hash.js": "^1.1.5",
         "lodash.chunk": "^4.2.0",
         "long": "^4.0.0",
@@ -41,19 +41,20 @@
         "tweetnacl": "^1.0.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.0.0",
-        "@babel/runtime": "^7.0.0",
-        "babel-loader": "^8.0.0",
-        "@babel/plugin-transform-async-to-generator": "^7.0.0",
-        "@babel/plugin-transform-runtime": "^7.0.0",
-        "@babel/preset-env": "^7.0.0",
-        "chai": "^4.1.2",
-        "eslint": "^5.4.0",
+        "@babel/core": "^7.1.2",
+        "@babel/plugin-transform-async-to-generator": "^7.1.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.1.0",
+        "@babel/plugin-transform-runtime": "^7.1.0",
+        "@babel/preset-env": "^7.1.0",
+        "@babel/runtime": "^7.1.2",
+        "babel-loader": "^8.0.4",
+        "chai": "^4.2.0",
+        "eslint": "^5.6.1",
         "mocha": "^5.2.0",
         "nconf": "^0.10.0",
         "nyc": "^13.0.1",
-        "sinon": "^6.1.5",
-        "webpack": "^4.17.1",
-        "webpack-cli": "^3.1.0"
+        "sinon": "^6.3.4",
+        "webpack": "^4.20.2",
+        "webpack-cli": "^3.1.2"
     }
 }
