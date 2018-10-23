@@ -112,7 +112,7 @@ cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', { revea
 
 #### Repeated commit
 
-If you commit twice an entry or a chain and that the second time the fees paid are lower or equal to the first commit you are in a 'repeated commit' case and the second commit will be rejected (and you won't be charged for it). If this scenario happens the output of `add` will have the field `repeatedCommit` set to `true` and the field `txId` will be undefined. See [Factom doc]{https://docs.factom.com/api#repeated-commit}.
+If you commit twice an entry or a chain and that the second time the fees paid are lower or equal to the first commit you are in a 'repeated commit' case and the second commit will be rejected (and you won't be charged for it). If this scenario happens the output of `add` will have the field `repeatedCommit` set to `true` and the field `txId` will be undefined. See [Factom doc](https://docs.factom.com/api#repeated-commit).
 
 #### Getting entries and block context
 
