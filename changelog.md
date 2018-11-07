@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+* More explicit ack errors.
+
 ## [0.3.6] 2018-10-03
 
 ### Fixed

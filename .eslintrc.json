@@ -8,10 +8,14 @@
     "extends": "eslint:recommended",
     "parserOptions": {
         "sourceType": "module",
-        "ecmaVersion": 2017        
+        "ecmaVersion": 2017,
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true
+        }  
     },
     "rules": {
         "no-throw-literal": 2,
+        "prefer-promise-reject-errors": 2,
         "indent": [
             "warn",
             4,
