@@ -37,7 +37,7 @@ async function commitInternal(factomd, obj, composeCommit, commitApiCall, ecPriv
     let repeatedCommit = false;
     const committed = await factomd.call(commitApiCall, { message: commit })
         .catch(function(e) {
-            if (e.message === 'Repeated Commit') {
+            if (e.code === -32011) {
                 repeatedCommit = true;
             } else {
                 throw e;

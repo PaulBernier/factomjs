@@ -23,6 +23,37 @@ class ApiError extends Error {
     }
 }
 
+/**
+ * Describe the options of connection to factomd or factom-walletd.
+ * @typedef {Object} ConnectionOptions
+ * @property {string} [host=localhost] - IP or hostname. Default to localhost.
+ * @property {number} [port=8088|8089] - Port. Default to 8088 for factomd and 8089 for walletd.
+ * @property {string} [path=/v2] - Path to V2 API. Default to /v2.
+ * @property {string} [debugPath=/debug] - Path to debug API. Default to /debug.
+ * @property {string} [user] - User for basic authentication.
+ * @property {string} [password] - Password for basic authentication.
+ * @property {string} [protocol=http] - http or https. Default to http.
+ * @property {boolean} [rejectUnauthorized=true] - Set to false to allow connection to a node with a self-signed certificate. Default to true.
+ * @property {Object} [retry] - Retry strategy. For the detail of the options see {@link https://github.com/tim-kos/node-retry#retrytimeoutsoptions}. Default to {retries: 4, factor: 2, minTimeout: 500, maxTimeout: 2000}
+ * @example
+ * const cli = new FactomdCli({
+ *      host: '52.202.51.228',
+ *      port: 8088,
+ *      path: '/',
+ *      debugPath: '/debug',
+ *      user: 'paul',
+ *      password: 'pwd',
+ *      protocol: 'https',
+ *      rejectUnauthorized: false,
+ *      retry: {
+ *          retries: 4,
+ *          factor: 2,
+ *          minTimeout: 500,
+ *          maxTimeout: 2000
+ *      }
+ * });
+ */
+
 class BaseCli {
 
     constructor(conf, defaultPort) {
@@ -69,7 +100,7 @@ class BaseCli {
             operation.attempt(() => {
                 this.httpCli.post(url, data)
                     .then(r => resolve(r.data.result))
-                    .catch(function(error) {
+                    .catch(function (error) {
                         let rejection;
                         if (error.response) {
                             if (error.response.status === 400) {
@@ -94,11 +125,15 @@ class BaseCli {
 
 function newCounter() {
     let i = 0;
-    return function() {
+    return function () {
         return ++i;
     };
 }
 
+/**
+ * Factomd API client.
+ * @param {ConnectionOptions} [conf] - Factomd connection options.
+ */
 class FactomdCli extends BaseCli {
 
     constructor(conf) {
@@ -107,12 +142,23 @@ class FactomdCli extends BaseCli {
         this.debugPath = conf.debugPath || '/debug';
     }
 
+    /**
+     * Make a call to factomd API. See {@link https://docs.factom.com/api#factomd-api}.
+     * @async
+     * @param {string} method - Factomd API method name.
+     * @param {Object} [params] - The object that the factomd API is expecting.
+     * @returns {Object} - Factomd API response.
+     */
     call(method, params) {
         const url = DEBUG_API_CALLS.has(method) ? this.debugPath : this.path;
         return super.call(url, method, params);
     }
 }
 
+/**
+ * Walletd API client.
+ * @param {ConnectionOptions} [conf] - Walletd connection options.
+ */
 class WalletdCli extends BaseCli {
 
     constructor(conf) {
@@ -120,6 +166,13 @@ class WalletdCli extends BaseCli {
         super(configuration, 8089);
     }
 
+    /**
+     * Make a call to factom-walletd API. See {@link https://docs.factom.com/api#factom-walletd-api}.
+     * @async
+     * @param {string} method - Walletd API method name.
+     * @param {Object} params - The object that the walletd API is expecting.
+     * @returns {Object} - Walletd API response.
+     */
     call(method, params) {
         return super.call(this.path, method, params);
     }

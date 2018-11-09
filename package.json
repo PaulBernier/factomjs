@@ -4,7 +4,7 @@
     "description": "Components to build applications on the Factom blockchain",
     "main": "src/factom.js",
     "scripts": {
-        "docs": "documentation build --github src/** -f md > docs/doc.md",
+        "docs": "documentation build --github --sort-order alpha src/** -f md > docs/doc.md",
         "lint": "eslint src/",
         "build": "webpack",
         "prepublishOnly": "npm run lint && npm run build && npm run test && npm run docs",

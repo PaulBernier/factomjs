@@ -164,10 +164,6 @@ function getBalance(factomd, address) {
         .then(res => res.balance);
 }
 
-function getProperties(cli) {
-    return cli.call('properties');
-}
-
 function chainExists(factomd, chainId) {
     return factomd.call('chain-head', { chainid: toHex(chainId) })
         .then(() => true)
@@ -192,6 +188,8 @@ async function getTransaction(factomd, txId) {
             directoryBlockKeyMR: tx.includedindirectoryblock,
             directoryBlockHeight: tx.includedindirectoryblockheight
         });
+    } else {
+        throw new Error(`No Transaction with ID [${txId}] found.`);
     }
 }
 
@@ -313,7 +311,6 @@ module.exports = {
     getEntryCreditRate,
     getTransaction,
     getBalance,
-    getProperties,
     getHeights,
     getDirectoryBlockHead,
     getDirectoryBlock,

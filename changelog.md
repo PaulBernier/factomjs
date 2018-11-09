@@ -2,9 +2,17 @@
 
 ## [Unreleased]
 
+### Fixed
+
+* Catch repeated commit exceptions properly.
+
 ### Changed
 
 * More explicit ack errors.
+
+### Removed
+
+* Remove `FactomCli` methods `getNodeProperties` and `getWalletProperties`. Unnecessary wrappers.
 
 ## [0.3.6] 2018-10-03
 
