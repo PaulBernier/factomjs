@@ -9,6 +9,7 @@
 ### Changed
 
 * More explicit ack errors.
+* `getTransaction` throws an `Error` if no transaction is found insteall of returning `undefined`. To be consistent with `getEntry` behavior.
 
 ### Removed
 

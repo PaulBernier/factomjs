@@ -1,9 +1,10 @@
 # Factom.js
 
-Library to interact easily with Factom blockchain. 
+Factom.js is a library to interact easily with the Factom blockchain.
 
-* Provide higher level functionalities than bare API making it more efficient to create chains or entries, make transactions...
-* Provide structures more uniform, consistent and easy to use than the API results
+* Provides higher level functionalities than factomd API making it a breeze to create chains or entries, send transactions...
+* Provides uniform, consistent and easy to use Factom data structures.
+* Provides a range of util functions to deal with Factom addresses.
 
 ## Installation
 
@@ -13,11 +14,11 @@ $ npm install --save factom
 
 ## Web browser
 
-Two versions of factom.js are being bundled for usage in a web browser and can be found in the `dist` folder. `dist/factom.js` is a bundle containing all the exposed components of the library. `dist/factom-struct.js` is a lighter bundle that contains factom structures such as Entry, Chain and Transaction, and all the utily functions related to FCT/EC addresses and fundamental constants. `factom-struct` bundle doesn't include any component that makes API calls.
+Two versions of *factom.js* are being bundled for usage in a web browser and can be found in the `dist` folder. `dist/factom.js` is a bundle containing all the exposed components of the library. `dist/factom-struct.js` is a lighter bundle that contains factom structures such as Entry, Chain and Transaction, and all the utily functions related to FCT/EC addresses and fundamental constants. `factom-struct` bundle doesn't include any component that makes API calls.
 
 ## Usage
 
-Important: please note than whenever a private (EntryCredit or Factoid) address is needed in this library (typically for signing data), you can either provide a private address or a public address as an argument. If you provide a public address the library will attempt to retrieve the corresponding private address from the wallet. Thus providing private address as arguments allow you to not have to run walletd.
+**Important:** please note than whenever a private (EntryCredit or Factoid) address is needed in this library (typically for signing data), you can either provide a private address or a public address as an argument. If you provide a public address the library will attempt to retrieve the corresponding private address from the wallet. Thus providing private address as arguments allow you to not have to run walletd.
 
 ### Instantiate FactomCli
 
