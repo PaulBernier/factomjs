@@ -296,8 +296,8 @@ class FactomCli {
      * Rewind a chain entry by entry (newest to oldest) while a predicate is true.
      * @async
      * @param {string} chainId - Chain to rewind.
-     * @param {Function(Entry)} predicate - Predicate of the while loop. Iteration stop if either the predicate is false or the end of the chain has been reached.
-     * @param {Function(Entry)} func - Function to apply at each iteration.
+     * @param {Function<Entry>} predicate - Predicate of the while loop. Iteration stop if either the predicate is false or the end of the chain has been reached.
+     * @param {Function<Entry>} func - Function to apply at each iteration.
      * @example
      * cli.rewindChainWhile('dab6c095c22ec6db1b0961fdb82d504a95f0a31467bb7df73cc793532b0e9ae3', () => true, function(entry) {
      *      // Do stuff with the entry
@@ -310,12 +310,14 @@ class FactomCli {
     // Send transactions
 
     /**
-     * Send a Factoid transaction.
+     * Send a Factoid transaction. 
+     * This method will throw if the transaction fees are too low given the current EC rate.
+     * Note that by default this method also rejects a transaction over paying the minimum required fees by a factor 10 as it is most likely a user input error. This can be overriden with the force option.
      * @async
      * @param {Transaction} transaction 
      * @param {Object} [options]
      * @param {number} [options.timeout=60] - Time to wait in seconds for transaction acknowledgment before timing out. If negative value, doesn't wait for ack.
-     * @param {boolean} [options.force=false] - Set to true to bypass the checks of the transaction fees.
+     * @param {boolean} [options.force=false] - Set to true to bypass the check of the transaction fee overpay.
      * @returns {string} - Transaction ID.
      */
     sendTransaction(transaction, options) {

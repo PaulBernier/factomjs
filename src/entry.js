@@ -8,7 +8,7 @@ const sign = require('tweetnacl/nacl-fast').sign,
  **********************/
 
 /**
- * Class representing an Entry
+ * Class representing an Entry.
  * @param {EntryBuilder} builder 
  * @property {Buffer} chainId - Chain ID.
  * @property {Buffer[]} extIds - External IDs.
@@ -241,7 +241,7 @@ class EntryBuilder {
         return this;
     }
     /**
-     * Set explicit timestamp for the entry commit. 
+     * Set the timestamp for the entry commit. 
      * If not set the library will use Date.now() as the commit timestamp.
      * @param {number} timestamp - Timestamp in milliseconds.
      * @returns {EntryBuilder} - EntryBuilder instance.
@@ -263,6 +263,7 @@ class EntryBuilder {
     }
 
     /**
+     * Build the Entry.
      * @returns {Entry} - Built entry.
      */
     build() {

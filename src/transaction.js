@@ -7,6 +7,11 @@ const sign = require('tweetnacl/nacl-fast').sign,
     { MAX_TRANSACTION_SIZE } = require('./constant'),
     { isValidFctAddress, isValidPublicAddress, getPublicAddress, addressToKey, addressToRcdHash } = require('./addresses');
 
+/**
+ * Class to hold address and amount of an input/output of a {@link Transaction}.
+ * @param {string} address - Factoid or Entry Credit public address.
+ * @param {number} amount - Amount in factoshis (10^-8 Factoids).
+ */
 class TransactionAddress {
     constructor(address, amount) {
         if (!isValidPublicAddress(address)) {
@@ -34,7 +39,43 @@ function validateAmount(amount) {
     }
 }
 
+/**
+ * Block context of a {@link Transaction}.
+ * @typedef {Object} TransactionBlockContext
+ * @property {string} factoidBlockKeyMR - Factoid Block KeyMR the transaction is part of.
+ * @property {string} directoryBlockKeyMR - Directory Block KeyMR the transaction was secured in.
+ * @property {number} directoryBlockHeight - Directory Block height the transaction was secured in.
+ */
+
+/**
+ * Class representing a Factoid transaction.
+ * @param {TransactionBuilder} builder
+ * @param {TransactionBlockContext} [blockContext]
+ * @property {string} id - Transaction ID.
+ * @property {number} timestamp - Timestamp in milliseconds.
+ * @property {TransactionAddress[]} inputs - Inputs.
+ * @property {TransactionAddress[]} factoidOutputs - Factoid outputs.
+ * @property {TransactionAddress[]} entryCreditOutputs - Entry Credit outputs.
+ * @property {number} totalInputs - Total amount of factoshis as input of this transaction.
+ * @property {number} totalFactoidOutputs - Total amount of factoshis as factoid outputs of this transaction.
+ * @property {number} totalEntryCreditOutputs - Total amount of factoshis as entry credit outputs of this transaction.
+ * @property {number} feesPaid - Fees paid in this transaction.
+ * @property {TransactionBlockContext} blockContext - Block context.
+ * @property {Buffer[]} rcds - RCDs.
+ * @property {Buffer[]} signatures - Signatures.
+ * @example
+ * const transaction = Transaction.builder()
+ *   .input('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X', 14000000)
+ *   .input('Fs2E6iXCLAKDiPqVtfxtuQCKsTe7o6DJFDnht1wST53s4ibtdu9f', 1010000 + fees)
+ *   .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg5uH', 5000000)
+ *   .output('FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZteF', 10000000)
+ *    // Note that the line below is to buy Entry Credits (see the address type) and the amount is in Factoshis like other outputs: 
+ *    // it is *not* the number of Entry Credits you are purchasing.
+ *   .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e3QR', 10000)
+ *   .build()
+ */
 class Transaction {
+
     constructor(builder, blockContext) {
         if (builder instanceof TransactionBuilder) {
             this.timestamp = builder._timestamp || Date.now();
@@ -61,6 +102,8 @@ class Transaction {
 
         } else if (typeof builder === 'object') {
             // Building transaction from the result of transaction API
+            // The reason for not using a TransactionBuilder for transactions read from the blockchain is performance
+            // because of the validation cost of the rcs/signatures. We trust the data coming from the blockchain to be valid.
             this.id = builder.txid;
             this.timestamp = builder.millitimestamp;
             this.inputs = builder.inputs.map(input => new TransactionAddress(input.useraddress, input.amount));
@@ -91,19 +134,38 @@ class Transaction {
         Object.freeze(this);
     }
 
+    /**
+     * Check if the transaction is signed or not.
+     * @returns {boolean} True if the transaction is signed.
+     */
     isSigned() {
         return this.signatures.length !== 0;
     }
 
+    /**
+     * Compute if the fees of the transaction are enough (for a given EC rate).
+     * @param {number} ecRate - Entry Credit rate. See {@link FactomCli#getEntryCreditRate}.
+     * @returns {boolean} - True if the fees are sufficient.
+     */
     validateFees(ecRate) {
         return this.computeRequiredFees(ecRate) <= this.feesPaid;
     }
 
-
+    /**
+     * Compute the required fees (minimum difference between inputs and outputs amounts) for the transaction (for a given EC rate).
+     * @param {number} ecRate - Entry Credit rate. See {@link FactomCli#getEntryCreditRate}.
+     * @param {Object} [opts] - Extra options necessary to compute fees of an unsigned transaction.
+     * @returns {number} - Number of factoshis (10^-8 Factoids) required as fees for this transaction.
+     */
     computeRequiredFees(ecRate, opts) {
         return this.computeEcRequiredFees(opts) * ecRate;
     }
 
+    /**
+     * Compute the required Entry Credit fees.
+     * @param {Object} [opts] - Extra options necessary to compute fees of an unsigned transaction.
+     * @returns {number} - Fees in Entry Credit.
+     */
     computeEcRequiredFees(opts) {
         const options = opts || {};
 
@@ -134,6 +196,9 @@ class Transaction {
         return fee;
     }
 
+    /**
+     * @returns {Buffer} Result of marshaling the transaction.
+     */
     marshalBinary() {
         if (!this.isSigned()) {
             throw new Error('Cannot marshal an unsigned Transaction.');
@@ -149,6 +214,11 @@ class Transaction {
         return Buffer.concat(result);
     }
 
+    /**
+     * Transaction builder static factory.
+     * @param {Transaction} [transaction] - Optional transaction to use to initialize the attributes of the builder.
+     * @returns {TransactionBuilder} A new TransactionBuilder.
+     */
     static builder(transaction) {
         return new TransactionBuilder(transaction);
     }
@@ -176,6 +246,11 @@ function marshalBinarySig(timestamp, inputs, factoidOutputs, entryCreditOutputs)
     ]);
 }
 
+
+/**
+ * Class to build a {@link Transaction}.
+ * @param {Transaction} [transaction] - Optional transaction to use to initialize the attributes of the builder.
+ */
 class TransactionBuilder {
     constructor(transaction) {
         this._timestamp;
@@ -195,6 +270,14 @@ class TransactionBuilder {
         }
     }
 
+    /**
+     * Add an input to the transaction.
+     * @param {string} fctAddress - Factoid address. 
+     * User should provide a private address (Fs) to allow the signature of the transaction. 
+     * If a public address is provided the user will need to provide the RCD and signature using {@link TransactionBuilder#rcdSignature}.
+     * @param {number} amount - Amount in factoshis (10^-8 Factoids).
+     * @returns {TransactionBuilder} - TransactionBuilder instance.
+     */
     input(fctAddress, amount) {
         if (!isValidFctAddress(fctAddress)) {
             throw new TypeError('First argument must be a valid Factoid address.');
@@ -211,6 +294,13 @@ class TransactionBuilder {
         return this;
     }
 
+    /**
+     * Add an output to the transaction. Both FCT and EC outputs are supported.
+     * Please note that in case of an EC output, the amount is still in factoshis, it is not the number of Entry Credits.
+     * @param {string} publicAddress - Factoid or Entry Credit public address.
+     * @param {number} amount - Amount in factoshis (10^-8 Factoids).
+     * @returns {TransactionBuilder} - TransactionBuilder instance.
+     */
     output(publicAddress, amount) {
         const transactionAddress = new TransactionAddress(publicAddress, amount);
         if (publicAddress[0] === 'F') {
@@ -222,17 +312,34 @@ class TransactionBuilder {
         return this;
     }
 
+    /**
+     * Add a RCD and signature to the transaction. This is used only in the case of unsigned transactions (usefull for hardware wallets).
+     * RCDs/signatures need to be added in the same order as their corresponding inputs.
+     * @param {string} rcd - RCD.
+     * @param {string} signature - Signature.
+     * @returns {TransactionBuilder} - TransactionBuilder instance.
+     */
     rcdSignature(rcd, signature) {
         this._rcds.push(Buffer.from(rcd, 'hex'));
         this._signatures.push(Buffer.from(signature, 'hex'));
         return this;
     }
 
+    /**
+     * Set the transaction timestamp. 
+     * If not set the library will use Date.now() as the transaction timestamp.
+     * @param {number} timestamp - Timestamp in milliseconds.
+     * @returns {TransactionBuilder} - TransactionBuilder instance.
+     */
     timestamp(timestamp) {
         this._timestamp = timestamp;
         return this;
     }
 
+    /**
+     * Build the Transaction.
+     * @returns {Transaction} - Built transaction.
+     */
     build() {
         return new Transaction(this);
     }
