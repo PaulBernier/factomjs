@@ -5,6 +5,7 @@
 ### Fixed
 
 * Catch repeated commit exceptions properly.
+* Rejection of negative transaction fees. 
 
 ### Changed
 

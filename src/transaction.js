@@ -129,7 +129,14 @@ class Transaction {
             throw new Error('Total inputs/outputs are not safe integers (too big to be handled by the library).');
         }
 
-        this.feesPaid = Math.max(this.totalInputs - totalOutputs, 0); // Coinbase transactions have 0 fee
+        if (this.totalInputs === 0) {
+            // If total inputs amount is 0 we can only assume that it is a valid coinbase transaction.
+            this.feesPaid = 0;
+        } else if (this.totalInputs >= totalOutputs) {
+            this.feesPaid = this.totalInputs - totalOutputs;
+        } else {
+            throw new Error(`Sum of Transaction outputs (${totalOutputs}) is greater than the sum of inputs (${this.totalInputs})`);
+        }
 
         Object.freeze(this);
     }

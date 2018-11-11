@@ -104,6 +104,24 @@ describe('Get information from Factom blockchain', function () {
         assert.equal(transaction.blockContext.factoidBlockKeyMR, 'bb622dc852a278ede8fbfd0144ae49d6576e621a1267932dfd198c2cea73b403');
     });
 
+    it('should get coinbase Transaction', async function () {
+        this.timeout(5000);
+
+        const transaction = await get.getTransaction(factomd, '4099f0fe5ba3ccdccb0ee5e45f9d3d513bb9994c781acb54b49ae15d85f1e9d9');
+
+        assert.instanceOf(transaction, Transaction);
+        assert.equal(transaction.id, '4099f0fe5ba3ccdccb0ee5e45f9d3d513bb9994c781acb54b49ae15d85f1e9d9');
+        assert.equal(transaction.totalInputs, 0);
+        assert.equal(transaction.totalFactoidOutputs, 640000000);
+        assert.equal(transaction.totalEntryCreditOutputs, 0);
+        assert.equal(transaction.feesPaid, 0);
+        assert.lengthOf(transaction.inputs, 0);
+        assert.lengthOf(transaction.factoidOutputs, 2);
+        assert.lengthOf(transaction.entryCreditOutputs, 0);
+        assert.equal(transaction.factoidOutputs[0].address, 'FA36vN5aQU2DAofpisurQhDSvx73MVatA53kSstTgcts8h2T9cvx');
+        assert.equal(transaction.factoidOutputs[0].amount, 320000000);
+    });
+
     it('should get heights', async function () {
         const heights = await get.getHeights(factomd);
 
@@ -254,7 +272,7 @@ describe('Get information from Factom blockchain', function () {
         this.timeout(20000);
 
         let search = true, found, counter = 0;
-        await get.rewindChainWhile(factomd, '106fa1e435be6cff0e167da35a186b141e4dfcea204e1500bf694c88b9214f68', () => search, function(entry) {
+        await get.rewindChainWhile(factomd, '106fa1e435be6cff0e167da35a186b141e4dfcea204e1500bf694c88b9214f68', () => search, function (entry) {
             counter++;
             if (entry.content.toString('hex') === '0b70b3b0fd865bd903461bf8f3d9cd782ebfa92e26238079eaf58bbdf2b4a1c0') {
                 found = entry;

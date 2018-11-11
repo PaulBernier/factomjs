@@ -1,5 +1,5 @@
 const assert = require('chai').assert,
-sign = require('tweetnacl/nacl-fast').sign,
+    sign = require('tweetnacl/nacl-fast').sign,
     { Transaction } = require('../src/transaction');
 
 describe('Test Factoid transaction creation', function () {
@@ -127,6 +127,23 @@ describe('Test Factoid transaction creation', function () {
 
         assert.deepEqual(manuallySignedCopy.marshalBinary(), tx.marshalBinary());
 
+    });
+
+    it('should reject transaction with outputs greater than inputs (and not coinbase)', async function () {
+        const timestamp = 1521693377958;
+
+        try {
+            Transaction.builder()
+                .timestamp(timestamp)
+                .input('Fs2aWUK9n6nriazARdt2hzk6kEqYy6ch9z7wTzowu8R4DELXwK4P', 20)
+                .output('FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw', 20)
+                .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR', 20)
+                .build();
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have rejected transaction');
     });
 
 });
