@@ -8,6 +8,12 @@ const sign = require('tweetnacl/nacl-fast').sign,
  * Chain class
  **********************/
 
+ /**
+  * Class representing a Chain.
+  * @param {Entry|Chain} - First entry of the chain or another chain to copy.
+  * @property {Buffer} id - Chain ID.
+  * @property {Entry} firstEntry - First entry of the chain.
+  */
 class Chain {
     constructor(arg) {
         if (arg instanceof Entry) {
@@ -23,15 +29,22 @@ class Chain {
                 .build();
             this.id = chainId;
         } else {
-            throw new Error('Argument on Chain constructor should be an instance of Entry');
+            throw new Error('Argument of Chain constructor must be an instance of Entry or Chain.');
         }
         Object.freeze(this);
     }
 
+    /**
+     * @returns {string} - Chain ID as a hex encoded string.
+     */
     get idHex() {
         return this.id.toString('hex');
     }
 
+    /**
+     * Get Entry Credit cost of the chain.
+     * @returns {number} - Entry Credit cost of the chain.
+     */
     ecCost() {
         return CHAIN_CREATION_COST + this.firstEntry.ecCost();
     }
@@ -41,6 +54,16 @@ class Chain {
  * Compose
  **********************/
 
+
+/**
+ * Compose the commit of a Chain, that can then be used as input of the factomd API `commit-chain`.
+ * Note that if the chain first entry doesn't have a timestamp set the library will use Date.now() as the default for the commit timestamp.
+ * @param {Chain} chain - Chain to compose the commit of.
+ * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). 
+ * If a public EC address is provided it is necessary to provide the signature of the commit as a 3rd argument (use case for hardware wallets)
+ * @param {string|Buffer} [sig] - Optional signature of the commit (composeChainLedger). Only necessary if a public EC address was passed as 2nd argument.
+ * @returns {Buffer} - Chain commit.
+ */
 function composeChainCommit(chain, ecAddress, sig) {
     validateChainInstance(chain);
 
@@ -89,11 +112,24 @@ function composeChainLedger(chain) {
     return buffer;
 }
 
+/**
+ * Compose the reveal of a Chain, that can then be used as input of the factomd API `reveal-chain`.
+ * @param {Chain} chain - Chain to compose the reveal of.
+ * @returns {Buffer} - Chain reveal.
+ */
 function composeChainReveal(chain) {
     validateChainInstance(chain);
     return chain.firstEntry.marshalBinary();
 }
 
+/**
+ * Compose the commit and reveal of a Chain, that can then be used as inputs of the factomd APIs `commit-chain` and `reveal-chain`.
+ * @param {Chain} chain - Chain to compose the commit and reveal of.
+ * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). 
+ * If a public EC address is provided it is necessary to manually pass the signature of the commit as a 3rd argument (use case for hardware wallets)
+ * @param {string|Buffer} [signature] - Optional signature of the commit (composeChainLedger). Only necessary if a public EC address was passed as 2nd argument.
+ * @returns {{commit:Buffer, reveal:Buffer}} - Chain commit and reveal.
+ */
 function composeChain(chain, ecAddress, signature) {
     validateChainInstance(chain);
 
@@ -113,11 +149,22 @@ function validateChainInstance(chain) {
     }
 }
 
+/**
+ * Compute the transaction ID of the Chain commit. The transaction ID is dependent on the timestamp set in the chain first entry.
+ * Note that if the timestamp is not set the library uses Date.now() as the default, changing the result of this function if called at different times. 
+ * @param {Chain} chain 
+ * @returns {Buffer} - The transaction id of the Chain commit.
+ */
 function computeChainTxId(chain) {
     validateChainInstance(chain);
     return sha256(composeChainLedger(chain));
 }
 
+/**
+ * Compute the ID of a Chain provided its first entry.
+ * @param {Entry} firstEntry - The first entry of the chain. 
+ * @returns {Buffer} - Chain ID.
+ */
 function computeChainId(firstEntry) {
     if (firstEntry.extIds.length === 0) {
         throw new Error('First entry of a chain must contain at least 1 external id');
@@ -131,10 +178,10 @@ function computeChainId(firstEntry) {
 module.exports = {
     Chain,
     computeChainTxId,
-    validateChainInstance,
     computeChainId,
     composeChainCommit,
     composeChainReveal,
     composeChain,
-    composeChainLedger
+    composeChainLedger,
+    validateChainInstance
 };

@@ -309,9 +309,10 @@ function marshalExternalIdsBinary(extIds) {
 
 /**
  * Compose the commit of an Entry, that can then be used as input of the factomd API `commit-entry`.
- * Note that if the Entry doen't have a timestamp set the library will use Date.now() as the default for the commit timestamp.
+ * Note that if the Entry doesn't have a timestamp set the library will use Date.now() as the default for the commit timestamp.
  * @param {Entry} entry - Entry to compose the commit of.
- * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). If a public EC address is provided it is necessary to manually pass the signature of the commit as a 3rd argument (use case for hardware wallets)
+ * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). 
+ * If a public EC address is provided it is necessary to provide the signature of the commit as a 3rd argument (use case for hardware wallets)
  * @param {string|Buffer} [sig] - Optional signature of the commit (composeEntryLedger). Only necessary if a public EC address was passed as 2nd argument.
  * @returns {Buffer} - Entry commit.
  */
@@ -371,7 +372,8 @@ function composeEntryReveal(entry) {
 /**
  * Compose the commit and reveal of an Entry, that can then be used as inputs of the factomd APIs `commit-entry` and `reveal-entry`.
  * @param {Entry} entry - Entry to compose the commit and reveal of.
- * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). If a public EC address is provided it is necessary to manually pass the signature of the commit as a 3rd argument (use case for hardware wallets)
+ * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). 
+ * If a public EC address is provided it is necessary to manually pass the signature of the commit as a 3rd argument (use case for hardware wallets)
  * @param {string|Buffer} [signature] - Optional signature of the commit (composeEntryLedger). Only necessary if a public EC address was passed as 2nd argument.
  * @returns {{commit:Buffer, reveal:Buffer}} - Entry commit and reveal.
  */
@@ -395,8 +397,8 @@ function validateEntryInstance(entry) {
 }
 
 /**
- * Compute the transaxtion id of the Entry commit. The transaction ID is dependent on the timestamp set in the entry.
- * If the timestamp is not set the library uses Date.now() as the default, changing the result of this function if called at different times. 
+ * Compute the transaction ID of the Entry commit. The transaction ID is dependent on the timestamp set in the entry.
+ * Note that if the timestamp is not set the library uses Date.now() as the default, changing the result of this function if called at different times. 
  * @param {Entry} entry 
  * @returns {Buffer} - The transaction id of the Entry commit.
  */
