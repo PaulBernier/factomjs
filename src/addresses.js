@@ -13,6 +13,11 @@ const {
     FCT_ADDRESS_VALID_PREFIXES
 } = require('./constant');
 
+/**
+ * Validate that an address is valid (well formed).
+ * @param {string} address - Address to validate
+ * @returns {boolean} - True if the address is valid.
+ */
 function isValidAddress(address) {
     try {
         if (!VALID_PREFIXES.has(address.slice(0, 2))) {
@@ -35,40 +40,83 @@ function isValidAddress(address) {
     }
 }
 
-
+/**
+ * Validate if an address is a valid public EC or FCT address.
+ * @param {string} address - Address to validate.
+ * @returns {boolean} - True if the address is a valid public EC or FCT address.
+ */
 function isValidPublicAddress(address) {
     return isValidAddress(address) && PUBLIC_ADDRESS_VALID_PREFIXES.has(address.substring(0, 2));
 }
 
+/**
+ * Validate if an address is a valid private EC or FCT address.
+ * @param {string} address - Address to validate.
+ * @returns {boolean} - True if the address is a valid private EC or FCT address.
+ */
 function isValidPrivateAddress(address) {
     return isValidAddress(address) && PRIVATE_ADDRESS_VALID_PREFIXES.has(address.substring(0, 2));
 }
 
-
+/**
+ * Validate if an address is a valid EC address (public or private).
+ * @param {string} address - Address to validate.
+ * @returns {boolean} - True if the address is a valid EC address.
+ */
 function isValidEcAddress(address) {
     return isValidAddress(address) && EC_ADDRESS_VALID_PREFIXES.has(address.substring(0, 2));
 }
 
+/**
+ * Validate if an address is a valid public EC address.
+ * @param {string} address - Address to validate.
+ * @returns {boolean} - True if the address is a valid public EC address.
+ */
 function isValidEcPublicAddress(address) {
     return isValidAddress(address) && address.substring(0, 2) === 'EC';
 }
 
+/**
+ * Validate if an address is a valid private EC address.
+ * @param {string} address - Address to validate.
+ * @returns {boolean} - True if the address is a valid private EC address.
+ */
 function isValidEcPrivateAddress(address) {
     return isValidAddress(address) && address.substring(0, 2) === 'Es';
 }
 
+/**
+ * Validate if an address is a valid FCT address (public or private).
+ * @param {string} address - Address to validate.
+ * @returns {boolean} - True if the address is a valid FCT address.
+ */
 function isValidFctAddress(address) {
     return isValidAddress(address) && FCT_ADDRESS_VALID_PREFIXES.has(address.substring(0, 2));
 }
 
+/**
+ * Validate if an address is a valid public FCT address.
+ * @param {string} address - Address to validate.
+ * @returns {boolean} - True if the address is a valid public FCT address.
+ */
 function isValidFctPublicAddress(address) {
     return isValidAddress(address) && address.substring(0, 2) === 'FA';
 }
 
+/**
+ * Validate if an address is a valid private FCT address.
+ * @param {string} address - Address to validate.
+ * @returns {boolean} - True if the address is a valid private FCT address.
+ */
 function isValidFctPrivateAddress(address) {
     return isValidAddress(address) && address.substring(0, 2) === 'Fs';
 }
 
+/**
+ * Get public address corresponding to an address.
+ * @param {string} address - Any address.
+ * @returns {string} - Public address.
+ */
 function getPublicAddress(address) {
     if (!isValidAddress(address)) {
         throw new Error(`Invalid address ${address}.`);
@@ -84,6 +132,11 @@ function getPublicAddress(address) {
     return address[0] === 'F' ? keyToPublicFctAddress(pub) : keyToPublicEcAddress(pub);
 }
 
+/**
+ * Extract the key contained in an address. Cannot be used with public FCT address as those contain a RCD hash and not a key (See {@link addressToRcdHash}). 
+ * @param {string} address - Any address, except public FCT address.
+ * @returns {Buffer} - Key contained in the address.
+ */
 function addressToKey(address) {
     if (!isValidAddress(address)) {
         throw new Error(`Invalid address ${address}.`);
@@ -94,11 +147,61 @@ function addressToKey(address) {
     return Buffer.from(base58.decode(address).slice(2, 34));
 }
 
+/**
+ * Extract the RCD hash from a public FCT address.
+ * @param {string} address - Public FCT address.
+ * @returns {Buffer} - RCD hash.
+ */
 function addressToRcdHash(address) {
     if (!isValidFctPublicAddress(address)) {
         throw new Error(`Address ${address} is not a valid public Factoid address`);
     }
     return Buffer.from(base58.decode(address).slice(2, 34));
+}
+
+/**
+ * Build a human readable public FCT address from a key.
+ * @param {Buffer|string} key 
+ * @returns {string} - Public FCT address.
+ */
+function keyToPublicFctAddress(key) {
+    return keyToAddress(key, FACTOID_PUBLIC_PREFIX, true);
+}
+
+/**
+ * Build a human readable public FCT address from a RCD hash.
+ * @param {Buffer|string} rcdHash 
+ * @returns {string} - Public FCT address.
+ */
+function rcdHashToPublicFctAddress(rcdHash) {
+    return keyToAddress(rcdHash, FACTOID_PUBLIC_PREFIX);
+}
+
+/**
+ * Build a human readable private FCT address from a key.
+ * @param {Buffer|string} key 
+ * @returns {string} - Private FCT address.
+ */
+function keyToPrivateFctAddress(key) {
+    return keyToAddress(key, FACTOID_PRIVATE_PREFIX);
+}
+
+/**
+ * Build a human readable public EC address from a key.
+ * @param {Buffer|string} key 
+ * @returns {string} - Public EC address.
+ */
+function keyToPublicEcAddress(key) {
+    return keyToAddress(key, ENTRYCREDIT_PUBLIC_PREFIX);
+}
+
+/**
+ * Build a human readable private EC address from a key.
+ * @param {Buffer|string} key 
+ * @returns {string} - Private EC address.
+ */
+function keyToPrivateEcAddress(key) {
+    return keyToAddress(key, ENTRYCREDIT_PRIVATE_PREFIX);
 }
 
 function keyToAddress(key, prefix, computeRCDHash) {
@@ -114,26 +217,6 @@ function keyToAddress(key, prefix, computeRCDHash) {
 
 function keyToRCD1Hash(key) {
     return sha256d(Buffer.concat([RCD_TYPE_1, key]));
-}
-
-function keyToPublicFctAddress(key) {
-    return keyToAddress(key, FACTOID_PUBLIC_PREFIX, true);
-}
-
-function rcdHashToPublicFctAddress(rcdHash) {
-    return keyToAddress(rcdHash, FACTOID_PUBLIC_PREFIX);
-}
-
-function keyToPrivateFctAddress(key) {
-    return keyToAddress(key, FACTOID_PRIVATE_PREFIX);
-}
-
-function keyToPublicEcAddress(key) {
-    return keyToAddress(key, ENTRYCREDIT_PUBLIC_PREFIX);
-}
-
-function keyToPrivateEcAddress(key) {
-    return keyToAddress(key, ENTRYCREDIT_PRIVATE_PREFIX);
 }
 
 module.exports = {
