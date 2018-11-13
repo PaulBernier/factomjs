@@ -15,6 +15,7 @@
 ### Removed
 
 * Remove `FactomCli` methods `getNodeProperties` and `getWalletProperties`. Unnecessary wrappers.
+* Do not expose internal constants anymore.
 
 ## [0.3.6] 2018-10-03
 
