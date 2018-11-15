@@ -10,7 +10,7 @@ const sign = require('tweetnacl/nacl-fast').sign,
 
  /**
   * Class representing a Chain.
-  * @param {Entry|Chain} - First entry of the chain or another chain to copy.
+  * @param {Entry|Chain} arg - First entry of the chain or another chain to copy.
   * @property {Buffer} id - Chain ID.
   * @property {Entry} firstEntry - First entry of the chain.
   */

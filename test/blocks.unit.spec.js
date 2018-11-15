@@ -34,9 +34,9 @@ describe('Test Blocks', function() {
         const commit = ecb.getCommitsForMinute(1)[0];
         assert.equal(commit.version, 0);
         assert.equal(commit.millis, 1521084063230);
-        assert.deepEqual(commit.entryHash, Buffer.from('57cf6740c4f30ae39d71f75710fb4ea9c843d5c01755329a42ccab52034e1f79', 'hex'));
+        assert.equal(commit.entryHash, '57cf6740c4f30ae39d71f75710fb4ea9c843d5c01755329a42ccab52034e1f79');
         assert.equal(commit.credits, 1);
-        assert.deepEqual(commit.signature, Buffer.from('3e6e7d85a201b398d6bc056213f698d6fed7d1e82813105b7310b843618b228c2559dd1f3a22f1dd28d97f2fdcde86cff59415753fc4b826b2bfe5f7425b780d', 'hex'));
+        assert.equal(commit.signature, '3e6e7d85a201b398d6bc056213f698d6fed7d1e82813105b7310b843618b228c2559dd1f3a22f1dd28d97f2fdcde86cff59415753fc4b826b2bfe5f7425b780d');
         assert.equal(commit.ecPublicKey, 'EC3PH2S2iXP4WpfoLuU5ETWRNfNZnmNUF5epWoFweYmBx9m4xK3z');
     });
 
@@ -60,9 +60,9 @@ describe('Test Blocks', function() {
         const commit = ecb.getCommitsForMinute(1)[0];
         assert.equal(commit.version, 0);
         assert.equal(commit.millis, 1473040801697);
-        assert.deepEqual(commit.entryHash, Buffer.from('df72b3c35f3ac80820b1196570d5028e66e04f8cb5a3b90b5dd486a60743e014', 'hex'));
+        assert.equal(commit.entryHash, 'df72b3c35f3ac80820b1196570d5028e66e04f8cb5a3b90b5dd486a60743e014');
         assert.equal(commit.credits, 1);
-        assert.deepEqual(commit.signature, Buffer.from('07a2c43f156117ca3567dedd42533b66b718ab991a7b8fa86bbc0307b007a6e03837a38311b0b7515643e46714b8e6bc0a417cd4f899fe75cd4a29cfdfbef209', 'hex'));
+        assert.equal(commit.signature, '07a2c43f156117ca3567dedd42533b66b718ab991a7b8fa86bbc0307b007a6e03837a38311b0b7515643e46714b8e6bc0a417cd4f899fe75cd4a29cfdfbef209');
         assert.equal(commit.ecPublicKey, 'EC2LXsumFsDK36ueRdNZC5Q3zMhxCzoZXM52JRtsgCfyQUruYXLY');
     });
 

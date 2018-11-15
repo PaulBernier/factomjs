@@ -1,11 +1,30 @@
-const { Transaction } = require('./transaction'), { keyToPublicEcAddress, rcdHashToPublicFctAddress } = require('./addresses'), {
-    ADMIN_ID_TO_CODE,
-    ADMIN_BLOCKS_CHAIN_ID,
-    ENTRY_CREDIT_BLOCKS_CHAIN_ID,
-    FACTOID_BLOCKS_CHAIN_ID
-} = require('./constant');
+const { Transaction } = require('./transaction'),
+    { keyToPublicEcAddress, rcdHashToPublicFctAddress } = require('./addresses'), {
+        ADMIN_ID_TO_CODE,
+        ADMIN_BLOCKS_CHAIN_ID,
+        ENTRY_CREDIT_BLOCKS_CHAIN_ID,
+        FACTOID_BLOCKS_CHAIN_ID
+    } = require('./constant');
 
+
+/**
+ * Class representing a Directory block.
+ * @property {string} keyMR - Key Merkel Root.
+ * @property {number} height - Height.
+ * @property {string} previousBlockKeyMR - Key Merkel Root of the previous Directory block.
+ * @property {number} timestamp - UNIX timestamp (seconds).
+ * @property {string} fullHash - Full hash of the block. Only available when the block is queried by height.
+ * @property {string} previousFullHash - Full hash of the previous Directory block. Only available when the block is queried by height.
+ * @property {string} bodyKeyMR - Key Merkle Root of the block body. Only available when the block is queried by height.
+ * @property {string} adminBlockRef - Reference to the admin block.
+ * @property {string} entryCreditBlockRef - Reference to the entry credit block.
+ * @property {string} factoidBlockRef - Reference to the factoid block.
+ * @property {{chainId: string, keyMR: string}[]} entryBlockRefs - References to the entry blocks.
+ */
 class DirectoryBlock {
+    /**
+     * @hideconstructor
+     */
     constructor(block, keyMR) {
         let entries = [];
         if (block.dblock) {
@@ -24,8 +43,8 @@ class DirectoryBlock {
         } else {
             this.keyMR = keyMR;
             this.height = block.header.sequencenumber;
-            this.timestamp = block.header.timestamp;
             this.previousBlockKeyMR = block.header.prevblockkeymr;
+            this.timestamp = block.header.timestamp;
             entries = block.entryblocklist;
         }
 
@@ -53,7 +72,21 @@ class DirectoryBlock {
     }
 }
 
+/**
+ * Class representing an Admin block.
+ * @property {string} backReferenceHash - Back reference hash.
+ * @property {string} lookupHash - Lookup hash.
+ * @property {number} directoryBlockHeight - Directory block height.
+ * @property {string} previousBackReferenceHash - Back reference hash of previous Admin block.
+ * @property {number} headerExpansionSize - Header expansion size.
+ * @property {string} headerExpansionArea - Header expansion area.
+ * @property {number} bodySize - Size of the body.
+ * @property {Object} entries - Admin entries. Each entry has its own type (can be identified either by its adminId (number) or its adminCode (string)).
+ */
 class AdminBlock {
+    /**
+     * @hideconstructor
+     */
     constructor(block) {
         const ab = block.ablock;
         this.backReferenceHash = ab.backreferencehash;
@@ -68,6 +101,11 @@ class AdminBlock {
         Object.freeze(this);
     }
 
+    /**
+     * Return all the admin entries for given types.
+     * @param  {...number|string} types - A sequence of either numbers representing an adminId or strings representing an adminCode.
+     * @returns {Object} - Admin entries.
+     */
     getEntriesOfTypes(...types) {
         const set = new Set(types);
         return this.entries.filter(e => set.has(e.adminId) || set.has(e.adminCode));
@@ -135,7 +173,20 @@ function transformAdminBlockEntry(entry) {
     return Object.assign(base, data);
 }
 
+/**
+ * Class representing an Entry block.
+ * @property {string} keyMR - Key Mertle Root.
+ * @property {string} previousBlockKeyMR - Key Mertle Root of the previous Entry block.
+ * @property {number} directoryBlockHeight - Directory block height.
+ * @property {number} timestamp - UNIX timestamp (seconds).
+ * @property {string} chainId - Chain ID.
+ * @property {number} sequenceNumber - Sequence number of this block relative to that sub chain.
+ * @property {{ entryHash: string, timestamp: number }[]} entryRefs - References to entries with their UNIX timestamps.
+ */
 class EntryBlock {
+    /**
+     * @hideconstructor
+     */
     constructor(block, keyMR) {
         this.keyMR = keyMR;
         const header = block.header;
@@ -149,7 +200,21 @@ class EntryBlock {
     }
 }
 
+/**
+ * Class representing a Factoid block.
+  * @property {string} keyMR - Key Mertle Root.
+  * @property {string} bodyMR - Merkle Root of the body.
+  * @property {string} previousBlockKeyMR - Key Merkle Root of the previous Factoid block.
+  * @property {string} ledgerKeyMR - Ledger Key Merkle Root.
+  * @property {string} previousLedgerKeyMR - Ledger Key Merkle Root of the previous Factoid block.
+  * @property {number} entryCreditRate - Entry credit rate.
+  * @property {number} directoryBlockHeight - Directory block height.
+  * @property {Transaction[]} transactions - Array of Factoid transactions part of this block.
+ */
 class FactoidBlock {
+    /**
+     * @hideconstructor
+     */
     constructor(block) {
         const fb = block.fblock;
         this.keyMR = fb.keymr;
@@ -162,12 +227,33 @@ class FactoidBlock {
         this.transactions = fb.transactions.map(t => new Transaction(t));
     }
 
+    /**
+     * Get coinbase transaction of the block.
+     * @returns {Transaction} - Coinbase transaction of the block.
+     */
     getCoinbaseTransaction() {
         return this.transactions[0];
     }
 }
 
+/**
+ * Class representing an Entry Credit block.
+  * @property {string} headerHash - Hash of the header.
+  * @property {string} fullHash - Full hash.
+  * @property {string} headerExpansionArea - Header expansion area.
+  * @property {string} bodyHash - Hash of the body.
+  * @property {string} previousHeaderHash - Hash of the previous Entry Credit block header.
+  * @property {string} previousFullHash - Full hash of the previous Entry Credit block.
+  * @property {number} directoryBlockHeight - Directory block height.
+  * @property {number} bodySize - Size of the body.
+  * @property {number} objectCount - Object count.
+  * @property {number[]} minuteIndexes - Delimitation of the commits for each minute. Use method getCommitsForMinute rather than using this attribute directly.
+  * @property {{version: number, millis: number, entryHash: string, credits: number, ecPublicKey: string, signature: string}[]} commits - Array of commits.
+ */
 class EntryCreditBlock {
+    /**
+     * @hideconstructor
+     */
     constructor(block) {
         const ecb = block.ecblock;
 
@@ -200,10 +286,10 @@ class EntryCreditBlock {
                 this.commits.push({
                     version: entry.version,
                     millis: parseInt(entry.millitime, 16),
-                    entryHash: Buffer.from(entry.entryhash, 'hex'),
+                    entryHash: entry.entryhash,
                     credits: entry.credits,
                     ecPublicKey: keyToPublicEcAddress(entry.ecpubkey),
-                    signature: Buffer.from(entry.sig, 'hex')
+                    signature: entry.sig
                 });
             }
         }
@@ -211,11 +297,16 @@ class EntryCreditBlock {
         Object.freeze(this);
     }
 
-    getCommitsForMinute(m) {
-        if (m < 1 || m >= this.minuteIndexes.length) {
+    /**
+     * Get all the commits for a given minute.
+     * @param {number} minute - Minute (between 1 and 10 included)
+     * @returns {{version: number, millis: number, entryHash: string, credits: number, ecPublicKey: string, signature: string}[]} - Commits.
+     */
+    getCommitsForMinute(minute) {
+        if (minute < 1 || minute >= this.minuteIndexes.length) {
             throw new RangeError(`Minute out of range [1, ${this.minuteIndexes.length - 1}]`);
         }
-        return this.commits.slice(this.minuteIndexes[m - 1], this.minuteIndexes[m]);
+        return this.commits.slice(this.minuteIndexes[minute - 1], this.minuteIndexes[minute]);
     }
 }
 
