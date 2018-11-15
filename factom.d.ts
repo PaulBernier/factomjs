@@ -1310,7 +1310,7 @@ declare namespace factom {
         entryBlockRefs: {
             chainId: string,
             keyMR: string
-        };
+        }[];
     }
 
     /**
