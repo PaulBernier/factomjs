@@ -141,7 +141,7 @@ class Entry {
     }
 
     /**
-     * @returns {Buffer} Result of marshaling the entry as hex encoded string.
+     * @returns {string} Result of marshaling the entry as hex encoded string.
      */
     marshalBinaryHex() {
         return this.marshalBinary().toString('hex');
@@ -313,10 +313,10 @@ function marshalExternalIdsBinary(extIds) {
  * @param {Entry} entry - Entry to compose the commit of.
  * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). 
  * If a public EC address is provided it is necessary to provide the signature of the commit as a 3rd argument (use case for hardware wallets)
- * @param {string|Buffer} [sig] - Optional signature of the commit (composeEntryLedger). Only necessary if a public EC address was passed as 2nd argument.
+ * @param {string|Buffer} [signature] - Optional signature of the commit (composeEntryLedger). Only necessary if a public EC address was passed as 2nd argument.
  * @returns {Buffer} - Entry commit.
  */
-function composeEntryCommit(entry, ecAddress, sig) {
+function composeEntryCommit(entry, ecAddress, signature) {
     validateEntryInstance(entry);
 
     const buffer = composeEntryLedger(entry);

@@ -61,10 +61,10 @@ class Chain {
  * @param {Chain} chain - Chain to compose the commit of.
  * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). 
  * If a public EC address is provided it is necessary to provide the signature of the commit as a 3rd argument (use case for hardware wallets)
- * @param {string|Buffer} [sig] - Optional signature of the commit (composeChainLedger). Only necessary if a public EC address was passed as 2nd argument.
+ * @param {string|Buffer} [signature] - Optional signature of the commit (composeChainLedger). Only necessary if a public EC address was passed as 2nd argument.
  * @returns {Buffer} - Chain commit.
  */
-function composeChainCommit(chain, ecAddress, sig) {
+function composeChainCommit(chain, ecAddress, signature) {
     validateChainInstance(chain);
 
     const buffer = composeChainLedger(chain);
