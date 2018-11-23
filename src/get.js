@@ -110,7 +110,7 @@ async function rewindChainWhile(factomd, chainId, predicate, func) {
             i--;
         }
 
-        // If the loop index is greater or equal to 0 it means the predicate was evaluted to false
+        // If the loop index is greater or equal to 0 it means the predicate was evaluated to false
         // And we must stop iterating entry blocks
         if (i >= 0) {
             break;

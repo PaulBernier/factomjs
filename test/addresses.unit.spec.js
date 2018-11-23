@@ -16,6 +16,62 @@ describe('Test addresses', function() {
         assert.isFalse(addresses.isValidAddress('Es32PjobTxPTd73dohEFRegtFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
     });
 
+    it('should validate public addresses', function() {
+        assert.isTrue(addresses.isValidPublicAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
+        assert.isTrue(addresses.isValidPublicAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
+        assert.isFalse(addresses.isValidPublicAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
+        assert.isFalse(addresses.isValidPublicAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
+    });
+
+    it('should validate private addresses', function() {
+        assert.isTrue(addresses.isValidPrivateAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
+        assert.isTrue(addresses.isValidPrivateAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
+        assert.isFalse(addresses.isValidPrivateAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
+        assert.isFalse(addresses.isValidPrivateAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
+    });
+
+    it('should validate EC addresses', function() {
+        assert.isTrue(addresses.isValidEcAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
+        assert.isTrue(addresses.isValidEcAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
+        assert.isFalse(addresses.isValidEcAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
+        assert.isFalse(addresses.isValidEcAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
+    });
+
+    it('should validate public EC addresses', function() {
+        assert.isTrue(addresses.isValidEcPublicAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
+        assert.isFalse(addresses.isValidEcPublicAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
+        assert.isFalse(addresses.isValidEcPublicAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
+        assert.isFalse(addresses.isValidEcPublicAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
+    });
+
+    it('should validate private EC addresses', function() {
+        assert.isTrue(addresses.isValidEcPrivateAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
+        assert.isFalse(addresses.isValidEcPrivateAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
+        assert.isFalse(addresses.isValidEcPrivateAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
+        assert.isFalse(addresses.isValidEcPrivateAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
+    });
+
+    it('should validate FCT addresses', function() {
+        assert.isTrue(addresses.isValidFctAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
+        assert.isTrue(addresses.isValidFctAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
+        assert.isFalse(addresses.isValidFctAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
+        assert.isFalse(addresses.isValidFctAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
+    });
+
+    it('should validate public FCT addresses', function() {
+        assert.isTrue(addresses.isValidFctPublicAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
+        assert.isFalse(addresses.isValidFctPublicAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
+        assert.isFalse(addresses.isValidFctPublicAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
+        assert.isFalse(addresses.isValidFctPublicAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
+    });
+
+    it('should validate private FCT addresses', function() {
+        assert.isTrue(addresses.isValidFctPrivateAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
+        assert.isFalse(addresses.isValidFctPrivateAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
+        assert.isFalse(addresses.isValidFctPrivateAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
+        assert.isFalse(addresses.isValidFctPrivateAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
+    });
+
     it('should get public address from already public address', function() {
         assert.equal(addresses.getPublicAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'), 'EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD');
         assert.equal(addresses.getPublicAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'), 'FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG');

@@ -188,24 +188,28 @@ describe('Get information from Factom blockchain', function () {
 
     function assertFactoidBlock(fb) {
         assert.instanceOf(fb, FactoidBlock);
-        assert.equal(fb.keyMR, 'e0715c82f88423a5ce23eb4c8d71700f3dacc5e557adea4d166f5c51683c950a');
-        assert.equal(fb.previousBlockKeyMR, '9b7083a4f428019de3bd12c0c84ffd9ec5767878047aba0d65f2886e5516f86c');
-        assert.equal(fb.bodyMR, 'd2e2151814cd4a1bbe12e65e8720583118c0594f6ad1e84db096e1c8bffde9ec');
+        assert.equal(fb.keyMR, '4b2572326cc04f4bff215800bc3f48b2e64f2002f0c2b592e09b003ea3f36bdd');
+        assert.equal(fb.previousBlockKeyMR, 'a7074a34b37954944224a3cd13a19f690f5b0d12d3373b2f54904329e02c56ec');
+        assert.equal(fb.bodyMR, 'ca7641b49bb5cc2d00145b28a5634305490fb0caa96c6a838959910803e8008f');
         assert.equal(fb.entryCreditRate, 1000);
-        assert.equal(fb.directoryBlockHeight, 21658);
-        assert.equal(fb.ledgerKeyMR, '5429704740e3dad6e05f2aca56bf350b647f7612911919d9356d2e9a8d0e58fa');
-        assert.equal(fb.previousLedgerKeyMR, '9c3063e4f450227c031f18b9caf6803ae267f27a96bf97b15c734ddf36f4cc9a');
+        assert.equal(fb.directoryBlockHeight, 55010);
+        assert.equal(fb.ledgerKeyMR, '72cc3a6d43c72532e0670941e1bb35074e8ab1d55715a2e0687b5fc1540e8fef');
+        assert.equal(fb.previousLedgerKeyMR, '977cd8f7a847770756d040711690aff7b3cbd7f54665152ec72b7de411cf4de9');
         assert.lengthOf(fb.transactions, 1);
 
+        const coinbaseTx = fb.getCoinbaseTransaction();
+        assert.instanceOf(coinbaseTx, Transaction);
+        assert.equal(coinbaseTx.totalInputs, 0);
+        assert.equal(coinbaseTx.totalFactoidOutputs, 6398208000);
     }
 
     it('should get Factoid Block', async function () {
         this.timeout(5000);
 
-        const byKeyMR = await get.getFactoidBlock(factomd, 'e0715c82f88423a5ce23eb4c8d71700f3dacc5e557adea4d166f5c51683c950a');
+        const byKeyMR = await get.getFactoidBlock(factomd, '4b2572326cc04f4bff215800bc3f48b2e64f2002f0c2b592e09b003ea3f36bdd');
         assertFactoidBlock(byKeyMR);
 
-        const byHeight = await get.getFactoidBlock(factomd, 21658);
+        const byHeight = await get.getFactoidBlock(factomd, 55010);
         assertFactoidBlock(byHeight);
     });
 
