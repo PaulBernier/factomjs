@@ -5,7 +5,7 @@ const axios = require('axios'),
 
 const DEBUG_API_CALLS = new Set([
     'holding-queue', 'network-info', 'predictive-fer', 'audit-servers', 'federated-servers', 'configuration', 'process-list', 'authorities',
-    'reload-configuration', 'drop-rate', 'set-drop-rate', 'current-minute', 'delay', 'set-delay', 'summary', 'messages'
+    'reload-configuration', 'drop-rate', 'set-drop-rate', 'delay', 'set-delay', 'summary', 'messages'
 ]);
 
 const DEFAULT_RETRY_STRATEGY = {

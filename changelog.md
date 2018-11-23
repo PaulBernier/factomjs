@@ -11,6 +11,7 @@
 
 * More explicit ack errors.
 * `getTransaction` throws an `Error` if no transaction is found insteall of returning `undefined`. To be consistent with `getEntry` behavior.
+* Redirect factomd `current-minute` API call to v2 path (intead of debug path).
 
 ### Removed
 
