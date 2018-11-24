@@ -5,8 +5,8 @@ const assert = require('chai').assert,
     { DirectoryBlock, EntryCreditBlock, FactoidBlock, AdminBlock, EntryBlock } = require('../src/blocks'),
     get = require('../src/get');
 
-const nconf = require('nconf').file({ file: `${__dirname}/config.json` });
-const factomd = new FactomdCli({ host: nconf.get('factomd-host'), port: nconf.get('factomd-port') });
+const nconf = require('nconf').env().file({ file: `${__dirname}/config.json` });
+const factomd = new FactomdCli({ host: nconf.get('FACTOMD_HOST'), port: nconf.get('FACTOMD_PORT') });
 
 describe('Get information from Factom blockchain', function () {
 

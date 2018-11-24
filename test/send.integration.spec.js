@@ -3,9 +3,9 @@ const assert = require('chai').assert,
     { Transaction } = require('../src/transaction'),
     send = require('../src/send');
 
-const nconf = require('nconf').file({ file: `${__dirname}/config.json` });
-const factomd = new FactomdCli({ host: nconf.get('factomd-host'), port: nconf.get('factomd-port') });
-const PAYING_FCT_ADDRESS = nconf.get('fct-private-address');
+const nconf = require('nconf').env().file({ file: `${__dirname}/config.json` });
+const factomd = new FactomdCli({ host: nconf.get('FACTOMD_HOST'), port: nconf.get('FACTOMD_PORT') });
+const PAYING_FCT_ADDRESS = nconf.get('FCT_PRIVATE_ADDRESS');
 const RECEIVING_FCT_ADDRESS = 'FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH';
 const RECEIVING_EC_ADDRESS = 'EC3MVTBYTo2Y1HrEKxeEGfNNoKhLZ9ZYQhb26zQUzngJ6SLUVRX9';
 

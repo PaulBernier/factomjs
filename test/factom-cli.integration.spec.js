@@ -3,11 +3,11 @@ const { Entry } = require('../src/entry'),
     { Chain } = require('../src/chain'),
     { FactomCli } = require('../src/factom-cli');
 
-const nconf = require('nconf').file({ file: `${__dirname}/config.json` });
-const FACTOMD_HOST = nconf.get('factomd-host'),
-    FACTOMD_PORT = nconf.get('factomd-port');
-const PAYING_EC_ADDRESS = nconf.get('ec-private-address');
-const PAYING_FCT_ADDRESS = nconf.get('fct-private-address');
+const nconf = require('nconf').env().file({ file: `${__dirname}/config.json` });
+const FACTOMD_HOST = nconf.get('FACTOMD_HOST'),
+    FACTOMD_PORT = nconf.get('FACTOMD_PORT');
+const PAYING_EC_ADDRESS = nconf.get('EC_PRIVATE_ADDRESS');
+const PAYING_FCT_ADDRESS = nconf.get('FCT_PRIVATE_ADDRESS');
 const RECEIVING_FCT_ADDRESS = 'FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH';
 const RECEIVING_EC_ADDRESS = 'EC3MVTBYTo2Y1HrEKxeEGfNNoKhLZ9ZYQhb26zQUzngJ6SLUVRX9';
 
