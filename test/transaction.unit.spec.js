@@ -146,4 +146,47 @@ describe('Test Factoid transaction creation', function () {
         throw new Error('Should have rejected transaction');
     });
 
+    it('should reject transaction with negative amount', async function () {
+
+        try {
+            Transaction.builder()
+                .input('Fs2aWUK9n6nriazARdt2hzk6kEqYy6ch9z7wTzowu8R4DELXwK4P', -1)
+                .output('FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw', -1)
+                .build();
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have rejected transaction');
+    });
+
+    it('should reject transaction with non safe integer', async function () {
+
+        try {
+            Transaction.builder()
+                .input('Fs2aWUK9n6nriazARdt2hzk6kEqYy6ch9z7wTzowu8R4DELXwK4P', Number.MAX_SAFE_INTEGER + 1)
+                .output('FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw', Number.MAX_SAFE_INTEGER + 1)
+                .build();
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have rejected transaction');
+    });
+
+    it('should throw on marshal binary computation of unsigned transaction', async function () {
+
+        try {
+            Transaction.builder()
+                .input('FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw', 10)
+                .output('FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw', 10)
+                .build()
+                .marshalBinary();
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have rejected transaction');
+    });
+
 });

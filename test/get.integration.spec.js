@@ -24,7 +24,7 @@ describe('Get information from Factom blockchain', function () {
     });
 
     it('should get first entry', async function () {
-        this.timeout(10000);
+        this.timeout(20000);
 
         const entry = await get.getFirstEntry(factomd, 'f48d2160c5d8178720d8c83b89a62599ab6a8b9dbec9fbece5229f787d1e8b44');
 
@@ -104,6 +104,28 @@ describe('Get information from Factom blockchain', function () {
         assert.equal(transaction.blockContext.factoidBlockKeyMR, 'bb622dc852a278ede8fbfd0144ae49d6576e621a1267932dfd198c2cea73b403');
     });
 
+    it('should reject incorrect transaction id', async function () {
+        try {
+            await get.getTransaction(factomd, 55);
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
+    it('should not find Transaction', async function () {
+        this.timeout(5000);
+
+        try {
+            await get.getTransaction(factomd, '63fe4275064427f11e0dcfc3ff2d56adf88ba12c2646bc0d03d03a02ff7d2720');
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
     it('should get coinbase Transaction', async function () {
         this.timeout(5000);
 
@@ -161,6 +183,26 @@ describe('Get information from Factom blockchain', function () {
         assert.equal(byHeight.bodyKeyMR, '6243865ba04b031423a2d6b48335c571b48499e71b7630f233e885f832bfdd30');
     });
 
+    it('should reject negative block height for getDirectoryBlock', async function () {
+        try {
+            await get.getDirectoryBlock(factomd, -1);
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
+    it('should reject incorrect argument for getDirectoryBlock', async function () {
+        try {
+            await get.getDirectoryBlock(factomd, true);
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
     function assertEntryCreditBlock(ecb) {
         assert.instanceOf(ecb, EntryCreditBlock);
         assert.equal(ecb.fullHash, '4cf58af96b2dcdf416217cbdb195d67f1a511a8ab95a8e37aebeb8e643cb8f3c');
@@ -185,6 +227,27 @@ describe('Get information from Factom blockchain', function () {
         const byHeight = await get.getEntryCreditBlock(factomd, 17997);
         assertEntryCreditBlock(byHeight);
     });
+
+    it('should reject negative block height for getEntryCreditBlock', async function () {
+        try {
+            await get.getEntryCreditBlock(factomd, -1);
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
+    it('should reject incorrect argument for getEntryCreditBlock', async function () {
+        try {
+            await get.getEntryCreditBlock(factomd, true);
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
 
     function assertFactoidBlock(fb) {
         assert.instanceOf(fb, FactoidBlock);
@@ -213,6 +276,26 @@ describe('Get information from Factom blockchain', function () {
         assertFactoidBlock(byHeight);
     });
 
+    it('should reject negative block height for getFactoidBlock', async function () {
+        try {
+            await get.getFactoidBlock(factomd, -1);
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
+    it('should reject incorrect argument for getFactoidBlock', async function () {
+        try {
+            await get.getFactoidBlock(factomd, true);
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
     it('should get Entry Block', async function () {
         this.timeout(5000);
 
@@ -226,7 +309,17 @@ describe('Get information from Factom blockchain', function () {
         assert.equal(eb.chainId, '3f69bdf3b4769ff53407580b882ee01e0c365f6deffba4ed8d4651b24e65389a');
         assert.equal(eb.sequenceNumber, 1168);
         assert.lengthOf(eb.entryRefs, 50);
+    });
 
+
+    it('should reject incorrect argument for getEntryBlock', async function () {
+        try {
+            await get.getEntryBlock(factomd, 12777);
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
     });
 
     function assertAdminBlock(ab) {
@@ -251,6 +344,26 @@ describe('Get information from Factom blockchain', function () {
         assertAdminBlock(byHeight);
     });
 
+    it('should reject negative block height for getAdminBlock', async function () {
+        try {
+            await get.getAdminBlock(factomd, -1);
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
+    it('should reject incorrect argument for getAdminBlock', async function () {
+        try {
+            await get.getAdminBlock(factomd, true);
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
     it('should test if chain exists', async function () {
         this.timeout(5000);
 
@@ -260,7 +373,9 @@ describe('Get information from Factom blockchain', function () {
         assert.isFalse(b2);
     });
 
-    it('should get Directory block height', async function () {
+    it('should get Directory block head', async function () {
+        this.timeout(5000);
+
         const head = await get.getDirectoryBlockHead(factomd);
         assert.instanceOf(head, DirectoryBlock);
     });
@@ -302,4 +417,23 @@ describe('Get information from Factom blockchain', function () {
         assert.equal(found.hash().toString('hex'), '0ef649d17f4f1e961a0e5d0d7f294ae151253d72564958763821aee1dc6ac37f');
     });
 
+    it('should validate rewind chain predicate function', async function () {
+        try {
+            await get.rewindChainWhile(factomd, '106fa1e435be6cff0e167da35a186b141e4dfcea204e1500bf694c88b9214f68', 44, () => { });
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
+    it('should validate rewind chain apply function', async function () {
+        try {
+            await get.rewindChainWhile(factomd, '106fa1e435be6cff0e167da35a186b141e4dfcea204e1500bf694c88b9214f68', () => true);
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
 });

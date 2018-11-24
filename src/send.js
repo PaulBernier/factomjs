@@ -50,7 +50,7 @@ async function validateFunds(factomd, publicFctAddress, amount) {
 
 async function createFactoidTransaction(factomd, originPrivateAddress, recipientAddress, amount, fees) {
     if (!isValidFctPublicAddress(recipientAddress)) {
-        throw new Error(`Recipient address [${recipientAddress}] is not a valid Factoid public address`);
+        throw new Error(`Recipient address [${recipientAddress}] is not a valid public Factoid address`);
     }
 
     const ecRate = await getEntryCreditRate(factomd);
@@ -59,7 +59,7 @@ async function createFactoidTransaction(factomd, originPrivateAddress, recipient
 
 async function createEntryCreditPurchaseTransaction(factomd, originPrivateAddress, recipientAddress, ecAmount, fees) {
     if (!isValidEcPublicAddress(recipientAddress)) {
-        throw new Error(`Recipient address [${recipientAddress}] is not a valid Entry Credit public address`);
+        throw new Error(`Recipient address [${recipientAddress}] is not a valid public Entry Credit address`);
     }
 
     const ecRate = await getEntryCreditRate(factomd);

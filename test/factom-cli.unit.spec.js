@@ -66,4 +66,15 @@ describe('Test FactomCli', function() {
         assert.equal(cli.walletd.httpCli.defaults.baseURL, 'http://88.202.51.229:5656');
     });
 
+    it('should use https', function() {
+        const cli = new FactomCli({
+            factomd: {
+                host: '52.202.51.229',
+                protocol: 'https',
+                rejectUnauthorized: false
+            }
+        });
+        assert.equal(cli.factomd.httpCli.defaults.baseURL, 'https://52.202.51.229:8088');
+    });
+
 });

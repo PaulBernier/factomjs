@@ -27,6 +27,36 @@ describe('Test Entry', function () {
         assert.equal(entry.timestamp, 1523072354);
     });
 
+    it('should reject invalid argument of Entry constructor', function () {
+        try {
+            new Entry({});
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
+    it('should fail to marshal binary Entry without a chain Id', function () {
+        try {
+            Entry.builder().extId('ef').content('af').build().marshalBinary();
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
+    it('should reject entry bigger tha 10kb', function () {
+        try {
+            Entry.builder().content(Buffer.allocUnsafe(10240 + 1).fill('0')).build().ecCost();
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
     it('should get sizes with ext ids', function () {
         const entry = Entry.builder()
             .extId('extId', 'utf8')
@@ -141,8 +171,10 @@ describe('Test Entry', function () {
             .build();
 
         const marshalBinary = e.marshalBinary();
+        const marshalBinaryHex = e.marshalBinaryHex();
         assert.instanceOf(marshalBinary, Buffer);
         assert.equal(marshalBinary.toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
+        assert.equal(marshalBinaryHex, '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
         assert.equal(e2.marshalBinary().toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400005061796c6f616448657265');
     });
 
@@ -197,6 +229,17 @@ describe('Test Entry', function () {
         assert.equal(commit.toString('hex'),
             '000162a2e0a0c8fd461748e49aa77a6380c04059bd7e3040c9dbceca1828b37ddb737dd928909f015d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b678790d79fc44d3c81fb701b2c3278b50b98eec215cd28be19bba5e1d96f7dc262ec8a87ae4cf9ea20eb43ef196052e761afb02a8f1a78df097c27c56a4a1d00f');
     });
+
+    it('should reject invalid argument of composeChainCommit', function () {
+        try {
+            composeEntryCommit({}, 'Es2d1a3uPx7o5uXHmsCnSEK2EKatPA56n8RUFmW9uRrpPRBuk5bZ');
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
 
     it('should compose Entry commit with provided signature', function () {
         const e1 = Entry.builder()

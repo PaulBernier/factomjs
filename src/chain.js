@@ -166,10 +166,6 @@ function computeChainTxId(chain) {
  * @returns {Buffer} - Chain ID.
  */
 function computeChainId(firstEntry) {
-    if (firstEntry.extIds.length === 0) {
-        throw new Error('First entry of a chain must contain at least 1 external id');
-    }
-
     const extIdsHashes = firstEntry.extIds.map(sha256);
     const hashes = Buffer.concat(extIdsHashes);
     return sha256(hashes);

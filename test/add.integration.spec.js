@@ -8,9 +8,9 @@ const nconf = require('nconf').env().file({ file: `${__dirname}/config.json` });
 const factomd = new FactomdCli({ host: nconf.get('FACTOMD_HOST'), port: nconf.get('FACTOMD_PORT') });
 const PAYING_EC_ADDRESS = nconf.get('EC_PRIVATE_ADDRESS');
 
-describe('Add chains and entries in Factom blockchain', function() {
+describe('Add chains and entries in Factom blockchain', function () {
 
-    it('should commit and then reveal chain', async function() {
+    it('should commit and then reveal chain', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -32,7 +32,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         assert.equal(revealed.chainId, c.idHex);
     });
 
-    it('should commit and then reveal entry', async function() {
+    it('should commit and then reveal entry', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -53,7 +53,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         assert.equal(revealed.chainId, '3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791');
     });
 
-    it('should reject commit entry without chainId', async function() {
+    it('should reject commit entry without chainId', async function () {
 
         const e = Entry.builder()
             .timestamp(Date.now())
@@ -71,7 +71,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         throw new Error('Should have rejected entry without chainId');
     });
 
-    it('should reject reveal entry without chainId', async function() {
+    it('should reject reveal entry without chainId', async function () {
 
         const e = Entry.builder()
             .timestamp(Date.now())
@@ -89,7 +89,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         throw new Error('Should have rejected entry without chainId');
     });
 
-    it('should add chain', async function() {
+    it('should add chain', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -109,7 +109,25 @@ describe('Add chains and entries in Factom blockchain', function() {
         assert.equal(added.txId, computeChainTxId(c).toString('hex'));
     });
 
-    it('should add entry', async function() {
+    it('should notify repeated commit', async function () {
+        this.timeout(10000);
+
+        const e = Entry.builder()
+            .timestamp(Date.now())
+            .extId('factom.js')
+            .extId('add chain test', 'utf8')
+            .extId(Date.now().toString(), 'utf8')
+            .build();
+
+        const c = new Chain(e);
+
+        await add.commit(factomd, c, PAYING_EC_ADDRESS);
+        const repeated = await add.commit(factomd, c, PAYING_EC_ADDRESS);
+        assert.equal(repeated.repeatedCommit, true);
+        assert.isUndefined(repeated.txId);
+    });
+
+    it('should add entry', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -128,7 +146,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         assert.equal(added.txId, computeEntryTxId(e).toString('hex'));
     });
 
-    it('should reject add entry without chainId', async function() {
+    it('should reject add entry without chainId', async function () {
 
         const e = Entry.builder()
             .timestamp(Date.now())
@@ -146,7 +164,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         throw new Error('Should have rejected entry without chainId');
     });
 
-    it('should add entries', async function() {
+    it('should add entries', async function () {
         this.timeout(10000);
 
         const e1 = Entry.builder()
@@ -174,7 +192,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         assert.equal(added[0].txId, computeEntryTxId(e1).toString('hex'));
     });
 
-    it('should add chains', async function() {
+    it('should add chains', async function () {
         this.timeout(10000);
 
         const c1 = new Chain(Entry.builder()
