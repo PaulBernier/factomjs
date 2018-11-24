@@ -251,6 +251,20 @@ describe('Get information from Factom blockchain', function () {
         assertAdminBlock(byHeight);
     });
 
+    it('should test if chain exists', async function () {
+        this.timeout(5000);
+
+        const b1 = await get.chainExists(factomd, '3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791');
+        assert.isTrue(b1);
+        const b2 = await get.chainExists(factomd, '3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079792');
+        assert.isFalse(b2);
+    });
+
+    it('should get Directory block height', async function () {
+        const head = await get.getDirectoryBlockHead(factomd);
+        assert.instanceOf(head, DirectoryBlock);
+    });
+
     // TODO: fragile test, should be set up against local factomd rather than testnet
     it('should rewind chain entry by entry (forEach)', async function () {
         this.timeout(20000);
