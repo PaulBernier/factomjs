@@ -1,5 +1,6 @@
 # Factom.js
 
+[![npm version](https://badge.fury.io/js/factom.svg)](https://badge.fury.io/js/factom)
 [![Build Status](https://travis-ci.com/PaulBernier/factomjs.svg?branch=master)](https://travis-ci.com/PaulBernier/factomjs)
 [![Coverage Status](https://coveralls.io/repos/github/PaulBernier/factomjs/badge.svg?branch=master)](https://coveralls.io/github/PaulBernier/factomjs?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/PaulBernier/factomjs/badge.svg?targetFile=package.json)](https://snyk.io/test/github/PaulBernier/factomjs?targetFile=package.json)
