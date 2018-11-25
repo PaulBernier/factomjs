@@ -1,4 +1,5 @@
 const base58 = require('base-58'),
+    nacl = require('tweetnacl/nacl-fast'),
     { RCD_TYPE_1, secretToPublicKey, sha256d } = require('./util');
 
 const {
@@ -219,6 +220,33 @@ function keyToRCD1Hash(key) {
     return sha256d(Buffer.concat([RCD_TYPE_1, key]));
 }
 
+/**
+ * Generate a new random FCT address pair (private and public).
+ * @returns {{public: string, private: string}} - Public and private FCT addresses.
+ */
+function generateRandomFctAddress() {
+    const seed = nacl.randomBytes(32);
+    const keyPair = nacl.sign.keyPair.fromSeed(seed);
+    return {
+        public: keyToPublicFctAddress(keyPair.publicKey),
+        private: keyToPrivateFctAddress(seed)
+    };
+}
+
+/**
+ * Generate a new random EC address pair (private and public).
+ * @returns {{public: string, private: string}} - Public and private EC addresses.
+ */
+function generateRandomEcAddress() {
+    const seed = nacl.randomBytes(32);
+    const keyPair = nacl.sign.keyPair.fromSeed(seed);
+    return {
+        public: keyToPublicEcAddress(keyPair.publicKey),
+        private: keyToPrivateEcAddress(seed)
+    };
+}
+
+
 module.exports = {
     isValidAddress,
     addressToKey,
@@ -236,5 +264,7 @@ module.exports = {
     rcdHashToPublicFctAddress,
     keyToPrivateFctAddress,
     keyToPublicEcAddress,
-    keyToPrivateEcAddress
+    keyToPrivateEcAddress,
+    generateRandomFctAddress,
+    generateRandomEcAddress
 };

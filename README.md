@@ -194,7 +194,9 @@ Factom.js offers a bunch of util functions around FCT/EC addresses and cryptogra
     rcdHashToPublicFctAddress,
     keyToPrivateFctAddress,
     keyToPublicEcAddress,
-    keyToPrivateEcAddress
+    keyToPrivateEcAddress,
+    generateRandomFctAddress,
+    generateRandomEcAddress
 }
 ```
 

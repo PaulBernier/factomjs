@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+
+* JSDoc of all public classes and methods.
+* New util functions `generateRandomFctAddress` and `generateRandomEcAddress`.
+
 ### Fixed
 
 * Catch repeated commit exceptions properly.
