@@ -1,5 +1,9 @@
 # Factom.js
 
+[![Build Status](https://travis-ci.com/PaulBernier/factomjs.svg?branch=master)](https://travis-ci.com/PaulBernier/factomjs)
+[![Coverage Status](https://coveralls.io/repos/github/PaulBernier/factomjs/badge.svg?branch=master)](https://coveralls.io/github/PaulBernier/factomjs?branch=master)
+[![Known Vulnerabilities](https://snyk.io/test/github/PaulBernier/factomjs/badge.svg?targetFile=package.json)](https://snyk.io/test/github/PaulBernier/factomjs?targetFile=package.json)
+
 Factom.js is a library to interact easily with the Factom blockchain.
 
 * Provides higher level functionalities than factomd API making it a breeze to create chains or entries, send transactions...
