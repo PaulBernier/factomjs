@@ -21,6 +21,10 @@ $ npm install --save factom
 
 Two versions of *factom.js* are being bundled for usage in a web browser and can be found in the `dist` folder. `dist/factom.js` is a bundle containing all the exposed components of the library. `dist/factom-struct.js` is a lighter bundle that contains factom structures such as Entry, Chain and Transaction, and all the utily functions related to FCT/EC addresses and fundamental constants. `factom-struct` bundle doesn't include any component that makes API calls.
 
+## Documentation
+
+The complete documentation of the library is available in Markdown format in the `docs` directory or online in web format at [https://factomjs.luciap.ca](https://factomjs.luciap.ca).
+
 ## Usage
 
 **Important:** please note than whenever a private (EntryCredit or Factoid) address is needed in this library (typically for signing data), you can either provide a private address or a public address as an argument. If you provide a public address the library will attempt to retrieve the corresponding private address from the wallet. Thus providing private address as arguments allow you to not have to run walletd.

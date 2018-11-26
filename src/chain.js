@@ -8,12 +8,12 @@ const sign = require('tweetnacl/nacl-fast').sign,
  * Chain class
  **********************/
 
- /**
-  * Class representing a Chain.
-  * @param {Entry|Chain} arg - First entry of the chain or another chain to copy.
-  * @property {Buffer} id - Chain ID.
-  * @property {Entry} firstEntry - First entry of the chain.
-  */
+/**
+ * Class representing a Chain.
+ * @param {Entry|Chain} arg - First entry of the chain or another chain to copy.
+ * @property {Buffer} id - Chain ID.
+ * @property {Entry} firstEntry - First entry of the chain.
+ */
 class Chain {
     constructor(arg) {
         if (arg instanceof Entry) {

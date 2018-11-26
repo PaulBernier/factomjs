@@ -1,7 +1,7 @@
 {
     "name": "factom",
-    "version": "0.3.6",
-    "description": "Components to build applications on the Factom blockchain",
+    "version": "1.0.0-rc1",
+    "description": "Library to build applications on the Factom blockchain",
     "main": "src/factom.js",
     "scripts": {
         "docs": "documentation build --github --sort-order alpha src/** -f md > docs/doc.md",
@@ -57,7 +57,7 @@
         "mocha": "^5.2.0",
         "nconf": "^0.10.0",
         "nyc": "^13.0.1",
-        "sinon": "^6.3.4",
+        "sinon": "^7.1.1",
         "webpack": "^4.20.2",
         "webpack-cli": "^3.1.2"
     }
