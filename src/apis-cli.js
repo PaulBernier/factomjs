@@ -61,17 +61,19 @@ class BaseCli {
         const protocol = conf.protocol || 'http';
         const port = conf.port || defaultPort;
         const baseURL = `${protocol}://${host}:${port}`;
-        const user = conf.user || '';
-        const password = conf.password || '';
-        const authentication = Buffer.from(`${user}:${password}`).toString('base64');
 
         const httpCliOptions = {
             baseURL,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Basic ${authentication}`
-            }
+            headers: { 'Content-Type': 'application/json' }
         };
+
+        if (typeof conf.user === 'string' && conf.user !== '') {
+            httpCliOptions.auth = {
+                username: conf.user,
+                password: conf.password || ''
+            };
+            httpCliOptions.withCredentials = true;
+        }
 
         if (protocol === 'https' && typeof conf.rejectUnauthorized !== 'undefined') {
             httpCliOptions.httpsAgent = new HttpsAgent({
@@ -103,11 +105,15 @@ class BaseCli {
                     .catch(function (error) {
                         let rejection;
                         if (error.response) {
-                            if (error.response.status === 400) {
-                                // API bad requests should not be retried
-                                return reject(new ApiError(method, params, error.response.data.error));
-                            } else {
-                                rejection = new Error(error.response.data);
+                            switch (error.response.status) {
+                                case 400:
+                                    // API bad requests should not be retried
+                                    return reject(new ApiError(method, params, error.response.data.error));
+                                case 401:
+                                    // No need to retry un authorized access
+                                    return reject(new Error(error.response.data));
+                                default:
+                                    rejection = new Error(error.response.data);
                             }
                         } else {
                             rejection = new Error(error.message);

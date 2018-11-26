@@ -11,6 +11,7 @@
 
 * Catch repeated commit exceptions properly.
 * Rejection of negative transaction fees. 
+* Handling of CORS with credentials. 
 
 ### Changed
 
