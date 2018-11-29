@@ -58,7 +58,9 @@ class AckError extends Error {
         super(`Acknowledgement of type [${ackType}] failed for [${hash}]: ${error}`);
         this.ackType = ackType;
         this.hash = hash;
-        Error.captureStackTrace(this, AckError);
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, AckError);
+        }
     }
 }
 

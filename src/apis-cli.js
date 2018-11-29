@@ -17,9 +17,16 @@ const DEFAULT_RETRY_STRATEGY = {
 
 class ApiError extends Error {
     constructor(method, params, error) {
-        super(`API call to [${method}] with params ${JSON.stringify(params)} got rejected: ${error.message} (code: ${error.code})`);
+        const message = [`API call to [${method}] `];
+        if (typeof params === 'object') {
+            message.push(`with params ${JSON.stringify(params)} `);
+        }
+        message.push(`got rejected: ${error.message} (code: ${error.code})`);
+        super(message.join(''));
         this.code = error.code;
-        Error.captureStackTrace(this, ApiError);
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, ApiError);
+        }
     }
 }
 
