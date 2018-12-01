@@ -14,10 +14,12 @@ const add = require('./add'),
  * @example
  * const cli = new FactomCli({
  *      factomd: {
- *          host: '4.55.71.113'
+ *          host: 'api.factomd.net',
+ *          port: 443,
+ *          protocol: 'https'
  *      },
  *      walletd: {
- *          host: '2.122.55.3',
+ *          host: 'localhost',
  *          user: 'paul',
  *          password: 'pass'
  *      }
