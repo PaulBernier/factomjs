@@ -20,27 +20,10 @@ async function getEntry(factomd, entryHash, entryBlockContext) {
 }
 
 async function getEntryWithBlockContext(factomd, entryHash) {
-    const chainId = await factomd.call('entry', { hash: toHex(entryHash) })
-        .then(e => e.chainid);
-    const chainHead = await getChainHead(factomd, chainId);
-
-    if (chainHead.keyMR === '' && chainHead.chainInProcessList) {
-        throw new Error('Chain not yet included in a Directory Block');
-    }
-
-    let keyMR = chainHead.keyMR;
-
-    while (keyMR !== NULL_HASH) {
-
-        const entryBlock = await factomd.call('entry-block', { keymr: keyMR });
-        const entryFound = entryBlock.entrylist.find(e => e.entryhash === entryHash);
-
-        if (entryFound) {
-            return getEntry(factomd, entryHash, buildEntryBlockContext(keyMR, entryBlock, entryFound.timestamp));
-        } else {
-            keyMR = entryBlock.header.prevkeymr;
-        }
-    }
+    const entryBlockKeyMr = await factomd.call('receipt',  { hash: toHex(entryHash) }).then(r => r.receipt.entryblockkeymr);
+    const entryBlock = await factomd.call('entry-block', { keymr: entryBlockKeyMr });
+    const timestamp = entryBlock.entrylist.find(e => e.entryhash === entryHash).timestamp;
+    return getEntry(factomd, entryHash, buildEntryBlockContext(entryBlockKeyMr, entryBlock, timestamp));
 }
 
 async function getFirstEntry(factomd, chainId) {

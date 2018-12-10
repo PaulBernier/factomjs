@@ -235,8 +235,8 @@ class FactomCli {
     }
 
     /**
-     * Get entry by hash with its {@link EntryBlockContext} and timestamp. 
-     * Note that in order to retrieve the block context this method has to rewind the chain the entry is part of which can be an expensive operation.
+     * Get entry by hash with its {@link EntryBlockContext} and timestamp.
+     * Note that this method is more expensive than {@link FactomCli#getEntry} as it also has to retrieve the Entry Block data.
      * @async
      * @param {string} entryHash - Hash of the entry to query.
      * @returns {Entry} - Entry with its blockContext and timestamp populated.
