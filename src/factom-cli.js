@@ -218,7 +218,9 @@ class FactomCli {
      * Get the head of a given chain.
      * @async
      * @param {string} chainId - Chain ID.
-     * @returns {{keyMR:string, chainInProcessList:boolean}} result - keymr of the head of the chain and if the chain is currently being processed (new chain not yet in a block)
+     * @returns {{keyMR:string, chainInProcessList:boolean}} result - keymr of the head of the chain.
+     * chainInProcessList indicates if there is an Entry Block for that chain currently in the process list.
+     * If this is the case that would indicate that the head of that chain will change at the next block.
      */
     getChainHead(chainId) {
         return get.getChainHead(this.factomd, chainId);
