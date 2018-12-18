@@ -5,10 +5,11 @@
     "main": "src/factom.js",
     "scripts": {
         "docs": "documentation build --github --sort-order alpha src/** -f md > docs/doc.md",
+        "docs-html": "documentation build src/** --sort-order alpha -f html -o docs",
         "lint": "eslint src/",
         "build": "webpack",
         "prepublishOnly": "npm run lint && npm run build && npm run test && npm run docs",
-        "test": "nyc --reporter=html --reporter=text mocha test/*.spec.js",
+        "test": "nyc --reporter=html --reporter=text mocha 'test/*.spec.js'",
         "coveralls": "nyc report --reporter=text-lcov | coveralls",
         "test:integration": "mocha test/*.integration.spec.js",
         "test:unit": "mocha test/*unit.spec.js"
