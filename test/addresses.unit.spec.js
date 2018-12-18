@@ -96,11 +96,11 @@ describe('Test addresses', function() {
         assert.equal(addresses.rcdHashToPublicFctAddress(key).toString('hex'), 'FA2sfxwHGxz5kVXnKy2osu14mV8xZ3zhLs76DekB6LdgmBy5uz1q');
     });
 
-    it('should get private Factoid address out of key', function() {
-        const key = Buffer.from('776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80', 'hex');
+    it('should get private Factoid address out of seed', function() {
+        const seed = Buffer.from('776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80', 'hex');
 
-        assert.equal(addresses.keyToPrivateFctAddress(key), 'Fs2E6iXCLAKDiPqVtfxtuQCKsTe7o6DJFDnht1wST53s4ibtdu9f');
-        assert.equal(addresses.keyToPrivateFctAddress(key).toString('hex'), 'Fs2E6iXCLAKDiPqVtfxtuQCKsTe7o6DJFDnht1wST53s4ibtdu9f');
+        assert.equal(addresses.seedToPrivateFctAddress(seed), 'Fs2E6iXCLAKDiPqVtfxtuQCKsTe7o6DJFDnht1wST53s4ibtdu9f');
+        assert.equal(addresses.seedToPrivateFctAddress(seed).toString('hex'), 'Fs2E6iXCLAKDiPqVtfxtuQCKsTe7o6DJFDnht1wST53s4ibtdu9f');
     });
 
     it('should get public Entry Credit address out of key', function() {
@@ -110,10 +110,10 @@ describe('Test addresses', function() {
     });
 
     it('should get private Entry Credit address out of key', function() {
-        const key = Buffer.from('776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80', 'hex');
+        const seed = Buffer.from('776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80', 'hex');
 
-        assert.equal(addresses.keyToPrivateEcAddress(key), 'Es3LFXNj5vHBw8c9kM98HKR69CJjUTyTPv4BdxoRbMQJ8zifxkgV');
-        assert.equal(addresses.keyToPrivateEcAddress(key).toString('hex'), 'Es3LFXNj5vHBw8c9kM98HKR69CJjUTyTPv4BdxoRbMQJ8zifxkgV');
+        assert.equal(addresses.seedToPrivateEcAddress(seed), 'Es3LFXNj5vHBw8c9kM98HKR69CJjUTyTPv4BdxoRbMQJ8zifxkgV');
+        assert.equal(addresses.seedToPrivateEcAddress(seed).toString('hex'), 'Es3LFXNj5vHBw8c9kM98HKR69CJjUTyTPv4BdxoRbMQJ8zifxkgV');
     });
 
     it('should reject to get public key from public Factoid addresses', function() {

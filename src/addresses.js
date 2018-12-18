@@ -179,17 +179,17 @@ function rcdHashToPublicFctAddress(rcdHash) {
 }
 
 /**
- * Build a human readable private FCT address from a key.
- * @param {Buffer|string} key 
+ * Build a human readable private FCT address from a 32-byte seed.
+ * @param {Buffer|string} seed 32-byte seed.
  * @returns {string} - Private FCT address.
  */
-function keyToPrivateFctAddress(key) {
-    return keyToAddress(key, FACTOID_PRIVATE_PREFIX);
+function seedToPrivateFctAddress(seed) {
+    return keyToAddress(seed, FACTOID_PRIVATE_PREFIX);
 }
 
 /**
- * Build a human readable public EC address from a key.
- * @param {Buffer|string} key 
+ * Build a human readable public EC address from a 32-byte key.
+ * @param {Buffer|string} key 32-byte key.
  * @returns {string} - Public EC address.
  */
 function keyToPublicEcAddress(key) {
@@ -197,12 +197,12 @@ function keyToPublicEcAddress(key) {
 }
 
 /**
- * Build a human readable private EC address from a key.
- * @param {Buffer|string} key 
+ * Build a human readable private EC address from a 32-byte seed.
+ * @param {Buffer|string} seed 32-byte seed.
  * @returns {string} - Private EC address.
  */
-function keyToPrivateEcAddress(key) {
-    return keyToAddress(key, ENTRYCREDIT_PRIVATE_PREFIX);
+function seedToPrivateEcAddress(seed) {
+    return keyToAddress(seed, ENTRYCREDIT_PRIVATE_PREFIX);
 }
 
 function keyToAddress(key, prefix, computeRCDHash) {
@@ -229,7 +229,7 @@ function generateRandomFctAddress() {
     const keyPair = nacl.sign.keyPair.fromSeed(seed);
     return {
         public: keyToPublicFctAddress(keyPair.publicKey),
-        private: keyToPrivateFctAddress(seed)
+        private: seedToPrivateFctAddress(seed)
     };
 }
 
@@ -242,7 +242,7 @@ function generateRandomEcAddress() {
     const keyPair = nacl.sign.keyPair.fromSeed(seed);
     return {
         public: keyToPublicEcAddress(keyPair.publicKey),
-        private: keyToPrivateEcAddress(seed)
+        private: seedToPrivateEcAddress(seed)
     };
 }
 
@@ -262,9 +262,9 @@ module.exports = {
     getPublicAddress,
     keyToPublicFctAddress,
     rcdHashToPublicFctAddress,
-    keyToPrivateFctAddress,
+    seedToPrivateFctAddress,
     keyToPublicEcAddress,
-    keyToPrivateEcAddress,
+    seedToPrivateEcAddress,
     generateRandomFctAddress,
     generateRandomEcAddress
 };

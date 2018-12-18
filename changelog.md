@@ -20,6 +20,8 @@
 * `getTransaction` throws an `Error` if no transaction is found insteall of returning `undefined`. To be consistent with `getEntry` behavior.
 * Redirect factomd `current-minute` API call to v2 path (intead of debug path).
 * Increased performance of `getEntryWithBlockContext`: fixed cost of 3 factomd API calls instead of rewinding the entry blocks of the chain.
+* `keyToPrivateFctAddress` renamed `seedToPrivateFctAddress`.
+* `keyToPrivateEcAddress` renamed `seedToPrivateEcAddress`
 
 ### Removed
 
