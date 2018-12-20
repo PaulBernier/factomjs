@@ -72,7 +72,7 @@ describe('Test FactomCli', function () {
     });
 
     it('should add', async function () {
-        this.timeout(5000);
+        this.timeout(10000);
 
         const e = Entry.builder()
             .chainId('0ec9d1cfbb458e28229b40139b5bee7d88c81215fb4dfdac48a9cf27f70f0790')
@@ -84,7 +84,7 @@ describe('Test FactomCli', function () {
     });
 
     it('should add entry', async function () {
-        this.timeout(5000);
+        this.timeout(10000);
 
         const e = Entry.builder()
             .chainId('0ec9d1cfbb458e28229b40139b5bee7d88c81215fb4dfdac48a9cf27f70f0790')
@@ -96,7 +96,7 @@ describe('Test FactomCli', function () {
     });
 
     it('should add entries', async function () {
-        this.timeout(5000);
+        this.timeout(10000);
 
         const e = Entry.builder()
             .chainId('0ec9d1cfbb458e28229b40139b5bee7d88c81215fb4dfdac48a9cf27f70f0790')
@@ -108,7 +108,7 @@ describe('Test FactomCli', function () {
     });
 
     it('should add chain', async function () {
-        this.timeout(5000);
+        this.timeout(10000);
 
         const e = Entry.builder()
             .chainId('0ec9d1cfbb458e28229b40139b5bee7d88c81215fb4dfdac48a9cf27f70f0790')
@@ -120,7 +120,7 @@ describe('Test FactomCli', function () {
     });
 
     it('should add chains', async function () {
-        this.timeout(5000);
+        this.timeout(10000);
 
         const e = Entry.builder()
             .chainId('0ec9d1cfbb458e28229b40139b5bee7d88c81215fb4dfdac48a9cf27f70f0790')
