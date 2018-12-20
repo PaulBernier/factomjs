@@ -3,7 +3,7 @@ const Promise = require('bluebird'),
     { flatMap, isIterable } = require('./util'),
     { chainExists } = require('./get'),
     { waitOnCommitAck, waitOnRevealAck } = require('./ack'),
-    { isValidEcPrivateAddress } = require('./addresses'),
+    { isValidEcPrivateAddress, getPublicAddress } = require('./addresses'),
     { Chain, composeChainCommit, composeChainReveal } = require('./chain'),
     { Entry, composeEntryCommit, composeEntryReveal } = require('./entry');
 
@@ -122,7 +122,7 @@ function addChain(factomd, chain, ecPrivate, options) {
     return addInternal(factomd, chain, commitChain, revealChain, ecPrivate, options);
 }
 
-function addEntry(factomd, entry, ecPrivate, options) {
+async function addEntry(factomd, entry, ecPrivate, options) {
     if (!entry.chainId.length) {
         throw new Error('Entry should contain a chain id to be added to the blockchain');
     }
@@ -134,6 +134,10 @@ async function addInternal(factomd, obj, commitFn, revealFn, ecPrivate, opts) {
         throw new Error(`${ecPrivate} is not a valid EC private address`);
     }
     const options = opts || {};
+    if (!options.skipFundValidation) {
+        await validateFunds(factomd, ecPrivate, obj.ecCost());
+    }
+
     const commitAckTimeout = options.commitTimeout || 60;
     const revealAckTimeout = options.revealTimeout || 60;
 
@@ -153,11 +157,28 @@ async function addInternal(factomd, obj, commitFn, revealFn, ecPrivate, opts) {
     return Object.assign({}, committed, revealed);
 }
 
-function addIterableInternal(factomd, iterable, ecAddress, opts) {
+async function addIterableInternal(factomd, iterable, ecPrivate, opts) {
     const options = opts || {};
+
+    if (!options.skipFundValidation) {
+        const totalCost = iterable.reduce((cost, el) => cost + el.ecCost(), 0);
+        await validateFunds(factomd, ecPrivate, totalCost);
+        // Skip individual objects fund validation
+        options.skipFundValidation = true;
+    }
+
     return Promise.mapSeries(chunk(iterable, options.chunkSize || 200),
-        sublist => Promise.map(sublist, entry => addDispatch(factomd, entry, ecAddress, options))
+        sublist => Promise.map(sublist, entry => addDispatch(factomd, entry, ecPrivate, options))
     ).then(r => flatMap(r, i => i));
+}
+
+async function validateFunds(factomd, ecPrivate, cost) {
+    const ecPublic = getPublicAddress(ecPrivate);
+    const { balance } = await factomd.call('entry-credit-balance', { address: ecPublic });
+
+    if (balance < cost) {
+        throw new Error(`${ecPublic} current balance (${balance} EC) is not sufficient to pay the total cost of ${cost} EC.`);
+    }
 }
 
 const addEntries = addIterableInternal;

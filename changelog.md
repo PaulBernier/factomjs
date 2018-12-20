@@ -23,6 +23,7 @@
 * `keyToPrivateFctAddress` renamed `seedToPrivateFctAddress`.
 * `keyToPrivateEcAddress` renamed `seedToPrivateEcAddress`.
 * `add` throws an Error when trying to create a chain that already exists.
+* All the `add*` functions validate by default that the paying EC address holds enough funds to pay for the commits. Can be bypassed by setting the option `skipFundValidation` to `true`.
 
 ### Removed
 

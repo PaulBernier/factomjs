@@ -193,7 +193,7 @@ describe('Add chains and entries in Factom blockchain', function () {
     });
 
     it('should add chains', async function () {
-        this.timeout(10000);
+        this.timeout(15000);
 
         const c1 = new Chain(Entry.builder()
             .chainId('3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791')
@@ -232,11 +232,43 @@ describe('Add chains and entries in Factom blockchain', function () {
 
         try {
             await add.add(factomd, c, PAYING_EC_ADDRESS);
-        } catch(e) {
+        } catch (e) {
             assert.include(e.message, 'already exists');
             return;
         }
         throw new Error('Should have thrown.');
+    });
+
+    it('should throw when not enough EC', async function () {
+        this.timeout(10000);
+
+        const e = Entry.builder()
+            .chainId('8f6f7d99fb4fe51fcba7679780aa2c21fcf7f3a85e6658b72fa33a2baaecd911')
+            .extId('hello', 'utf8')
+            .content(Math.random().toString(), 'utf8')
+            .build();
+
+        try {
+            await add.add(factomd, e, 'Es3WC5Pr54jsppooWWvGEqeqsauQFJaZuBMdXCBWSDA3wkzWK9cC');
+        } catch (e) {
+            assert.include(e.message, 'not sufficient to pay');
+            return;
+        }
+        throw new Error('Should have thrown.');
+    });
+
+    it('should bypass fund validation', async function () {
+        this.timeout(10000);
+
+        const e = Entry.builder()
+            .chainId('8f6f7d99fb4fe51fcba7679780aa2c21fcf7f3a85e6658b72fa33a2baaecd911')
+            .extId('hello', 'utf8')
+            .content(Math.random().toString(), 'utf8')
+            .build();
+
+        await add.add(factomd, e, 'Es3WC5Pr54jsppooWWvGEqeqsauQFJaZuBMdXCBWSDA3wkzWK9cC',
+            { skipFundValidation: true, commitTimeout: -1, revealTimeout: -1 });
+
     });
 
 });
