@@ -1,6 +1,7 @@
 const Promise = require('bluebird'),
     chunk = require('lodash.chunk'),
     { flatMap, isIterable } = require('./util'),
+    { chainExists } = require('./get'),
     { waitOnCommitAck, waitOnRevealAck } = require('./ack'),
     { isValidEcPrivateAddress } = require('./addresses'),
     { Chain, composeChainCommit, composeChainReveal } = require('./chain'),
@@ -19,7 +20,10 @@ function commit(factomd, obj, ecPrivate, ackTimeout) {
     }
 }
 
-function commitChain(factomd, chain, ecPrivate, ackTimeout) {
+async function commitChain(factomd, chain, ecPrivate, ackTimeout) {
+    if (await chainExists(factomd, chain.id)) {
+        throw new Error(`Chain ${chain.idHex} already exists.`);
+    }
     return commitInternal(factomd, chain, composeChainCommit, 'commit-chain', ecPrivate, ackTimeout);
 }
 
@@ -36,7 +40,7 @@ async function commitInternal(factomd, obj, composeCommit, commitApiCall, ecPriv
 
     let repeatedCommit = false;
     const committed = await factomd.call(commitApiCall, { message: commit })
-        .catch(function(e) {
+        .catch(function (e) {
             if (e.code === -32011) {
                 repeatedCommit = true;
             } else {

@@ -220,4 +220,23 @@ describe('Add chains and entries in Factom blockchain', function () {
         assert.equal(added[0].txId, computeChainTxId(c1).toString('hex'));
     });
 
+    it('should throw when adding an already existing chain', async function () {
+        this.timeout(10000);
+
+        const e = Entry.builder()
+            .extId('hello', 'utf8')
+            .extId('erfkkk', 'utf8')
+            .content(Math.random().toString(), 'utf8')
+            .build();
+        const c = new Chain(e);
+
+        try {
+            await add.add(factomd, c, PAYING_EC_ADDRESS);
+        } catch(e) {
+            assert.include(e.message, 'already exists');
+            return;
+        }
+        throw new Error('Should have thrown.');
+    });
+
 });
