@@ -118,7 +118,6 @@ describe('Send transactions', function () {
         }
 
         throw new Error('Should have thrown Error');
-
     });
 
     it('should send multi output Transaction', async function () {
@@ -141,6 +140,41 @@ describe('Send transactions', function () {
             .build();
 
         await send.sendTransaction(factomd, transaction);
+    });
+
+    it('should reject transaction with EC output below EC rate', async function () {
+        this.timeout(10000);
+
+        try {
+            const { rate } = await factomd.call('entry-credit-rate');
+            const fee = rate * 12;
+            const transaction = Transaction.builder()
+                .input(PAYING_FCT_ADDRESS, 1 + fee)
+                .output(RECEIVING_EC_ADDRESS, 1)
+                .build();
+
+
+            await send.sendTransaction(factomd, transaction);
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            assert.include(e.message, 'minimum of 1 Entry Credit');
+            return;
+        }
+        throw new Error('Should have thrown Error');
+    });
+
+    it('should bypass check of transaction with EC output below EC rate', async function () {
+        this.timeout(10000);
+
+        const { rate } = await factomd.call('entry-credit-rate');
+        const fee = rate * 12;
+        const transaction = Transaction.builder()
+            .input(PAYING_FCT_ADDRESS, 1 + fee)
+            .output(RECEIVING_EC_ADDRESS, 1)
+            .build();
+
+        await send.sendTransaction(factomd, transaction, { force: true });
+
     });
 
 });

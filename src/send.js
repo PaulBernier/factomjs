@@ -35,6 +35,14 @@ async function submitTransaction(factomd, transaction, force) {
         throw new Error(`Transaction is overpaying required fees by more than 10 times (paid: ${transaction.feesPaid}, minimum required: ${minimumRequiresFees}, current EC rate: ${ecRate})`);
     }
 
+    if (!force) {
+        transaction.entryCreditOutputs.forEach(function (eco) {
+            if (eco.amount < ecRate) {
+                throw new Error(`Entry Credit output to ${eco.address} is not sufficient to get a minimum of 1 Entry Credit (${eco.amount} < ${ecRate}).`);
+            }
+        });
+    }
+
     await Promise.each(transaction.inputs, input => validateFunds(factomd, input.address, input.amount));
 
     return factomd.call('factoid-submit', { transaction: transaction.marshalBinary().toString('hex') })

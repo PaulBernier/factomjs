@@ -326,7 +326,7 @@ class FactomCli {
      * @param {Transaction} transaction 
      * @param {Object} [options]
      * @param {number} [options.timeout=60] - Time to wait in seconds for transaction acknowledgment before timing out. If negative value, doesn't wait for ack.
-     * @param {boolean} [options.force=false] - Set to true to bypass the check of the transaction fee overpay.
+     * @param {boolean} [options.force=false] - Set to true to bypass the checks of the transaction fee overpay and the minimum EC output amount.
      * @returns {string} - Transaction ID.
      */
     sendTransaction(transaction, options) {
