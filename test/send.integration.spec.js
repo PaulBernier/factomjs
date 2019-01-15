@@ -127,16 +127,16 @@ describe('Send transactions', function () {
             .then(r => r.rate);
 
         const fees = Transaction.builder()
-            .input(PAYING_FCT_ADDRESS, 2)
+            .input(PAYING_FCT_ADDRESS, rate + 1)
             .output(RECEIVING_FCT_ADDRESS, 1)
-            .output(RECEIVING_EC_ADDRESS, 1)
+            .output(RECEIVING_EC_ADDRESS, rate)
             .build()
             .computeRequiredFees(rate);
 
         const transaction = Transaction.builder()
-            .input(PAYING_FCT_ADDRESS, 2 + fees)
+            .input(PAYING_FCT_ADDRESS, rate + 1 + fees)
             .output(RECEIVING_FCT_ADDRESS, 1)
-            .output(RECEIVING_EC_ADDRESS, 1)
+            .output(RECEIVING_EC_ADDRESS, rate)
             .build();
 
         await send.sendTransaction(factomd, transaction);
