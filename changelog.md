@@ -13,6 +13,7 @@
 * Rejection of negative transaction fees. 
 * Handling of CORS with credentials. 
 * Handle case `Error.captureStackTrace` is undefined (Firefox).
+* Fix bug preventing to instanciate `FactomdCli` without params.
 
 ### Changed
 

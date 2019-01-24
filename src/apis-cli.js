@@ -152,7 +152,7 @@ class FactomdCli extends BaseCli {
     constructor(conf) {
         const configuration = conf || {};
         super(configuration, 8088);
-        this.debugPath = conf.debugPath || '/debug';
+        this.debugPath = configuration.debugPath || '/debug';
     }
 
     /**
