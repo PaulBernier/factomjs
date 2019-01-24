@@ -8,10 +8,7 @@
     "extends": "eslint:recommended",
     "parserOptions": {
         "sourceType": "module",
-        "ecmaVersion": 2017,
-        "ecmaFeatures": {
-            "experimentalObjectRestSpread": true
-        }  
+        "ecmaVersion": 2018
     },
     "rules": {
         "no-throw-literal": 2,
