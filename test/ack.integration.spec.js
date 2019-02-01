@@ -2,8 +2,8 @@ const assert = require('chai').assert,
     { FactomdCli } = require('../src/apis-cli'),
     { waitOnCommitAck, waitOnRevealAck, waitOnFactoidTransactionAck } = require('../src/ack');
 
-const nconf = require('nconf').env().file({ file: `${__dirname}/config.json` });
-const factomd = new FactomdCli({ host: nconf.get('FACTOMD_HOST'), port: nconf.get('FACTOMD_PORT') });
+require('dotenv').config();
+const factomd = new FactomdCli({ host: process.env.FACTOMD_HOST, port: process.env.FACTOMD_PORT });
 
 describe('Acknowledge data in Factom blockchain', function () {
 

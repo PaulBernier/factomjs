@@ -3,11 +3,8 @@ const { Entry } = require('../src/entry'),
     { Chain } = require('../src/chain'),
     { FactomCli } = require('../src/factom-cli');
 
-const nconf = require('nconf').env().file({ file: `${__dirname}/config.json` });
-const FACTOMD_HOST = nconf.get('FACTOMD_HOST'),
-    FACTOMD_PORT = nconf.get('FACTOMD_PORT');
-const PAYING_EC_ADDRESS = nconf.get('EC_PRIVATE_ADDRESS');
-const PAYING_FCT_ADDRESS = nconf.get('FCT_PRIVATE_ADDRESS');
+const PAYING_EC_ADDRESS = process.env.EC_PRIVATE_ADDRESS;
+const PAYING_FCT_ADDRESS = process.env.FCT_PRIVATE_ADDRESS;
 const RECEIVING_FCT_ADDRESS = 'FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH';
 const RECEIVING_EC_ADDRESS = 'EC3MVTBYTo2Y1HrEKxeEGfNNoKhLZ9ZYQhb26zQUzngJ6SLUVRX9';
 
@@ -15,8 +12,8 @@ describe('Test FactomCli', function () {
 
     const cli = new FactomCli({
         factomd: {
-            host: FACTOMD_HOST,
-            port: FACTOMD_PORT
+            host: process.env.FACTOMD_HOST,
+            port: process.env.FACTOMD_PORT
         }, walletd: {
             walletd: {
                 host: 'localhost',
