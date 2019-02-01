@@ -214,4 +214,19 @@ describe('Test Chain', function () {
         assert.equal(chainId.toString('hex'), '65f5107b51dcb02173318a6f2b79018a41aa281d9dfd1d53eda773647a6b4441');
     });
 
+    it('should convert to JS object', function () {
+        const e = Entry.builder()
+            .extId('extId', 'utf8')
+            .extId('extId++', 'utf8')
+            .content('heloooooooooo', 'utf8')
+            .timestamp(1523241150229)
+            .build();
+
+        const chain = new Chain(e);
+        const obj = chain.toObject();
+
+        assert.equal(obj.id, chain.idHex);
+        assert.equal(obj.firstEntry.content, e.contentHex);
+    });
+
 });

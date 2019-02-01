@@ -328,4 +328,21 @@ describe('Test Entry', function () {
         assert.instanceOf(txId, Buffer);
         assert.equal(txId.toString('hex'), 'd6e9aa572959910d4a0712c0fd23025f5f1bf4fb74467d2677e10048dc441883');
     });
+
+    it('should convert to JS object', function () {
+        const entry = Entry.builder()
+            .chainId('3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791')
+            .extId('extId', 'utf8')
+            .extId('extId++', 'utf8')
+            .content('heloooooooooo', 'utf8')
+            .timestamp(1523241150229)
+            .build();
+
+        const obj = entry.toObject();
+        assert.isObject(obj);
+        assert.equal(obj.chainId, entry.chainIdHex);
+        assert.equal(obj.content, entry.contentHex);
+        assert.equal(obj.timestamp, entry.timestamp);
+        assert.deepEqual(Entry.builder(obj).build().hash(), entry.hash());
+    });
 });

@@ -161,6 +161,24 @@ class Entry {
     }
 
     /**
+     * Convert to a JavaScript Object representation of the entry. Can be used as argument of {@link EntryBuilder}.
+     * @returns {Object} JavaScript object representing the entry.
+     */
+    toObject() {
+        const o = {
+            chainId: this.chainIdHex,
+            extIds: this.extIdsHex,
+            content: this.contentHex
+        };
+
+        if (this.timestamp) {
+            o.timestamp = this.timestamp;
+        }
+
+        return o;
+    }
+
+    /**
      * Entry builder static factory.
      * @param {Entry} [entry] - Optional entry to use to initialize the attributes of the builder.
      * @returns {EntryBuilder} A new EntryBuilder.
@@ -176,7 +194,7 @@ class Entry {
 
 /**
  * Class to build an {@link Entry}
- * @param {Entry} [entry] - Optional entry to use to initialize the attributes of the builder.
+ * @param {Entry|Object} [entry] - Optional entry to use to initialize the attributes of the builder.
  */
 class EntryBuilder {
 

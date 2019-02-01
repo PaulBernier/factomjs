@@ -48,6 +48,17 @@ class Chain {
     ecCost() {
         return CHAIN_CREATION_COST + this.firstEntry.ecCost();
     }
+
+    /**
+     * Convert to a JavaScript Object representation of the chain.
+     * @returns {Object} JavaScript object representing the chain.
+     */
+    toObject() {
+        return {
+            firstEntry: this.firstEntry.toObject(),
+            id: this.idHex
+        };
+    }
 }
 
 /**********************
