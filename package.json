@@ -3,6 +3,7 @@
     "version": "1.0.0-rc4",
     "description": "Library to build applications on the Factom blockchain",
     "main": "src/factom.js",
+    "types": "factom.d.ts",
     "scripts": {
         "docs": "documentation build --github --sort-order alpha src/** -f md > docs/doc.md",
         "docs-html": "documentation build src/** --sort-order alpha -f html -o docs",
