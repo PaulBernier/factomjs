@@ -79,29 +79,29 @@ function composeChainCommit(chain, ecAddress, signature) {
     validateChainInstance(chain);
 
     const buffer = composeChainLedger(chain);
-    let ecPublicKey, signature;
+    let ecPublicKey, sig;
 
     if (isValidEcPrivateAddress(ecAddress)) {
         // Sign commit
         const secret = addressToKey(ecAddress);
         const key = sign.keyPair.fromSeed(secret);
         ecPublicKey = Buffer.from(key.publicKey);
-        signature = Buffer.from(sign.detached(buffer, key.secretKey));
+        sig = Buffer.from(sign.detached(buffer, key.secretKey));
     } else if (isValidEcPublicAddress(ecAddress)) {
         // Verify the signature manually provided
-        if (!sig) {
+        if (!signature) {
             throw new Error('Signature of the commit missing.');
         }
         ecPublicKey = addressToKey(ecAddress);
-        signature = Buffer.from(sig, 'hex');
-        if (!sign.detached.verify(buffer, signature, ecPublicKey)) {
+        sig = Buffer.from(signature, 'hex');
+        if (!sign.detached.verify(buffer, sig, ecPublicKey)) {
             throw new Error('Invalid signature manually provided for the chain commit. (first entry timestamp not fixed?)');
         }
     } else {
         throw new Error(`${ecAddress} is not a valid EC address`);
     }
 
-    return Buffer.concat([buffer, ecPublicKey, signature]);
+    return Buffer.concat([buffer, ecPublicKey, sig]);
 }
 
 function composeChainLedger(chain) {
