@@ -379,11 +379,11 @@ declare namespace factom {
          * @param predicate Predicate of the while loop. Iteration stop if either the predicate is false or the end of the chain has been reached.
          * @param func Function to apply at each iteration.
          * @example
-         * cli.rewindChainWhile('dab6c095c22ec6db1b0961fdb82d504a95f0a31467bb7df73cc793532b0e9ae3', () => true, function(entry) {
+         * cli.rewindChainWhile('dab6c095c22ec6db1b0961fdb82d504a95f0a31467bb7df73cc793532b0e9ae3', (entry) => true, function(entry) {
          *      // Do stuff with the entry
          * })
          */
-        rewindChainWhile(chainId: string, predicate: () => boolean, func: (entry: Entry) => void): void;
+        rewindChainWhile(chainId: string, predicate: (entry: Entry) => boolean, func: (entry: Entry) => void): void;
 
         // Send transactions
 
@@ -715,7 +715,7 @@ declare namespace factom {
         /**
          * Convert to a JavaScript Object representation of the entry. Can be used as argument of EntryBuilder.
          */
-        toObject(): Object;
+        toObject(): object;
 
         /**
          * Entry builder static factory.
@@ -823,7 +823,7 @@ declare namespace factom {
         /**
          * Convert to a JavaScript Object representation of the chain.
          */
-        toObject(): Object;
+        toObject(): object;
     }
 
     /**
@@ -1434,4 +1434,141 @@ declare namespace factom {
      * @param entry 
      */
     function computeEntryTxId(entry: Entry): Buffer;
+
+    /**
+     * Validate that an address is valid (well formed).
+     * @param {string} address - Address to validate
+     * @returns {boolean} - True if the address is valid.
+     */
+    function isValidAddress(address: string): boolean;
+
+    /**
+     * Validate if an address is a valid public EC or FCT address.
+     * @param {string} address - Address to validate.
+     * @returns {boolean} - True if the address is a valid public EC or FCT address.
+     */
+    function isValidPublicAddress(address: string): boolean;
+
+    /**
+     * Validate if an address is a valid private EC or FCT address.
+     * @param {string} address - Address to validate.
+     * @returns {boolean} - True if the address is a valid private EC or FCT address.
+     */
+    function isValidPrivateAddress(address: string): boolean;
+
+    /**
+     * Validate if an address is a valid EC address (public or private).
+     * @param {string} address - Address to validate.
+     * @returns {boolean} - True if the address is a valid EC address.
+     */
+    function isValidEcAddress(address: string): boolean;
+
+    /**
+     * Validate if an address is a valid public EC address.
+     * @param {string} address - Address to validate.
+     * @returns {boolean} - True if the address is a valid public EC address.
+     */
+    function isValidEcPublicAddress(address: string): boolean;
+
+    /**
+     * Validate if an address is a valid private EC address.
+     * @param {string} address - Address to validate.
+     * @returns {boolean} - True if the address is a valid private EC address.
+     */
+    function isValidEcPrivateAddress(address: string): boolean;
+
+    /**
+     * Validate if an address is a valid FCT address (public or private).
+     * @param {string} address - Address to validate.
+     * @returns {boolean} - True if the address is a valid FCT address.
+     */
+    function isValidFctAddress(address: string): boolean;
+
+    /**
+     * Validate if an address is a valid public FCT address.
+     * @param {string} address - Address to validate.
+     * @returns {boolean} - True if the address is a valid public FCT address.
+     */
+    function isValidFctPublicAddress(address: string): boolean;
+
+    /**
+     * Validate if an address is a valid private FCT address.
+     * @param {string} address - Address to validate.
+     * @returns {boolean} - True if the address is a valid private FCT address.
+     */
+    function isValidFctPrivateAddress(address: string): boolean;
+
+    /**
+     * Get public address corresponding to an address.
+     * @param {string} address - Any address.
+     * @returns {string} - Public address.
+     */
+    function getPublicAddress(address: string): string;
+
+    /**
+     * Extract the key contained in an address. Cannot be used with public FCT address as those contain a RCD hash and not a key (See {@link addressToRcdHash}).
+     * @param {string} address - Any address, except public FCT address.
+     * @returns {Buffer} - Key contained in the address.
+     */
+    function addressToKey(address: string): Buffer;
+
+    /**
+     * Extract the RCD hash from a public FCT address.
+     * @param {string} address - Public FCT address.
+     * @returns {Buffer} - RCD hash.
+     */
+    function addressToRcdHash(address: string): Buffer;
+
+    /**
+     * Build a human readable public FCT address from a key.
+     * @param {Buffer|string} key
+     * @returns {string} - Public FCT address.
+     */
+    function keyToPublicFctAddress(key: Buffer | string): string;
+
+    /**
+     * Build a human readable public FCT address from a RCD hash.
+     * @param {Buffer|string} rcdHash
+     * @returns {string} - Public FCT address.
+     */
+    function rcdHashToPublicFctAddress(rcdHash: Buffer | string): string;
+
+    /**
+     * Build a human readable private FCT address from a 32-byte seed.
+     * @param {Buffer|string} seed 32-byte seed.
+     * @returns {string} - Private FCT address.
+     */
+    function seedToPrivateFctAddress(seed: Buffer | string): string;
+
+    /**
+     * Build a human readable public EC address from a 32-byte key.
+     * @param {Buffer|string} key 32-byte key.
+     * @returns {string} - Public EC address.
+     */
+    function keyToPublicEcAddress(key: Buffer | string): string;
+
+    /**
+     * Build a human readable private EC address from a 32-byte seed.
+     * @param {Buffer|string} seed 32-byte seed.
+     * @returns {string} - Private EC address.
+     */
+    function seedToPrivateEcAddress(seed: Buffer | string): string;
+
+    /**
+     * Generate a new random FCT address pair (private and public).
+     * @returns {{public: string, private: string}} - Public and private FCT addresses.
+     */
+    function generateRandomFctAddress(): {
+        public: string,
+        private: string
+    };
+
+    /**
+     * Generate a new random EC address pair (private and public).
+     * @returns {{public: string, private: string}} - Public and private EC addresses.
+     */
+    function generateRandomEcAddress(): {
+        public: string,
+        private: string
+    }
 }
