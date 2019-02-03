@@ -1,6 +1,6 @@
-// Type definitions for factom 0.3.6
+// Type definitions for factom 1.0.0
 // Project: https://github.com/PaulBernier/factomjs
-// Definitions by: Schalk Bower <https://github.com/schalk-b>
+// Definitions by: Schalk Bower <https://github.com/schalk-b>, Paul Bernier <https://github.com/PaulBernier>
 
 export = factom;
 
@@ -89,12 +89,17 @@ declare namespace factom {
         /**
          * Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
          */
-
         revealTimeout?: number,
+
         /**
          * Only if the obj argument is an iterable. The lib chunks the input if it is an iterable so that not too many Promises get resolved in parallel.
          */
-        chunkSize?: number
+        chunkSize?: number,
+
+        /**
+         * Skip the validation that the EC address holds enough Entry Credits to pay for the commit.
+         */
+        skipFundValidation?: boolean
     }
 
     interface AddResponse {
@@ -131,10 +136,12 @@ declare namespace factom {
          * @example
          * const cli = new FactomCli({
          *      factomd: {
-         *          host: '4.55.71.113'
+         *          host: 'api.factomd.net',
+         *          port: 443,
+         *          protocol: 'https'
          *      },
          *      walletd: {
-         *          host: '2.122.55.3',
+         *          host: 'localhost',
          *          user: 'paul',
          *          password: 'pass'
          *      }
@@ -305,7 +312,8 @@ declare namespace factom {
             keyMR:string,
 
             /**
-             * If the chain is currently being processed (new chain not yet in a block)
+             * Indicates if there is an Entry Block for that chain currently in the process list. 
+             * If this is the case that would indicate that the head of that chain will change at the next block.
              */
             chainInProcessList:boolean
         }>;
@@ -319,7 +327,7 @@ declare namespace factom {
 
         /**
          * Get entry by hash with its EntryBlockContext and timestamp. 
-         * Note that in order to retrieve the block context this method has to rewind the chain the entry is part of which can be an expensive operation.
+         * Note that this method is more expensive than getEntry as it also has to retrieve the Entry Block data.
          * 
          * @param entryHash Hash of the entry to query.
          */
@@ -393,7 +401,12 @@ declare namespace factom {
             /**
              * Time to wait in seconds for transaction acknowledgment before timing out. If negative value, doesn't wait for ack. Defaults to 60.
              */
-            timeout: number
+            timeout?: number,
+
+            /**
+             * Set to true to bypass the checks of the transaction fee overpay and the minimum EC output amount.
+             */
+            force?: boolean
         }): Promise<string>;
 
         /**
@@ -700,6 +713,11 @@ declare namespace factom {
         ecCost(): number;
 
         /**
+         * Convert to a JavaScript Object representation of the entry. Can be used as argument of EntryBuilder.
+         */
+        toObject(): Object;
+
+        /**
          * Entry builder static factory.
          * 
          * Returns a new EntryBuilder.
@@ -801,6 +819,11 @@ declare namespace factom {
          * Get Entry Credit cost of the chain.
          */
         ecCost(): number;
+
+        /**
+         * Convert to a JavaScript Object representation of the chain.
+         */
+        toObject(): Object;
     }
 
     /**
