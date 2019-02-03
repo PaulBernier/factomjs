@@ -1,4 +1,4 @@
-// Type definitions for factom 1.0.0
+// Type definitions for factomjs
 // Project: https://github.com/PaulBernier/factomjs
 // Definitions by: Schalk Bower <https://github.com/schalk-b>, Paul Bernier <https://github.com/PaulBernier>
 
@@ -425,9 +425,9 @@ declare namespace factom {
          * @param originAddress Private or public Factoid address origin of the funds. If a public address is provided (FA) the corresponding private address must be stored in factom-walletd.
          * @param recipientAddress Public Entry Credit address to receive the ECs.
          * @param ecAmount Amount of Entry Credit (EC) to purchase.
-         * @param feees Value to override fees of the transaction (if not specified the library computes the lowest acceptable fee).
+         * @param fees Value to override fees of the transaction (if not specified the library computes the lowest acceptable fee).
          */
-        createEntryCreditPurchaseTransaction(originAddress: string, recipientAddress: string, ecAmount: number, fees?:  number): Promise<any>;
+        createEntryCreditPurchaseTransaction(originAddress: string, recipientAddress: string, ecAmount: number, fees?:  number): Promise<Transaction>;
 
         // Ack
         /**

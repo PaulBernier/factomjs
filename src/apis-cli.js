@@ -160,7 +160,7 @@ class FactomdCli extends BaseCli {
      * @async
      * @param {string} method - Factomd API method name.
      * @param {Object} [params] - The object that the factomd API is expecting.
-     * @returns {Object} - Factomd API response.
+     * @returns {Promise<Object>} - Factomd API response.
      */
     call(method, params) {
         const url = DEBUG_API_CALLS.has(method) ? this.debugPath : this.path;
@@ -184,7 +184,7 @@ class WalletdCli extends BaseCli {
      * @async
      * @param {string} method - Walletd API method name.
      * @param {Object} params - The object that the walletd API is expecting.
-     * @returns {Object} - Walletd API response.
+     * @returns {Promise<Object>} - Walletd API response.
      */
     call(method, params) {
         return super.call(this.path, method, params);

@@ -7,6 +7,7 @@
 * JSDoc of all public classes and methods.
 * New util functions `generateRandomFctAddress` and `generateRandomEcAddress`.
 * Method `toObject()` added to `Entry` and `Chain` classes. Returns a JavaScript object than can be serialized.
+* TypeScript definition file (RewardChain contribution).
 
 ### Fixed
 

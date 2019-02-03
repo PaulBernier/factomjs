@@ -43,7 +43,7 @@ class FactomCli {
      * @param {Entry|Chain} obj - Entry or Chain to commit.
      * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
      * @param {number} [commitAckTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
-     * @returns {{ txId: string, repeatedCommit: boolean }} - Transaction ID and if this is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}). If repeatedCommit is true, txId is undefined.
+     * @returns {Promise<{ txId: string, repeatedCommit: boolean }>} - Transaction ID and if this is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}). If repeatedCommit is true, txId is undefined.
 
      */
     async commit(obj, ecAddress, commitAckTimeout) {
@@ -57,7 +57,7 @@ class FactomCli {
      * @param {Chain} chain - Chain to commit.
      * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
      * @param {number} [commitAckTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
-     * @returns {{ txId: string, repeatedCommit: boolean }} - Transaction ID and if this is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}). If repeatedCommit is true, txId is undefined.
+     * @returns {Promise<{ txId: string, repeatedCommit: boolean }>} - Transaction ID and if this is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}). If repeatedCommit is true, txId is undefined.
      */
     async commitChain(chain, ecAddress, commitAckTimeout) {
         const ecPrivate = await this.getPrivateAddress(ecAddress);
@@ -70,7 +70,7 @@ class FactomCli {
      * @param {Entry} entry - Entry to commit.
      * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
      * @param {number} [commitAckTimeout=60] - Time to wait for the commit ack. If negative value, doesn't wait for ack.
-     * @returns {{ txId: string, repeatedCommit: boolean }} - Transaction ID and if this is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}). If repeatedCommit is true, txId is undefined.
+     * @returns {Promise<{ txId: string, repeatedCommit: boolean }>} - Transaction ID and if this is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}). If repeatedCommit is true, txId is undefined.
      */
     async commitEntry(entry, ecAddress, commitAckTimeout) {
         const ecPrivate = await this.getPrivateAddress(ecAddress);
@@ -82,7 +82,7 @@ class FactomCli {
      * @async
      * @param {Entry|Chain} obj - Entry or Chain to reveal.
      * @param {number} [revealAckTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
-     * @returns {{ chainId: string, entryHash: string }}
+     * @returns {Promise<{ chainId: string, entryHash: string }>}
      */
     async reveal(obj, revealAckTimeout) {
         return add.reveal(this.factomd, obj, revealAckTimeout);
@@ -93,7 +93,7 @@ class FactomCli {
      * @async
      * @param {Chain} chain - Chain to reveal.
      * @param {number} [revealAckTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
-     * @returns {{ chainId: string, entryHash: string }}
+     * @returns {Promise<{ chainId: string, entryHash: string }>}
      */
     async revealChain(chain, revealAckTimeout) {
         return add.revealChain(this.factomd, chain, revealAckTimeout);
@@ -104,7 +104,7 @@ class FactomCli {
      * @async
      * @param {Entry} entry - Entry to reveal.
      * @param {number} [revealAckTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
-     * @returns {{ chainId: string, entryHash: string }}
+     * @returns {Promise<{ chainId: string, entryHash: string }>}
      */
     async revealEntry(entry, revealAckTimeout) {
         return add.revealEntry(this.factomd, entry, revealAckTimeout);
@@ -120,9 +120,9 @@ class FactomCli {
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {number} [options.chunkSize = 200] - Only if the obj argument is an iterable. The lib chunks the input if it is an iterable so that not too many Promises get resolved in parallel.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commits.
-     * @returns {{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }|{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]} - 
+     * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }>|Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} - 
      * Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash. 
-     * It is an array of such object if the input was an interable of Entry or Chain.
+     * It is an array of such object if the input was an iterable of Entry or Chain.
      */
     async add(obj, ecAddress, options) {
         const ecPrivate = await this.getPrivateAddress(ecAddress);
@@ -138,7 +138,7 @@ class FactomCli {
      * @param {number} [options.commitTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commit.
-     * @returns {{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
+     * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */
     async addChain(chain, ecAddress, options) {
         const ecPrivate = await this.getPrivateAddress(ecAddress);
@@ -155,7 +155,7 @@ class FactomCli {
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {number} [options.chunkSize = 200] - The lib chunks the collection of Chains so that not too many Promises get resolved in parallel.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commits.
-     * @returns {{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
+     * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */
     async addChains(chains, ecAddress, options) {
         const ecPrivate = await this.getPrivateAddress(ecAddress);
@@ -171,7 +171,7 @@ class FactomCli {
      * @param {number} [options.commitTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commit.
-     * @returns {{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
+     * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */
     async addEntry(entry, ecAddress, options) {
         const ecPrivate = await this.getPrivateAddress(ecAddress);
@@ -188,7 +188,7 @@ class FactomCli {
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {number} [options.chunkSize = 200] - The lib chunks the collection of entries so that not too many Promises get resolved in parallel.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commits.
-     * @returns {{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
+     * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */
     async addEntries(entries, ecAddress, options) {
         const ecPrivate = await this.getPrivateAddress(ecAddress);
@@ -201,7 +201,7 @@ class FactomCli {
      * Retrieve the corresponding private address of any type of address from factom-walletd if necessary.
      * @async
      * @param {string} address - Any address (EC or FCT, public or private).
-     * @returns {string} - Corresponding private address.
+     * @returns {Promise<string>} - Corresponding private address.
      */
     async getPrivateAddress(address) {
         return await wallet.getPrivateAddress(this.walletd, address);
@@ -213,7 +213,7 @@ class FactomCli {
      * Get all the entries of a given chain.
      * @async
      * @param {string} chainId - Chain ID of the chain to retrieve all the entries from.
-     * @returns {Entry[]} - Array of entries ordered from the oldest to the newest.
+     * @returns {Promise<Entry[]>} - Array of entries ordered from the oldest to the newest.
      */
     getAllEntriesOfChain(chainId) {
         return get.getAllEntriesOfChain(this.factomd, chainId);
@@ -223,7 +223,7 @@ class FactomCli {
      * Get the head of a given chain.
      * @async
      * @param {string} chainId - Chain ID.
-     * @returns {{keyMR:string, chainInProcessList:boolean}} result - keymr of the head of the chain.
+     * @returns {Promise<{keyMR:string, chainInProcessList:boolean}>} result - keymr of the head of the chain.
      * chainInProcessList indicates if there is an Entry Block for that chain currently in the process list.
      * If this is the case that would indicate that the head of that chain will change at the next block.
      */
@@ -235,7 +235,7 @@ class FactomCli {
      * Get entry by hash (returned Entry does not contain an {@link EntryBlockContext} and a timestamp). See {@link FactomCli#getEntryWithBlockContext}.
      * @async
      * @param {string} entryHash - Hash of the entry to query.
-     * @returns {Entry} - Entry that does not contain an {@link EntryBlockContext} and a timestamp). 
+     * @returns {Promise<Entry>} - Entry that does not contain an {@link EntryBlockContext} and a timestamp). 
      */
     getEntry(entryHash) {
         return get.getEntry(this.factomd, entryHash);
@@ -246,7 +246,7 @@ class FactomCli {
      * Note that this method is more expensive than {@link FactomCli#getEntry} as it also has to retrieve the Entry Block data.
      * @async
      * @param {string} entryHash - Hash of the entry to query.
-     * @returns {Entry} - Entry with its blockContext and timestamp populated.
+     * @returns {Promise<Entry>} - Entry with its blockContext and timestamp populated.
      */
     getEntryWithBlockContext(entryHash) {
         return get.getEntryWithBlockContext(this.factomd, entryHash);
@@ -256,7 +256,7 @@ class FactomCli {
      * Get the first entry of a chain. This methods has to rewind the entire chain which can be an expensive operation.
      * @async
      * @param {string} chainId - Chain ID to retrieve the first entry from.
-     * @returns {Entry} - Entry with its blockContext and timestamp populated.
+     * @returns {Promise<Entry>} - Entry with its blockContext and timestamp populated.
      */
     getFirstEntry(chainId) {
         return get.getFirstEntry(this.factomd, chainId);
@@ -266,7 +266,7 @@ class FactomCli {
      * Get the balance of an Entry Credit or Factoid address.
      * @async
      * @param {string} address - Any type of address, FCT or EC, public or private.
-     * @returns {number} - Balance of EC or FCT. In the case of FCT the balance is in factoshis (10^-8 factoids).
+     * @returns {Promise<number>} - Balance of EC or FCT. In the case of FCT the balance is in factoshis (10^-8 factoids).
      */
     getBalance(address) {
         return get.getBalance(this.factomd, address);
@@ -276,7 +276,7 @@ class FactomCli {
      * Check if a chain exists.
      * @async
      * @param {string} chainId - Chain ID to check.
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      */
     chainExists(chainId) {
         return get.chainExists(this.factomd, chainId);
@@ -285,7 +285,7 @@ class FactomCli {
     /**
      * Get the current entry credit rate. The rate is the number of factoshis (10^-8 Factoids) necessary to purchase 1 EC.
      * @async
-     * @returns {number} - Entry credit rate.
+     * @returns {Promise<number>} - Entry credit rate.
      */
     getEntryCreditRate() {
         return get.getEntryCreditRate(this.factomd);
@@ -327,7 +327,7 @@ class FactomCli {
      * @param {Object} [options]
      * @param {number} [options.timeout=60] - Time to wait in seconds for transaction acknowledgment before timing out. If negative value, doesn't wait for ack.
      * @param {boolean} [options.force=false] - Set to true to bypass the checks of the transaction fee overpay and the minimum EC output amount.
-     * @returns {string} - Transaction ID.
+     * @returns {Promise<string>} - Transaction ID.
      */
     sendTransaction(transaction, options) {
         return send.sendTransaction(this.factomd, transaction, options);
@@ -340,7 +340,7 @@ class FactomCli {
      * @param {string} recipientAddress - Public Factoid address receiving the funds.
      * @param {number} amount - Amount to transfer in factoshis (10^-8 Factoids).
      * @param {number} [fees] - Value to override fees of the transaction (if not specified the library computes the lowest acceptable fee).
-     * @returns {Transaction} 
+     * @returns {Promise<Transaction>} 
      */
     async createFactoidTransaction(originAddress, recipientAddress, amount, fees) {
         const originPrivateAddress = await this.getPrivateAddress(originAddress);
@@ -354,6 +354,7 @@ class FactomCli {
      * @param {string} recipientAddress - Public Entry Credit address to receive the ECs.
      * @param {number} ecAmount - Amount of Entry Credit (EC) to purchase.
      * @param {number} [fees] - Value to override fees of the transaction (if not specified the library computes the lowest acceptable fee).
+     * @returns {Promise<Transaction>} 
      */
     async createEntryCreditPurchaseTransaction(originAddress, recipientAddress, ecAmount, fees) {
         const originPrivateAddress = await this.getPrivateAddress(originAddress);
@@ -366,7 +367,7 @@ class FactomCli {
      * @async
      * @param {string} txId - Commit transaction ID.
      * @param {number} [timeout=60] - Wait time in seconds.
-     * @returns {string} - Status of the commit. See {@link https://docs.factom.com/api#ack}.
+     * @returns {Promise<string>} - Status of the commit. See {@link https://docs.factom.com/api#ack}.
      */
     waitOnCommitAck(txId, timeout) {
         return ack.waitOnCommitAck(this.factomd, txId, timeout);
@@ -378,7 +379,7 @@ class FactomCli {
      * @param {string} hash - Hash of the revealed entry.
      * @param {string} chainId - Chain ID of the revealed entry.
      * @param {number} [timeout=60] - Wait time in seconds.
-     * @returns {string} - Status of the reveal. See {@link https://docs.factom.com/api#ack}.
+     * @returns {Promise<string>} - Status of the reveal. See {@link https://docs.factom.com/api#ack}.
      */
     waitOnRevealAck(hash, chainId, timeout) {
         return ack.waitOnRevealAck(this.factomd, hash, chainId, timeout);
@@ -389,7 +390,7 @@ class FactomCli {
      * @async
      * @param {string} txId - Transaction ID.
      * @param {number} [timeout=60] - Wait time in seconds.
-     * @returns {string} - Status of the transaction. See {@link https://docs.factom.com/api#ack}.
+     * @returns {Promise<string>} - Status of the transaction. See {@link https://docs.factom.com/api#ack}.
      */
     waitOnFactoidTransactionAck(txId, timeout) {
         return ack.waitOnFactoidTransactionAck(this.factomd, txId, timeout);
@@ -402,7 +403,7 @@ class FactomCli {
      * @async
      * @param {string} method - Factomd API method name.
      * @param {Object} [params] - The object that the factomd API is expecting.
-     * @returns {Object} - Factomd API response.
+     * @returns {Promise<Object>} - Factomd API response.
      */
     factomdApi(method, params) {
         return this.factomd.call(method, params);
@@ -413,7 +414,7 @@ class FactomCli {
      * @async
      * @param {string} method - Walletd API method name.
      * @param {Object} [params] - The object that the walletd API is expecting.
-     * @returns {Object} - Walletd API response.
+     * @returns {Promise<Object>} - Walletd API response.
      */
     walletdApi(method, params) {
         return this.walletd.call(method, params);
@@ -424,7 +425,7 @@ class FactomCli {
     /**
      * Return blockchain heights. For the explanation of the different heights see {@link https://docs.factom.com/api#heights}.
      * @async
-     * @returns {{ directoryBlockHeight: number, leaderHeight: number, entryBlockHeight: number,  entryHeight: number}}
+     * @returns {Promise<{ directoryBlockHeight: number, leaderHeight: number, entryBlockHeight: number,  entryHeight: number}>}
      */
     getHeights() {
         return get.getHeights(this.factomd);
@@ -433,7 +434,7 @@ class FactomCli {
     /**
      * Return latest directory block saved.
      * @async
-     * @returns {DirectoryBlock}
+     * @returns {Promise<DirectoryBlock>}
      */
     getDirectoryBlockHead() {
         return get.getDirectoryBlockHead(this.factomd);
@@ -443,7 +444,7 @@ class FactomCli {
      * Get a directory block by keyMR or height.
      * @async
      * @param {string|number} arg - Either KeyMR (string) or height (number) of the directory block.
-     * @returns {DirectoryBlock}
+     * @returns {Promise<DirectoryBlock>}
      */
     getDirectoryBlock(arg) {
         return get.getDirectoryBlock(this.factomd, arg);
@@ -453,7 +454,7 @@ class FactomCli {
      * Get an admin block by keyMR or height.
      * @async
      * @param {string|number} arg - Either KeyMR (string) or height (number) of the admin block.
-     * @returns {AdminBlock}
+     * @returns {Promise<AdminBlock>}
      */
     getAdminBlock(arg) {
         return get.getAdminBlock(this.factomd, arg);
@@ -463,7 +464,7 @@ class FactomCli {
      * Get an entry credit block by keyMR or height.
      * @async
      * @param {string|number} arg - Either KeyMR (string) or height (number) of the entry credit block.
-     * @returns {EntryCreditBlock}
+     * @returns {Promise<EntryCreditBlock>}
      */
     getEntryCreditBlock(arg) {
         return get.getEntryCreditBlock(this.factomd, arg);
@@ -473,7 +474,7 @@ class FactomCli {
      * Get a Factoid block by keyMR or height.
      * @async
      * @param {string|number} arg - Either KeyMR (string) or height (number) of the factoid block.
-     * @returns {FactoidBlock}
+     * @returns {Promise<FactoidBlock>}
      */
     getFactoidBlock(arg) {
         return get.getFactoidBlock(this.factomd, arg);
@@ -483,7 +484,7 @@ class FactomCli {
      * Get an entry block.
      * @async
      * @param {string} keyMR - KeyMR of the entry block.
-     * @returns {EntryBlock}
+     * @returns {Promise<EntryBlock>}
      */
     getEntryBlock(keyMR) {
         return get.getEntryBlock(this.factomd, keyMR);
