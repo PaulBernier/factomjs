@@ -1,5 +1,5 @@
 const sign = require('tweetnacl/nacl-fast').sign,
-    { addressToKey, isValidEcPrivateAddress, isValidEcPublicAddress } = require('./addresses'),
+    { addressToKey, isValidPrivateEcAddress, isValidPublicEcAddress } = require('./addresses'),
     { MAX_ENTRY_PAYLOAD_SIZE } = require('./constant'),
     { sha256, sha512 } = require('./util');
 
@@ -341,13 +341,13 @@ function composeEntryCommit(entry, ecAddress, signature) {
 
     let ecPublicKey, sig;
 
-    if (isValidEcPrivateAddress(ecAddress)) {
+    if (isValidPrivateEcAddress(ecAddress)) {
         // Sign commit
         const secret = addressToKey(ecAddress);
         const key = sign.keyPair.fromSeed(secret);
         ecPublicKey = Buffer.from(key.publicKey);
         sig = Buffer.from(sign.detached(buffer, key.secretKey));
-    } else if (isValidEcPublicAddress(ecAddress)) {
+    } else if (isValidPublicEcAddress(ecAddress)) {
         // Verify the signature manually provided
         if (!signature) {
             throw new Error('Signature of the commit missing.');

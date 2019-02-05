@@ -38,17 +38,17 @@ describe('Test addresses', function() {
     });
 
     it('should validate public EC addresses', function() {
-        assert.isTrue(addresses.isValidEcPublicAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
-        assert.isFalse(addresses.isValidEcPublicAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
-        assert.isFalse(addresses.isValidEcPublicAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
-        assert.isFalse(addresses.isValidEcPublicAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
+        assert.isTrue(addresses.isValidPublicEcAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
+        assert.isFalse(addresses.isValidPublicEcAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
+        assert.isFalse(addresses.isValidPublicEcAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
+        assert.isFalse(addresses.isValidPublicEcAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
     });
 
     it('should validate private EC addresses', function() {
-        assert.isTrue(addresses.isValidEcPrivateAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
-        assert.isFalse(addresses.isValidEcPrivateAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
-        assert.isFalse(addresses.isValidEcPrivateAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
-        assert.isFalse(addresses.isValidEcPrivateAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
+        assert.isTrue(addresses.isValidPrivateEcAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
+        assert.isFalse(addresses.isValidPrivateEcAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
+        assert.isFalse(addresses.isValidPrivateEcAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
+        assert.isFalse(addresses.isValidPrivateEcAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
     });
 
     it('should validate FCT addresses', function() {
@@ -59,17 +59,17 @@ describe('Test addresses', function() {
     });
 
     it('should validate public FCT addresses', function() {
-        assert.isTrue(addresses.isValidFctPublicAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
-        assert.isFalse(addresses.isValidFctPublicAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
-        assert.isFalse(addresses.isValidFctPublicAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
-        assert.isFalse(addresses.isValidFctPublicAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
+        assert.isTrue(addresses.isValidPublicFctAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
+        assert.isFalse(addresses.isValidPublicFctAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
+        assert.isFalse(addresses.isValidPublicFctAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
+        assert.isFalse(addresses.isValidPublicFctAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
     });
 
     it('should validate private FCT addresses', function() {
-        assert.isTrue(addresses.isValidFctPrivateAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
-        assert.isFalse(addresses.isValidFctPrivateAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
-        assert.isFalse(addresses.isValidFctPrivateAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
-        assert.isFalse(addresses.isValidFctPrivateAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
+        assert.isTrue(addresses.isValidPrivateFctAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'));
+        assert.isFalse(addresses.isValidPrivateFctAddress('FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'));
+        assert.isFalse(addresses.isValidPrivateFctAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'));
+        assert.isFalse(addresses.isValidPrivateFctAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'));
     });
 
     it('should get public address from already public address', function() {
@@ -128,15 +128,15 @@ describe('Test addresses', function() {
 
     it('should generate random FCT address', function() {
         const randomAddress = addresses.generateRandomFctAddress();
-        assert.isTrue(addresses.isValidFctPublicAddress(randomAddress.public));
-        assert.isTrue(addresses.isValidFctPrivateAddress(randomAddress.private));
+        assert.isTrue(addresses.isValidPublicFctAddress(randomAddress.public));
+        assert.isTrue(addresses.isValidPrivateFctAddress(randomAddress.private));
         assert.equal(addresses.getPublicAddress(randomAddress.private), randomAddress.public);
     });
 
     it('should generate random EC address', function() {
         const randomAddress = addresses.generateRandomEcAddress();
-        assert.isTrue(addresses.isValidEcPublicAddress(randomAddress.public));
-        assert.isTrue(addresses.isValidEcPrivateAddress(randomAddress.private));
+        assert.isTrue(addresses.isValidPublicEcAddress(randomAddress.public));
+        assert.isTrue(addresses.isValidPrivateEcAddress(randomAddress.private));
         assert.equal(addresses.getPublicAddress(randomAddress.private), randomAddress.public);
     });
     

@@ -73,7 +73,7 @@ function isValidEcAddress(address) {
  * @param {string} address - Address to validate.
  * @returns {boolean} - True if the address is a valid public EC address.
  */
-function isValidEcPublicAddress(address) {
+function isValidPublicEcAddress(address) {
     return isValidAddress(address) && address.substring(0, 2) === 'EC';
 }
 
@@ -82,7 +82,7 @@ function isValidEcPublicAddress(address) {
  * @param {string} address - Address to validate.
  * @returns {boolean} - True if the address is a valid private EC address.
  */
-function isValidEcPrivateAddress(address) {
+function isValidPrivateEcAddress(address) {
     return isValidAddress(address) && address.substring(0, 2) === 'Es';
 }
 
@@ -100,7 +100,7 @@ function isValidFctAddress(address) {
  * @param {string} address - Address to validate.
  * @returns {boolean} - True if the address is a valid public FCT address.
  */
-function isValidFctPublicAddress(address) {
+function isValidPublicFctAddress(address) {
     return isValidAddress(address) && address.substring(0, 2) === 'FA';
 }
 
@@ -109,7 +109,7 @@ function isValidFctPublicAddress(address) {
  * @param {string} address - Address to validate.
  * @returns {boolean} - True if the address is a valid private FCT address.
  */
-function isValidFctPrivateAddress(address) {
+function isValidPrivateFctAddress(address) {
     return isValidAddress(address) && address.substring(0, 2) === 'Fs';
 }
 
@@ -154,7 +154,7 @@ function addressToKey(address) {
  * @returns {Buffer} - RCD hash.
  */
 function addressToRcdHash(address) {
-    if (!isValidFctPublicAddress(address)) {
+    if (!isValidPublicFctAddress(address)) {
         throw new Error(`Address ${address} is not a valid public Factoid address`);
     }
     return Buffer.from(base58.decode(address).slice(2, 34));
@@ -254,11 +254,11 @@ module.exports = {
     isValidPublicAddress,
     isValidPrivateAddress,
     isValidEcAddress,
-    isValidEcPublicAddress,
-    isValidEcPrivateAddress,
+    isValidPublicEcAddress,
+    isValidPrivateEcAddress,
     isValidFctAddress,
-    isValidFctPublicAddress,
-    isValidFctPrivateAddress,
+    isValidPublicFctAddress,
+    isValidPrivateFctAddress,
     getPublicAddress,
     keyToPublicFctAddress,
     rcdHashToPublicFctAddress,

@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [1.0.0]
 
 ### Added
 
@@ -28,6 +28,7 @@
 * `add` throws an Error when trying to create a chain that already exists.
 * All the `add*` functions validate by default that the paying EC address holds enough funds to pay for the commits. Can be bypassed by setting the option `skipFundValidation` to `true`.
 * Added a check before sending a transaction that all EC ouputs have a factoshi amount above the minimum amount required to get at least 1 EC. It can be bypassed using the `force` option of `sendTransaction` method.
+* Renamed `isValidFctPublicAddress`, `isValidFctPrivateAddress`, `isValidEcPrivateAddress` and `isValidEcPublicAddress` to respectively `isValidPublicFctAddress`, `isValidPrivateFctAddress`, `isValidPrivateEcAddress` and `isValidPublicEcAddress`.
 
 ### Removed
 

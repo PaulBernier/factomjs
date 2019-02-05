@@ -3,7 +3,7 @@ const Promise = require('bluebird'),
     { flatMap, isIterable } = require('./util'),
     { chainExists } = require('./get'),
     { waitOnCommitAck, waitOnRevealAck } = require('./ack'),
-    { isValidEcPrivateAddress, getPublicAddress } = require('./addresses'),
+    { isValidPrivateEcAddress, getPublicAddress } = require('./addresses'),
     { Chain, composeChainCommit, composeChainReveal } = require('./chain'),
     { Entry, composeEntryCommit, composeEntryReveal } = require('./entry');
 
@@ -130,7 +130,7 @@ async function addEntry(factomd, entry, ecPrivate, options) {
 }
 
 async function addInternal(factomd, obj, commitFn, revealFn, ecPrivate, opts) {
-    if (!isValidEcPrivateAddress(ecPrivate)) {
+    if (!isValidPrivateEcAddress(ecPrivate)) {
         throw new Error(`${ecPrivate} is not a valid EC private address`);
     }
     const options = opts || {};

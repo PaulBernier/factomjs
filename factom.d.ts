@@ -1468,14 +1468,14 @@ declare namespace factom {
      * @param {string} address - Address to validate.
      * @returns {boolean} - True if the address is a valid public EC address.
      */
-    function isValidEcPublicAddress(address: string): boolean;
+    function isValidPublicEcAddress(address: string): boolean;
 
     /**
      * Validate if an address is a valid private EC address.
      * @param {string} address - Address to validate.
      * @returns {boolean} - True if the address is a valid private EC address.
      */
-    function isValidEcPrivateAddress(address: string): boolean;
+    function isValidPrivateEcAddress(address: string): boolean;
 
     /**
      * Validate if an address is a valid FCT address (public or private).
@@ -1489,14 +1489,14 @@ declare namespace factom {
      * @param {string} address - Address to validate.
      * @returns {boolean} - True if the address is a valid public FCT address.
      */
-    function isValidFctPublicAddress(address: string): boolean;
+    function isValidPublicFctAddress(address: string): boolean;
 
     /**
      * Validate if an address is a valid private FCT address.
      * @param {string} address - Address to validate.
      * @returns {boolean} - True if the address is a valid private FCT address.
      */
-    function isValidFctPrivateAddress(address: string): boolean;
+    function isValidPrivateFctAddress(address: string): boolean;
 
     /**
      * Get public address corresponding to an address.

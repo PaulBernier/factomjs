@@ -1,6 +1,6 @@
 const Promise = require('bluebird'),
     { waitOnFactoidTransactionAck } = require('./ack'),
-    { isValidFctPublicAddress, isValidEcPublicAddress } = require('./addresses'),
+    { isValidPublicFctAddress, isValidPublicEcAddress } = require('./addresses'),
     { Transaction } = require('./transaction'),
     { getEntryCreditRate } = require('./get');
 
@@ -57,7 +57,7 @@ async function validateFunds(factomd, publicFctAddress, amount) {
 }
 
 async function createFactoidTransaction(factomd, originPrivateAddress, recipientAddress, amount, fees) {
-    if (!isValidFctPublicAddress(recipientAddress)) {
+    if (!isValidPublicFctAddress(recipientAddress)) {
         throw new Error(`Recipient address [${recipientAddress}] is not a valid public Factoid address`);
     }
 
@@ -66,7 +66,7 @@ async function createFactoidTransaction(factomd, originPrivateAddress, recipient
 }
 
 async function createEntryCreditPurchaseTransaction(factomd, originPrivateAddress, recipientAddress, ecAmount, fees) {
-    if (!isValidEcPublicAddress(recipientAddress)) {
+    if (!isValidPublicEcAddress(recipientAddress)) {
         throw new Error(`Recipient address [${recipientAddress}] is not a valid public Entry Credit address`);
     }
 

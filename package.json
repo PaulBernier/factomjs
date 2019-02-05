@@ -1,6 +1,6 @@
 {
     "name": "factom",
-    "version": "1.0.0-rc4",
+    "version": "1.0.0",
     "description": "Library to build applications on the Factom blockchain",
     "main": "src/factom.js",
     "types": "factom.d.ts",
@@ -42,25 +42,25 @@
         "lodash.chunk": "^4.2.0",
         "long": "^4.0.0",
         "retry": "^0.12.0",
-        "tweetnacl": "^1.0.0"
+        "tweetnacl": "^1.0.1"
     },
     "devDependencies": {
         "@babel/core": "^7.2.2",
         "@babel/plugin-transform-async-to-generator": "^7.2.0",
         "@babel/plugin-transform-modules-commonjs": "^7.2.0",
         "@babel/plugin-transform-runtime": "^7.2.0",
-        "@babel/preset-env": "^7.2.0",
-        "@babel/runtime": "^7.2.0",
-        "babel-loader": "^8.0.4",
+        "@babel/preset-env": "^7.3.1",
+        "@babel/runtime": "^7.3.1",
+        "babel-loader": "^8.0.5",
         "chai": "^4.2.0",
         "coveralls": "^3.0.2",
-        "documentation": "^9.1.0",
+        "documentation": "^9.1.1",
         "dotenv": "^6.2.0",
-        "eslint": "^5.10.0",
+        "eslint": "^5.13.0",
         "mocha": "^5.2.0",
-        "nyc": "^13.1.0",
-        "sinon": "^7.2.2",
-        "webpack": "^4.28.0",
-        "webpack-cli": "^3.1.2"
+        "nyc": "^13.2.0",
+        "sinon": "^7.2.3",
+        "webpack": "^4.29.1",
+        "webpack-cli": "^3.2.3"
     }
 }
