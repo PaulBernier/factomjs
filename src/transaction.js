@@ -82,6 +82,7 @@ class Transaction {
             this.inputs = builder._inputs;
             this.factoidOutputs = builder._factoidOutputs;
             this.entryCreditOutputs = builder._entryCreditOutputs;
+            this.blockContext = blockContext;
 
             this.marshalBinarySig = marshalBinarySig(this.timestamp, this.inputs, this.factoidOutputs, this.entryCreditOutputs);
             this.id = sha256(this.marshalBinarySig).toString('hex');
