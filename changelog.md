@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+* BlockContext populated for transactions in a `FactoidBlock` object (except `directoryBlockKeyMR` that is not available).
+
 ## [1.0.0]
 
 ### Added

@@ -264,6 +264,9 @@ describe('Get information from Factom blockchain', function () {
         assert.instanceOf(coinbaseTx, Transaction);
         assert.equal(coinbaseTx.totalInputs, 0);
         assert.equal(coinbaseTx.totalFactoidOutputs, 6398208000);
+        assert.isObject(coinbaseTx.blockContext);
+        assert.equal(coinbaseTx.blockContext.factoidBlockKeyMR, '4b2572326cc04f4bff215800bc3f48b2e64f2002f0c2b592e09b003ea3f36bdd');
+        assert.equal(coinbaseTx.blockContext.directoryBlockHeight, 55010);
     }
 
     it('should get Factoid Block', async function () {
