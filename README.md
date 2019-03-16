@@ -427,3 +427,20 @@ const walletd = new WalletdCli();
 factomd.call('directory-block', { keymr: 'faf2a058cc475c5cb8ec13e8ba979118f7cde9db38bcfeb7e35744bcf5f6134b' });
 walletd.call('address', { address:'FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q' });
  ```
+
+## Running tests
+
+The integration tests of the library have been built against the Factom Community Testnet network. You need to set a few environment variables in order to properly run those tests. To do so you can create a `.env` file at the root of the project and populate the following variables:
+
+```
+EC_PRIVATE_ADDRESS=Es...
+FACTOMD_HOST=54.11.122.3
+FACTOMD_PORT=8088
+FCT_PRIVATE_ADDRESS=Fs...
+```
+The values must be valid for the Factom Community Testnet. The EC and FCT addresses need to be funded in order for the tests to pass.
+
+Then to run all the tests:
+```javascript
+npm test
+```
