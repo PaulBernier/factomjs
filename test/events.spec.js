@@ -76,7 +76,7 @@ describe.only('Test FactomEvent', () => {
         height: 70391
     };
 
-    it.only('should trigger listener for factoid transaction TO address', done => {
+    it('should trigger listener for factoid transaction TO address', done => {
         const address = 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC';
 
         const listener = transactionArr => {
@@ -93,7 +93,7 @@ describe.only('Test FactomEvent', () => {
         };
 
         const emitter = new FactomEvent(cli);
-        emitter.setFactoidAddressListener(address, listener);
+        emitter.subscribeToFactoidAddress(address, listener);
         emitter.emit('directoryBlock', mockDirectoryBlock);
     });
 
@@ -101,14 +101,14 @@ describe.only('Test FactomEvent', () => {
         const address = 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC';
         const opts = { onReceive: false };
 
-        const listener = () => done(new Error('setting onReceive to false did not prevent event emitting'));
+        const listener = () => done(new Error('factoid listener emitted'));
 
         const emitter = new FactomEvent(cli);
-        emitter.setFactoidAddressListener(address, listener, opts);
+        emitter.subscribeToFactoidAddress(address, listener, opts);
         emitter.emit('directoryBlock', mockDirectoryBlock);
 
         setTimeout(() => {
-            emitter.removeFactoidAddressListener(address, listener);
+            emitter.removeFactoidAddressSubscription(address, listener);
             done();
         }, 1500);
     });
@@ -130,7 +130,7 @@ describe.only('Test FactomEvent', () => {
         };
 
         const emitter = new FactomEvent(cli);
-        emitter.setFactoidAddressListener(address, listener);
+        emitter.subscribeToFactoidAddress(address, listener);
         emitter.emit('directoryBlock', mockDirectoryBlock);
     });
 
@@ -138,14 +138,14 @@ describe.only('Test FactomEvent', () => {
         const address = 'FA3ZxKyN3HHoJftdGbFp5PRvi12jPvQ3SgGNTDQya2D5jwFrtLqZ';
         const opts = { onSend: false };
 
-        const listener = () => done(new Error('setting onReceive to false did not prevent event emitting'));
+        const listener = () => done(new Error('factoid listener emitted'));
 
         const emitter = new FactomEvent(cli);
-        emitter.setFactoidAddressListener(address, listener, opts);
+        emitter.subscribeToFactoidAddress(address, listener, opts);
         emitter.emit('directoryBlock', mockDirectoryBlock);
 
         setTimeout(() => {
-            emitter.removeFactoidAddressListener(address, listener);
+            emitter.removeFactoidAddressSubscription(address, listener);
             done();
         }, 1500);
     });

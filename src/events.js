@@ -21,22 +21,22 @@ class FactomEvent extends EventEmitter {
 
     // directory blocks methods
 
-    _pollNewDirectoryBlock = async () => {
+    async _pollNewDirectoryBlock() {
         const block = await this.cli.getDirectoryBlockHead();
 
         if (block.height > this.height) {
             this.height = block.height;
             this.emit(this.directoryBlock, block);
         }
-    };
+    }
 
     startPolling(interval = 15000) {
         if (this.interval) {
             throw new Error('Polling already started');
         }
 
-        _pollNewDirectoryBlock();
-        this.interval = setInterval(() => _pollNewDirectoryBlock(), interval);
+        this._pollNewDirectoryBlock();
+        this.interval = setInterval(() => this._pollNewDirectoryBlock(), interval);
         return this;
     }
 
@@ -51,18 +51,20 @@ class FactomEvent extends EventEmitter {
 
     // factoid block methods
 
-    _createFactoidBlockEmitter = () => {
-        if (this.eventNames().includes(this.factoidBlock)) {
+    async _pollFactoidBlock(directoryBlock) {
+        const factoidBlock = await this.cli.getFactoidBlock(directoryBlock.factoidBlockRef);
+        this.emit(this.factoidBlock, { factoidBlock, directoryBlock });
+    }
+
+    async _createFactoidBlockEmitter() {
+        if (this.listeners(this.directoryBlock).includes(this._pollFactoidBlock)) {
             return this;
         }
 
-        return this.on(this.directoryBlock, async directoryBlock => {
-            const factoidBlock = await this.cli.getFactoidBlock(block.factoidBlockRef);
-            this.emit(this.factoidBlock, { factoidBlock, directoryBlock });
-        });
-    };
+        return this.on(this.directoryBlock, this._pollFactoidBlock);
+    }
 
-    setFactoidAddressListener(address, listener, { onReceive, onSend } = { onReceive: true, onSend: true }) {
+    subscribeToFactoidAddress(address, listener, { onReceive, onSend } = { onReceive: true, onSend: true }) {
         if (!isValidPublicFctAddress(address)) {
             throw new Error('Must provide valid public FCT address');
         }
@@ -71,9 +73,13 @@ class FactomEvent extends EventEmitter {
             throw new Error('Listener must be a function');
         }
 
+        if (!onReceive && !onSend) {
+            throw new Error('Either onReceive or onSend must be true');
+        }
+
         this.on(address, listener);
 
-        this.on('factoidBlock', async ({ factoidBlock, directoryBlock }) => {
+        this.on(this.factoidBlock, async ({ factoidBlock, directoryBlock }) => {
             let transactions = factoidBlock.transactions.filter(transaction => {
                 if (onSend) {
                     var inputs = transaction.inputs.some(input => input.address === address);
@@ -104,14 +110,14 @@ class FactomEvent extends EventEmitter {
         return this._createFactoidBlockEmitter();
     }
 
-    removeFactoidAddressListener(address, listener) {
+    removeFactoidAddressSubscription(address, listener) {
         return this.removeListener(address, listener);
     }
 
-    removeAllFactoidAddressListeners(address) {
+    removeAllSubscriptionsForFactoidAddress(address) {
         const listeners = this.listeners(address);
         listeners.forEach(listener => this.removeListener(address, listener));
-        return this;
+        return this.removeListener(this.directoryBlock, this._pollFactoidBlock);
     }
 }
 
