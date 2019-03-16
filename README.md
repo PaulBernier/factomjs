@@ -29,6 +29,8 @@ Two versions of *factom.js* are being bundled for usage in a web browser and can
 
 ## Usage
 
+We recommend you have a look at the [tutorial on the developer portal of the Factom protocol](https://developers.factomprotocol.org/start/hello-world-examples/javascript).
+
 **Important:** please note than whenever a private (Entry Credit or Factoid) address is needed in this library (typically for signing data), you can either provide a private address or a public address as an argument. If you provide a public address the library will attempt to retrieve the corresponding private address from the wallet. Thus providing private address as arguments allow you to not have to run walletd.
 
 ### Instantiate FactomCli

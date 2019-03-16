@@ -224,7 +224,12 @@ class FactoidBlock {
         this.previousLedgerKeyMR = fb.prevledgerkeymr;
         this.entryCreditRate = fb.exchrate;
         this.directoryBlockHeight = fb.dbheight;
-        this.transactions = fb.transactions.map(t => new Transaction(t));
+        this.transactions = fb.transactions.map(t => new Transaction(t,
+            {
+                factoidBlockKeyMR: this.keyMR,
+                directoryBlockHeight: this.directoryBlockHeight,
+                // directoryBlockKeyMR is not available
+            }));
     }
 
     /**
