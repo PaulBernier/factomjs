@@ -15,16 +15,16 @@ describe('Test Entry', function () {
             .build();
 
         assert.instanceOf(entry.chainId, Buffer);
-        assert.equal(entry.chainId.toString('hex'), 'cfb5d93e747d20433e3b14603f90a5eb152d0399e7278f9671ecf9763f8780e8');
+        assert.strictEqual(entry.chainId.toString('hex'), 'cfb5d93e747d20433e3b14603f90a5eb152d0399e7278f9671ecf9763f8780e8');
         assert.instanceOf(entry.content, Buffer);
-        assert.equal(entry.content.toString(), 'hello');
+        assert.strictEqual(entry.content.toString(), 'hello');
         assert.instanceOf(entry.extIds, Array);
         assert.lengthOf(entry.extIds, 3);
         assert.instanceOf(entry.extIds[0], Buffer);
-        assert.equal(entry.extIds[0].toString(), 'extId');
-        assert.equal(entry.extIds[1].toString(), 'luap');
-        assert.equal(entry.extIds[2].toString(), 'extId2');
-        assert.equal(entry.timestamp, 1523072354);
+        assert.strictEqual(entry.extIds[0].toString(), 'extId');
+        assert.strictEqual(entry.extIds[1].toString(), 'luap');
+        assert.strictEqual(entry.extIds[2].toString(), 'extId2');
+        assert.strictEqual(entry.timestamp, 1523072354);
     });
 
     it('should reject invalid argument of Entry constructor', function () {
@@ -64,9 +64,9 @@ describe('Test Entry', function () {
             .content('hello', 'utf8')
             .build();
 
-        assert.equal(entry.size(), 55);
-        assert.equal(entry.payloadSize(), 20);
-        assert.equal(entry.rawDataSize(), 16);
+        assert.strictEqual(entry.size(), 55);
+        assert.strictEqual(entry.payloadSize(), 20);
+        assert.strictEqual(entry.rawDataSize(), 16);
 
     });
 
@@ -81,9 +81,9 @@ describe('Test Entry', function () {
 
         const copy = Entry.builder(entry).build();
 
-        assert.notEqual(entry, copy);
-        assert.notEqual(entry.extIds[0], copy.extIds[0]);
-        assert.notEqual(entry.content, copy.content);
+        assert.notStrictEqual(entry, copy);
+        assert.notStrictEqual(entry.extIds[0], copy.extIds[0]);
+        assert.notStrictEqual(entry.content, copy.content);
         assert.deepEqual(entry, copy);
     });
 
@@ -92,7 +92,7 @@ describe('Test Entry', function () {
 
         const copy = Entry.builder(entry).build();
 
-        assert.notEqual(entry, copy);
+        assert.notStrictEqual(entry, copy);
         assert.deepEqual(copy.chainId, Buffer.from(''));
         assert.deepEqual(copy.extIds, []);
         assert.deepEqual(copy.content, Buffer.from(''));
@@ -103,9 +103,9 @@ describe('Test Entry', function () {
             .content('abcdef', 'utf8')
             .build();
 
-        assert.equal(entry.size(), 41);
-        assert.equal(entry.payloadSize(), 6);
-        assert.equal(entry.rawDataSize(), 6);
+        assert.strictEqual(entry.size(), 41);
+        assert.strictEqual(entry.payloadSize(), 6);
+        assert.strictEqual(entry.rawDataSize(), 6);
     });
 
     it('should get remaining free bytes', function () {
@@ -122,10 +122,10 @@ describe('Test Entry', function () {
             .content(Buffer.alloc(0))
             .build();
 
-        assert.equal(e1.remainingFreeBytes(), 1000);
-        assert.equal(e2.remainingFreeBytes(), 0);
-        assert.equal(e3.remainingFreeBytes(), 1023);
-        assert.equal(e4.remainingFreeBytes(), 1024);
+        assert.strictEqual(e1.remainingFreeBytes(), 1000);
+        assert.strictEqual(e2.remainingFreeBytes(), 0);
+        assert.strictEqual(e3.remainingFreeBytes(), 1023);
+        assert.strictEqual(e4.remainingFreeBytes(), 1024);
     });
 
     it('should get remaining maximum bytes', function () {
@@ -139,8 +139,8 @@ describe('Test Entry', function () {
             .content(Buffer.alloc(e1.payloadSize() + e1.remainingMaxBytes() + 1))
             .build();
 
-        assert.equal(e1.remainingMaxBytes(), 10000);
-        assert.equal(e2.remainingMaxBytes(), 0);
+        assert.strictEqual(e1.remainingMaxBytes(), 10000);
+        assert.strictEqual(e2.remainingMaxBytes(), 0);
         assert.throws(() => e3.remainingMaxBytes(), Error);
     });
 
@@ -152,10 +152,10 @@ describe('Test Entry', function () {
             .content('45878755', 'hex')
             .build();
 
-        assert.equal(e.contentHex, '45878755');
-        assert.equal(e.extIdsHex[0], 'efef');
-        assert.equal(e.extIdsHex[1], '636f7666656665');
-        assert.equal(e.chainIdHex, '45f7ebb3be5217d0e2f1d14ab73121a66cdaad12a50b9863a45ee8ee9f3ab032');
+        assert.strictEqual(e.contentHex, '45878755');
+        assert.strictEqual(e.extIdsHex[0], 'efef');
+        assert.strictEqual(e.extIdsHex[1], '636f7666656665');
+        assert.strictEqual(e.chainIdHex, '45f7ebb3be5217d0e2f1d14ab73121a66cdaad12a50b9863a45ee8ee9f3ab032');
     });
 
     it('should compute marshal binary', function () {
@@ -173,9 +173,9 @@ describe('Test Entry', function () {
         const marshalBinary = e.marshalBinary();
         const marshalBinaryHex = e.marshalBinaryHex();
         assert.instanceOf(marshalBinary, Buffer);
-        assert.equal(marshalBinary.toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
-        assert.equal(marshalBinaryHex, '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
-        assert.equal(e2.marshalBinary().toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400005061796c6f616448657265');
+        assert.strictEqual(marshalBinary.toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
+        assert.strictEqual(marshalBinaryHex, '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
+        assert.strictEqual(e2.marshalBinary().toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400005061796c6f616448657265');
     });
 
     it('should compute hash', function () {
@@ -186,7 +186,7 @@ describe('Test Entry', function () {
 
         const hash = e.hash();
         assert.instanceOf(hash, Buffer);
-        assert.equal(hash.toString('hex'), '72177d733dcd0492066b79c5f3e417aef7f22909674f7dc351ca13b04742bb91');
+        assert.strictEqual(hash.toString('hex'), '72177d733dcd0492066b79c5f3e417aef7f22909674f7dc351ca13b04742bb91');
     });
 
     it('should compute EC cost', function () {
@@ -211,10 +211,10 @@ describe('Test Entry', function () {
             .content(Buffer.alloc(1024 - 2 - 3 + 1))
             .build();
 
-        assert.equal(e1.ecCost(), 1);
-        assert.equal(e4.ecCost(), 2);
-        assert.equal(e2.ecCost(), e1.ecCost());
-        assert.equal(e3.ecCost(), e1.ecCost() + 1);
+        assert.strictEqual(e1.ecCost(), 1);
+        assert.strictEqual(e4.ecCost(), 2);
+        assert.strictEqual(e2.ecCost(), e1.ecCost());
+        assert.strictEqual(e3.ecCost(), e1.ecCost() + 1);
     });
 
     it('should compose Entry commit', function () {
@@ -226,7 +226,7 @@ describe('Test Entry', function () {
 
         const commit = composeEntryCommit(e1, 'Es2d1a3uPx7o5uXHmsCnSEK2EKatPA56n8RUFmW9uRrpPRBuk5bZ');
         assert.instanceOf(commit, Buffer);
-        assert.equal(commit.toString('hex'),
+        assert.strictEqual(commit.toString('hex'),
             '000162a2e0a0c8fd461748e49aa77a6380c04059bd7e3040c9dbceca1828b37ddb737dd928909f015d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b678790d79fc44d3c81fb701b2c3278b50b98eec215cd28be19bba5e1d96f7dc262ec8a87ae4cf9ea20eb43ef196052e761afb02a8f1a78df097c27c56a4a1d00f');
     });
 
@@ -250,7 +250,7 @@ describe('Test Entry', function () {
 
         const commit = composeEntryCommit(e1, 'EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR', '78790d79fc44d3c81fb701b2c3278b50b98eec215cd28be19bba5e1d96f7dc262ec8a87ae4cf9ea20eb43ef196052e761afb02a8f1a78df097c27c56a4a1d00f');
         assert.instanceOf(commit, Buffer);
-        assert.equal(commit.toString('hex'),
+        assert.strictEqual(commit.toString('hex'),
             '000162a2e0a0c8fd461748e49aa77a6380c04059bd7e3040c9dbceca1828b37ddb737dd928909f015d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b678790d79fc44d3c81fb701b2c3278b50b98eec215cd28be19bba5e1d96f7dc262ec8a87ae4cf9ea20eb43ef196052e761afb02a8f1a78df097c27c56a4a1d00f');
     });
 
@@ -282,7 +282,7 @@ describe('Test Entry', function () {
 
         const reveal = composeEntryReveal(e);
         assert.instanceOf(reveal, Buffer);
-        assert.equal(reveal.toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
+        assert.strictEqual(reveal.toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
     });
 
     it('should compose Entry commit and reveal', function () {
@@ -296,8 +296,8 @@ describe('Test Entry', function () {
         const composed = composeEntry(e, 'Es2d1a3uPx7o5uXHmsCnSEK2EKatPA56n8RUFmW9uRrpPRBuk5bZ');
         assert.instanceOf(composed.commit, Buffer);
         assert.instanceOf(composed.reveal, Buffer);
-        assert.equal(composed.commit.toString('hex'), '000162a2e0a0c8be705a58aea4230e99881f625e74cd085b6ef455b94ff144249b9a2f425e8f96015d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b62a7642156b5cf73ecd0b54b803922c5365d58c372d33353995a1ef5b2ef889bdcd19a3101456379cc339642de1d623f6cade5af10addbcdd589d30e8bfe78702');
-        assert.equal(composed.reveal.toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
+        assert.strictEqual(composed.commit.toString('hex'), '000162a2e0a0c8be705a58aea4230e99881f625e74cd085b6ef455b94ff144249b9a2f425e8f96015d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b62a7642156b5cf73ecd0b54b803922c5365d58c372d33353995a1ef5b2ef889bdcd19a3101456379cc339642de1d623f6cade5af10addbcdd589d30e8bfe78702');
+        assert.strictEqual(composed.reveal.toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
     });
 
     it('should compose Entry commit and reveal with manually provided signature', function () {
@@ -311,8 +311,8 @@ describe('Test Entry', function () {
         const composed = composeEntry(e, 'EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR', '2a7642156b5cf73ecd0b54b803922c5365d58c372d33353995a1ef5b2ef889bdcd19a3101456379cc339642de1d623f6cade5af10addbcdd589d30e8bfe78702');
         assert.instanceOf(composed.commit, Buffer);
         assert.instanceOf(composed.reveal, Buffer);
-        assert.equal(composed.commit.toString('hex'), '000162a2e0a0c8be705a58aea4230e99881f625e74cd085b6ef455b94ff144249b9a2f425e8f96015d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b62a7642156b5cf73ecd0b54b803922c5365d58c372d33353995a1ef5b2ef889bdcd19a3101456379cc339642de1d623f6cade5af10addbcdd589d30e8bfe78702');
-        assert.equal(composed.reveal.toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
+        assert.strictEqual(composed.commit.toString('hex'), '000162a2e0a0c8be705a58aea4230e99881f625e74cd085b6ef455b94ff144249b9a2f425e8f96015d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b62a7642156b5cf73ecd0b54b803922c5365d58c372d33353995a1ef5b2ef889bdcd19a3101456379cc339642de1d623f6cade5af10addbcdd589d30e8bfe78702');
+        assert.strictEqual(composed.reveal.toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
     });
 
     it('should compute entry txId', function () {
@@ -326,7 +326,7 @@ describe('Test Entry', function () {
 
         const txId = computeEntryTxId(entry);
         assert.instanceOf(txId, Buffer);
-        assert.equal(txId.toString('hex'), 'd6e9aa572959910d4a0712c0fd23025f5f1bf4fb74467d2677e10048dc441883');
+        assert.strictEqual(txId.toString('hex'), 'd6e9aa572959910d4a0712c0fd23025f5f1bf4fb74467d2677e10048dc441883');
     });
 
     it('should convert to JS object', function () {
@@ -340,9 +340,9 @@ describe('Test Entry', function () {
 
         const obj = entry.toObject();
         assert.isObject(obj);
-        assert.equal(obj.chainId, entry.chainIdHex);
-        assert.equal(obj.content, entry.contentHex);
-        assert.equal(obj.timestamp, entry.timestamp);
+        assert.strictEqual(obj.chainId, entry.chainIdHex);
+        assert.strictEqual(obj.content, entry.contentHex);
+        assert.strictEqual(obj.timestamp, entry.timestamp);
         assert.deepEqual(Entry.builder(obj).build().hash(), entry.hash());
     });
 });

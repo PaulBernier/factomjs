@@ -24,12 +24,12 @@ describe('Add chains and entries in Factom blockchain', function () {
 
         // Commit
         const committed = await add.commit(factomd, c, PAYING_EC_ADDRESS);
-        assert.equal(committed.txId, computeChainTxId(c).toString('hex'));
+        assert.strictEqual(committed.txId, computeChainTxId(c).toString('hex'));
 
         // Reveal
         const revealed = await add.reveal(factomd, c, PAYING_EC_ADDRESS);
-        assert.equal(revealed.entryHash, c.firstEntry.hashHex());
-        assert.equal(revealed.chainId, c.idHex);
+        assert.strictEqual(revealed.entryHash, c.firstEntry.hashHex());
+        assert.strictEqual(revealed.chainId, c.idHex);
     });
 
     it('should commit and then reveal entry', async function () {
@@ -45,12 +45,12 @@ describe('Add chains and entries in Factom blockchain', function () {
 
         // Commit
         const committed = await add.commit(factomd, e, PAYING_EC_ADDRESS);
-        assert.equal(committed.txId, computeEntryTxId(e).toString('hex'));
+        assert.strictEqual(committed.txId, computeEntryTxId(e).toString('hex'));
 
         // Reveal
         const revealed = await add.reveal(factomd, e, PAYING_EC_ADDRESS);
-        assert.equal(revealed.entryHash, e.hashHex());
-        assert.equal(revealed.chainId, '3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791');
+        assert.strictEqual(revealed.entryHash, e.hashHex());
+        assert.strictEqual(revealed.chainId, '3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791');
     });
 
     it('should reject commit entry without chainId', async function () {
@@ -103,10 +103,10 @@ describe('Add chains and entries in Factom blockchain', function () {
 
         const added = await add.add(factomd, c, PAYING_EC_ADDRESS);
 
-        assert.equal(added.entryHash, c.firstEntry.hashHex());
-        assert.equal(added.chainId, c.idHex);
-        assert.equal(added.repeatedCommit, false);
-        assert.equal(added.txId, computeChainTxId(c).toString('hex'));
+        assert.strictEqual(added.entryHash, c.firstEntry.hashHex());
+        assert.strictEqual(added.chainId, c.idHex);
+        assert.strictEqual(added.repeatedCommit, false);
+        assert.strictEqual(added.txId, computeChainTxId(c).toString('hex'));
     });
 
     it('should notify repeated commit', async function () {
@@ -123,7 +123,7 @@ describe('Add chains and entries in Factom blockchain', function () {
 
         await add.commit(factomd, c, PAYING_EC_ADDRESS);
         const repeated = await add.commit(factomd, c, PAYING_EC_ADDRESS);
-        assert.equal(repeated.repeatedCommit, true);
+        assert.strictEqual(repeated.repeatedCommit, true);
         assert.isUndefined(repeated.txId);
     });
 
@@ -140,10 +140,10 @@ describe('Add chains and entries in Factom blockchain', function () {
 
         const added = await add.add(factomd, e, PAYING_EC_ADDRESS);
 
-        assert.equal(added.entryHash, e.hashHex());
-        assert.equal(added.chainId, '3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791');
-        assert.equal(added.repeatedCommit, false);
-        assert.equal(added.txId, computeEntryTxId(e).toString('hex'));
+        assert.strictEqual(added.entryHash, e.hashHex());
+        assert.strictEqual(added.chainId, '3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791');
+        assert.strictEqual(added.repeatedCommit, false);
+        assert.strictEqual(added.txId, computeEntryTxId(e).toString('hex'));
     });
 
     it('should reject add entry without chainId', async function () {
@@ -186,10 +186,10 @@ describe('Add chains and entries in Factom blockchain', function () {
         const added = await add.add(factomd, [e1, e2], PAYING_EC_ADDRESS, { chunkSize: 1 });
 
         assert.lengthOf(added, 2);
-        assert.equal(added[0].entryHash, e1.hashHex());
-        assert.equal(added[0].chainId, '3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791');
-        assert.equal(added[0].repeatedCommit, false);
-        assert.equal(added[0].txId, computeEntryTxId(e1).toString('hex'));
+        assert.strictEqual(added[0].entryHash, e1.hashHex());
+        assert.strictEqual(added[0].chainId, '3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791');
+        assert.strictEqual(added[0].repeatedCommit, false);
+        assert.strictEqual(added[0].txId, computeEntryTxId(e1).toString('hex'));
     });
 
     it('should add chains', async function () {
@@ -214,10 +214,10 @@ describe('Add chains and entries in Factom blockchain', function () {
         const added = await add.add(factomd, [c1, c2], PAYING_EC_ADDRESS, { chunkSize: 1 });
 
         assert.lengthOf(added, 2);
-        assert.equal(added[0].entryHash, c1.firstEntry.hashHex());
-        assert.equal(added[0].chainId, c1.idHex);
-        assert.equal(added[0].repeatedCommit, false);
-        assert.equal(added[0].txId, computeChainTxId(c1).toString('hex'));
+        assert.strictEqual(added[0].entryHash, c1.firstEntry.hashHex());
+        assert.strictEqual(added[0].chainId, c1.idHex);
+        assert.strictEqual(added[0].repeatedCommit, false);
+        assert.strictEqual(added[0].txId, computeChainTxId(c1).toString('hex'));
     });
 
     it('should throw when adding an already existing chain', async function () {

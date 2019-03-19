@@ -85,7 +85,6 @@ describe('Send transactions', function () {
 
         const transaction = await send.createEntryCreditPurchaseTransaction(factomd, PAYING_FCT_ADDRESS, RECEIVING_EC_ADDRESS, 1);
         await send.sendTransaction(factomd, transaction);
-
     });
 
 
@@ -174,7 +173,6 @@ describe('Send transactions', function () {
             .build();
 
         await send.sendTransaction(factomd, transaction, { force: true });
-
     });
 
 });

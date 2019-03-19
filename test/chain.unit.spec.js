@@ -16,9 +16,9 @@ describe('Test Chain', function () {
         const chain = new Chain(entry);
 
         assert.instanceOf(chain.id, Buffer);
-        assert.equal(chain.id.toString('hex'), '954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4');
-        assert.equal(chain.idHex, '954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4');
-        assert.equal(chain.firstEntry.chainIdHex, '954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4');
+        assert.strictEqual(chain.id.toString('hex'), '954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4');
+        assert.strictEqual(chain.idHex, '954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4');
+        assert.strictEqual(chain.firstEntry.chainIdHex, '954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4');
     });
 
     it('should reject invalid argument of Chain constructor', function () {
@@ -41,8 +41,8 @@ describe('Test Chain', function () {
 
         const chain = new Chain(entry);
 
-        assert.equal(chain.idHex, '954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4');
-        assert.equal(chain.firstEntry.chainIdHex, '954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4');
+        assert.strictEqual(chain.idHex, '954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4');
+        assert.strictEqual(chain.firstEntry.chainIdHex, '954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4');
     });
 
     it('should compute EC cost', function () {
@@ -55,7 +55,7 @@ describe('Test Chain', function () {
 
         const chain = new Chain(entry);
 
-        assert.equal(chain.ecCost(), 11);
+        assert.strictEqual(chain.ecCost(), 11);
     });
 
     it('should compose Chain commit', function () {
@@ -69,7 +69,7 @@ describe('Test Chain', function () {
 
         const commit = composeChainCommit(chain, 'Es2d1a3uPx7o5uXHmsCnSEK2EKatPA56n8RUFmW9uRrpPRBuk5bZ');
         assert.instanceOf(commit, Buffer);
-        assert.equal(commit.toString('hex'),
+        assert.strictEqual(commit.toString('hex'),
             '000162a772f640448ee02e500a8e539bcf5c02e53f8b88fc1f81f0a87d0f18af94ab9384992b5c9db26ac6b20aba137815efc39cf19cee53de0baccc54ec4e6acc6b02ffe4b936b56a6bbae773f5b51001161efdeb0ba1e8447f3c45206119b40539e4325cc5be0b5d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b6a523cd0ebb71b13ec133eeb93c084958f1ed6adef51ec9ec6323c543f91303739c9e5194972c5105929b7787d327755ab1b5cf1b2884d4877b8fdcbca1cfb00b');
     });
 
@@ -99,7 +99,7 @@ describe('Test Chain', function () {
 
         const commit = composeChainCommit(chain, 'EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR', 'a523cd0ebb71b13ec133eeb93c084958f1ed6adef51ec9ec6323c543f91303739c9e5194972c5105929b7787d327755ab1b5cf1b2884d4877b8fdcbca1cfb00b');
         assert.instanceOf(commit, Buffer);
-        assert.equal(commit.toString('hex'),
+        assert.strictEqual(commit.toString('hex'),
             '000162a772f640448ee02e500a8e539bcf5c02e53f8b88fc1f81f0a87d0f18af94ab9384992b5c9db26ac6b20aba137815efc39cf19cee53de0baccc54ec4e6acc6b02ffe4b936b56a6bbae773f5b51001161efdeb0ba1e8447f3c45206119b40539e4325cc5be0b5d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b6a523cd0ebb71b13ec133eeb93c084958f1ed6adef51ec9ec6323c543f91303739c9e5194972c5105929b7787d327755ab1b5cf1b2884d4877b8fdcbca1cfb00b');
     });
 
@@ -134,7 +134,7 @@ describe('Test Chain', function () {
 
         const reveal = composeChainReveal(chain);
         assert.instanceOf(reveal, Buffer);
-        assert.equal(reveal.toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
+        assert.strictEqual(reveal.toString('hex'), '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265');
     });
 
     it('should compose Chain commit and reveal', function () {
@@ -148,9 +148,9 @@ describe('Test Chain', function () {
         const composed = composeChain(chain, 'Es2d1a3uPx7o5uXHmsCnSEK2EKatPA56n8RUFmW9uRrpPRBuk5bZ');
         assert.instanceOf(composed.commit, Buffer);
         assert.instanceOf(composed.reveal, Buffer);
-        assert.equal(composed.commit.toString('hex'),
+        assert.strictEqual(composed.commit.toString('hex'),
             '000162a772f640448ee02e500a8e539bcf5c02e53f8b88fc1f81f0a87d0f18af94ab9384992b5c9db26ac6b20aba137815efc39cf19cee53de0baccc54ec4e6acc6b02ffe4b936b56a6bbae773f5b51001161efdeb0ba1e8447f3c45206119b40539e4325cc5be0b5d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b6a523cd0ebb71b13ec133eeb93c084958f1ed6adef51ec9ec6323c543f91303739c9e5194972c5105929b7787d327755ab1b5cf1b2884d4877b8fdcbca1cfb00b');
-        assert.equal(composed.reveal.toString('hex'), '00fcfe632c6ab1a7c71448e256e0487c4cfc34ceac90e997de8c4fdf8485e9a0fd001900176d79206578742069642031373834343635353737373935');
+        assert.strictEqual(composed.reveal.toString('hex'), '00fcfe632c6ab1a7c71448e256e0487c4cfc34ceac90e997de8c4fdf8485e9a0fd001900176d79206578742069642031373834343635353737373935');
     });
 
     it('should compose Chain commit and reveal', function () {
@@ -164,9 +164,9 @@ describe('Test Chain', function () {
         const composed = composeChain(chain, 'EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR', 'a523cd0ebb71b13ec133eeb93c084958f1ed6adef51ec9ec6323c543f91303739c9e5194972c5105929b7787d327755ab1b5cf1b2884d4877b8fdcbca1cfb00b');
         assert.instanceOf(composed.commit, Buffer);
         assert.instanceOf(composed.reveal, Buffer);
-        assert.equal(composed.commit.toString('hex'),
+        assert.strictEqual(composed.commit.toString('hex'),
             '000162a772f640448ee02e500a8e539bcf5c02e53f8b88fc1f81f0a87d0f18af94ab9384992b5c9db26ac6b20aba137815efc39cf19cee53de0baccc54ec4e6acc6b02ffe4b936b56a6bbae773f5b51001161efdeb0ba1e8447f3c45206119b40539e4325cc5be0b5d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b6a523cd0ebb71b13ec133eeb93c084958f1ed6adef51ec9ec6323c543f91303739c9e5194972c5105929b7787d327755ab1b5cf1b2884d4877b8fdcbca1cfb00b');
-        assert.equal(composed.reveal.toString('hex'), '00fcfe632c6ab1a7c71448e256e0487c4cfc34ceac90e997de8c4fdf8485e9a0fd001900176d79206578742069642031373834343635353737373935');
+        assert.strictEqual(composed.reveal.toString('hex'), '00fcfe632c6ab1a7c71448e256e0487c4cfc34ceac90e997de8c4fdf8485e9a0fd001900176d79206578742069642031373834343635353737373935');
     });
 
     it('should compute chain txId', function () {
@@ -181,7 +181,7 @@ describe('Test Chain', function () {
 
         const txId = computeChainTxId(chain);
         assert.instanceOf(txId, Buffer);
-        assert.equal(txId.toString('hex'), '3c22e7bb1b69818508d47056230317a9791158d96e7adb83b4596d77b6548a00');
+        assert.strictEqual(txId.toString('hex'), '3c22e7bb1b69818508d47056230317a9791158d96e7adb83b4596d77b6548a00');
     });
 
 
@@ -197,10 +197,10 @@ describe('Test Chain', function () {
         const chainCopy = new Chain(chain);
 
         assert.instanceOf(chainCopy, Chain);
-        assert.notEqual(chain, chainCopy);
-        assert.notEqual(chain.firstEntry, chainCopy.firstEntry);
-        assert.deepEqual(chain, chainCopy);
-        assert.deepEqual(chain.firstEntry, chainCopy.firstEntry);
+        assert.notStrictEqual(chain, chainCopy);
+        assert.notStrictEqual(chain.firstEntry, chainCopy.firstEntry);
+        assert.deepStrictEqual(chain, chainCopy);
+        assert.deepStrictEqual(chain.firstEntry, chainCopy.firstEntry);
     });
 
     it('should compute chain id', function () {
@@ -211,7 +211,7 @@ describe('Test Chain', function () {
             .build();
 
         const chainId = computeChainId(entry);
-        assert.equal(chainId.toString('hex'), '65f5107b51dcb02173318a6f2b79018a41aa281d9dfd1d53eda773647a6b4441');
+        assert.strictEqual(chainId.toString('hex'), '65f5107b51dcb02173318a6f2b79018a41aa281d9dfd1d53eda773647a6b4441');
     });
 
     it('should convert to JS object', function () {
@@ -225,8 +225,8 @@ describe('Test Chain', function () {
         const chain = new Chain(e);
         const obj = chain.toObject();
 
-        assert.equal(obj.id, chain.idHex);
-        assert.equal(obj.firstEntry.content, e.contentHex);
+        assert.strictEqual(obj.id, chain.idHex);
+        assert.strictEqual(obj.firstEntry.content, e.contentHex);
     });
 
 });
