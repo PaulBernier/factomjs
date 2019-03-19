@@ -17,10 +17,10 @@ describe('Get information from Factom blockchain', function () {
 
         assert.isUndefined(entry.timestamp);
         assert.isUndefined(entry.blockContext);
-        assert.equal(entry.chainId.toString('hex'), 'e36c51b43d979f10792ab14d8b4e87f2870962e0bdb4d2c3cc5aba6c3fb4d7d2');
+        assert.strictEqual(entry.chainId.toString('hex'), 'e36c51b43d979f10792ab14d8b4e87f2870962e0bdb4d2c3cc5aba6c3fb4d7d2');
         assert.lengthOf(entry.extIds, 3);
-        assert.equal(entry.extIds[0].toString(), 'PrimeNumbers.txt');
-        assert.equal(entry.content.toString(), '53746, 662369, 12\r\n');
+        assert.strictEqual(entry.extIds[0].toString(), 'PrimeNumbers.txt');
+        assert.strictEqual(entry.content.toString(), '53746, 662369, 12\r\n');
     });
 
     it('should get first entry', async function () {
@@ -28,8 +28,8 @@ describe('Get information from Factom blockchain', function () {
 
         const entry = await get.getFirstEntry(factomd, 'f48d2160c5d8178720d8c83b89a62599ab6a8b9dbec9fbece5229f787d1e8b44');
 
-        assert.equal(entry.hashHex(), 'ed909db55c0abc861a5a164d1dac7be70ffd117e6f1545491e6a253764f52bb2');
-        assert.equal(entry.extIds[0].toString(), 'factom-testnet-pioneers');
+        assert.strictEqual(entry.hashHex(), 'ed909db55c0abc861a5a164d1dac7be70ffd117e6f1545491e6a253764f52bb2');
+        assert.strictEqual(entry.extIds[0].toString(), 'factom-testnet-pioneers');
         // Entries retrieved via getFirstEntry should have a Block context
         assert.isNumber(entry.timestamp);
         assert.isObject(entry.blockContext);
@@ -53,14 +53,14 @@ describe('Get information from Factom blockchain', function () {
     });
 
     function assertEntryWithBlockContext(entry) {
-        assert.equal(entry.hashHex(), 'caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42');
-        assert.equal(entry.timestamp, 1518286500000);
+        assert.strictEqual(entry.hashHex(), 'caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42');
+        assert.strictEqual(entry.timestamp, 1518286500000);
         assert.isObject(entry.blockContext);
-        assert.equal(entry.blockContext.entryTimestamp, 1518286500);
-        assert.equal(entry.blockContext.directoryBlockHeight, 7042);
-        assert.equal(entry.blockContext.entryBlockTimestamp, 1518286440);
-        assert.equal(entry.blockContext.entryBlockSequenceNumber, 1);
-        assert.equal(entry.blockContext.entryBlockKeyMR, 'a13ac9df4153903f5a07093effe6434bdeb35fea0ff4bd402f323e486bea6ea4');
+        assert.strictEqual(entry.blockContext.entryTimestamp, 1518286500);
+        assert.strictEqual(entry.blockContext.directoryBlockHeight, 7042);
+        assert.strictEqual(entry.blockContext.entryBlockTimestamp, 1518286440);
+        assert.strictEqual(entry.blockContext.entryBlockSequenceNumber, 1);
+        assert.strictEqual(entry.blockContext.entryBlockKeyMR, 'a13ac9df4153903f5a07093effe6434bdeb35fea0ff4bd402f323e486bea6ea4');
     }
 
     it('should get balance', async function () {
@@ -83,25 +83,25 @@ describe('Get information from Factom blockchain', function () {
         const transaction = await get.getTransaction(factomd, '63fe4275064427f11e0dcfc3ff2d56adf88ba12c2646bc0d03d03a02ff7d2727');
 
         assert.instanceOf(transaction, Transaction);
-        assert.equal(transaction.id, '63fe4275064427f11e0dcfc3ff2d56adf88ba12c2646bc0d03d03a02ff7d2727');
-        assert.equal(transaction.timestamp, 1525490539106);
-        assert.equal(transaction.totalInputs, 400012000);
-        assert.equal(transaction.totalFactoidOutputs, 400000000);
-        assert.equal(transaction.totalEntryCreditOutputs, 0);
-        assert.equal(transaction.feesPaid, 12000);
+        assert.strictEqual(transaction.id, '63fe4275064427f11e0dcfc3ff2d56adf88ba12c2646bc0d03d03a02ff7d2727');
+        assert.strictEqual(transaction.timestamp, 1525490539106);
+        assert.strictEqual(transaction.totalInputs, 400012000);
+        assert.strictEqual(transaction.totalFactoidOutputs, 400000000);
+        assert.strictEqual(transaction.totalEntryCreditOutputs, 0);
+        assert.strictEqual(transaction.feesPaid, 12000);
         assert.lengthOf(transaction.inputs, 1);
         assert.lengthOf(transaction.factoidOutputs, 1);
         assert.lengthOf(transaction.entryCreditOutputs, 0);
-        assert.equal(transaction.rcds[0].toString('hex'), '011bcb4c8a771c2869ddf554655414e56bdf360663f33960039a9aa43ac5820306')
-        assert.equal(transaction.signatures[0].toString('hex'), '8a3f90a2b47efda21b801d2dc7f8dbbbfe9c0a65cb37aea4a998632ab7578aa965c8b5893f069030c4411a76dddc357270c0d835a31ea4fd34290a925d4c5501')
-        assert.equal(transaction.inputs[0].address, 'FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH');
-        assert.equal(transaction.inputs[0].amount, 400012000);
-        assert.equal(transaction.factoidOutputs[0].address, 'FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw');
-        assert.equal(transaction.factoidOutputs[0].amount, 400000000);
+        assert.strictEqual(transaction.rcds[0].toString('hex'), '011bcb4c8a771c2869ddf554655414e56bdf360663f33960039a9aa43ac5820306');
+        assert.strictEqual(transaction.signatures[0].toString('hex'), '8a3f90a2b47efda21b801d2dc7f8dbbbfe9c0a65cb37aea4a998632ab7578aa965c8b5893f069030c4411a76dddc357270c0d835a31ea4fd34290a925d4c5501');
+        assert.strictEqual(transaction.inputs[0].address, 'FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH');
+        assert.strictEqual(transaction.inputs[0].amount, 400012000);
+        assert.strictEqual(transaction.factoidOutputs[0].address, 'FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw');
+        assert.strictEqual(transaction.factoidOutputs[0].amount, 400000000);
         assert.isObject(transaction.blockContext);
-        assert.equal(transaction.blockContext.directoryBlockHeight, 27618);
-        assert.equal(transaction.blockContext.directoryBlockKeyMR, 'bb971007b95ac7474a573276d010cb0e7cf1d04bc93765c90e757f2555cc90e7');
-        assert.equal(transaction.blockContext.factoidBlockKeyMR, 'bb622dc852a278ede8fbfd0144ae49d6576e621a1267932dfd198c2cea73b403');
+        assert.strictEqual(transaction.blockContext.directoryBlockHeight, 27618);
+        assert.strictEqual(transaction.blockContext.directoryBlockKeyMR, 'bb971007b95ac7474a573276d010cb0e7cf1d04bc93765c90e757f2555cc90e7');
+        assert.strictEqual(transaction.blockContext.factoidBlockKeyMR, 'bb622dc852a278ede8fbfd0144ae49d6576e621a1267932dfd198c2cea73b403');
     });
 
     it('should reject incorrect transaction id', async function () {
@@ -132,40 +132,40 @@ describe('Get information from Factom blockchain', function () {
         const transaction = await get.getTransaction(factomd, '4099f0fe5ba3ccdccb0ee5e45f9d3d513bb9994c781acb54b49ae15d85f1e9d9');
 
         assert.instanceOf(transaction, Transaction);
-        assert.equal(transaction.id, '4099f0fe5ba3ccdccb0ee5e45f9d3d513bb9994c781acb54b49ae15d85f1e9d9');
-        assert.equal(transaction.totalInputs, 0);
-        assert.equal(transaction.totalFactoidOutputs, 640000000);
-        assert.equal(transaction.totalEntryCreditOutputs, 0);
-        assert.equal(transaction.feesPaid, 0);
+        assert.strictEqual(transaction.id, '4099f0fe5ba3ccdccb0ee5e45f9d3d513bb9994c781acb54b49ae15d85f1e9d9');
+        assert.strictEqual(transaction.totalInputs, 0);
+        assert.strictEqual(transaction.totalFactoidOutputs, 640000000);
+        assert.strictEqual(transaction.totalEntryCreditOutputs, 0);
+        assert.strictEqual(transaction.feesPaid, 0);
         assert.lengthOf(transaction.inputs, 0);
         assert.lengthOf(transaction.factoidOutputs, 2);
         assert.lengthOf(transaction.entryCreditOutputs, 0);
-        assert.equal(transaction.factoidOutputs[0].address, 'FA36vN5aQU2DAofpisurQhDSvx73MVatA53kSstTgcts8h2T9cvx');
-        assert.equal(transaction.factoidOutputs[0].amount, 320000000);
+        assert.strictEqual(transaction.factoidOutputs[0].address, 'FA36vN5aQU2DAofpisurQhDSvx73MVatA53kSstTgcts8h2T9cvx');
+        assert.strictEqual(transaction.factoidOutputs[0].amount, 320000000);
     });
 
     it('should get heights', async function () {
         const heights = await get.getHeights(factomd);
 
         assert.isNumber(heights.directoryBlockHeight);
-        assert.notEqual(heights.directoryBlockHeight, 0);
+        assert.notStrictEqual(heights.directoryBlockHeight, 0);
         assert.isNumber(heights.leaderHeight);
-        assert.notEqual(heights.leaderHeight, 0);
+        assert.notStrictEqual(heights.leaderHeight, 0);
         assert.isNumber(heights.entryBlockHeight);
-        assert.notEqual(heights.entryBlockHeight, 0);
+        assert.notStrictEqual(heights.entryBlockHeight, 0);
         assert.isNumber(heights.entryHeight);
-        assert.notEqual(heights.entryHeight, 0);
+        assert.notStrictEqual(heights.entryHeight, 0);
     });
 
     function assertDirectoryBlock(db) {
         assert.instanceOf(db, DirectoryBlock);
-        assert.equal(db.keyMR, 'f55a19d9562843b642f1a20b34fcbb71e70f438c4d98d223fc2228ca2dd0c54a');
-        assert.equal(db.height, 21537);
-        assert.equal(db.previousBlockKeyMR, 'b37bf4eee21547773c74fa099c643588835e4ada9a4a8c22f0dd171e22710bf5');
-        assert.equal(db.timestamp, 1521348840);
-        assert.equal(db.adminBlockRef, '643f3a4f0a5fd7a44374affe47fd052a845a078482319ad6540aa7f1f714bb9e');
-        assert.equal(db.entryCreditBlockRef, 'f4540b4170666a47b1287c4d0843b91d5a0ebcf8433c40b674d017f146503256');
-        assert.equal(db.factoidBlockRef, 'baf6e92932f4ba0f81baacf7b7d7726d6f7f3a4da0c43bfdaf846a843c8f2301');
+        assert.strictEqual(db.keyMR, 'f55a19d9562843b642f1a20b34fcbb71e70f438c4d98d223fc2228ca2dd0c54a');
+        assert.strictEqual(db.height, 21537);
+        assert.strictEqual(db.previousBlockKeyMR, 'b37bf4eee21547773c74fa099c643588835e4ada9a4a8c22f0dd171e22710bf5');
+        assert.strictEqual(db.timestamp, 1521348840);
+        assert.strictEqual(db.adminBlockRef, '643f3a4f0a5fd7a44374affe47fd052a845a078482319ad6540aa7f1f714bb9e');
+        assert.strictEqual(db.entryCreditBlockRef, 'f4540b4170666a47b1287c4d0843b91d5a0ebcf8433c40b674d017f146503256');
+        assert.strictEqual(db.factoidBlockRef, 'baf6e92932f4ba0f81baacf7b7d7726d6f7f3a4da0c43bfdaf846a843c8f2301');
         assert.lengthOf(db.entryBlockRefs, 23);
     }
 
@@ -178,9 +178,9 @@ describe('Get information from Factom blockchain', function () {
         const byHeight = await get.getDirectoryBlock(factomd, 21537);
         assertDirectoryBlock(byHeight);
 
-        assert.equal(byHeight.fullHash, 'd435f58a88eb9967e8be864af7015a9a01a50f716181a8bee5e86593bc4a0f8d');
-        assert.equal(byHeight.previousFullHash, 'f0dc9915ff0db78648a8366a1768332c74d28913f3ae4699d4fab7dc6d935b31');
-        assert.equal(byHeight.bodyKeyMR, '6243865ba04b031423a2d6b48335c571b48499e71b7630f233e885f832bfdd30');
+        assert.strictEqual(byHeight.fullHash, 'd435f58a88eb9967e8be864af7015a9a01a50f716181a8bee5e86593bc4a0f8d');
+        assert.strictEqual(byHeight.previousFullHash, 'f0dc9915ff0db78648a8366a1768332c74d28913f3ae4699d4fab7dc6d935b31');
+        assert.strictEqual(byHeight.bodyKeyMR, '6243865ba04b031423a2d6b48335c571b48499e71b7630f233e885f832bfdd30');
     });
 
     it('should reject negative block height for getDirectoryBlock', async function () {
@@ -205,15 +205,15 @@ describe('Get information from Factom blockchain', function () {
 
     function assertEntryCreditBlock(ecb) {
         assert.instanceOf(ecb, EntryCreditBlock);
-        assert.equal(ecb.fullHash, '4cf58af96b2dcdf416217cbdb195d67f1a511a8ab95a8e37aebeb8e643cb8f3c');
-        assert.equal(ecb.headerHash, '96ad20412e7799e80f3979c425bfa5641282563371cd40049492701f9c09e338');
-        assert.equal(ecb.bodyHash, 'd9b5f08c5002bfa70c7b98a61c02eddaa3544299eb498840641b3a9e6d771bda');
-        assert.equal(ecb.previousFullHash, 'ae8ab99b07b9d367a36f8a54fe0020532fbb20c71f65dfa2dacdee5bceb1b332');
-        assert.equal(ecb.previousHeaderHash, '48ff34b7bf9807e59e07c2c3d9a96c2442fcde8446952b258223b65b4d75190b');
-        assert.equal(ecb.directoryBlockHeight, 17997);
-        assert.equal(ecb.headerExpansionArea, '');
-        assert.equal(ecb.bodySize, 11939);
-        assert.equal(ecb.objectCount, 97);
+        assert.strictEqual(ecb.fullHash, '4cf58af96b2dcdf416217cbdb195d67f1a511a8ab95a8e37aebeb8e643cb8f3c');
+        assert.strictEqual(ecb.headerHash, '96ad20412e7799e80f3979c425bfa5641282563371cd40049492701f9c09e338');
+        assert.strictEqual(ecb.bodyHash, 'd9b5f08c5002bfa70c7b98a61c02eddaa3544299eb498840641b3a9e6d771bda');
+        assert.strictEqual(ecb.previousFullHash, 'ae8ab99b07b9d367a36f8a54fe0020532fbb20c71f65dfa2dacdee5bceb1b332');
+        assert.strictEqual(ecb.previousHeaderHash, '48ff34b7bf9807e59e07c2c3d9a96c2442fcde8446952b258223b65b4d75190b');
+        assert.strictEqual(ecb.directoryBlockHeight, 17997);
+        assert.strictEqual(ecb.headerExpansionArea, '');
+        assert.strictEqual(ecb.bodySize, 11939);
+        assert.strictEqual(ecb.objectCount, 97);
         assert.lengthOf(ecb.commits, 87);
         assert.lengthOf(ecb.minuteIndexes, 11);
     }
@@ -251,22 +251,22 @@ describe('Get information from Factom blockchain', function () {
 
     function assertFactoidBlock(fb) {
         assert.instanceOf(fb, FactoidBlock);
-        assert.equal(fb.keyMR, '4b2572326cc04f4bff215800bc3f48b2e64f2002f0c2b592e09b003ea3f36bdd');
-        assert.equal(fb.previousBlockKeyMR, 'a7074a34b37954944224a3cd13a19f690f5b0d12d3373b2f54904329e02c56ec');
-        assert.equal(fb.bodyMR, 'ca7641b49bb5cc2d00145b28a5634305490fb0caa96c6a838959910803e8008f');
-        assert.equal(fb.entryCreditRate, 1000);
-        assert.equal(fb.directoryBlockHeight, 55010);
-        assert.equal(fb.ledgerKeyMR, '72cc3a6d43c72532e0670941e1bb35074e8ab1d55715a2e0687b5fc1540e8fef');
-        assert.equal(fb.previousLedgerKeyMR, '977cd8f7a847770756d040711690aff7b3cbd7f54665152ec72b7de411cf4de9');
+        assert.strictEqual(fb.keyMR, '4b2572326cc04f4bff215800bc3f48b2e64f2002f0c2b592e09b003ea3f36bdd');
+        assert.strictEqual(fb.previousBlockKeyMR, 'a7074a34b37954944224a3cd13a19f690f5b0d12d3373b2f54904329e02c56ec');
+        assert.strictEqual(fb.bodyMR, 'ca7641b49bb5cc2d00145b28a5634305490fb0caa96c6a838959910803e8008f');
+        assert.strictEqual(fb.entryCreditRate, 1000);
+        assert.strictEqual(fb.directoryBlockHeight, 55010);
+        assert.strictEqual(fb.ledgerKeyMR, '72cc3a6d43c72532e0670941e1bb35074e8ab1d55715a2e0687b5fc1540e8fef');
+        assert.strictEqual(fb.previousLedgerKeyMR, '977cd8f7a847770756d040711690aff7b3cbd7f54665152ec72b7de411cf4de9');
         assert.lengthOf(fb.transactions, 1);
 
         const coinbaseTx = fb.getCoinbaseTransaction();
         assert.instanceOf(coinbaseTx, Transaction);
-        assert.equal(coinbaseTx.totalInputs, 0);
-        assert.equal(coinbaseTx.totalFactoidOutputs, 6398208000);
+        assert.strictEqual(coinbaseTx.totalInputs, 0);
+        assert.strictEqual(coinbaseTx.totalFactoidOutputs, 6398208000);
         assert.isObject(coinbaseTx.blockContext);
-        assert.equal(coinbaseTx.blockContext.factoidBlockKeyMR, '4b2572326cc04f4bff215800bc3f48b2e64f2002f0c2b592e09b003ea3f36bdd');
-        assert.equal(coinbaseTx.blockContext.directoryBlockHeight, 55010);
+        assert.strictEqual(coinbaseTx.blockContext.factoidBlockKeyMR, '4b2572326cc04f4bff215800bc3f48b2e64f2002f0c2b592e09b003ea3f36bdd');
+        assert.strictEqual(coinbaseTx.blockContext.directoryBlockHeight, 55010);
     }
 
     it('should get Factoid Block', async function () {
@@ -305,12 +305,12 @@ describe('Get information from Factom blockchain', function () {
         const eb = await get.getEntryBlock(factomd, '3944669331eea620f7f3ec67864a03a646a104f17e36aec3e0f5bdf638f16883');
 
         assert.instanceOf(eb, EntryBlock);
-        assert.equal(eb.keyMR, '3944669331eea620f7f3ec67864a03a646a104f17e36aec3e0f5bdf638f16883');
-        assert.equal(eb.previousBlockKeyMR, '1af04b34c3a0113d14aa0fcbb8c609864fa2e8f24dd04e9814aa7e5a40376a70');
-        assert.equal(eb.timestamp, 1521429840);
-        assert.equal(eb.directoryBlockHeight, 21672);
-        assert.equal(eb.chainId, '3f69bdf3b4769ff53407580b882ee01e0c365f6deffba4ed8d4651b24e65389a');
-        assert.equal(eb.sequenceNumber, 1168);
+        assert.strictEqual(eb.keyMR, '3944669331eea620f7f3ec67864a03a646a104f17e36aec3e0f5bdf638f16883');
+        assert.strictEqual(eb.previousBlockKeyMR, '1af04b34c3a0113d14aa0fcbb8c609864fa2e8f24dd04e9814aa7e5a40376a70');
+        assert.strictEqual(eb.timestamp, 1521429840);
+        assert.strictEqual(eb.directoryBlockHeight, 21672);
+        assert.strictEqual(eb.chainId, '3f69bdf3b4769ff53407580b882ee01e0c365f6deffba4ed8d4651b24e65389a');
+        assert.strictEqual(eb.sequenceNumber, 1168);
         assert.lengthOf(eb.entryRefs, 50);
     });
 
@@ -327,13 +327,13 @@ describe('Get information from Factom blockchain', function () {
 
     function assertAdminBlock(ab) {
         assert.instanceOf(ab, AdminBlock);
-        assert.equal(ab.backReferenceHash, 'd6d21564d9b1b1e55fa308890821ed4151ded40a33cb3cf8edaecf2b63e32236');
-        assert.equal(ab.lookupHash, 'c98beb0b3cbfbb090acdd238ca17725119eb43f1df5ef117ffbdc59f050508e6');
-        assert.equal(ab.previousBackReferenceHash, 'a24beb7bcd0d47857fcd0b570ea3c16704daf3377d9b9588c6305e9271539eea');
-        assert.equal(ab.directoryBlockHeight, 21662);
-        assert.equal(ab.headerExpansionArea, '');
-        assert.equal(ab.headerExpansionSize, 0);
-        assert.equal(ab.bodySize, 387);
+        assert.strictEqual(ab.backReferenceHash, 'd6d21564d9b1b1e55fa308890821ed4151ded40a33cb3cf8edaecf2b63e32236');
+        assert.strictEqual(ab.lookupHash, 'c98beb0b3cbfbb090acdd238ca17725119eb43f1df5ef117ffbdc59f050508e6');
+        assert.strictEqual(ab.previousBackReferenceHash, 'a24beb7bcd0d47857fcd0b570ea3c16704daf3377d9b9588c6305e9271539eea');
+        assert.strictEqual(ab.directoryBlockHeight, 21662);
+        assert.strictEqual(ab.headerExpansionArea, '');
+        assert.strictEqual(ab.headerExpansionSize, 0);
+        assert.strictEqual(ab.bodySize, 387);
         assert.lengthOf(ab.entries, 3);
     }
 
@@ -392,7 +392,7 @@ describe('Get information from Factom blockchain', function () {
             assert.instanceOf(entry, Entry);
             counter++;
         });
-        assert.equal(counter, 5);
+        assert.strictEqual(counter, 5);
     });
 
     it('should not rewind chain ', async function () {
@@ -416,8 +416,8 @@ describe('Get information from Factom blockchain', function () {
             }
         });
 
-        assert.equal(counter, 3);
-        assert.equal(found.hash().toString('hex'), '0ef649d17f4f1e961a0e5d0d7f294ae151253d72564958763821aee1dc6ac37f');
+        assert.strictEqual(counter, 3);
+        assert.strictEqual(found.hash().toString('hex'), '0ef649d17f4f1e961a0e5d0d7f294ae151253d72564958763821aee1dc6ac37f');
     });
 
     it('should validate rewind chain predicate function', async function () {
