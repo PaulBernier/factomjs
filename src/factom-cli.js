@@ -306,9 +306,10 @@ class FactomCli {
      * @async
      * @param {string} chainId - Chain to rewind.
      * @param {Function<Entry>} predicate - Predicate of the while loop. Iteration stop if either the predicate is false or the end of the chain has been reached.
-     * @param {Function<Entry>} func - Function to apply at each iteration.
+     * Receives an entry and the header of the entry block it is part of as arguments.
+     * @param {Function<Entry>} func - Function to apply at each iteration. Receives an entry and the header of the entry block it is part of as arguments.
      * @example
-     * cli.rewindChainWhile('dab6c095c22ec6db1b0961fdb82d504a95f0a31467bb7df73cc793532b0e9ae3', (entry) => true, function(entry) {
+     * cli.rewindChainWhile('dab6c095c22ec6db1b0961fdb82d504a95f0a31467bb7df73cc793532b0e9ae3', (entry, entryBlockHeader) => true, function(entry, entryBlockHeader) {
      *      // Do stuff with the entry
      * })
      */
