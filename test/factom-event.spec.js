@@ -1,11 +1,10 @@
-const { FactomEvent } = require('../src/factom-event'),
-    { FactomCli } = require('../src/factom-cli'),
+const { FactomCli, FactomEvent } = require('../src/factom'),
     { DirectoryBlock, FactoidBlock, AdminBlock, EntryCreditBlock, EntryBlock } = require('../src/blocks'),
     mockDirectoryBlock = require('./data/directory-block.json'),
     assert = require('chai').assert,
     Promise = require('bluebird');
 
-describe('Test Subscriptions', () => {
+describe('Test FactomEvent', () => {
     const cli = new FactomCli({
         factomd: {
             host: process.env.FACTOMD_HOST,
