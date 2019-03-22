@@ -388,14 +388,8 @@ describe('Get information from Factom blockchain', function () {
         this.timeout(20000);
 
         let counter = 0;
-        await get.rewindChainWhile(factomd, '106fa1e435be6cff0e167da35a186b141e4dfcea204e1500bf694c88b9214f68', () => true, function (entry, entryBlockHeader) {
+        await get.rewindChainWhile(factomd, '106fa1e435be6cff0e167da35a186b141e4dfcea204e1500bf694c88b9214f68', () => true, function (entry) {
             assert.instanceOf(entry, Entry);
-            assert.isObject(entryBlockHeader);
-            assert.isNumber(entryBlockHeader.directoryBlockHeight);
-            assert.isNumber(entryBlockHeader.timestamp);
-            assert.isNumber(entryBlockHeader.sequenceNumber);
-            assert.isString(entryBlockHeader.previousBlockKeyMR);
-            assert.isString(entryBlockHeader.chainId);
             counter++;
         });
         assert.strictEqual(counter, 5);

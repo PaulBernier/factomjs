@@ -2,10 +2,9 @@
 
 ## [1.0.1]
 
-### Added
+### Changed
 
 * BlockContext populated for transactions in a `FactoidBlock` object (except `directoryBlockKeyMR` that is not available).
-* `rewindChainWhile(chainId, predicate, fn)`: the `predicate` and `fn` functions now receive the entry block header as a second argument.
 
 ## [1.0.0]
 

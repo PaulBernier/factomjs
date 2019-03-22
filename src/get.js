@@ -20,7 +20,7 @@ async function getEntry(factomd, entryHash, entryBlockContext) {
 }
 
 async function getEntryWithBlockContext(factomd, entryHash) {
-    const entryBlockKeyMr = await factomd.call('receipt', { hash: toHex(entryHash) }).then(r => r.receipt.entryblockkeymr);
+    const entryBlockKeyMr = await factomd.call('receipt',  { hash: toHex(entryHash) }).then(r => r.receipt.entryblockkeymr);
     const entryBlock = await factomd.call('entry-block', { keymr: entryBlockKeyMr });
     const timestamp = entryBlock.entrylist.find(e => e.entryhash === entryHash).timestamp;
     return getEntry(factomd, entryHash, buildEntryBlockContext(entryBlockKeyMr, entryBlock, timestamp));
@@ -56,11 +56,11 @@ async function getAllEntriesOfChain(factomd, chainId) {
     while (keyMR !== NULL_HASH) {
         const {
             entries,
-            entryBlockHeader
+            previousKeyMR
         } = await getAllEntriesOfEntryBlock(factomd, keyMR);
         allEntries.push(...entries.reverse());
 
-        keyMR = entryBlockHeader.previousBlockKeyMR;
+        keyMR = previousKeyMR;
     }
 
     return Promise.resolve(allEntries.reverse());
@@ -84,12 +84,12 @@ async function rewindChainWhile(factomd, chainId, predicate, func) {
     while (keyMR !== NULL_HASH) {
         const {
             entries,
-            entryBlockHeader
+            previousKeyMR
         } = await getAllEntriesOfEntryBlock(factomd, keyMR);
 
         let i = entries.length - 1;
-        while (i >= 0 && await predicate(entries[i], entryBlockHeader)) {
-            await func(entries[i], entryBlockHeader);
+        while (i >= 0 && await predicate(entries[i])) {
+            await func(entries[i]);
             i--;
         }
 
@@ -99,7 +99,7 @@ async function rewindChainWhile(factomd, chainId, predicate, func) {
             break;
         }
 
-        keyMR = entryBlockHeader.previousBlockKeyMR;
+        keyMR = previousKeyMR;
     }
 }
 
@@ -110,16 +110,9 @@ async function getAllEntriesOfEntryBlock(factomd, keyMR) {
         entryBlock.entrylist,
         e => getEntry(factomd, e.entryhash, buildEntryBlockContext(keyMR, entryBlock, e.timestamp)));
 
-    const header = entryBlock.header;
     return {
         entries: entries,
-        entryBlockHeader: {
-            directoryBlockHeight: header.dbheight,
-            timestamp: header.timestamp,
-            previousBlockKeyMR: header.prevkeymr,
-            chainId: header.chainid,
-            sequenceNumber: header.blocksequencenumber
-        }
+        previousKeyMR: entryBlock.header.prevkeymr
     };
 }
 
