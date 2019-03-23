@@ -4,9 +4,10 @@ const { EventEmitter } = require('events'),
     { Transaction } = require('./transaction');
 
 /**
- * Subscribe to new factom events
- * @param {FactomCli} cli - FactomCli instance
- * @param {Object} opts - Options
+ * Listen for new Factom Events. 
+ * @param {FactomCli} cli - FactomCli instance to be used by the FactomEventEmitter instance to poll the blockchain for new blocks.
+ * @param {Object} opts - Options to set on the FactomEventEmitter instance
+ * @param {number} [opts.interval=7500] - The interval (ms) at which the FactomEventEmtitter instance should poll the blockchain to check for a new block. Defaults to 7500.
  * @class
  */
 class FactomEventEmitter extends EventEmitter {
@@ -91,6 +92,10 @@ class FactomEventEmitter extends EventEmitter {
     //              DIRECTORY BLOCK METHODS                     //
     /////////////////////////////////////////////////////////////
 
+    /**
+     * Determine whether or not polling is currently active.
+     * @returns {boolean} 
+     */
     get isPolling() {
         return !!this._isPolling;
     }
@@ -239,12 +244,12 @@ class FactomEventEmitter extends EventEmitter {
     }
 
     /**
-     *
-     * @param {string} id - An identity is any long, unique string used to reference some specific location in the blockchain, such as a chain ID or factoid address.
+     * @param {string} id - Any unique string used to reference some specific location in the blockchain, such as a chain ID or factoid address.
      * @param {Set<string>} set - A reference to the set that holds the identities of a particular type, such as a factoid address set or a chain ID set.
-     * @param {string} event - The event that needs to be listened for in order to fetch updates to a given identity. Factoid addresses listen for a factoid block event,
+     * @param {string} event - The event that needs to be listened for in order to emit updates for a given identity. Factoid addresses listen for a factoid block event,
      * chain IDs listen for a directory block event.
      * @param {Function} listener - A listener that handles how and when to emit a new event for each identity in the set.
+     * @private
      */
     _subscribeToIdentity(id, set, event, listener) {
         if (set.has(id)) {
@@ -272,7 +277,6 @@ class FactomEventEmitter extends EventEmitter {
     /**
      * Listener that triggers on a 'directoryBlock' event. It matches chain IDs contained in the directory block
      * to the _entryChainSubscriptions set then fetches the referenced entry block for each matched chain ID.
-     * @param directoryBlock
      * @private
      * @async
      */
@@ -299,7 +303,6 @@ class FactomEventEmitter extends EventEmitter {
     /**
      * Match transactions in factoid block to addresses in _factoidAddressSubscriptions object.
      * Note: this listener is attached to a factoidBlock event rather than directoryBlock event.
-     * @param factoidBlock
      * @private
      */
     _emitFactoidAddressEvents(factoidBlock) {
