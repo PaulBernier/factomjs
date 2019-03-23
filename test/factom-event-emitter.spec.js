@@ -120,11 +120,13 @@ describe('Test FactomEventEmitter', () => {
             assert.strictEqual(tx.id, 'c538ffb37d5dab837f3ea781b01bae481d8d6e77ceb0471442c1d85576a00e01');
             assert.isTrue(emitter.isPolling);
             assert.lengthOf(emitter.listeners('directoryBlock'), 1);
+            assert.lengthOf(emitter.listeners('factoidBlock'), 1);
             assert.lengthOf(emitter.listeners(address), 1);
 
             emitter.removeListener(address, listener);
             assert.isFalse(emitter.isPolling);
             assert.lengthOf(emitter.listeners('directoryBlock'), 0);
+            assert.lengthOf(emitter.listeners('factoidBlock'), 0);
             assert.lengthOf(emitter.listeners(address), 0);
             done();
         };
@@ -133,6 +135,26 @@ describe('Test FactomEventEmitter', () => {
         emitter.on(address, listener);
         emitter.emit(emitter.event.directoryBlock, { factoidBlockRef });
     });
+
+    it('should stop polling after emitting once', done => {
+        const emitter = new FactomEventEmitter(cli);
+        const address = 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC';
+        const factoidBlockRef = 'cad832bab1d83c74bff8e1092fcf70e298cd7cdf35dee1956ae8879e749195ac';
+
+        const listener = tx => {
+            assert.strictEqual(tx.id, 'c538ffb37d5dab837f3ea781b01bae481d8d6e77ceb0471442c1d85576a00e01');
+            assert.isFalse(emitter.isPolling);
+            assert.lengthOf(emitter.listeners('directoryBlock'), 0);
+            assert.lengthOf(emitter.listeners('factoidBlock'), 0);
+            assert.lengthOf(emitter.listeners(address), 0);
+            assert.lengthOf(emitter.factoidAddressSubscriptions, 0)
+            done();
+        };
+
+        emitter.on('error', err => done(err));
+        emitter.once(address, listener);
+        emitter.emit(emitter.event.directoryBlock, { factoidBlockRef });
+    })
 
     it('should not stop polling if there are listeners of a different type still dependent on the directoryBlock event', done => {
         const emitter = new FactomEventEmitter(cli);
