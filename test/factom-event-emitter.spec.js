@@ -212,13 +212,48 @@ describe('Test FactomEventEmitter', () => {
             emitter.removeListener('factoidBlock', nullListener);
             assert.isFalse(emitter.isPolling);
             assert.lengthOf(emitter.listeners('directoryBlock'), 0);
-            assert.lengthOf(emitter.listeners('entryCreditBlock'), 0);
+            assert.lengthOf(emitter.listeners('factoidBlock'), 0);
 
             done();
         };
 
         emitter.on('error', err => done(err));
         emitter.on(emitter.event.factoidBlock, nullListener);
+        emitter.on(emitter.event.factoidBlock, listener);
+    });
+
+    it('should not stop polling when removing a factoidBlock listener whilst a factoid address listener is still active', done => {
+        const emitter = new FactomEventEmitter(cli);
+        const address = 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC'
+        const nullListener = () => { };
+
+        const listener = fBlock => {
+            // assert that adding multiple listeners results in healthy state
+            assert.instanceOf(fBlock, FactoidBlock);
+            assert.isTrue(emitter.isPolling);
+            assert.lengthOf(emitter.listeners('directoryBlock'), 1);
+            assert.lengthOf(emitter.listeners('factoidBlock'), 2);
+            assert.lengthOf(emitter.listeners(address), 1);
+
+            // assert that the removal of a listener does not stop polling if factoidBlock still has dependent listeners
+            emitter.removeListener('factoidBlock', listener);
+            assert.isTrue(emitter.isPolling);
+            assert.lengthOf(emitter.listeners('directoryBlock'), 1);
+            assert.lengthOf(emitter.listeners('factoidBlock'), 1);
+            assert.lengthOf(emitter.listeners(address), 1);
+
+            // assert that the removal of the final dependent listeners stops polling and removes all listeners
+            emitter.removeListener(address, nullListener);
+            assert.isFalse(emitter.isPolling);
+            assert.lengthOf(emitter.listeners('directoryBlock'), 0);
+            assert.lengthOf(emitter.listeners('factoidBlock'), 0);
+            assert.lengthOf(emitter.listeners(address), 0);
+
+            done();
+        };
+
+        emitter.on('error', err => done(err));
+        emitter.on(address, nullListener);
         emitter.on(emitter.event.factoidBlock, listener);
     });
 
