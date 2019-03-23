@@ -5,5 +5,5 @@ module.exports = Object.assign({},
     require('./chain'),
     require('./addresses'),
     require('./transaction'),
-    require('./factom-event')
+    require('./factom-event-emitter')
 );
