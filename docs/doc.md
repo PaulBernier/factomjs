@@ -145,11 +145,11 @@
     -   [toObject][141]
     -   [builder][142]
         -   [Parameters][143]
--   [FactomdCli][144]
+-   [WalletdCli][144]
     -   [Parameters][145]
     -   [call][146]
         -   [Parameters][147]
--   [WalletdCli][148]
+-   [FactomdCli][148]
     -   [Parameters][149]
     -   [call][150]
         -   [Parameters][151]
@@ -232,7 +232,7 @@
 
 ## FactomCli
 
-[src/factom-cli.js:28-493][228]
+[src/factom-cli.js:28-492][228]
 
 Main class to read and write data from Factom blockchain.
 
@@ -404,7 +404,7 @@ Returns **[Promise][238]&lt;{txId: [string][235], repeatedCommit: [boolean][237]
 
 ### createEntryCreditPurchaseTransaction
 
-[src/factom-cli.js:360-363][248]
+[src/factom-cli.js:359-362][248]
 
 Create a transaction to convert Factoids to Entry Credit.
 
@@ -419,7 +419,7 @@ Returns **[Promise][238]&lt;[Transaction][249]>**
 
 ### createFactoidTransaction
 
-[src/factom-cli.js:346-349][250]
+[src/factom-cli.js:345-348][250]
 
 Create a single input single output (SISO) Factoid transaction.
 
@@ -434,7 +434,7 @@ Returns **[Promise][238]&lt;[Transaction][249]>**
 
 ### factomdApi
 
-[src/factom-cli.js:409-411][251]
+[src/factom-cli.js:408-410][251]
 
 Make a direct call to factomd API. See [https://docs.factom.com/api#factomd-api][252].
 
@@ -447,7 +447,7 @@ Returns **[Promise][238]&lt;[Object][229]>** Factomd API response.
 
 ### getAdminBlock
 
-[src/factom-cli.js:460-462][253]
+[src/factom-cli.js:459-461][253]
 
 Get an admin block by keyMR or height.
 
@@ -497,7 +497,7 @@ If this is the case that would indicate that the head of that chain will change 
 
 ### getDirectoryBlock
 
-[src/factom-cli.js:450-452][258]
+[src/factom-cli.js:449-451][258]
 
 Get a directory block by keyMR or height.
 
@@ -509,7 +509,7 @@ Returns **[Promise][238]&lt;[DirectoryBlock][259]>**
 
 ### getDirectoryBlockHead
 
-[src/factom-cli.js:440-442][260]
+[src/factom-cli.js:439-441][260]
 
 Return latest directory block saved.
 
@@ -529,7 +529,7 @@ Returns **[Promise][238]&lt;[Entry][234]>** Entry that does not contain an [Entr
 
 ### getEntryBlock
 
-[src/factom-cli.js:490-492][263]
+[src/factom-cli.js:489-491][263]
 
 Get an entry block.
 
@@ -541,7 +541,7 @@ Returns **[Promise][238]&lt;[EntryBlock][264]>**
 
 ### getEntryCreditBlock
 
-[src/factom-cli.js:470-472][265]
+[src/factom-cli.js:469-471][265]
 
 Get an entry credit block by keyMR or height.
 
@@ -574,7 +574,7 @@ Returns **[Promise][238]&lt;[Entry][234]>** Entry with its blockContext and time
 
 ### getFactoidBlock
 
-[src/factom-cli.js:480-482][270]
+[src/factom-cli.js:479-481][270]
 
 Get a Factoid block by keyMR or height.
 
@@ -598,7 +598,7 @@ Returns **[Promise][238]&lt;[Entry][234]>** Entry with its blockContext and time
 
 ### getHeights
 
-[src/factom-cli.js:431-433][273]
+[src/factom-cli.js:430-432][273]
 
 Return blockchain heights. For the explanation of the different heights see [https://docs.factom.com/api#heights][274].
 
@@ -669,7 +669,7 @@ Returns **[Promise][238]&lt;{chainId: [string][235], entryHash: [string][235]}>*
 
 ### rewindChainWhile
 
-[src/factom-cli.js:316-318][280]
+[src/factom-cli.js:315-317][280]
 
 Rewind a chain entry by entry (newest to oldest) while a predicate is true.
 
@@ -677,20 +677,19 @@ Rewind a chain entry by entry (newest to oldest) while a predicate is true.
 
 -   `chainId` **[string][235]** Chain to rewind.
 -   `predicate` **[Function][281]&lt;[Entry][234]>** Predicate of the while loop. Iteration stop if either the predicate is false or the end of the chain has been reached.
-    Receives an entry and the header of the entry block it is part of as arguments.
--   `func` **[Function][281]&lt;[Entry][234]>** Function to apply at each iteration. Receives an entry and the header of the entry block it is part of as arguments.
+-   `func` **[Function][281]&lt;[Entry][234]>** Function to apply at each iteration.
 
 #### Examples
 
 ```javascript
-cli.rewindChainWhile('dab6c095c22ec6db1b0961fdb82d504a95f0a31467bb7df73cc793532b0e9ae3', (entry, entryBlockHeader) => true, function(entry, entryBlockHeader) {
+cli.rewindChainWhile('dab6c095c22ec6db1b0961fdb82d504a95f0a31467bb7df73cc793532b0e9ae3', (entry) => true, function(entry) {
      // Do stuff with the entry
 })
 ```
 
 ### sendTransaction
 
-[src/factom-cli.js:333-335][282]
+[src/factom-cli.js:332-334][282]
 
 Send a Factoid transaction. 
 This method will throw if the transaction fees are too low given the current EC rate.
@@ -707,7 +706,7 @@ Returns **[Promise][238]&lt;[string][235]>** Transaction ID.
 
 ### waitOnCommitAck
 
-[src/factom-cli.js:373-375][283]
+[src/factom-cli.js:372-374][283]
 
 Wait until an acknowlegment is received from the network for a commit.
 
@@ -720,7 +719,7 @@ Returns **[Promise][238]&lt;[string][235]>** Status of the commit. See [https://
 
 ### waitOnFactoidTransactionAck
 
-[src/factom-cli.js:396-398][285]
+[src/factom-cli.js:395-397][285]
 
 Wait until an acknowlegment is received from the network for a Factoid transaction.
 
@@ -733,7 +732,7 @@ Returns **[Promise][238]&lt;[string][235]>** Status of the transaction. See [htt
 
 ### waitOnRevealAck
 
-[src/factom-cli.js:385-387][286]
+[src/factom-cli.js:384-386][286]
 
 Wait until an acknowlegment is received from the network for a reveal.
 
@@ -747,7 +746,7 @@ Returns **[Promise][238]&lt;[string][235]>** Status of the reveal. See [https://
 
 ### walletdApi
 
-[src/factom-cli.js:420-422][287]
+[src/factom-cli.js:419-421][287]
 
 Make a direct call to factom-walletd API. See [https://docs.factom.com/api#factom-walletd-api][288].
 
@@ -1225,34 +1224,9 @@ Entry builder static factory.
 
 Returns **[EntryBuilder][297]** A new EntryBuilder.
 
-## FactomdCli
-
-[src/apis-cli.js:150-169][338]
-
-**Extends BaseCli**
-
-Factomd API client.
-
-### Parameters
-
--   `conf` **[ConnectionOptions][230]?** Factomd connection options.
-
-### call
-
-[src/apis-cli.js:165-168][339]
-
-Make a call to factomd API. See [https://docs.factom.com/api#factomd-api][252].
-
-#### Parameters
-
--   `method` **[string][235]** Factomd API method name.
--   `params` **[Object][229]?** The object that the factomd API is expecting.
-
-Returns **[Promise][238]&lt;[Object][229]>** Factomd API response.
-
 ## WalletdCli
 
-[src/apis-cli.js:175-192][340]
+[src/apis-cli.js:175-192][338]
 
 **Extends BaseCli**
 
@@ -1264,7 +1238,7 @@ Walletd API client.
 
 ### call
 
-[src/apis-cli.js:189-191][341]
+[src/apis-cli.js:189-191][339]
 
 Make a call to factom-walletd API. See [https://docs.factom.com/api#factom-walletd-api][288].
 
@@ -1274,6 +1248,31 @@ Make a call to factom-walletd API. See [https://docs.factom.com/api#factom-walle
 -   `params` **[Object][229]** The object that the walletd API is expecting.
 
 Returns **[Promise][238]&lt;[Object][229]>** Walletd API response.
+
+## FactomdCli
+
+[src/apis-cli.js:150-169][340]
+
+**Extends BaseCli**
+
+Factomd API client.
+
+### Parameters
+
+-   `conf` **[ConnectionOptions][230]?** Factomd connection options.
+
+### call
+
+[src/apis-cli.js:165-168][341]
+
+Make a call to factomd API. See [https://docs.factom.com/api#factomd-api][252].
+
+#### Parameters
+
+-   `method` **[string][235]** Factomd API method name.
+-   `params` **[Object][229]?** The object that the factomd API is expecting.
+
+Returns **[Promise][238]&lt;[Object][229]>** Factomd API response.
 
 ## Chain
 
@@ -2093,7 +2092,7 @@ Type: [Object][229]
 
 [143]: #parameters-56
 
-[144]: #factomdcli
+[144]: #walletdcli
 
 [145]: #parameters-57
 
@@ -2101,7 +2100,7 @@ Type: [Object][229]
 
 [147]: #parameters-58
 
-[148]: #walletdcli
+[148]: #factomdcli
 
 [149]: #parameters-59
 
@@ -2261,13 +2260,13 @@ Type: [Object][229]
 
 [227]: #properties-10
 
-[228]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L28-L493 "Source code on GitHub"
+[228]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L28-L492 "Source code on GitHub"
 
 [229]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
 [230]: #connectionoptions
 
-[231]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L127-L130 "Source code on GitHub"
+[231]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L127-L130 "Source code on GitHub"
 
 [232]: #chain
 
@@ -2285,288 +2284,288 @@ Type: [Object][229]
 
 [239]: https://docs.factom.com/api#repeated-commit
 
-[240]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L143-L146 "Source code on GitHub"
+[240]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L143-L146 "Source code on GitHub"
 
-[241]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L160-L163 "Source code on GitHub"
+[241]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L160-L163 "Source code on GitHub"
 
-[242]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L193-L196 "Source code on GitHub"
+[242]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L193-L196 "Source code on GitHub"
 
-[243]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L176-L179 "Source code on GitHub"
+[243]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L176-L179 "Source code on GitHub"
 
-[244]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L281-L283 "Source code on GitHub"
+[244]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L281-L283 "Source code on GitHub"
 
-[245]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L49-L52 "Source code on GitHub"
+[245]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L49-L52 "Source code on GitHub"
 
-[246]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L62-L65 "Source code on GitHub"
+[246]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L62-L65 "Source code on GitHub"
 
-[247]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L75-L78 "Source code on GitHub"
+[247]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L75-L78 "Source code on GitHub"
 
-[248]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L360-L363 "Source code on GitHub"
+[248]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L359-L362 "Source code on GitHub"
 
 [249]: #transaction
 
-[250]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L346-L349 "Source code on GitHub"
+[250]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L345-L348 "Source code on GitHub"
 
-[251]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L409-L411 "Source code on GitHub"
+[251]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L408-L410 "Source code on GitHub"
 
 [252]: https://docs.factom.com/api#factomd-api
 
-[253]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L460-L462 "Source code on GitHub"
+[253]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L459-L461 "Source code on GitHub"
 
 [254]: #adminblock
 
-[255]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L218-L220 "Source code on GitHub"
+[255]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L218-L220 "Source code on GitHub"
 
-[256]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L271-L273 "Source code on GitHub"
+[256]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L271-L273 "Source code on GitHub"
 
-[257]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L230-L232 "Source code on GitHub"
+[257]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L230-L232 "Source code on GitHub"
 
-[258]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L450-L452 "Source code on GitHub"
+[258]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L449-L451 "Source code on GitHub"
 
 [259]: #directoryblock
 
-[260]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L440-L442 "Source code on GitHub"
+[260]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L439-L441 "Source code on GitHub"
 
-[261]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L240-L242 "Source code on GitHub"
+[261]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L240-L242 "Source code on GitHub"
 
 [262]: #factomcligetentrywithblockcontext
 
-[263]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L490-L492 "Source code on GitHub"
+[263]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L489-L491 "Source code on GitHub"
 
 [264]: #entryblock
 
-[265]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L470-L472 "Source code on GitHub"
+[265]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L469-L471 "Source code on GitHub"
 
 [266]: #entrycreditblock
 
-[267]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L290-L292 "Source code on GitHub"
+[267]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L290-L292 "Source code on GitHub"
 
-[268]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L251-L253 "Source code on GitHub"
+[268]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L251-L253 "Source code on GitHub"
 
 [269]: #factomcligetentry
 
-[270]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L480-L482 "Source code on GitHub"
+[270]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L479-L481 "Source code on GitHub"
 
 [271]: #factoidblock
 
-[272]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L261-L263 "Source code on GitHub"
+[272]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L261-L263 "Source code on GitHub"
 
-[273]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L431-L433 "Source code on GitHub"
+[273]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L430-L432 "Source code on GitHub"
 
 [274]: https://docs.factom.com/api#heights
 
-[275]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L206-L208 "Source code on GitHub"
+[275]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L206-L208 "Source code on GitHub"
 
-[276]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L300-L302 "Source code on GitHub"
+[276]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L300-L302 "Source code on GitHub"
 
-[277]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L87-L89 "Source code on GitHub"
+[277]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L87-L89 "Source code on GitHub"
 
-[278]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L98-L100 "Source code on GitHub"
+[278]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L98-L100 "Source code on GitHub"
 
-[279]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L109-L111 "Source code on GitHub"
+[279]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L109-L111 "Source code on GitHub"
 
-[280]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L316-L318 "Source code on GitHub"
+[280]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L315-L317 "Source code on GitHub"
 
 [281]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[282]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L333-L335 "Source code on GitHub"
+[282]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L332-L334 "Source code on GitHub"
 
-[283]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L373-L375 "Source code on GitHub"
+[283]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L372-L374 "Source code on GitHub"
 
 [284]: https://docs.factom.com/api#ack
 
-[285]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L396-L398 "Source code on GitHub"
+[285]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L395-L397 "Source code on GitHub"
 
-[286]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L385-L387 "Source code on GitHub"
+[286]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L384-L386 "Source code on GitHub"
 
-[287]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/factom-cli.js#L420-L422 "Source code on GitHub"
+[287]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/factom-cli.js#L419-L421 "Source code on GitHub"
 
 [288]: https://docs.factom.com/api#factom-walletd-api
 
-[289]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L141-L149 "Source code on GitHub"
+[289]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L141-L149 "Source code on GitHub"
 
 [290]: https://nodejs.org/api/buffer.html
 
-[291]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L156-L161 "Source code on GitHub"
+[291]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L156-L161 "Source code on GitHub"
 
-[292]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/blocks.js#L86-L113 "Source code on GitHub"
+[292]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/blocks.js#L86-L113 "Source code on GitHub"
 
-[293]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/blocks.js#L109-L112 "Source code on GitHub"
+[293]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/blocks.js#L109-L112 "Source code on GitHub"
 
-[294]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L199-L290 "Source code on GitHub"
+[294]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L199-L290 "Source code on GitHub"
 
-[295]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L278-L281 "Source code on GitHub"
+[295]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L278-L281 "Source code on GitHub"
 
 [296]: #entryblockcontext
 
 [297]: #entrybuilder
 
-[298]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L287-L289 "Source code on GitHub"
+[298]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L287-L289 "Source code on GitHub"
 
-[299]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L231-L236 "Source code on GitHub"
+[299]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L231-L236 "Source code on GitHub"
 
-[300]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L219-L224 "Source code on GitHub"
+[300]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L219-L224 "Source code on GitHub"
 
-[301]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L255-L260 "Source code on GitHub"
+[301]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L255-L260 "Source code on GitHub"
 
-[302]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L243-L248 "Source code on GitHub"
+[302]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L243-L248 "Source code on GitHub"
 
-[303]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L267-L270 "Source code on GitHub"
+[303]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L267-L270 "Source code on GitHub"
 
-[304]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L261-L353 "Source code on GitHub"
+[304]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L261-L353 "Source code on GitHub"
 
-[305]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L350-L352 "Source code on GitHub"
+[305]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L350-L352 "Source code on GitHub"
 
-[306]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L288-L302 "Source code on GitHub"
+[306]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L288-L302 "Source code on GitHub"
 
 [307]: #transactionbuilderrcdsignature
 
 [308]: #transactionbuilder
 
-[309]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L311-L320 "Source code on GitHub"
+[309]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L311-L320 "Source code on GitHub"
 
-[310]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L329-L333 "Source code on GitHub"
+[310]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L329-L333 "Source code on GitHub"
 
-[311]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L341-L344 "Source code on GitHub"
+[311]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L341-L344 "Source code on GitHub"
 
-[312]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L77-L233 "Source code on GitHub"
+[312]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L77-L233 "Source code on GitHub"
 
 [313]: #transactionblockcontext
 
 [314]: #transactionaddress
 
-[315]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L176-L204 "Source code on GitHub"
+[315]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L176-L204 "Source code on GitHub"
 
-[316]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L167-L169 "Source code on GitHub"
+[316]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L167-L169 "Source code on GitHub"
 
 [317]: #factomcligetentrycreditrate
 
-[318]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L148-L150 "Source code on GitHub"
+[318]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L148-L150 "Source code on GitHub"
 
-[319]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L209-L222 "Source code on GitHub"
+[319]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L209-L222 "Source code on GitHub"
 
-[320]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L157-L159 "Source code on GitHub"
+[320]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L157-L159 "Source code on GitHub"
 
-[321]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L229-L231 "Source code on GitHub"
+[321]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L229-L231 "Source code on GitHub"
 
-[322]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L26-L189 "Source code on GitHub"
+[322]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L26-L189 "Source code on GitHub"
 
-[323]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L43-L45 "Source code on GitHub"
+[323]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L43-L45 "Source code on GitHub"
 
-[324]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L50-L52 "Source code on GitHub"
+[324]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L50-L52 "Source code on GitHub"
 
-[325]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L154-L161 "Source code on GitHub"
+[325]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L154-L161 "Source code on GitHub"
 
-[326]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L57-L59 "Source code on GitHub"
+[326]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L57-L59 "Source code on GitHub"
 
-[327]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L117-L120 "Source code on GitHub"
+[327]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L117-L120 "Source code on GitHub"
 
-[328]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L125-L127 "Source code on GitHub"
+[328]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L125-L127 "Source code on GitHub"
 
-[329]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L133-L141 "Source code on GitHub"
+[329]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L133-L141 "Source code on GitHub"
 
-[330]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L146-L148 "Source code on GitHub"
+[330]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L146-L148 "Source code on GitHub"
 
-[331]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L75-L77 "Source code on GitHub"
+[331]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L75-L77 "Source code on GitHub"
 
-[332]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L83-L85 "Source code on GitHub"
+[332]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L83-L85 "Source code on GitHub"
 
-[333]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L91-L98 "Source code on GitHub"
+[333]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L91-L98 "Source code on GitHub"
 
-[334]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L104-L111 "Source code on GitHub"
+[334]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L104-L111 "Source code on GitHub"
 
-[335]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L66-L69 "Source code on GitHub"
+[335]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L66-L69 "Source code on GitHub"
 
-[336]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L167-L179 "Source code on GitHub"
+[336]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L167-L179 "Source code on GitHub"
 
-[337]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L186-L188 "Source code on GitHub"
+[337]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L186-L188 "Source code on GitHub"
 
-[338]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/apis-cli.js#L150-L169 "Source code on GitHub"
+[338]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/apis-cli.js#L175-L192 "Source code on GitHub"
 
-[339]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/apis-cli.js#L165-L168 "Source code on GitHub"
+[339]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/apis-cli.js#L189-L191 "Source code on GitHub"
 
-[340]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/apis-cli.js#L175-L192 "Source code on GitHub"
+[340]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/apis-cli.js#L150-L169 "Source code on GitHub"
 
-[341]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/apis-cli.js#L189-L191 "Source code on GitHub"
+[341]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/apis-cli.js#L165-L168 "Source code on GitHub"
 
-[342]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/chain.js#L17-L62 "Source code on GitHub"
+[342]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/chain.js#L17-L62 "Source code on GitHub"
 
-[343]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/chain.js#L48-L50 "Source code on GitHub"
+[343]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/chain.js#L48-L50 "Source code on GitHub"
 
-[344]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/chain.js#L40-L42 "Source code on GitHub"
+[344]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/chain.js#L40-L42 "Source code on GitHub"
 
-[345]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/chain.js#L56-L61 "Source code on GitHub"
+[345]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/chain.js#L56-L61 "Source code on GitHub"
 
-[346]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/chain.js#L144-L151 "Source code on GitHub"
+[346]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/chain.js#L144-L151 "Source code on GitHub"
 
-[347]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/chain.js#L78-L105 "Source code on GitHub"
+[347]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/chain.js#L78-L105 "Source code on GitHub"
 
-[348]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/chain.js#L131-L134 "Source code on GitHub"
+[348]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/chain.js#L131-L134 "Source code on GitHub"
 
-[349]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L398-L405 "Source code on GitHub"
+[349]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L398-L405 "Source code on GitHub"
 
-[350]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L337-L365 "Source code on GitHub"
+[350]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L337-L365 "Source code on GitHub"
 
-[351]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L385-L388 "Source code on GitHub"
+[351]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L385-L388 "Source code on GitHub"
 
-[352]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/chain.js#L179-L183 "Source code on GitHub"
+[352]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/chain.js#L179-L183 "Source code on GitHub"
 
-[353]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/chain.js#L169-L172 "Source code on GitHub"
+[353]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/chain.js#L169-L172 "Source code on GitHub"
 
-[354]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L423-L426 "Source code on GitHub"
+[354]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L423-L426 "Source code on GitHub"
 
-[355]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/apis-cli.js#L33-L62 "Source code on GitHub"
+[355]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/apis-cli.js#L33-L62 "Source code on GitHub"
 
 [356]: https://github.com/tim-kos/node-retry#retrytimeoutsoptions
 
-[357]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/blocks.js#L24-L73 "Source code on GitHub"
+[357]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/blocks.js#L24-L73 "Source code on GitHub"
 
-[358]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/blocks.js#L186-L201 "Source code on GitHub"
+[358]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/blocks.js#L186-L201 "Source code on GitHub"
 
-[359]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/entry.js#L292-L300 "Source code on GitHub"
+[359]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/entry.js#L292-L300 "Source code on GitHub"
 
-[360]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/blocks.js#L258-L316 "Source code on GitHub"
+[360]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/blocks.js#L258-L316 "Source code on GitHub"
 
-[361]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/blocks.js#L310-L315 "Source code on GitHub"
+[361]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/blocks.js#L310-L315 "Source code on GitHub"
 
-[362]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/blocks.js#L214-L242 "Source code on GitHub"
+[362]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/blocks.js#L214-L242 "Source code on GitHub"
 
-[363]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/blocks.js#L239-L241 "Source code on GitHub"
+[363]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/blocks.js#L239-L241 "Source code on GitHub"
 
-[364]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L240-L247 "Source code on GitHub"
+[364]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L240-L247 "Source code on GitHub"
 
-[365]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L227-L234 "Source code on GitHub"
+[365]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L227-L234 "Source code on GitHub"
 
-[366]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L121-L134 "Source code on GitHub"
+[366]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L121-L134 "Source code on GitHub"
 
-[367]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L22-L42 "Source code on GitHub"
+[367]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L22-L42 "Source code on GitHub"
 
-[368]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L67-L69 "Source code on GitHub"
+[368]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L67-L69 "Source code on GitHub"
 
-[369]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L94-L96 "Source code on GitHub"
+[369]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L94-L96 "Source code on GitHub"
 
-[370]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L58-L60 "Source code on GitHub"
+[370]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L58-L60 "Source code on GitHub"
 
-[371]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L85-L87 "Source code on GitHub"
+[371]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L85-L87 "Source code on GitHub"
 
-[372]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L112-L114 "Source code on GitHub"
+[372]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L112-L114 "Source code on GitHub"
 
-[373]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L49-L51 "Source code on GitHub"
+[373]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L49-L51 "Source code on GitHub"
 
-[374]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L76-L78 "Source code on GitHub"
+[374]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L76-L78 "Source code on GitHub"
 
-[375]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L103-L105 "Source code on GitHub"
+[375]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L103-L105 "Source code on GitHub"
 
-[376]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L195-L197 "Source code on GitHub"
+[376]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L195-L197 "Source code on GitHub"
 
-[377]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L168-L170 "Source code on GitHub"
+[377]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L168-L170 "Source code on GitHub"
 
-[378]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L177-L179 "Source code on GitHub"
+[378]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L177-L179 "Source code on GitHub"
 
-[379]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L204-L206 "Source code on GitHub"
+[379]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L204-L206 "Source code on GitHub"
 
-[380]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/addresses.js#L186-L188 "Source code on GitHub"
+[380]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/addresses.js#L186-L188 "Source code on GitHub"
 
-[381]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L15-L30 "Source code on GitHub"
+[381]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L15-L30 "Source code on GitHub"
 
-[382]: https://git@github.com/:PaulBernier/factomjs/blob/efb6b0c8764e8195e149e7e53dfbc42894a407f8/src/transaction.js#L42-L48 "Source code on GitHub"
+[382]: https://git@github.com/:PaulBernier/factomjs/blob/77e55ecef724fa6f97de9e8d922a820ddb86a547/src/transaction.js#L42-L48 "Source code on GitHub"

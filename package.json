@@ -1,6 +1,6 @@
 {
     "name": "factom",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Library to build applications on the Factom blockchain",
     "main": "src/factom.js",
     "types": "factom.d.ts",
@@ -49,8 +49,8 @@
         "@babel/plugin-transform-async-to-generator": "^7.4.0",
         "@babel/plugin-transform-modules-commonjs": "^7.4.0",
         "@babel/plugin-transform-runtime": "^7.4.0",
-        "@babel/preset-env": "^7.4.1",
-        "@babel/runtime": "^7.4.0",
+        "@babel/preset-env": "^7.4.2",
+        "@babel/runtime": "^7.4.2",
         "babel-loader": "^8.0.5",
         "chai": "^4.2.0",
         "coveralls": "^3.0.3",
