@@ -7,7 +7,7 @@
     "scripts": {
         "docs": "documentation build --github --sort-order alpha src/** -f md > docs/doc.md",
         "docs-html": "documentation build src/** --sort-order alpha -f html -o docs",
-        "lint": "eslint src/",
+        "lint": "eslint \"{src,test}/**/*.js\"",
         "format": "prettier --write \"{src,test}/**/*.js\"",
         "build": "webpack",
         "prepublishOnly": "npm run format && npm run lint && npm run build && npm run test && npm run docs",
@@ -52,6 +52,8 @@
         "@babel/plugin-transform-runtime": "^7.4.0",
         "@babel/preset-env": "^7.4.2",
         "@babel/runtime": "^7.4.2",
+        "@commitlint/cli": "^7.5.2",
+        "@commitlint/config-conventional": "^7.5.0",
         "babel-loader": "^8.0.5",
         "chai": "^4.2.0",
         "coveralls": "^3.0.3",
@@ -69,7 +71,8 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged"
+            "pre-commit": "lint-staged",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },
     "lint-staged": {
