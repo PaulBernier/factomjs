@@ -2,7 +2,6 @@ const assert = require('chai').assert,
     { encodeVarInt } = require('../src/util');
 
 describe('Test Util', function() {
-
     it('should encode to VarInt_F from number', function() {
         assert.deepEqual(encodeVarInt(0), Buffer.from([0]));
         assert.deepEqual(encodeVarInt(3), Buffer.from([3]));
@@ -27,7 +26,10 @@ describe('Test Util', function() {
         assert.deepEqual(encodeVarInt('4294967296'), Buffer.from([144, 128, 128, 128, 0]));
 
         // 2^64 - 1
-        assert.deepEqual(encodeVarInt('18446744073709551615'), Buffer.from([129, 255, 255, 255, 255, 255, 255, 255, 255, 127]));
+        assert.deepEqual(
+            encodeVarInt('18446744073709551615'),
+            Buffer.from([129, 255, 255, 255, 255, 255, 255, 255, 255, 127])
+        );
     });
 
     it('should have correct length once encoded', function() {
@@ -55,5 +57,4 @@ describe('Test Util', function() {
         assert.lengthOf(encodeVarInt('9223372036854775808'), 10);
         assert.lengthOf(encodeVarInt('18446744073709551615'), 10);
     });
-
 });

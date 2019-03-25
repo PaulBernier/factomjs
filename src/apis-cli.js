@@ -4,8 +4,21 @@ const axios = require('axios'),
     retry = require('retry');
 
 const DEBUG_API_CALLS = new Set([
-    'holding-queue', 'network-info', 'predictive-fer', 'audit-servers', 'federated-servers', 'configuration', 'process-list', 'authorities',
-    'reload-configuration', 'drop-rate', 'set-drop-rate', 'delay', 'set-delay', 'summary', 'messages'
+    'holding-queue',
+    'network-info',
+    'predictive-fer',
+    'audit-servers',
+    'federated-servers',
+    'configuration',
+    'process-list',
+    'authorities',
+    'reload-configuration',
+    'drop-rate',
+    'set-drop-rate',
+    'delay',
+    'set-delay',
+    'summary',
+    'messages'
 ]);
 
 const DEFAULT_RETRY_STRATEGY = {
@@ -62,7 +75,6 @@ class ApiError extends Error {
  */
 
 class BaseCli {
-
     constructor(conf, defaultPort) {
         const host = conf.host || 'localhost';
         const protocol = conf.protocol || 'http';
@@ -84,7 +96,7 @@ class BaseCli {
 
         if (protocol === 'https' && typeof conf.rejectUnauthorized !== 'undefined') {
             httpCliOptions.httpsAgent = new HttpsAgent({
-                rejectUnauthorized: conf.rejectUnauthorized,
+                rejectUnauthorized: conf.rejectUnauthorized
             });
         }
 
@@ -107,15 +119,18 @@ class BaseCli {
             };
 
             operation.attempt(() => {
-                this.httpCli.post(url, data)
+                this.httpCli
+                    .post(url, data)
                     .then(r => resolve(r.data.result))
-                    .catch(function (error) {
+                    .catch(function(error) {
                         let rejection;
                         if (error.response) {
                             switch (error.response.status) {
                                 case 400:
                                     // API bad requests should not be retried
-                                    return reject(new ApiError(method, params, error.response.data.error));
+                                    return reject(
+                                        new ApiError(method, params, error.response.data.error)
+                                    );
                                 case 401:
                                     // No need to retry un authorized access
                                     return reject(new Error(error.response.data));
@@ -138,7 +153,7 @@ class BaseCli {
 
 function newCounter() {
     let i = 0;
-    return function () {
+    return function() {
         return ++i;
     };
 }
@@ -148,7 +163,6 @@ function newCounter() {
  * @param {ConnectionOptions} [conf] - Factomd connection options.
  */
 class FactomdCli extends BaseCli {
-
     constructor(conf) {
         const configuration = conf || {};
         super(configuration, 8088);
@@ -173,7 +187,6 @@ class FactomdCli extends BaseCli {
  * @param {ConnectionOptions} [conf] - Walletd connection options.
  */
 class WalletdCli extends BaseCli {
-
     constructor(conf) {
         const configuration = conf || {};
         super(configuration, 8089);

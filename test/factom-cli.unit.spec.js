@@ -2,7 +2,6 @@ const assert = require('chai').assert;
 const { FactomCli } = require('../src/factom-cli');
 
 describe('Test FactomCli', function() {
-
     it('should set default factomd endpoint and port', function() {
         const cli = new FactomCli();
         assert.strictEqual(cli.factomd.httpCli.defaults.baseURL, 'http://localhost:8088');
@@ -76,5 +75,4 @@ describe('Test FactomCli', function() {
         });
         assert.strictEqual(cli.factomd.httpCli.defaults.baseURL, 'https://52.202.51.229:8088');
     });
-
 });

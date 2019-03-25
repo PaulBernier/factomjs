@@ -5,7 +5,13 @@ const sign = require('tweetnacl/nacl-fast').sign,
     base58 = require('base-58'),
     { RCD_TYPE_1, encodeVarInt, sha256, sha256d, flatMap } = require('./util'),
     { MAX_TRANSACTION_SIZE } = require('./constant'),
-    { isValidFctAddress, isValidPublicAddress, getPublicAddress, addressToKey, addressToRcdHash } = require('./addresses');
+    {
+        isValidFctAddress,
+        isValidPublicAddress,
+        getPublicAddress,
+        addressToKey,
+        addressToRcdHash
+    } = require('./addresses');
 
 /**
  * Class to hold address and amount of an input/output of a {@link Transaction}.
@@ -25,7 +31,10 @@ class TransactionAddress {
     }
 
     marshalBinary() {
-        return Buffer.concat([encodeVarInt(this.amount), Buffer.from(base58.decode(this.address).slice(2, 34))]);
+        return Buffer.concat([
+            encodeVarInt(this.amount),
+            Buffer.from(base58.decode(this.address).slice(2, 34))
+        ]);
     }
 }
 
@@ -69,13 +78,12 @@ function validateAmount(amount) {
  *   .input('Fs2E6iXCLAKDiPqVtfxtuQCKsTe7o6DJFDnht1wST53s4ibtdu9f', 1010000 + fees)
  *   .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg5uH', 5000000)
  *   .output('FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZteF', 10000000)
- *    // Note that the line below is to buy Entry Credits (see the address type) and the amount is in Factoshis like other outputs: 
+ *    // Note that the line below is to buy Entry Credits (see the address type) and the amount is in Factoshis like other outputs:
  *    // it is *not* the number of Entry Credits you are purchasing.
  *   .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e3QR', 10000)
  *   .build()
  */
 class Transaction {
-
     constructor(builder, blockContext) {
         if (builder instanceof TransactionBuilder) {
             this.timestamp = builder._timestamp || Date.now();
@@ -84,12 +92,21 @@ class Transaction {
             this.entryCreditOutputs = builder._entryCreditOutputs;
             this.blockContext = blockContext;
 
-            this.marshalBinarySig = marshalBinarySig(this.timestamp, this.inputs, this.factoidOutputs, this.entryCreditOutputs);
+            this.marshalBinarySig = marshalBinarySig(
+                this.timestamp,
+                this.inputs,
+                this.factoidOutputs,
+                this.entryCreditOutputs
+            );
             this.id = sha256(this.marshalBinarySig).toString('hex');
 
             if (builder._keys.length !== 0) {
-                this.rcds = builder._keys.map(key => Buffer.concat([RCD_TYPE_1, Buffer.from(key.publicKey)]));
-                this.signatures = builder._keys.map(key => Buffer.from(sign.detached(this.marshalBinarySig, key.secretKey)));
+                this.rcds = builder._keys.map(key =>
+                    Buffer.concat([RCD_TYPE_1, Buffer.from(key.publicKey)])
+                );
+                this.signatures = builder._keys.map(key =>
+                    Buffer.from(sign.detached(this.marshalBinarySig, key.secretKey))
+                );
             } else {
                 this.rcds = builder._rcds;
                 this.signatures = builder._signatures;
@@ -100,18 +117,25 @@ class Transaction {
                     validateSignatures(this.marshalBinarySig, this.rcds, this.signatures);
                 }
             }
-
         } else if (typeof builder === 'object') {
             // Building transaction from the result of transaction API
             // The reason for not using a TransactionBuilder for transactions read from the blockchain is performance
             // because of the validation cost of the rcs/signatures. We trust the data coming from the blockchain to be valid.
             this.id = builder.txid;
             this.timestamp = builder.millitimestamp;
-            this.inputs = builder.inputs.map(input => new TransactionAddress(input.useraddress, input.amount));
-            this.factoidOutputs = builder.outputs.map(output => new TransactionAddress(output.useraddress, output.amount));
-            this.entryCreditOutputs = builder.outecs.map(output => new TransactionAddress(output.useraddress, output.amount));
+            this.inputs = builder.inputs.map(
+                input => new TransactionAddress(input.useraddress, input.amount)
+            );
+            this.factoidOutputs = builder.outputs.map(
+                output => new TransactionAddress(output.useraddress, output.amount)
+            );
+            this.entryCreditOutputs = builder.outecs.map(
+                output => new TransactionAddress(output.useraddress, output.amount)
+            );
             this.rcds = builder.rcds.map(rcd => Buffer.from(rcd, 'hex'));
-            this.signatures = flatMap(builder.sigblocks, sb => sb.signatures).map(signature => Buffer.from(signature, 'hex'));
+            this.signatures = flatMap(builder.sigblocks, sb => sb.signatures).map(signature =>
+                Buffer.from(signature, 'hex')
+            );
             this.blockContext = blockContext;
         } else {
             throw new Error('Use `Transaction.builder()` syntax to create a new Transaction.');
@@ -122,12 +146,20 @@ class Transaction {
         }
 
         this.totalInputs = this.inputs.reduce((acc, value) => acc + value.amount, 0);
-        this.totalFactoidOutputs = this.factoidOutputs.reduce((acc, value) => acc + value.amount, 0);
-        this.totalEntryCreditOutputs = this.entryCreditOutputs.reduce((acc, value) => acc + value.amount, 0);
+        this.totalFactoidOutputs = this.factoidOutputs.reduce(
+            (acc, value) => acc + value.amount,
+            0
+        );
+        this.totalEntryCreditOutputs = this.entryCreditOutputs.reduce(
+            (acc, value) => acc + value.amount,
+            0
+        );
         const totalOutputs = this.totalFactoidOutputs + this.totalEntryCreditOutputs;
 
         if (!Number.isSafeInteger(this.totalInputs) || !Number.isSafeInteger(totalOutputs)) {
-            throw new Error('Total inputs/outputs are not safe integers (too big to be handled by the library).');
+            throw new Error(
+                'Total inputs/outputs are not safe integers (too big to be handled by the library).'
+            );
         }
 
         if (this.totalInputs === 0) {
@@ -136,7 +168,11 @@ class Transaction {
         } else if (this.totalInputs >= totalOutputs) {
             this.feesPaid = this.totalInputs - totalOutputs;
         } else {
-            throw new Error(`Sum of Transaction outputs (${totalOutputs}) is greater than the sum of inputs (${this.totalInputs})`);
+            throw new Error(
+                `Sum of Transaction outputs (${totalOutputs}) is greater than the sum of inputs (${
+                    this.totalInputs
+                })`
+            );
         }
 
         Object.freeze(this);
@@ -182,7 +218,10 @@ class Transaction {
             size = this.marshalBinary().length;
             numberOfSignatures = this.signatures.length;
         } else {
-            if (typeof options.rcdSignatureLength === 'number' && typeof options.numberOfSignatures === 'number') {
+            if (
+                typeof options.rcdSignatureLength === 'number' &&
+                typeof options.numberOfSignatures === 'number'
+            ) {
                 size = this.marshalBinarySig.length + options.rcdSignatureLength;
                 numberOfSignatures = options.numberOfSignatures;
             } else if (options.rcdType === 1) {
@@ -194,7 +233,9 @@ class Transaction {
         }
 
         if (size > MAX_TRANSACTION_SIZE) {
-            throw new Error(`Transaction size is bigger than the maximum (${MAX_TRANSACTION_SIZE} bytes).`);
+            throw new Error(
+                `Transaction size is bigger than the maximum (${MAX_TRANSACTION_SIZE} bytes).`
+            );
         }
 
         let fee = Math.floor((size + 1023) / 1024);
@@ -230,11 +271,9 @@ class Transaction {
     static builder(transaction) {
         return new TransactionBuilder(transaction);
     }
-
 }
 
 function marshalBinarySig(timestamp, inputs, factoidOutputs, entryCreditOutputs) {
-
     const header = Buffer.alloc(10);
     header.writeInt8(2);
     header.writeIntBE(timestamp, 1, 6);
@@ -253,7 +292,6 @@ function marshalBinarySig(timestamp, inputs, factoidOutputs, entryCreditOutputs)
         ...marshalledEntryCreditOutputs
     ]);
 }
-
 
 /**
  * Class to build a {@link Transaction}.
@@ -280,8 +318,8 @@ class TransactionBuilder {
 
     /**
      * Add an input to the transaction.
-     * @param {string} fctAddress - Factoid address. 
-     * User should provide a private address (Fs) to allow the signature of the transaction. 
+     * @param {string} fctAddress - Factoid address.
+     * User should provide a private address (Fs) to allow the signature of the transaction.
      * If a public address is provided the user will need to provide the RCD and signature using {@link TransactionBuilder#rcdSignature}.
      * @param {number} amount - Amount in factoshis (10^-8 Factoids).
      * @returns {TransactionBuilder} - TransactionBuilder instance.
@@ -334,7 +372,7 @@ class TransactionBuilder {
     }
 
     /**
-     * Set the transaction timestamp. 
+     * Set the transaction timestamp.
      * If not set the library will use Date.now() as the transaction timestamp.
      * @param {number} timestamp - Timestamp in milliseconds.
      * @returns {TransactionBuilder} - TransactionBuilder instance.
@@ -355,7 +393,11 @@ class TransactionBuilder {
 
 function validateRcds(inputs, rcds) {
     if (rcds.length !== inputs.length) {
-        throw new Error(`The number of RCDs (${rcds.length}) does not equal the number of inputs (${inputs.length}).`);
+        throw new Error(
+            `The number of RCDs (${rcds.length}) does not equal the number of inputs (${
+                inputs.length
+            }).`
+        );
     }
     for (let i = 0; i < rcds.length; ++i) {
         validateRcdHash(inputs[i], rcds[i]);
@@ -370,7 +412,11 @@ function validateRcdHash(input, rcd) {
 
 function validateSignatures(data, rcds, signatures) {
     if (rcds.length !== signatures.length) {
-        throw new Error(`The number of RCDs (${rcds.length}) does not equal the number of signatures (${signatures.length})`);
+        throw new Error(
+            `The number of RCDs (${rcds.length}) does not equal the number of signatures (${
+                signatures.length
+            })`
+        );
     }
     for (let i = 0; i < signatures.length; ++i) {
         validateSignature(data, rcds[i], signatures[i]);

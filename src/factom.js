@@ -1,4 +1,5 @@
-module.exports = Object.assign({},
+module.exports = Object.assign(
+    {},
     require('./factom-cli'),
     require('./apis-cli'),
     require('./entry'),

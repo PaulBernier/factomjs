@@ -1,4 +1,5 @@
-module.exports = Object.assign({},
+module.exports = Object.assign(
+    {},
     require('./entry'),
     require('./chain'),
     require('./addresses'),

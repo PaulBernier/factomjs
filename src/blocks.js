@@ -1,11 +1,11 @@
 const { Transaction } = require('./transaction'),
-    { keyToPublicEcAddress, rcdHashToPublicFctAddress } = require('./addresses'), {
+    { keyToPublicEcAddress, rcdHashToPublicFctAddress } = require('./addresses'),
+    {
         ADMIN_ID_TO_CODE,
         ADMIN_BLOCKS_CHAIN_ID,
         ENTRY_CREDIT_BLOCKS_CHAIN_ID,
         FACTOID_BLOCKS_CHAIN_ID
     } = require('./constant');
-
 
 /**
  * Class representing a Directory block.
@@ -114,7 +114,6 @@ class AdminBlock {
 
 // https://github.com/FactomProject/factomd/tree/3871e26d562c3ed920a1a8fc0e61e50d49f1cf9b/common/adminBlock
 function transformAdminBlockEntry(entry) {
-
     const base = {
         adminId: entry.adminidtype,
         adminCode: ADMIN_ID_TO_CODE.get(entry.adminidtype)
@@ -124,7 +123,10 @@ function transformAdminBlockEntry(entry) {
     switch (base.adminId) {
         case 1:
             data.identityChainId = entry.identityadminchainid;
-            data.previousDirectoryBlockSignature = { publicKey: entry.prevdbsig.pub, signature: entry.prevdbsig.sig };
+            data.previousDirectoryBlockSignature = {
+                publicKey: entry.prevdbsig.pub,
+                signature: entry.prevdbsig.sig
+            };
             break;
         case 2:
         case 3:
@@ -153,7 +155,11 @@ function transformAdminBlockEntry(entry) {
             data.ecdsaPublicKey = entry.ecdsapublickey;
             break;
         case 11:
-            data.outputs = entry.Outputs.map(o => ({ address: o.useraddress, rcdHash: o.address, amount: o.amount }));
+            data.outputs = entry.Outputs.map(o => ({
+                address: o.useraddress,
+                rcdHash: o.address,
+                amount: o.amount
+            }));
             break;
         case 12:
             data.descriptorHeight = entry.descriptor_height;
@@ -195,21 +201,24 @@ class EntryBlock {
         this.previousBlockKeyMR = header.prevkeymr;
         this.chainId = header.chainid;
         this.sequenceNumber = header.blocksequencenumber;
-        this.entryRefs = block.entrylist.map(e => ({ entryHash: e.entryhash, timestamp: e.timestamp }));
+        this.entryRefs = block.entrylist.map(e => ({
+            entryHash: e.entryhash,
+            timestamp: e.timestamp
+        }));
         Object.freeze(this);
     }
 }
 
 /**
  * Class representing a Factoid block.
-  * @property {string} keyMR - Key Mertle Root.
-  * @property {string} bodyMR - Merkle Root of the body.
-  * @property {string} previousBlockKeyMR - Key Merkle Root of the previous Factoid block.
-  * @property {string} ledgerKeyMR - Ledger Key Merkle Root.
-  * @property {string} previousLedgerKeyMR - Ledger Key Merkle Root of the previous Factoid block.
-  * @property {number} entryCreditRate - Entry credit rate.
-  * @property {number} directoryBlockHeight - Directory block height.
-  * @property {Transaction[]} transactions - Array of Factoid transactions part of this block.
+ * @property {string} keyMR - Key Mertle Root.
+ * @property {string} bodyMR - Merkle Root of the body.
+ * @property {string} previousBlockKeyMR - Key Merkle Root of the previous Factoid block.
+ * @property {string} ledgerKeyMR - Ledger Key Merkle Root.
+ * @property {string} previousLedgerKeyMR - Ledger Key Merkle Root of the previous Factoid block.
+ * @property {number} entryCreditRate - Entry credit rate.
+ * @property {number} directoryBlockHeight - Directory block height.
+ * @property {Transaction[]} transactions - Array of Factoid transactions part of this block.
  */
 class FactoidBlock {
     /**
@@ -224,12 +233,14 @@ class FactoidBlock {
         this.previousLedgerKeyMR = fb.prevledgerkeymr;
         this.entryCreditRate = fb.exchrate;
         this.directoryBlockHeight = fb.dbheight;
-        this.transactions = fb.transactions.map(t => new Transaction(t,
-            {
-                factoidBlockKeyMR: this.keyMR,
-                directoryBlockHeight: this.directoryBlockHeight,
-                // directoryBlockKeyMR is not available
-            }));
+        this.transactions = fb.transactions.map(
+            t =>
+                new Transaction(t, {
+                    factoidBlockKeyMR: this.keyMR,
+                    directoryBlockHeight: this.directoryBlockHeight
+                    // directoryBlockKeyMR is not available
+                })
+        );
     }
 
     /**
@@ -243,17 +254,17 @@ class FactoidBlock {
 
 /**
  * Class representing an Entry Credit block.
-  * @property {string} headerHash - Hash of the header.
-  * @property {string} fullHash - Full hash.
-  * @property {string} headerExpansionArea - Header expansion area.
-  * @property {string} bodyHash - Hash of the body.
-  * @property {string} previousHeaderHash - Hash of the previous Entry Credit block header.
-  * @property {string} previousFullHash - Full hash of the previous Entry Credit block.
-  * @property {number} directoryBlockHeight - Directory block height.
-  * @property {number} bodySize - Size of the body.
-  * @property {number} objectCount - Object count.
-  * @property {number[]} minuteIndexes - Delimitation of the commits for each minute. Use method getCommitsForMinute rather than using this attribute directly.
-  * @property {{version: number, millis: number, entryHash: string, credits: number, ecPublicKey: string, signature: string}[]} commits - Array of commits.
+ * @property {string} headerHash - Hash of the header.
+ * @property {string} fullHash - Full hash.
+ * @property {string} headerExpansionArea - Header expansion area.
+ * @property {string} bodyHash - Hash of the body.
+ * @property {string} previousHeaderHash - Hash of the previous Entry Credit block header.
+ * @property {string} previousFullHash - Full hash of the previous Entry Credit block.
+ * @property {number} directoryBlockHeight - Directory block height.
+ * @property {number} bodySize - Size of the body.
+ * @property {number} objectCount - Object count.
+ * @property {number[]} minuteIndexes - Delimitation of the commits for each minute. Use method getCommitsForMinute rather than using this attribute directly.
+ * @property {{version: number, millis: number, entryHash: string, credits: number, ecPublicKey: string, signature: string}[]} commits - Array of commits.
  */
 class EntryCreditBlock {
     /**

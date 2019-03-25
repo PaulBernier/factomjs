@@ -120,8 +120,8 @@ class FactomCli {
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {number} [options.chunkSize = 200] - Only if the obj argument is an iterable. The lib chunks the input if it is an iterable so that not too many Promises get resolved in parallel.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commits.
-     * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }>|Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} - 
-     * Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash. 
+     * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }>|Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} -
+     * Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      * It is an array of such object if the input was an iterable of Entry or Chain.
      */
     async add(obj, ecAddress, options) {
@@ -235,7 +235,7 @@ class FactomCli {
      * Get entry by hash (returned Entry does not contain an {@link EntryBlockContext} and a timestamp). See {@link FactomCli#getEntryWithBlockContext}.
      * @async
      * @param {string} entryHash - Hash of the entry to query.
-     * @returns {Promise<Entry>} - Entry that does not contain an {@link EntryBlockContext} and a timestamp). 
+     * @returns {Promise<Entry>} - Entry that does not contain an {@link EntryBlockContext} and a timestamp).
      */
     getEntry(entryHash) {
         return get.getEntry(this.factomd, entryHash);
@@ -319,11 +319,11 @@ class FactomCli {
     // Send transactions
 
     /**
-     * Send a Factoid transaction. 
+     * Send a Factoid transaction.
      * This method will throw if the transaction fees are too low given the current EC rate.
      * Note that by default this method also rejects a transaction over paying the minimum required fees by a factor 10 as it is most likely a user input error. This can be overriden with the force option.
      * @async
-     * @param {Transaction} transaction 
+     * @param {Transaction} transaction
      * @param {Object} [options]
      * @param {number} [options.timeout=60] - Time to wait in seconds for transaction acknowledgment before timing out. If negative value, doesn't wait for ack.
      * @param {boolean} [options.force=false] - Set to true to bypass the checks of the transaction fee overpay and the minimum EC output amount.
@@ -340,11 +340,17 @@ class FactomCli {
      * @param {string} recipientAddress - Public Factoid address receiving the funds.
      * @param {number} amount - Amount to transfer in factoshis (10^-8 Factoids).
      * @param {number} [fees] - Value to override fees of the transaction (if not specified the library computes the lowest acceptable fee).
-     * @returns {Promise<Transaction>} 
+     * @returns {Promise<Transaction>}
      */
     async createFactoidTransaction(originAddress, recipientAddress, amount, fees) {
         const originPrivateAddress = await this.getPrivateAddress(originAddress);
-        return send.createFactoidTransaction(this.factomd, originPrivateAddress, recipientAddress, amount, fees);
+        return send.createFactoidTransaction(
+            this.factomd,
+            originPrivateAddress,
+            recipientAddress,
+            amount,
+            fees
+        );
     }
 
     /**
@@ -354,11 +360,17 @@ class FactomCli {
      * @param {string} recipientAddress - Public Entry Credit address to receive the ECs.
      * @param {number} ecAmount - Amount of Entry Credit (EC) to purchase.
      * @param {number} [fees] - Value to override fees of the transaction (if not specified the library computes the lowest acceptable fee).
-     * @returns {Promise<Transaction>} 
+     * @returns {Promise<Transaction>}
      */
     async createEntryCreditPurchaseTransaction(originAddress, recipientAddress, ecAmount, fees) {
         const originPrivateAddress = await this.getPrivateAddress(originAddress);
-        return send.createEntryCreditPurchaseTransaction(this.factomd, originPrivateAddress, recipientAddress, ecAmount, fees);
+        return send.createEntryCreditPurchaseTransaction(
+            this.factomd,
+            originPrivateAddress,
+            recipientAddress,
+            ecAmount,
+            fees
+        );
     }
 
     // Ack

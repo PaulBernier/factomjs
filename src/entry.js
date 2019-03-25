@@ -58,7 +58,6 @@ class Entry {
         return this.extIds.map(extId => extId.toString('hex'));
     }
 
-
     /**
      * Get the entry size.
      * @returns {number} The entry size in bytes.
@@ -99,7 +98,7 @@ class Entry {
 
     /**
      * Get the number of bytes that can be added to the entry before hitting the maximum (10kb).
-     * @returns {number} Maximum number of bytes that can still be added to the entry. 
+     * @returns {number} Maximum number of bytes that can still be added to the entry.
      */
     remainingMaxBytes() {
         const remainingMaxBytes = MAX_ENTRY_PAYLOAD_SIZE - this.payloadSize();
@@ -112,7 +111,7 @@ class Entry {
 
     /**
      * Get hash of the entry.
-     * @returns {Buffer} Hash of the entry. 
+     * @returns {Buffer} Hash of the entry.
      */
     hash() {
         const data = this.marshalBinary();
@@ -125,7 +124,6 @@ class Entry {
     hashHex() {
         return this.hash().toString('hex');
     }
-
 
     /**
      * @returns {Buffer} Result of marshaling the entry.
@@ -149,7 +147,7 @@ class Entry {
 
     /**
      * Get Entry Credit cost of the entry.
-     * @returns {number} EC cost of the entry. 
+     * @returns {number} EC cost of the entry.
      */
     ecCost() {
         const dataLength = this.payloadSize();
@@ -197,11 +195,12 @@ class Entry {
  * @param {Entry|Object} [entry] - Optional entry to use to initialize the attributes of the builder.
  */
 class EntryBuilder {
-
     constructor(entry) {
         if (entry instanceof Object) {
             this._chainId = entry.chainId ? Buffer.from(entry.chainId, 'hex') : Buffer.from('');
-            this._extIds = Array.isArray(entry.extIds) ? entry.extIds.map(extId => Buffer.from(extId, 'hex')) : [];
+            this._extIds = Array.isArray(entry.extIds)
+                ? entry.extIds.map(extId => Buffer.from(extId, 'hex'))
+                : [];
             this._content = entry.content ? Buffer.from(entry.content, 'hex') : Buffer.from('');
             this._timestamp = entry.timestamp;
         } else {
@@ -259,7 +258,7 @@ class EntryBuilder {
         return this;
     }
     /**
-     * Set the timestamp for the entry commit. 
+     * Set the timestamp for the entry commit.
      * If not set the library will use Date.now() as the commit timestamp.
      * @param {number} timestamp - Timestamp in milliseconds.
      * @returns {EntryBuilder} - EntryBuilder instance.
@@ -270,9 +269,9 @@ class EntryBuilder {
     }
 
     /**
-     * Set block context. This method is used internally by the library to populate a block context, 
+     * Set block context. This method is used internally by the library to populate a block context,
      * regular users should not have to use this.
-     * @param {EntryBlockContext} blockContext 
+     * @param {EntryBlockContext} blockContext
      * @returns {EntryBuilder} - EntryBuilder instance.
      */
     blockContext(blockContext) {
@@ -329,7 +328,7 @@ function marshalExternalIdsBinary(extIds) {
  * Compose the commit of an Entry, that can then be used as input of the factomd API `commit-entry`.
  * Note that if the Entry doesn't have a timestamp set the library will use Date.now() as the default for the commit timestamp.
  * @param {Entry} entry - Entry to compose the commit of.
- * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). 
+ * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
  * If a public EC address is provided it is necessary to provide the signature of the commit as a 3rd argument (use case for hardware wallets)
  * @param {string|Buffer} [signature] - Optional signature of the commit (composeEntryLedger). Only necessary if a public EC address was passed as 2nd argument.
  * @returns {Buffer} - Entry commit.
@@ -355,7 +354,9 @@ function composeEntryCommit(entry, ecAddress, signature) {
         ecPublicKey = addressToKey(ecAddress);
         sig = Buffer.from(signature, 'hex');
         if (!sign.detached.verify(buffer, sig, ecPublicKey)) {
-            throw new Error('Invalid signature manually provided for the entry commit. (entry timestamp not fixed?)');
+            throw new Error(
+                'Invalid signature manually provided for the entry commit. (entry timestamp not fixed?)'
+            );
         }
     } else {
         throw new Error(`${ecAddress} is not a valid EC address`);
@@ -390,7 +391,7 @@ function composeEntryReveal(entry) {
 /**
  * Compose the commit and reveal of an Entry, that can then be used as inputs of the factomd APIs `commit-entry` and `reveal-entry`.
  * @param {Entry} entry - Entry to compose the commit and reveal of.
- * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). 
+ * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
  * If a public EC address is provided it is necessary to manually pass the signature of the commit as a 3rd argument (use case for hardware wallets)
  * @param {string|Buffer} [signature] - Optional signature of the commit (composeEntryLedger). Only necessary if a public EC address was passed as 2nd argument.
  * @returns {{commit:Buffer, reveal:Buffer}} - Entry commit and reveal.
@@ -416,8 +417,8 @@ function validateEntryInstance(entry) {
 
 /**
  * Compute the transaction ID of the Entry commit. The transaction ID is dependent on the timestamp set in the entry.
- * Note that if the timestamp is not set the library uses Date.now() as the default, changing the result of this function if called at different times. 
- * @param {Entry} entry 
+ * Note that if the timestamp is not set the library uses Date.now() as the default, changing the result of this function if called at different times.
+ * @param {Entry} entry
  * @returns {Buffer} - The transaction id of the Entry commit.
  */
 function computeEntryTxId(entry) {

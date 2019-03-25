@@ -65,12 +65,11 @@ class Chain {
  * Compose
  **********************/
 
-
 /**
  * Compose the commit of a Chain, that can then be used as input of the factomd API `commit-chain`.
  * Note that if the chain first entry doesn't have a timestamp set the library will use Date.now() as the default for the commit timestamp.
  * @param {Chain} chain - Chain to compose the commit of.
- * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). 
+ * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
  * If a public EC address is provided it is necessary to provide the signature of the commit as a 3rd argument (use case for hardware wallets)
  * @param {string|Buffer} [signature] - Optional signature of the commit (composeChainLedger). Only necessary if a public EC address was passed as 2nd argument.
  * @returns {Buffer} - Chain commit.
@@ -95,7 +94,9 @@ function composeChainCommit(chain, ecAddress, signature) {
         ecPublicKey = addressToKey(ecAddress);
         sig = Buffer.from(signature, 'hex');
         if (!sign.detached.verify(buffer, sig, ecPublicKey)) {
-            throw new Error('Invalid signature manually provided for the chain commit. (first entry timestamp not fixed?)');
+            throw new Error(
+                'Invalid signature manually provided for the chain commit. (first entry timestamp not fixed?)'
+            );
         }
     } else {
         throw new Error(`${ecAddress} is not a valid EC address`);
@@ -136,7 +137,7 @@ function composeChainReveal(chain) {
 /**
  * Compose the commit and reveal of a Chain, that can then be used as inputs of the factomd APIs `commit-chain` and `reveal-chain`.
  * @param {Chain} chain - Chain to compose the commit and reveal of.
- * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). 
+ * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
  * If a public EC address is provided it is necessary to manually pass the signature of the commit as a 3rd argument (use case for hardware wallets)
  * @param {string|Buffer} [signature] - Optional signature of the commit (composeChainLedger). Only necessary if a public EC address was passed as 2nd argument.
  * @returns {{commit:Buffer, reveal:Buffer}} - Chain commit and reveal.
@@ -162,8 +163,8 @@ function validateChainInstance(chain) {
 
 /**
  * Compute the transaction ID of the Chain commit. The transaction ID is dependent on the timestamp set in the chain first entry.
- * Note that if the timestamp is not set the library uses Date.now() as the default, changing the result of this function if called at different times. 
- * @param {Chain} chain 
+ * Note that if the timestamp is not set the library uses Date.now() as the default, changing the result of this function if called at different times.
+ * @param {Chain} chain
  * @returns {Buffer} - The transaction id of the Chain commit.
  */
 function computeChainTxId(chain) {
@@ -173,7 +174,7 @@ function computeChainTxId(chain) {
 
 /**
  * Compute the ID of a Chain provided its first entry.
- * @param {Entry} firstEntry - The first entry of the chain. 
+ * @param {Entry} firstEntry - The first entry of the chain.
  * @returns {Buffer} - Chain ID.
  */
 function computeChainId(firstEntry) {

@@ -134,7 +134,7 @@ function getPublicAddress(address) {
 }
 
 /**
- * Extract the key contained in an address. Cannot be used with public FCT address as those contain a RCD hash and not a key (See {@link addressToRcdHash}). 
+ * Extract the key contained in an address. Cannot be used with public FCT address as those contain a RCD hash and not a key (See {@link addressToRcdHash}).
  * @param {string} address - Any address, except public FCT address.
  * @returns {Buffer} - Key contained in the address.
  */
@@ -143,7 +143,9 @@ function addressToKey(address) {
         throw new Error(`Invalid address ${address}.`);
     }
     if (address.startsWith('FA')) {
-        throw new Error('A public Factoid address does not hold a public key but a RCD hash. Use addressToRcdHash function instead.');
+        throw new Error(
+            'A public Factoid address does not hold a public key but a RCD hash. Use addressToRcdHash function instead.'
+        );
     }
     return Buffer.from(base58.decode(address).slice(2, 34));
 }
@@ -162,7 +164,7 @@ function addressToRcdHash(address) {
 
 /**
  * Build a human readable public FCT address from a key.
- * @param {Buffer|string} key 
+ * @param {Buffer|string} key
  * @returns {string} - Public FCT address.
  */
 function keyToPublicFctAddress(key) {
@@ -171,7 +173,7 @@ function keyToPublicFctAddress(key) {
 
 /**
  * Build a human readable public FCT address from a RCD hash.
- * @param {Buffer|string} rcdHash 
+ * @param {Buffer|string} rcdHash
  * @returns {string} - Public FCT address.
  */
 function rcdHashToPublicFctAddress(rcdHash) {
@@ -245,7 +247,6 @@ function generateRandomEcAddress() {
         private: seedToPrivateEcAddress(seed)
     };
 }
-
 
 module.exports = {
     isValidAddress,

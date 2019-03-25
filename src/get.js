@@ -2,28 +2,42 @@ const Promise = require('bluebird'),
     { Transaction } = require('./transaction'),
     { NULL_HASH } = require('./constant'),
     { Entry } = require('./entry'),
-    { DirectoryBlock, AdminBlock, EntryBlock, FactoidBlock, EntryCreditBlock } = require('./blocks'),
+    {
+        DirectoryBlock,
+        AdminBlock,
+        EntryBlock,
+        FactoidBlock,
+        EntryCreditBlock
+    } = require('./blocks'),
     { getPublicAddress } = require('./addresses'),
     { toHex } = require('./util');
 
 function getChainHead(factomd, chainId) {
-    return factomd.call('chain-head', { chainid: toHex(chainId) })
-        .then(ch => ({
-            keyMR: ch.chainhead,
-            chainInProcessList: ch.chaininprocesslist
-        }));
+    return factomd.call('chain-head', { chainid: toHex(chainId) }).then(ch => ({
+        keyMR: ch.chainhead,
+        chainInProcessList: ch.chaininprocesslist
+    }));
 }
 
 async function getEntry(factomd, entryHash, entryBlockContext) {
-    return factomd.call('entry', { 'hash': toHex(entryHash) })
+    return factomd
+        .call('entry', { hash: toHex(entryHash) })
         .then(e => toEntry(e, entryBlockContext));
 }
 
 async function getEntryWithBlockContext(factomd, entryHash) {
-    const entryBlockKeyMr = await factomd.call('receipt', { hash: toHex(entryHash) }).then(r => r.receipt.entryblockkeymr);
-    const entryBlock = await factomd.call('entry-block', { keymr: entryBlockKeyMr });
+    const entryBlockKeyMr = await factomd
+        .call('receipt', { hash: toHex(entryHash) })
+        .then(r => r.receipt.entryblockkeymr);
+    const entryBlock = await factomd.call('entry-block', {
+        keymr: entryBlockKeyMr
+    });
     const timestamp = entryBlock.entrylist.find(e => e.entryhash === entryHash).timestamp;
-    return getEntry(factomd, entryHash, buildEntryBlockContext(entryBlockKeyMr, entryBlock, timestamp));
+    return getEntry(
+        factomd,
+        entryHash,
+        buildEntryBlockContext(entryBlockKeyMr, entryBlock, timestamp)
+    );
 }
 
 async function getFirstEntry(factomd, chainId) {
@@ -37,11 +51,15 @@ async function getFirstEntry(factomd, chainId) {
     let entryBlock, latestNonNullKeyMR;
     while (keyMR !== NULL_HASH) {
         latestNonNullKeyMR = keyMR;
-        entryBlock = await factomd.call('entry-block', { 'keymr': keyMR });
+        entryBlock = await factomd.call('entry-block', { keymr: keyMR });
         keyMR = entryBlock.header.prevkeymr;
     }
     const firstEntry = entryBlock.entrylist[0];
-    return getEntry(factomd, firstEntry.entryhash, buildEntryBlockContext(latestNonNullKeyMR, entryBlock, firstEntry.timestamp));
+    return getEntry(
+        factomd,
+        firstEntry.entryhash,
+        buildEntryBlockContext(latestNonNullKeyMR, entryBlock, firstEntry.timestamp)
+    );
 }
 
 async function getAllEntriesOfChain(factomd, chainId) {
@@ -54,10 +72,7 @@ async function getAllEntriesOfChain(factomd, chainId) {
 
     let keyMR = chainHead.keyMR;
     while (keyMR !== NULL_HASH) {
-        const {
-            entries,
-            previousKeyMR
-        } = await getAllEntriesOfEntryBlock(factomd, keyMR);
+        const { entries, previousKeyMR } = await getAllEntriesOfEntryBlock(factomd, keyMR);
         allEntries.push(...entries.reverse());
 
         keyMR = previousKeyMR;
@@ -82,13 +97,10 @@ async function rewindChainWhile(factomd, chainId, predicate, func) {
 
     let keyMR = chainHead.keyMR;
     while (keyMR !== NULL_HASH) {
-        const {
-            entries,
-            previousKeyMR
-        } = await getAllEntriesOfEntryBlock(factomd, keyMR);
+        const { entries, previousKeyMR } = await getAllEntriesOfEntryBlock(factomd, keyMR);
 
         let i = entries.length - 1;
-        while (i >= 0 && await predicate(entries[i])) {
+        while (i >= 0 && (await predicate(entries[i]))) {
             await func(entries[i]);
             i--;
         }
@@ -106,9 +118,9 @@ async function rewindChainWhile(factomd, chainId, predicate, func) {
 async function getAllEntriesOfEntryBlock(factomd, keyMR) {
     const entryBlock = await factomd.call('entry-block', { keymr: keyMR });
 
-    const entries = await Promise.map(
-        entryBlock.entrylist,
-        e => getEntry(factomd, e.entryhash, buildEntryBlockContext(keyMR, entryBlock, e.timestamp)));
+    const entries = await Promise.map(entryBlock.entrylist, e =>
+        getEntry(factomd, e.entryhash, buildEntryBlockContext(keyMR, entryBlock, e.timestamp))
+    );
 
     return {
         entries: entries,
@@ -139,18 +151,19 @@ function toEntry(entry, entryBlockContext) {
 function getBalance(factomd, address) {
     const publicAddress = getPublicAddress(address);
 
-    const balance = publicAddress[0] === 'E' ?
-        factomd.call.bind(factomd, 'entry-credit-balance') :
-        factomd.call.bind(factomd, 'factoid-balance');
+    const balance =
+        publicAddress[0] === 'E'
+            ? factomd.call.bind(factomd, 'entry-credit-balance')
+            : factomd.call.bind(factomd, 'factoid-balance');
 
-    return balance({ address: publicAddress })
-        .then(res => res.balance);
+    return balance({ address: publicAddress }).then(res => res.balance);
 }
 
 function chainExists(factomd, chainId) {
-    return factomd.call('chain-head', { chainid: toHex(chainId) })
+    return factomd
+        .call('chain-head', { chainid: toHex(chainId) })
         .then(() => true)
-        .catch(function (err) {
+        .catch(function(err) {
             if (err.code === -32009) {
                 return false;
             }
@@ -177,8 +190,7 @@ async function getTransaction(factomd, txId) {
 }
 
 function getEntryCreditRate(factomd) {
-    return factomd.call('entry-credit-rate')
-        .then(r => r.rate);
+    return factomd.call('entry-credit-rate').then(r => r.rate);
 }
 
 async function getHeights(factomd) {
@@ -193,8 +205,7 @@ async function getHeights(factomd) {
 }
 
 function getDirectoryBlockHead(factomd) {
-    return factomd.call('directory-block-head')
-        .then(r => getDirectoryBlock(factomd, r.keymr));
+    return factomd.call('directory-block-head').then(r => getDirectoryBlock(factomd, r.keymr));
 }
 
 function getDirectoryBlock(factomd, arg) {
@@ -221,8 +232,7 @@ function getEntryBlock(factomd, keyMR) {
     if (typeof keyMR !== 'string') {
         throw new Error('Argument should be the KeyMR of the Entry Block');
     }
-    return factomd.call('entry-block', { keymr: keyMR })
-        .then(r => new EntryBlock(r, keyMR));
+    return factomd.call('entry-block', { keymr: keyMR }).then(r => new EntryBlock(r, keyMR));
 }
 
 function getFactoidBlock(factomd, arg) {

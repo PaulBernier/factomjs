@@ -7,15 +7,31 @@ const RCD_TYPE_1 = Buffer.from('01', 'hex'),
     MSB = Long.fromString('8000000000000000', true, 16);
 
 function sha256(data) {
-    return Buffer.from(hashSha256().update(data).digest());
+    return Buffer.from(
+        hashSha256()
+            .update(data)
+            .digest()
+    );
 }
 
 function sha256d(data) {
-    return Buffer.from(hashSha256().update(hashSha256().update(data).digest()).digest());
+    return Buffer.from(
+        hashSha256()
+            .update(
+                hashSha256()
+                    .update(data)
+                    .digest()
+            )
+            .digest()
+    );
 }
 
 function sha512(data) {
-    return Buffer.from(hashSha512().update(data).digest());
+    return Buffer.from(
+        hashSha512()
+            .update(data)
+            .digest()
+    );
 }
 
 function toHex(arg) {
@@ -52,7 +68,7 @@ function encodeVarInt(val) {
             if (i !== 8) {
                 b = b | 0x80;
             } else {
-                b = b & 0x7F;
+                b = b & 0x7f;
             }
             bytes.push(b);
         }

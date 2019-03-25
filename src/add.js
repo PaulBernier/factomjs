@@ -24,14 +24,28 @@ async function commitChain(factomd, chain, ecPrivate, ackTimeout) {
     if (await chainExists(factomd, chain.id)) {
         throw new Error(`Chain ${chain.idHex} already exists.`);
     }
-    return commitInternal(factomd, chain, composeChainCommit, 'commit-chain', ecPrivate, ackTimeout);
+    return commitInternal(
+        factomd,
+        chain,
+        composeChainCommit,
+        'commit-chain',
+        ecPrivate,
+        ackTimeout
+    );
 }
 
 function commitEntry(factomd, entry, ecPrivate, ackTimeout) {
     if (!entry.chainId.length) {
         throw new Error('Entry should contain a chain id to be committed');
     }
-    return commitInternal(factomd, entry, composeEntryCommit, 'commit-entry', ecPrivate, ackTimeout);
+    return commitInternal(
+        factomd,
+        entry,
+        composeEntryCommit,
+        'commit-entry',
+        ecPrivate,
+        ackTimeout
+    );
 }
 
 async function commitInternal(factomd, obj, composeCommit, commitApiCall, ecPrivate, to) {
@@ -39,14 +53,13 @@ async function commitInternal(factomd, obj, composeCommit, commitApiCall, ecPriv
     const commit = composeCommit(obj, ecPrivate).toString('hex');
 
     let repeatedCommit = false;
-    const committed = await factomd.call(commitApiCall, { message: commit })
-        .catch(function (e) {
-            if (e.code === -32011) {
-                repeatedCommit = true;
-            } else {
-                throw e;
-            }
-        });
+    const committed = await factomd.call(commitApiCall, { message: commit }).catch(function(e) {
+        if (e.code === -32011) {
+            repeatedCommit = true;
+        } else {
+            throw e;
+        }
+    });
 
     if (committed && ackTimeout >= 0) {
         await waitOnCommitAck(factomd, committed.txid, ackTimeout);
@@ -93,7 +106,7 @@ async function revealInternal(factomd, obj, composeReveal, revealApiCall, to) {
 
     return {
         chainId: revealed.chainid,
-        entryHash: revealed.entryhash,
+        entryHash: revealed.entryhash
     };
 }
 
@@ -167,17 +180,21 @@ async function addIterableInternal(factomd, iterable, ecPrivate, opts) {
         options.skipFundValidation = true;
     }
 
-    return Promise.mapSeries(chunk(iterable, options.chunkSize || 200),
-        sublist => Promise.map(sublist, entry => addDispatch(factomd, entry, ecPrivate, options))
+    return Promise.mapSeries(chunk(iterable, options.chunkSize || 200), sublist =>
+        Promise.map(sublist, entry => addDispatch(factomd, entry, ecPrivate, options))
     ).then(r => flatMap(r, i => i));
 }
 
 async function validateFunds(factomd, ecPrivate, cost) {
     const ecPublic = getPublicAddress(ecPrivate);
-    const { balance } = await factomd.call('entry-credit-balance', { address: ecPublic });
+    const { balance } = await factomd.call('entry-credit-balance', {
+        address: ecPublic
+    });
 
     if (balance < cost) {
-        throw new Error(`${ecPublic} current balance (${balance} EC) is not sufficient to pay the total cost of ${cost} EC.`);
+        throw new Error(
+            `${ecPublic} current balance (${balance} EC) is not sufficient to pay the total cost of ${cost} EC.`
+        );
     }
 }
 
