@@ -4,7 +4,7 @@ const { EventEmitter } = require('events'),
     { Transaction } = require('./transaction');
 
 /**
- * Listen for new Factom Events. 
+ * Listen for new Factom Events.
  * @param {FactomCli} cli - FactomCli instance to be used by the FactomEventEmitter instance to poll the blockchain for new blocks.
  * @param {Object} opts - Options to set on the FactomEventEmitter instance
  * @param {number} [opts.interval=7500] - The interval (ms) at which the FactomEventEmtitter instance should poll the blockchain to check for a new block. Defaults to 7500.
@@ -28,8 +28,7 @@ class FactomEventEmitter extends EventEmitter {
             factoidBlock: 'factoidBlock',
             adminBlock: 'adminBlock',
             entryCreditBlock: 'entryCreditBlock',
-            entryChain: 'entryChain',
-            factoidTransaction: 'factoidTransaction'
+            newEntryChain: 'newEntryChain'
         };
 
         //bind to this
@@ -37,8 +36,8 @@ class FactomEventEmitter extends EventEmitter {
         this._stopPolling = this._stopPolling.bind(this);
         this._addDirectoryBlockListener = this._addDirectoryBlockListener.bind(this);
         this._removeDirectoryBlockListener = this._removeDirectoryBlockListener.bind(this);
-        this._subscribeToIdentity = this._subscribeToIdentity.bind(this);
-        this._unsubscribeFromIdentity = this._unsubscribeFromIdentity.bind(this);
+        this._addIdentifierListener = this._addIdentifierListener.bind(this);
+        this._removeIdentifierListener = this._removeIdentifierListener.bind(this);
 
         // user identifier subscriptions
         this._entryChainSubscriptions = new Set();
@@ -48,9 +47,13 @@ class FactomEventEmitter extends EventEmitter {
         this._listenForListenerStateChange();
     }
 
+    /**
+     * Initialise listeners that handle lsitener state change.
+     * @private
+     */
     _listenForListenerStateChange() {
-        this.on('removeListener', event => this._handleListenerStateChange(event, this._stopPolling, this._removeDirectoryBlockListener, this._unsubscribeFromIdentity));
-        this.on('newListener', event => this._handleListenerStateChange(event, this._startPolling, this._addDirectoryBlockListener, this._subscribeToIdentity));
+        this.on('removeListener', event => this._handleListenerStateChange(event, this._stopPolling, this._removeDirectoryBlockListener, this._removeIdentifierListener));
+        this.on('newListener', event => this._handleListenerStateChange(event, this._startPolling, this._addDirectoryBlockListener, this._addIdentifierListener));
     }
 
     /**
@@ -69,6 +72,8 @@ class FactomEventEmitter extends EventEmitter {
             setDirectoryBlockListener(this._fetchEntryCreditBlock, event);
         } else if (event === this.event.adminBlock) {
             setDirectoryBlockListener(this._fetchAdminBlock, event);
+        } else if (event === this.event.newEntryChain) {
+            setDirectoryBlockListener(this._fetchNewEntryChains, event);
         } else if (typeof event === 'string' && event.match(/\b[A-Fa-f0-9]{64}\b/)) {
             // this event matches a sha256 string which is assumed to be a chain ID
             const id = event;
@@ -94,7 +99,7 @@ class FactomEventEmitter extends EventEmitter {
 
     /**
      * Determine whether or not polling is currently active.
-     * @returns {boolean} 
+     * @returns {boolean}
      */
     get isPolling() {
         return !!this._isPolling;
@@ -223,6 +228,25 @@ class FactomEventEmitter extends EventEmitter {
         }
     }
 
+    /**
+     * Listener that triggers on a 'directoryBlock' event. It iterates through entry blocks referenced in the directory block
+     * to find new chains. When a new chain is found, it emits the referenced entry block.
+     */
+    async _fetchNewEntryChains(directoryBlock) {
+        try {
+            const checkIfNewChainAndEmit = async ref => {
+                const entryBlock = await this._cli.getEntryBlock(ref.keyMR);
+
+                if (entryBlock.sequenceNumber === 0) {
+                    this.emit(this.event.newEntryChain, entryBlock);
+                }
+            };
+            await Promise.map(directoryBlock.entryBlockRefs, checkIfNewChainAndEmit, { concurrency: 5 });
+        } catch (err) {
+            this.emit('error', err);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////
     //        ENTRY CHAIN AND FACTOID ADDRESS EVENTS            //
     /////////////////////////////////////////////////////////////
@@ -244,6 +268,8 @@ class FactomEventEmitter extends EventEmitter {
     }
 
     /**
+     * Generic function to construct a listener for a network identifier, such as an address or chain ID. Function adds the ID to a set then
+     * sets the listener on the given event
      * @param {string} id - Any unique string used to reference some specific location in the blockchain, such as a chain ID or factoid address.
      * @param {Set<string>} set - A reference to the set that holds the identities of a particular type, such as a factoid address set or a chain ID set.
      * @param {string} event - The event that needs to be listened for in order to emit updates for a given identity. Factoid addresses listen for a factoid block event,
@@ -251,7 +277,7 @@ class FactomEventEmitter extends EventEmitter {
      * @param {Function} listener - A listener that handles how and when to emit a new event for each identity in the set.
      * @private
      */
-    _subscribeToIdentity(id, set, event, listener) {
+    _addIdentifierListener(id, set, event, listener) {
         if (set.has(id)) {
             return this.emit('error', new Error(`already listening to ${id}`));
         }
@@ -263,7 +289,17 @@ class FactomEventEmitter extends EventEmitter {
         }
     }
 
-    _unsubscribeFromIdentity(id, set, event, listener) {
+    /**
+     * Generic function to remove a listener for a network identifier, such as an address or chain ID. Function removes the ID from a set then
+     * removes the listener from the given event
+     * @param {string} id - Any unique string used to reference some specific location in the blockchain, such as a chain ID or factoid address.
+     * @param {Set<string>} set - A reference to the set that holds the identities of a particular type, such as a factoid address set or a chain ID set.
+     * @param {string} event - The event that needs to be listened for in order to emit updates for a given identity. Factoid addresses listen for a factoid block event,
+     * chain IDs listen for a directory block event.
+     * @param {Function} listener - A listener that handles how and when to emit a new event for each identity in the set.
+     * @private
+     */
+    _removeIdentifierListener(id, set, event, listener) {
         set.delete(id);
 
         // if the set is now empty, remove the event listener
