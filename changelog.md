@@ -1,10 +1,17 @@
 # Changelog
 
-## Unreleased
+## [1.0.2]
 
-### Changed
+### Removed
+
+* Revert the unnecessary chanage in 1.0.1 for `rewindChainWhile` (the entry already contains a blockContext).
+
+## [1.0.1]
+
+### Added
 
 * BlockContext populated for transactions in a `FactoidBlock` object (except `directoryBlockKeyMR` that is not available).
+* `rewindChainWhile(chainId, predicate, fn)`: the `predicate` and `fn` functions now receive the entry block header as a second argument.
 
 ## [1.0.0]
 

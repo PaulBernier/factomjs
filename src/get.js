@@ -20,7 +20,7 @@ async function getEntry(factomd, entryHash, entryBlockContext) {
 }
 
 async function getEntryWithBlockContext(factomd, entryHash) {
-    const entryBlockKeyMr = await factomd.call('receipt',  { hash: toHex(entryHash) }).then(r => r.receipt.entryblockkeymr);
+    const entryBlockKeyMr = await factomd.call('receipt', { hash: toHex(entryHash) }).then(r => r.receipt.entryblockkeymr);
     const entryBlock = await factomd.call('entry-block', { keymr: entryBlockKeyMr });
     const timestamp = entryBlock.entrylist.find(e => e.entryhash === entryHash).timestamp;
     return getEntry(factomd, entryHash, buildEntryBlockContext(entryBlockKeyMr, entryBlock, timestamp));
