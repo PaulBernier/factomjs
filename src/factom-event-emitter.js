@@ -22,7 +22,7 @@ class FactomEventEmitter extends EventEmitter {
             ...opts
         };
 
-        // events
+        // Events defined by FactomJS
         this.event = {
             directoryBlock: 'directoryBlock',
             factoidBlock: 'factoidBlock',
@@ -31,7 +31,11 @@ class FactomEventEmitter extends EventEmitter {
             newEntryChain: 'newEntryChain'
         };
 
-        //bind to this
+        // Events defined by the user
+        this._entryChainSubscriptions = new Set();
+        this._factoidAddressSubscriptions = new Set();
+
+        // Bind functions to this so that references can be passed inside listener
         this._startPolling = this._startPolling.bind(this);
         this._stopPolling = this._stopPolling.bind(this);
         this._addDirectoryBlockListener = this._addDirectoryBlockListener.bind(this);
@@ -39,16 +43,12 @@ class FactomEventEmitter extends EventEmitter {
         this._addIdentifierListener = this._addIdentifierListener.bind(this);
         this._removeIdentifierListener = this._removeIdentifierListener.bind(this);
 
-        // user identifier subscriptions
-        this._entryChainSubscriptions = new Set();
-        this._factoidAddressSubscriptions = new Set();
-
-        // listen for user-generated events
+        // Listen for user-generated events
         this._listenForListenerStateChange();
     }
 
     /**
-     * Initialise listeners that handle lsitener state change.
+     * Initialise listeners that handle listener state change.
      * @private
      */
     _listenForListenerStateChange() {
@@ -94,7 +94,7 @@ class FactomEventEmitter extends EventEmitter {
     }
 
     ///////////////////////////////////////////////////////////////
-    //              DIRECTORY BLOCK METHODS                     //
+    //              POLL DIRECTORY BLOCKS                       //
     /////////////////////////////////////////////////////////////
 
     /**
@@ -152,7 +152,7 @@ class FactomEventEmitter extends EventEmitter {
     }
 
     ///////////////////////////////////////////////////////////////
-    //                  PROTOCOL CHAIN EVENTS                   //
+    //                  FACTOMJS-DEFINED EVENTS                 //
     /////////////////////////////////////////////////////////////
 
     /**
@@ -248,7 +248,7 @@ class FactomEventEmitter extends EventEmitter {
     }
 
     ///////////////////////////////////////////////////////////////
-    //        ENTRY CHAIN AND FACTOID ADDRESS EVENTS            //
+    //                  USER-DEFINED EVENTS                     //
     /////////////////////////////////////////////////////////////
 
     /**
