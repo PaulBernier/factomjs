@@ -7,9 +7,9 @@
 
 Factom.js is a library to easily build applications on the Factom blockchain.
 
-* Provides higher level functionalities than factomd API making it a breeze to create chains or entries, send transactions...
-* Provides uniform, consistent and easy to use Factom data structures.
-* Provides a range of util functions to manipulate Factom addresses.
+-   Provides higher level functionalities than factomd API making it a breeze to create chains or entries, send transactions...
+-   Provides uniform, consistent and easy to use Factom data structures.
+-   Provides a range of util functions to manipulate Factom addresses.
 
 ## Installation
 
@@ -25,7 +25,7 @@ A changelog is available in the file `changelog.md`.
 
 ## Web browser
 
-Two versions of *factom.js* are being bundled for usage in a web browser and can be found in the `dist` folder. `dist/factom.js` is a bundle containing all the exposed components of the library. `dist/factom-struct.js` is a lighter bundle that contains factom structures such as Entry, Chain and Transaction, and all the utily functions related to FCT/EC addresses and fundamental constants. `factom-struct` bundle doesn't include any component that makes API calls.
+Two versions of _factom.js_ are being bundled for usage in a web browser and can be found in the `dist` folder. `dist/factom.js` is a bundle containing all the exposed components of the library. `dist/factom-struct.js` is a lighter bundle that contains factom structures such as Entry, Chain and Transaction, and all the utily functions related to FCT/EC addresses and fundamental constants. `factom-struct` bundle doesn't include any component that makes API calls.
 
 ## Usage
 
@@ -97,18 +97,20 @@ const myEntry = Entry.builder()
     .chainId('9107a308f91fd7962fecb321fdadeb37e2ca7d456f1d99d24280136c0afd55f2')
     .extId('6d79206578742069642031') // If no encoding parameter is passed as 2nd argument, 'hex' is used
     .extId('some external ID', 'utf8')
-    .content('My new content',  'utf8')
+    .content('My new content', 'utf8')
     .build();
 cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym');
 ```
 
 ```javascript
-// Add multiples entries. 
+// Add multiples entries.
 // The library will limit the number of concurrent Promises to 200 by default to avoid overwhelming the factomd instance.
 cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym');
 
 // The concurrency limit can be customized.
-cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', { concurrency: 1 });
+cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', {
+    concurrency: 1
+});
 ```
 
 #### Commit/reveal acknowledgment when submitting chains or entries
@@ -119,10 +121,13 @@ Factom protocol uses a [commit/reveal commitment scheme](https://en.wikipedia.or
 // Default behavior waits for both commit and reveal up to 60s
 cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym');
 // Change the timeout for commit ack to 120s and the timeout for reveal ack to 20s
-cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', { commitTimeout: 120, revealTimeout: 20});
-// By providing a negative number the library will not wait for any acknowledgment. 
+cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', {
+    commitTimeout: 120,
+    revealTimeout: 20
+});
+// By providing a negative number the library will not wait for any acknowledgment.
 // In below example the wait on reveal ack is disabled (it'll still wait up to 60s on the commit ack).
-cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', { revealTimeout: -1});
+cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', { revealTimeout: -1 });
 ```
 
 #### Repeated commit
@@ -158,9 +163,9 @@ Besides `getEntryWithBlockContext` entries returned by `getFirstEntry` and `getA
 
 #### Iterating entries of a chain
 
-The FactomCli method `getAllEntriesOfChain` fetches all the entries of the chain before returning the result: in case of long chains in can be impractical. In some cases you may want to iterate only through a portion of the chain. For those cases FactomCli exposes the method `rewindChainWhile(chainId, function predicate(entry) {}, function body(entry) {})` that iterates a chain from the most recent entry to the oldest one as long as the `predicate` function returns true and that the end of the chain has not been reached. At each iteration the `body` function is called with the current entry as its argument. 
+The FactomCli method `getAllEntriesOfChain` fetches all the entries of the chain before returning the result: in case of long chains in can be impractical. In some cases you may want to iterate only through a portion of the chain. For those cases FactomCli exposes the method `rewindChainWhile(chainId, function predicate(entry) {}, function body(entry) {})` that iterates a chain from the most recent entry to the oldest one as long as the `predicate` function returns true and that the end of the chain has not been reached. At each iteration the `body` function is called with the current entry as its argument.
 
-*Example 1. Iterating a long chain entry by entry*
+_Example 1. Iterating a long chain entry by entry_
 
 ```javascript
 await cli.rewindChainWhile('caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42',
@@ -168,18 +173,21 @@ await cli.rewindChainWhile('caf017da212bb68ffee2ba645e1488e5834863743d50972dd300
     entry => // Process entry
 ```
 
-*Example 2. Searching an entry in a chain*
+_Example 2. Searching an entry in a chain_
 
 ```javascript
-let search = true, found;
-await cli.rewindChainWhile('caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42', 
-    () => search, 
+let search = true,
+    found;
+await cli.rewindChainWhile(
+    'caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42',
+    () => search,
     function(entry) {
         if (entry.extId[0].toString() === 'Find me!') {
             search = false;
             found = entry;
         }
-    });
+    }
+);
 ```
 
 ### Addresses
@@ -249,12 +257,15 @@ Transaction {
 ```
 
 #### Simple Factoid transaction
+
 ```javascript
-// Send 1000000 Factoshis (10^-8 Factoids) from Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X 
+// Send 1000000 Factoshis (10^-8 Factoids) from Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X
 // to FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw
-const transaction = await cli.createFactoidTransaction('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X',
-                                                    'FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw', 
-                                                    1000000);
+const transaction = await cli.createFactoidTransaction(
+    'Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X',
+    'FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw',
+    1000000
+);
 // You can check the additional fees that you are going to pay for the transaction to go through
 // (automatically set to the minimum acceptable by the network)
 console.log(transaction.feesPaid);
@@ -265,11 +276,13 @@ const txId = await cli.sendTransaction(tx);
 #### Buy EntryCredit
 
 ```javascript
-// Buy 10 EC with address Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X and credited 
+// Buy 10 EC with address Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X and credited
 // to EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR
-const transaction = await cli.createEntryCreditPurchaseTransaction('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X',
-                                                                'EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR',
-                                                                10);
+const transaction = await cli.createEntryCreditPurchaseTransaction(
+    'Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X',
+    'EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR',
+    10
+);
 // You can check how many Factoshis it's going to cost you to buy those 10 EC
 console.log(transaction.totalInputs);
 const txId = await cli.sendTransaction(transaction);
@@ -288,7 +301,7 @@ const tmpTx = Transaction.builder()
     .input('Fs2E6iXCLAKDiPqVtfxtuQCKsTe7o6DJFDnht1wST53s4ibtdu9f', 1010000)
     .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg5uH', 5000000)
     .output('FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZteF', 10000000)
-    // Note the line below is to buy Entry Credits (see the address type) and the amount is in Factoshis like other outputs: 
+    // Note the line below is to buy Entry Credits (see the address type) and the amount is in Factoshis like other outputs:
     // it is *not* the number of Entry Credits you are purchasing.
     .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e3QR', 10000)
     .build();
@@ -302,7 +315,7 @@ const transaction = Transaction.builder()
     .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg5uH', 5000000)
     .output('FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZteF', 10000000)
     .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e3QR', 10000)
-    .build()
+    .build();
 
 const txId = await cli.sendTransaction(transaction);
 ```
@@ -323,7 +336,7 @@ const transaction = Transaction.builder()
 // Will throw an exception
 await cli.sendTransaction(transaction);
 // Set flag 'force' to true to bypass the over paying protection
-await cli.sendTransaction(transaction, {force: true});
+await cli.sendTransaction(transaction, { force: true });
 ```
 
 #### Unsigned transactions
@@ -344,7 +357,7 @@ const unsignedTx = Transaction.builder()
 console.log(unsignedTx.isSigned()); // false
 
 // Delegate signature to an external component
-const {rcd, signature} = getRcdSignatureFromSecureComponent(unsignedTx.marshalBinarySig());
+const { rcd, signature } = getRcdSignatureFromSecureComponent(unsignedTx.marshalBinarySig());
 
 // The builder below will copy timestamp, inputs and outputs. Then the RCD and signature are appended.
 // When the transaction is built the library verifies the validity of the RCD and signature. (exception throw if any of them is invalid)
@@ -358,17 +371,19 @@ Side note: helper functions `createFactoidTransaction` and `createEntryCreditPur
 ##### Fees computation
 
 Knowledge about the RCDs and signatures is required to compute fees of a transaction (see section fees of [factom data structures doc](https://www.factom.com/devs/docs/guide/factom-data-structures)). You can still compute the fees of an unsigned transaction using the library by either:
-* providing the length in bytes of the RCD reveal/signature section and the number of signatures (generic use case)
+
+-   providing the length in bytes of the RCD reveal/signature section and the number of signatures (generic use case)
 
 ```javascript
-tx.computeEcRequiredFees({rcdSignatureLength: 2 * (33 + 64), numberOfSignatures: 2});
-tx.computeRequiredFees(ecRate, {rcdSignatureLength: 2 * (33 + 64), numberOfSignatures: 2});
+tx.computeEcRequiredFees({ rcdSignatureLength: 2 * (33 + 64), numberOfSignatures: 2 });
+tx.computeRequiredFees(ecRate, { rcdSignatureLength: 2 * (33 + 64), numberOfSignatures: 2 });
 ```
-* providing a single RCD type for the transaction (only works for RCD type 1 as of today)
+
+-   providing a single RCD type for the transaction (only works for RCD type 1 as of today)
 
 ```javascript
-tx.computeEcRequiredFees({rcdType: 1});
-tx.computeRequiredFees(ecRate, {rcdType: 1});
+tx.computeEcRequiredFees({ rcdType: 1 });
+tx.computeRequiredFees(ecRate, { rcdType: 1 });
 ```
 
 #### Transaction acknowledgement
@@ -379,9 +394,9 @@ tx.computeRequiredFees(ecRate, {rcdType: 1});
 // Wait transaction ack for up to 60s
 const txId = await cli.sendTransaction(transaction);
 // Wait transaction ack for up to 20s
-const txId = await cli.sendTransaction(transaction, {timeout: 20});
+const txId = await cli.sendTransaction(transaction, { timeout: 20 });
 // Disable wait for ack
-const txId = await cli.sendTransaction(transaction, {timeout: -1});
+const txId = await cli.sendTransaction(transaction, { timeout: -1 });
 ```
 
 #### Get existing Transaction
@@ -401,7 +416,9 @@ Transactions retrieved via `getTransaction` have an addition field `blockContext
 ### Blocks
 
 ```javascript
-const db = await cli.getDirectoryBlock('f55a19d9562843b642f1a20b34fcbb71e70f438c4d98d223fc2228ca2dd0c54a');
+const db = await cli.getDirectoryBlock(
+    'f55a19d9562843b642f1a20b34fcbb71e70f438c4d98d223fc2228ca2dd0c54a'
+);
 const ecb = await cli.getEntryCreditBlock(db.entryCreditBlockRef);
 const fb = await cli.getFactoidBlock(db.factoidBlockRef);
 const ab = await cli.getAdminBlock(db.entryCreditBlockRef);
@@ -411,23 +428,28 @@ const eb = await cli.getEntryBlock(db.entryBlockRefs[0]);
 ### Raw Factomd and Walletd API calls
 
 ```javascript
-// First argument is the API method name, followed by the params object for that API 
+// First argument is the API method name, followed by the params object for that API
 // Check https://docs.factom.com/api for the details of APIs
-cli.factomdApi('directory-block', { keymr: 'faf2a058cc475c5cb8ec13e8ba979118f7cde9db38bcfeb7e35744bcf5f6134b' });
+cli.factomdApi('directory-block', {
+    keymr: 'faf2a058cc475c5cb8ec13e8ba979118f7cde9db38bcfeb7e35744bcf5f6134b'
+});
 // It also supports factomd debug API calls
 cli.factomdApi('federated-servers');
 cli.walletdApi('address', { address: 'FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q' });
 ```
 
- You can also directly instanciate a FactomdCli or WalletdCli.
- ```javascript
+You can also directly instanciate a FactomdCli or WalletdCli.
+
+```javascript
 const { FactomdCli, WalletdCli } = require('factom');
 // Options of connection and retry strategy can be passed to the construtor the same way as FactomCli
 const factomd = new FactomdCli();
 const walletd = new WalletdCli();
-factomd.call('directory-block', { keymr: 'faf2a058cc475c5cb8ec13e8ba979118f7cde9db38bcfeb7e35744bcf5f6134b' });
-walletd.call('address', { address:'FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q' });
- ```
+factomd.call('directory-block', {
+    keymr: 'faf2a058cc475c5cb8ec13e8ba979118f7cde9db38bcfeb7e35744bcf5f6134b'
+});
+walletd.call('address', { address: 'FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q' });
+```
 
 ## Factom Event Emitter
 
@@ -459,9 +481,11 @@ FACTOMD_HOST=54.11.122.3
 FACTOMD_PORT=8088
 FCT_PRIVATE_ADDRESS=Fs...
 ```
+
 The values must be valid for the Factom Community Testnet. The EC and FCT addresses need to be funded in order for the tests to pass.
 
 Then to run all the tests:
+
 ```javascript
 npm test
 ```
