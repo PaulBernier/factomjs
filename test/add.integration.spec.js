@@ -189,7 +189,7 @@ describe('Add chains and entries in Factom blockchain', function() {
             .build();
 
         const added = await add.add(factomd, [e1, e2], PAYING_EC_ADDRESS, {
-            chunkSize: 1
+            concurrency: 1
         });
 
         assert.lengthOf(added, 2);
@@ -226,7 +226,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         );
 
         const added = await add.add(factomd, [c1, c2], PAYING_EC_ADDRESS, {
-            chunkSize: 1
+            concurrency: 1
         });
 
         assert.lengthOf(added, 2);

@@ -40,7 +40,6 @@
         "base-58": "0.0.1",
         "bluebird": "^3.5.3",
         "hash.js": "^1.1.7",
-        "lodash.chunk": "^4.2.0",
         "long": "^4.0.0",
         "retry": "^0.12.0",
         "tweetnacl": "^1.0.1"
@@ -76,7 +75,7 @@
         }
     },
     "lint-staged": {
-        "*.js": [
+        "{src,test}/**/*.js": [
             "eslint --fix",
             "prettier --write",
             "git add"

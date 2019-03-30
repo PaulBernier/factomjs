@@ -118,7 +118,7 @@ class FactomCli {
      * @param {Object} [options]
      * @param {number} [options.commitTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
-     * @param {number} [options.chunkSize = 200] - Only if the obj argument is an iterable. The lib chunks the input if it is an iterable so that not too many Promises get resolved in parallel.
+     * @param {number} [options.concurrency=200] - Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commits.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }>|Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} -
      * Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
@@ -153,7 +153,7 @@ class FactomCli {
      * @param {Object} [options]
      * @param {number} [options.commitTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
-     * @param {number} [options.chunkSize = 200] - The lib chunks the collection of Chains so that not too many Promises get resolved in parallel.
+     * @param {number} [options.concurrency=200] - Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commits.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */
@@ -186,7 +186,7 @@ class FactomCli {
      * @param {Object} [options]
      * @param {number} [options.commitTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
-     * @param {number} [options.chunkSize = 200] - The lib chunks the collection of entries so that not too many Promises get resolved in parallel.
+     * @param {number} [options.concurrency=200] - Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commits.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */

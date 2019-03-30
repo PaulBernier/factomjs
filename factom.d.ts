@@ -92,9 +92,9 @@ declare namespace factom {
         revealTimeout?: number,
 
         /**
-         * Only if the obj argument is an iterable. The lib chunks the input if it is an iterable so that not too many Promises get resolved in parallel.
+         * Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains.
          */
-        chunkSize?: number,
+        concurrency?: number,
 
         /**
          * Skip the validation that the EC address holds enough Entry Credits to pay for the commit.

@@ -145,11 +145,11 @@
         -   [Parameters][141]
     -   [builder][142]
         -   [Parameters][143]
--   [WalletdCli][144]
+-   [FactomdCli][144]
     -   [Parameters][145]
     -   [call][146]
         -   [Parameters][147]
--   [FactomdCli][148]
+-   [WalletdCli][148]
     -   [Parameters][149]
     -   [call][150]
         -   [Parameters][151]
@@ -238,7 +238,11 @@
 
 ## FactomCli
 
+<<<<<<< HEAD
 [src/factom-cli.js:28-492][234]
+=======
+[src/factom-cli.js:28-504][228]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Main class to read and write data from Factom blockchain.
 
@@ -273,6 +277,7 @@ Add an Entry/Chain or a collection of either of those to the Factom blockchain. 
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `obj` **([Chain][238] \| [Array][239]&lt;[Chain][238]> | [Entry][240] \| [Array][239]&lt;[Entry][240]>)** Entry/Chain or array of Entry/Chain to add.
 -   `ecAddress` **[string][241]** Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
 -   `options` **[Object][235]?** 
@@ -282,6 +287,17 @@ Add an Entry/Chain or a collection of either of those to the Factom blockchain. 
     -   `options.skipFundValidation` **[boolean][243]** Skip the validation that the EC address holds enough Entry Credits to pay the commits. (optional, default `false`)
 
 Returns **([Promise][244]&lt;{txId: [string][241], repeatedCommit: [boolean][243], chainId: [string][241], entryHash: [string][241]}> | [Promise][244]&lt;[Array][239]&lt;{txId: [string][241], repeatedCommit: [boolean][243], chainId: [string][241], entryHash: [string][241]}>>)** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][245]), chain id and entry hash. 
+=======
+-   `obj` **([Chain][232] \| [Array][233]&lt;[Chain][232]> | [Entry][234] \| [Array][233]&lt;[Entry][234]>)** Entry/Chain or array of Entry/Chain to add.
+-   `ecAddress` **[string][235]** Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
+-   `options` **[Object][229]?** 
+    -   `options.commitTimeout` **[number][236]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.revealTimeout` **[number][236]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.concurrency` **[number][236]** Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains. (optional, default `200`)
+    -   `options.skipFundValidation` **[boolean][237]** Skip the validation that the EC address holds enough Entry Credits to pay the commits. (optional, default `false`)
+
+Returns **([Promise][238]&lt;{txId: [string][235], repeatedCommit: [boolean][237], chainId: [string][235], entryHash: [string][235]}> | [Promise][238]&lt;[Array][233]&lt;{txId: [string][235], repeatedCommit: [boolean][237], chainId: [string][235], entryHash: [string][235]}>>)** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][239]), chain id and entry hash.
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 It is an array of such object if the input was an iterable of Entry or Chain.
 
 ### addChain
@@ -309,6 +325,7 @@ Add a collection of Chains to the Factom blockchain. Performs both commits and r
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `chains` **[Array][239]&lt;[Chain][238]>** Iterable of Chains to add.
 -   `ecAddress` **[string][241]** Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
 -   `options` **[Object][235]?** 
@@ -316,6 +333,15 @@ Add a collection of Chains to the Factom blockchain. Performs both commits and r
     -   `options.revealTimeout` **[number][242]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
     -   `options.chunkSize` **[number][242]** The lib chunks the collection of Chains so that not too many Promises get resolved in parallel. (optional, default `200`)
     -   `options.skipFundValidation` **[boolean][243]** Skip the validation that the EC address holds enough Entry Credits to pay the commits. (optional, default `false`)
+=======
+-   `chains` **[Array][233]&lt;[Chain][232]>** Iterable of Chains to add.
+-   `ecAddress` **[string][235]** Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
+-   `options` **[Object][229]?** 
+    -   `options.commitTimeout` **[number][236]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.revealTimeout` **[number][236]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.concurrency` **[number][236]** Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains. (optional, default `200`)
+    -   `options.skipFundValidation` **[boolean][237]** Skip the validation that the EC address holds enough Entry Credits to pay the commits. (optional, default `false`)
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Returns **[Promise][244]&lt;[Array][239]&lt;{txId: [string][241], repeatedCommit: [boolean][243], chainId: [string][241], entryHash: [string][241]}>>** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][245]), chain id and entry hash.
 
@@ -327,6 +353,7 @@ Add a collection of Entries to the Factom blockchain. Performs both commits and 
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `entries` **[Array][239]&lt;[Entry][240]>** Iterable of Entries to add.
 -   `ecAddress` **[string][241]** Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
 -   `options` **[Object][235]?** 
@@ -334,6 +361,15 @@ Add a collection of Entries to the Factom blockchain. Performs both commits and 
     -   `options.revealTimeout` **[number][242]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
     -   `options.chunkSize` **[number][242]** The lib chunks the collection of entries so that not too many Promises get resolved in parallel. (optional, default `200`)
     -   `options.skipFundValidation` **[boolean][243]** Skip the validation that the EC address holds enough Entry Credits to pay the commits. (optional, default `false`)
+=======
+-   `entries` **[Array][233]&lt;[Entry][234]>** Iterable of Entries to add.
+-   `ecAddress` **[string][235]** Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
+-   `options` **[Object][229]?** 
+    -   `options.commitTimeout` **[number][236]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.revealTimeout` **[number][236]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.concurrency` **[number][236]** Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains. (optional, default `200`)
+    -   `options.skipFundValidation` **[boolean][237]** Skip the validation that the EC address holds enough Entry Credits to pay the commits. (optional, default `false`)
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Returns **[Promise][244]&lt;[Array][239]&lt;{txId: [string][241], repeatedCommit: [boolean][243], chainId: [string][241], entryHash: [string][241]}>>** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][245]), chain id and entry hash.
 
@@ -410,7 +446,11 @@ Returns **[Promise][244]&lt;{txId: [string][241], repeatedCommit: [boolean][243]
 
 ### createEntryCreditPurchaseTransaction
 
+<<<<<<< HEAD
 [src/factom-cli.js:359-362][254]
+=======
+[src/factom-cli.js:365-374][248]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Create a transaction to convert Factoids to Entry Credit.
 
@@ -425,7 +465,11 @@ Returns **[Promise][244]&lt;[Transaction][255]>**
 
 ### createFactoidTransaction
 
+<<<<<<< HEAD
 [src/factom-cli.js:345-348][256]
+=======
+[src/factom-cli.js:345-354][250]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Create a single input single output (SISO) Factoid transaction.
 
@@ -440,7 +484,11 @@ Returns **[Promise][244]&lt;[Transaction][255]>**
 
 ### factomdApi
 
+<<<<<<< HEAD
 [src/factom-cli.js:408-410][257]
+=======
+[src/factom-cli.js:420-422][251]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Make a direct call to factomd API. See [https://docs.factom.com/api#factomd-api][258].
 
@@ -453,7 +501,11 @@ Returns **[Promise][244]&lt;[Object][235]>** Factomd API response.
 
 ### getAdminBlock
 
+<<<<<<< HEAD
 [src/factom-cli.js:459-461][259]
+=======
+[src/factom-cli.js:471-473][253]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Get an admin block by keyMR or height.
 
@@ -503,7 +555,11 @@ If this is the case that would indicate that the head of that chain will change 
 
 ### getDirectoryBlock
 
+<<<<<<< HEAD
 [src/factom-cli.js:449-451][264]
+=======
+[src/factom-cli.js:461-463][258]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Get a directory block by keyMR or height.
 
@@ -515,7 +571,11 @@ Returns **[Promise][244]&lt;[DirectoryBlock][265]>**
 
 ### getDirectoryBlockHead
 
+<<<<<<< HEAD
 [src/factom-cli.js:439-441][266]
+=======
+[src/factom-cli.js:451-453][260]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Return latest directory block saved.
 
@@ -535,7 +595,11 @@ Returns **[Promise][244]&lt;[Entry][240]>** Entry that does not contain an [Entr
 
 ### getEntryBlock
 
+<<<<<<< HEAD
 [src/factom-cli.js:489-491][269]
+=======
+[src/factom-cli.js:501-503][263]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Get an entry block.
 
@@ -547,7 +611,11 @@ Returns **[Promise][244]&lt;[EntryBlock][270]>**
 
 ### getEntryCreditBlock
 
+<<<<<<< HEAD
 [src/factom-cli.js:469-471][271]
+=======
+[src/factom-cli.js:481-483][265]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Get an entry credit block by keyMR or height.
 
@@ -580,7 +648,11 @@ Returns **[Promise][244]&lt;[Entry][240]>** Entry with its blockContext and time
 
 ### getFactoidBlock
 
+<<<<<<< HEAD
 [src/factom-cli.js:479-481][276]
+=======
+[src/factom-cli.js:491-493][270]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Get a Factoid block by keyMR or height.
 
@@ -604,7 +676,11 @@ Returns **[Promise][244]&lt;[Entry][240]>** Entry with its blockContext and time
 
 ### getHeights
 
+<<<<<<< HEAD
 [src/factom-cli.js:430-432][279]
+=======
+[src/factom-cli.js:442-444][273]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Return blockchain heights. For the explanation of the different heights see [https://docs.factom.com/api#heights][280].
 
@@ -697,7 +773,7 @@ cli.rewindChainWhile('dab6c095c22ec6db1b0961fdb82d504a95f0a31467bb7df73cc793532b
 
 [src/factom-cli.js:332-334][288]
 
-Send a Factoid transaction. 
+Send a Factoid transaction.
 This method will throw if the transaction fees are too low given the current EC rate.
 Note that by default this method also rejects a transaction over paying the minimum required fees by a factor 10 as it is most likely a user input error. This can be overriden with the force option.
 
@@ -712,7 +788,11 @@ Returns **[Promise][244]&lt;[string][241]>** Transaction ID.
 
 ### waitOnCommitAck
 
+<<<<<<< HEAD
 [src/factom-cli.js:372-374][289]
+=======
+[src/factom-cli.js:384-386][283]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Wait until an acknowlegment is received from the network for a commit.
 
@@ -725,7 +805,11 @@ Returns **[Promise][244]&lt;[string][241]>** Status of the commit. See [https://
 
 ### waitOnFactoidTransactionAck
 
+<<<<<<< HEAD
 [src/factom-cli.js:395-397][291]
+=======
+[src/factom-cli.js:407-409][285]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Wait until an acknowlegment is received from the network for a Factoid transaction.
 
@@ -738,7 +822,11 @@ Returns **[Promise][244]&lt;[string][241]>** Status of the transaction. See [htt
 
 ### waitOnRevealAck
 
+<<<<<<< HEAD
 [src/factom-cli.js:384-386][292]
+=======
+[src/factom-cli.js:396-398][286]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Wait until an acknowlegment is received from the network for a reveal.
 
@@ -752,7 +840,11 @@ Returns **[Promise][244]&lt;[string][241]>** Status of the reveal. See [https://
 
 ### walletdApi
 
+<<<<<<< HEAD
 [src/factom-cli.js:419-421][293]
+=======
+[src/factom-cli.js:431-433][287]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Make a direct call to factom-walletd API. See [https://docs.factom.com/api#factom-walletd-api][294].
 
@@ -765,7 +857,11 @@ Returns **[Promise][244]&lt;[Object][235]>** Walletd API response.
 
 ## addressToKey
 
+<<<<<<< HEAD
 [src/addresses.js:141-149][295]
+=======
+[src/addresses.js:141-151][289]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Extract the key contained in an address. Cannot be used with public FCT address as those contain a RCD hash and not a key (See [addressToRcdHash][78]).
 
@@ -777,7 +873,11 @@ Returns **[Buffer][296]** Key contained in the address.
 
 ## addressToRcdHash
 
+<<<<<<< HEAD
 [src/addresses.js:156-161][297]
+=======
+[src/addresses.js:158-163][291]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Extract the RCD hash from a public FCT address.
 
@@ -818,7 +918,11 @@ Returns **[Object][235]** Admin entries.
 
 ## EntryBuilder
 
+<<<<<<< HEAD
 [src/entry.js:199-290][300]
+=======
+[src/entry.js:197-289][294]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Class to build an [Entry][110]
 
@@ -828,9 +932,13 @@ Class to build an [Entry][110]
 
 ### blockContext
 
+<<<<<<< HEAD
 [src/entry.js:278-281][301]
+=======
+[src/entry.js:277-280][295]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
-Set block context. This method is used internally by the library to populate a block context, 
+Set block context. This method is used internally by the library to populate a block context,
 regular users should not have to use this.
 
 #### Parameters
@@ -841,7 +949,11 @@ Returns **[EntryBuilder][303]** EntryBuilder instance.
 
 ### build
 
+<<<<<<< HEAD
 [src/entry.js:287-289][304]
+=======
+[src/entry.js:286-288][298]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Build the Entry.
 
@@ -849,7 +961,11 @@ Returns **[Entry][240]** Built entry.
 
 ### chainId
 
+<<<<<<< HEAD
 [src/entry.js:231-236][305]
+=======
+[src/entry.js:230-235][299]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Set chain ID.
 
@@ -862,7 +978,11 @@ Returns **[EntryBuilder][303]** EntryBuilder instance.
 
 ### content
 
+<<<<<<< HEAD
 [src/entry.js:219-224][306]
+=======
+[src/entry.js:218-223][300]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Set content.
 
@@ -875,7 +995,11 @@ Returns **[EntryBuilder][303]** EntryBuilder instance.
 
 ### extId
 
+<<<<<<< HEAD
 [src/entry.js:255-260][307]
+=======
+[src/entry.js:254-259][301]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Add an external ID.
 
@@ -888,7 +1012,11 @@ Returns **[EntryBuilder][303]** EntryBuilder instance.
 
 ### extIds
 
+<<<<<<< HEAD
 [src/entry.js:243-248][308]
+=======
+[src/entry.js:242-247][302]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Set external IDs.
 
@@ -901,9 +1029,13 @@ Returns **[EntryBuilder][303]** EntryBuilder instance.
 
 ### timestamp
 
+<<<<<<< HEAD
 [src/entry.js:267-270][309]
+=======
+[src/entry.js:266-269][303]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
-Set the timestamp for the entry commit. 
+Set the timestamp for the entry commit.
 If not set the library will use Date.now() as the commit timestamp.
 
 #### Parameters
@@ -914,7 +1046,11 @@ Returns **[EntryBuilder][303]** EntryBuilder instance.
 
 ## TransactionBuilder
 
+<<<<<<< HEAD
 [src/transaction.js:262-354][310]
+=======
+[src/transaction.js:299-391][304]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Class to build a [Transaction][130].
 
@@ -924,7 +1060,11 @@ Class to build a [Transaction][130].
 
 ### build
 
+<<<<<<< HEAD
 [src/transaction.js:351-353][311]
+=======
+[src/transaction.js:388-390][305]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Build the Transaction.
 
@@ -932,22 +1072,37 @@ Returns **[Transaction][255]** Built transaction.
 
 ### input
 
+<<<<<<< HEAD
 [src/transaction.js:289-303][312]
+=======
+[src/transaction.js:326-340][306]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Add an input to the transaction.
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `fctAddress` **[string][241]** Factoid address. 
     User should provide a private address (Fs) to allow the signature of the transaction. 
     If a public address is provided the user will need to provide the RCD and signature using [TransactionBuilder#rcdSignature][313].
 -   `amount` **[number][242]** Amount in factoshis (10^-8 Factoids).
+=======
+-   `fctAddress` **[string][235]** Factoid address.
+    User should provide a private address (Fs) to allow the signature of the transaction.
+    If a public address is provided the user will need to provide the RCD and signature using [TransactionBuilder#rcdSignature][307].
+-   `amount` **[number][236]** Amount in factoshis (10^-8 Factoids).
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Returns **[TransactionBuilder][314]** TransactionBuilder instance.
 
 ### output
 
+<<<<<<< HEAD
 [src/transaction.js:312-321][315]
+=======
+[src/transaction.js:349-358][309]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Add an output to the transaction. Both FCT and EC outputs are supported.
 Please note that in case of an EC output, the amount is still in factoshis, it is not the number of Entry Credits.
@@ -961,7 +1116,11 @@ Returns **[TransactionBuilder][314]** TransactionBuilder instance.
 
 ### rcdSignature
 
+<<<<<<< HEAD
 [src/transaction.js:330-334][316]
+=======
+[src/transaction.js:367-371][310]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Add a RCD and signature to the transaction. This is used only in the case of unsigned transactions (usefull for hardware wallets).
 RCDs/signatures need to be added in the same order as their corresponding inputs.
@@ -975,9 +1134,13 @@ Returns **[TransactionBuilder][314]** TransactionBuilder instance.
 
 ### timestamp
 
+<<<<<<< HEAD
 [src/transaction.js:342-345][317]
+=======
+[src/transaction.js:379-382][311]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
-Set the transaction timestamp. 
+Set the transaction timestamp.
 If not set the library will use Date.now() as the transaction timestamp.
 
 #### Parameters
@@ -987,6 +1150,7 @@ If not set the library will use Date.now() as the transaction timestamp.
 Returns **[TransactionBuilder][314]** TransactionBuilder instance.
 
 ## Entry
+<<<<<<< HEAD
 
 [src/entry.js:26-189][318]
 
@@ -1080,6 +1244,10 @@ Returns **[number][242]** The entry payload size in bytes.
 [src/entry.js:83-85][328]
 
 Get the entry raw data size (payload size excluding the 2 byte overhead per extID).
+=======
+
+[src/entry.js:26-187][312]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Returns **[number][242]** The entry raw size in bytes.
 
@@ -1097,19 +1265,31 @@ Returns **[number][242]** Remaining number of free bytes.
 
 Get the number of bytes that can be added to the entry before hitting the maximum (10kb).
 
+<<<<<<< HEAD
 Returns **[number][242]** Maximum number of bytes that can still be added to the entry.
+=======
+[src/entry.js:43-45][313]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 ### size
 
 [src/entry.js:66-69][331]
 
+<<<<<<< HEAD
 Get the entry size.
+=======
+[src/entry.js:50-52][314]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Returns **[number][242]** The entry size in bytes.
 
 ### toObject
 
+<<<<<<< HEAD
 [src/entry.js:167-179][332]
+=======
+[src/entry.js:152-159][315]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Convert to a JavaScript Object representation of the entry. Can be used as argument of [EntryBuilder][84].
 
@@ -1117,13 +1297,21 @@ Returns **[Object][235]** JavaScript object representing the entry.
 
 ### builder
 
+<<<<<<< HEAD
 [src/entry.js:186-188][333]
+=======
+[src/entry.js:57-59][316]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Entry builder static factory.
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `entry` **[Entry][240]?** Optional entry to use to initialize the attributes of the builder.
+=======
+[src/entry.js:116-119][317]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Returns **[EntryBuilder][303]** A new EntryBuilder.
 
@@ -1131,14 +1319,22 @@ Returns **[EntryBuilder][303]** A new EntryBuilder.
 
 [src/transaction.js:77-234][334]
 
+<<<<<<< HEAD
 Class representing a Factoid transaction.
+=======
+[src/entry.js:124-126][318]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 ### Parameters
 
 -   `builder` **[TransactionBuilder][314]** 
 -   `blockContext` **[TransactionBlockContext][335]?** 
 
+<<<<<<< HEAD
 ### Properties
+=======
+[src/entry.js:131-139][319]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 -   `id` **[string][241]** Transaction ID.
 -   `timestamp` **[number][242]** Timestamp in milliseconds.
@@ -1155,6 +1351,7 @@ Class representing a Factoid transaction.
 
 ### Examples
 
+<<<<<<< HEAD
 ```javascript
 const transaction = Transaction.builder()
   .input('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X', 14000000)
@@ -1166,12 +1363,19 @@ const transaction = Transaction.builder()
   .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e3QR', 10000)
   .build()
 ```
+=======
+[src/entry.js:144-146][320]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 ### computeEcRequiredFees
 
 [src/transaction.js:177-205][337]
 
+<<<<<<< HEAD
 Compute the required Entry Credit fees.
+=======
+[src/entry.js:74-76][321]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 #### Parameters
 
@@ -1179,7 +1383,11 @@ Compute the required Entry Credit fees.
 
 Returns **[number][242]** Fees in Entry Credit.
 
+<<<<<<< HEAD
 ### computeRequiredFees
+=======
+[src/entry.js:82-84][322]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [src/transaction.js:168-170][338]
 
@@ -1187,8 +1395,12 @@ Compute the required fees (minimum difference between inputs and outputs amounts
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `ecRate` **[number][242]** Entry Credit rate. See [FactomCli#getEntryCreditRate][339].
 -   `opts` **[Object][235]?** Extra options necessary to compute fees of an unsigned transaction.
+=======
+[src/entry.js:90-97][323]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Returns **[number][242]** Number of factoshis (10^-8 Factoids) required as fees for this transaction.
 
@@ -1196,7 +1408,11 @@ Returns **[number][242]** Number of factoshis (10^-8 Factoids) required as fees 
 
 [src/transaction.js:149-151][340]
 
+<<<<<<< HEAD
 Check if the transaction is signed or not.
+=======
+[src/entry.js:103-110][324]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Returns **[boolean][243]** True if the transaction is signed.
 
@@ -1204,7 +1420,11 @@ Returns **[boolean][243]** True if the transaction is signed.
 
 [src/transaction.js:210-223][341]
 
+<<<<<<< HEAD
 Returns **[Buffer][296]** Result of marshaling the transaction.
+=======
+[src/entry.js:65-68][325]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 ### validateFees
 
@@ -1212,7 +1432,11 @@ Returns **[Buffer][296]** Result of marshaling the transaction.
 
 Compute if the fees of the transaction are enough (for a given EC rate).
 
+<<<<<<< HEAD
 #### Parameters
+=======
+[src/entry.js:165-177][326]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 -   `ecRate` **[number][242]** Entry Credit rate. See [FactomCli#getEntryCreditRate][339].
 
@@ -1220,7 +1444,11 @@ Returns **[boolean][243]** True if the fees are sufficient.
 
 ### builder
 
+<<<<<<< HEAD
 [src/transaction.js:230-232][343]
+=======
+[src/entry.js:184-186][327]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Transaction builder static factory.
 
@@ -1230,20 +1458,30 @@ Transaction builder static factory.
 
 Returns **[TransactionBuilder][314]** A new TransactionBuilder.
 
+<<<<<<< HEAD
 ## WalletdCli
 
 [src/apis-cli.js:175-192][344]
+=======
+## Transaction
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
-**Extends BaseCli**
+[src/transaction.js:86-273][328]
 
-Walletd API client.
+Class representing a Factoid transaction.
 
 ### Parameters
 
+<<<<<<< HEAD
 -   `conf` **[ConnectionOptions][236]?** Walletd connection options.
+=======
+-   `builder` **[TransactionBuilder][308]** 
+-   `blockContext` **[TransactionBlockContext][329]?** 
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
-### call
+### Properties
 
+<<<<<<< HEAD
 [src/apis-cli.js:189-191][345]
 
 Make a call to factom-walletd API. See [https://docs.factom.com/api#factom-walletd-api][294].
@@ -1258,6 +1496,101 @@ Returns **[Promise][244]&lt;[Object][235]>** Walletd API response.
 ## FactomdCli
 
 [src/apis-cli.js:150-169][346]
+=======
+-   `id` **[string][235]** Transaction ID.
+-   `timestamp` **[number][236]** Timestamp in milliseconds.
+-   `inputs` **[Array][233]&lt;[TransactionAddress][330]>** Inputs.
+-   `factoidOutputs` **[Array][233]&lt;[TransactionAddress][330]>** Factoid outputs.
+-   `entryCreditOutputs` **[Array][233]&lt;[TransactionAddress][330]>** Entry Credit outputs.
+-   `totalInputs` **[number][236]** Total amount of factoshis as input of this transaction.
+-   `totalFactoidOutputs` **[number][236]** Total amount of factoshis as factoid outputs of this transaction.
+-   `totalEntryCreditOutputs` **[number][236]** Total amount of factoshis as entry credit outputs of this transaction.
+-   `feesPaid` **[number][236]** Fees paid in this transaction.
+-   `blockContext` **[TransactionBlockContext][329]** Block context.
+-   `rcds` **[Array][233]&lt;[Buffer][290]>** RCDs.
+-   `signatures` **[Array][233]&lt;[Buffer][290]>** Signatures.
+
+### Examples
+
+```javascript
+const transaction = Transaction.builder()
+  .input('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X', 14000000)
+  .input('Fs2E6iXCLAKDiPqVtfxtuQCKsTe7o6DJFDnht1wST53s4ibtdu9f', 1010000 + fees)
+  .output('FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg5uH', 5000000)
+  .output('FA24PAtyZWWVAPm95ZCVpwyY6RYHeCMTiZt2v4VQAY8aBXMUZteF', 10000000)
+   // Note that the line below is to buy Entry Credits (see the address type) and the amount is in Factoshis like other outputs:
+   // it is *not* the number of Entry Credits you are purchasing.
+  .output('EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e3QR', 10000)
+  .build()
+```
+
+### computeEcRequiredFees
+
+[src/transaction.js:212-245][331]
+
+Compute the required Entry Credit fees.
+
+#### Parameters
+
+-   `opts` **[Object][229]?** Extra options necessary to compute fees of an unsigned transaction.
+
+Returns **[number][236]** Fees in Entry Credit.
+
+### computeRequiredFees
+
+[src/transaction.js:203-205][332]
+
+Compute the required fees (minimum difference between inputs and outputs amounts) for the transaction (for a given EC rate).
+
+#### Parameters
+
+-   `ecRate` **[number][236]** Entry Credit rate. See [FactomCli#getEntryCreditRate][333].
+-   `opts` **[Object][229]?** Extra options necessary to compute fees of an unsigned transaction.
+
+Returns **[number][236]** Number of factoshis (10^-8 Factoids) required as fees for this transaction.
+
+### isSigned
+
+[src/transaction.js:184-186][334]
+
+Check if the transaction is signed or not.
+
+Returns **[boolean][237]** True if the transaction is signed.
+
+### marshalBinary
+
+[src/transaction.js:250-263][335]
+
+Returns **[Buffer][290]** Result of marshaling the transaction.
+
+### validateFees
+
+[src/transaction.js:193-195][336]
+
+Compute if the fees of the transaction are enough (for a given EC rate).
+
+#### Parameters
+
+-   `ecRate` **[number][236]** Entry Credit rate. See [FactomCli#getEntryCreditRate][333].
+
+Returns **[boolean][237]** True if the fees are sufficient.
+
+### builder
+
+[src/transaction.js:270-272][337]
+
+Transaction builder static factory.
+
+#### Parameters
+
+-   `transaction` **[Transaction][249]?** Optional transaction to use to initialize the attributes of the builder.
+
+Returns **[TransactionBuilder][308]** A new TransactionBuilder.
+
+## FactomdCli
+
+[src/apis-cli.js:165-183][338]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 **Extends BaseCli**
 
@@ -1269,7 +1602,11 @@ Factomd API client.
 
 ### call
 
+<<<<<<< HEAD
 [src/apis-cli.js:165-168][347]
+=======
+[src/apis-cli.js:179-182][339]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Make a call to factomd API. See [https://docs.factom.com/api#factomd-api][258].
 
@@ -1279,6 +1616,31 @@ Make a call to factomd API. See [https://docs.factom.com/api#factomd-api][258].
 -   `params` **[Object][235]?** The object that the factomd API is expecting.
 
 Returns **[Promise][244]&lt;[Object][235]>** Factomd API response.
+
+## WalletdCli
+
+[src/apis-cli.js:189-205][340]
+
+**Extends BaseCli**
+
+Walletd API client.
+
+### Parameters
+
+-   `conf` **[ConnectionOptions][230]?** Walletd connection options.
+
+### call
+
+[src/apis-cli.js:202-204][341]
+
+Make a call to factom-walletd API. See [https://docs.factom.com/api#factom-walletd-api][288].
+
+#### Parameters
+
+-   `method` **[string][235]** Walletd API method name.
+-   `params` **[Object][229]** The object that the walletd API is expecting.
+
+Returns **[Promise][238]&lt;[Object][229]>** Walletd API response.
 
 ## Chain
 
@@ -1376,14 +1738,23 @@ Returns **[boolean][243]**
 
 ## composeChain
 
+<<<<<<< HEAD
 [src/chain.js:144-151][358]
+=======
+[src/chain.js:145-152][346]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Compose the commit and reveal of a Chain, that can then be used as inputs of the factomd APIs `commit-chain` and `reveal-chain`.
 
 ### Parameters
 
+<<<<<<< HEAD
 -   `chain` **[Chain][238]** Chain to compose the commit and reveal of.
 -   `ecAddress` **[string][241]** Entry Credit address that pays for the commit, either private (Es) or public (EC). 
+=======
+-   `chain` **[Chain][232]** Chain to compose the commit and reveal of.
+-   `ecAddress` **[string][235]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
     If a public EC address is provided it is necessary to manually pass the signature of the commit as a 3rd argument (use case for hardware wallets)
 -   `signature` **([string][241] \| [Buffer][296])?** Optional signature of the commit (composeChainLedger). Only necessary if a public EC address was passed as 2nd argument.
 
@@ -1391,15 +1762,24 @@ Returns **{commit: [Buffer][296], reveal: [Buffer][296]}** Chain commit and reve
 
 ## composeChainCommit
 
+<<<<<<< HEAD
 [src/chain.js:78-105][359]
+=======
+[src/chain.js:77-106][347]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Compose the commit of a Chain, that can then be used as input of the factomd API `commit-chain`.
 Note that if the chain first entry doesn't have a timestamp set the library will use Date.now() as the default for the commit timestamp.
 
 ### Parameters
 
+<<<<<<< HEAD
 -   `chain` **[Chain][238]** Chain to compose the commit of.
 -   `ecAddress` **[string][241]** Entry Credit address that pays for the commit, either private (Es) or public (EC). 
+=======
+-   `chain` **[Chain][232]** Chain to compose the commit of.
+-   `ecAddress` **[string][235]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
     If a public EC address is provided it is necessary to provide the signature of the commit as a 3rd argument (use case for hardware wallets)
 -   `signature` **([string][241] \| [Buffer][296])?** Optional signature of the commit (composeChainLedger). Only necessary if a public EC address was passed as 2nd argument.
 
@@ -1407,7 +1787,11 @@ Returns **[Buffer][296]** Chain commit.
 
 ## composeChainReveal
 
+<<<<<<< HEAD
 [src/chain.js:131-134][360]
+=======
+[src/chain.js:132-135][348]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Compose the reveal of a Chain, that can then be used as input of the factomd API `reveal-chain`.
 
@@ -1419,14 +1803,23 @@ Returns **[Buffer][296]** Chain reveal.
 
 ## composeEntry
 
+<<<<<<< HEAD
 [src/entry.js:398-405][361]
+=======
+[src/entry.js:399-406][349]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Compose the commit and reveal of an Entry, that can then be used as inputs of the factomd APIs `commit-entry` and `reveal-entry`.
 
 ### Parameters
 
+<<<<<<< HEAD
 -   `entry` **[Entry][240]** Entry to compose the commit and reveal of.
 -   `ecAddress` **[string][241]** Entry Credit address that pays for the commit, either private (Es) or public (EC). 
+=======
+-   `entry` **[Entry][234]** Entry to compose the commit and reveal of.
+-   `ecAddress` **[string][235]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
     If a public EC address is provided it is necessary to manually pass the signature of the commit as a 3rd argument (use case for hardware wallets)
 -   `signature` **([string][241] \| [Buffer][296])?** Optional signature of the commit (composeEntryLedger). Only necessary if a public EC address was passed as 2nd argument.
 
@@ -1434,15 +1827,24 @@ Returns **{commit: [Buffer][296], reveal: [Buffer][296]}** Entry commit and reve
 
 ## composeEntryCommit
 
+<<<<<<< HEAD
 [src/entry.js:337-365][362]
+=======
+[src/entry.js:336-366][350]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Compose the commit of an Entry, that can then be used as input of the factomd API `commit-entry`.
 Note that if the Entry doesn't have a timestamp set the library will use Date.now() as the default for the commit timestamp.
 
 ### Parameters
 
+<<<<<<< HEAD
 -   `entry` **[Entry][240]** Entry to compose the commit of.
 -   `ecAddress` **[string][241]** Entry Credit address that pays for the commit, either private (Es) or public (EC). 
+=======
+-   `entry` **[Entry][234]** Entry to compose the commit of.
+-   `ecAddress` **[string][235]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
     If a public EC address is provided it is necessary to provide the signature of the commit as a 3rd argument (use case for hardware wallets)
 -   `signature` **([string][241] \| [Buffer][296])?** Optional signature of the commit (composeEntryLedger). Only necessary if a public EC address was passed as 2nd argument.
 
@@ -1450,7 +1852,11 @@ Returns **[Buffer][296]** Entry commit.
 
 ## composeEntryReveal
 
+<<<<<<< HEAD
 [src/entry.js:385-388][363]
+=======
+[src/entry.js:386-389][351]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Compose the reveal of an Entry, that can then be used as input of the factomd API `reveal-entry`.
 
@@ -1462,7 +1868,11 @@ Returns **[Buffer][296]** Entry reveal.
 
 ## computeChainId
 
+<<<<<<< HEAD
 [src/chain.js:179-183][364]
+=======
+[src/chain.js:180-184][352]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Compute the ID of a Chain provided its first entry.
 
@@ -1474,7 +1884,11 @@ Returns **[Buffer][296]** Chain ID.
 
 ## computeChainTxId
 
+<<<<<<< HEAD
 [src/chain.js:169-172][365]
+=======
+[src/chain.js:170-173][353]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Compute the transaction ID of the Chain commit. The transaction ID is dependent on the timestamp set in the chain first entry.
 Note that if the timestamp is not set the library uses Date.now() as the default, changing the result of this function if called at different times.
@@ -1487,7 +1901,11 @@ Returns **[Buffer][296]** The transaction id of the Chain commit.
 
 ## computeEntryTxId
 
+<<<<<<< HEAD
 [src/entry.js:423-426][366]
+=======
+[src/entry.js:424-427][354]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Compute the transaction ID of the Entry commit. The transaction ID is dependent on the timestamp set in the entry.
 Note that if the timestamp is not set the library uses Date.now() as the default, changing the result of this function if called at different times.
@@ -1500,7 +1918,11 @@ Returns **[Buffer][296]** The transaction id of the Entry commit.
 
 ## ConnectionOptions
 
+<<<<<<< HEAD
 [src/apis-cli.js:64-137][367]
+=======
+[src/apis-cli.js:77-152][355]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Describe the options of connection to factomd or factom-walletd.
 
@@ -1561,7 +1983,11 @@ Class representing a Directory block.
 
 ## EntryBlock
 
+<<<<<<< HEAD
 [src/blocks.js:186-201][370]
+=======
+[src/blocks.js:192-210][358]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Class representing an Entry block.
 
@@ -1577,7 +2003,11 @@ Class representing an Entry block.
 
 ## EntryBlockContext
 
+<<<<<<< HEAD
 [src/entry.js:306-313][371]
+=======
+[src/entry.js:305-312][359]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Block context of an [Entry][110].
 
@@ -1593,7 +2023,11 @@ Type: [Object][235]
 
 ## EntryCreditBlock
 
+<<<<<<< HEAD
 [src/blocks.js:258-316][372]
+=======
+[src/blocks.js:269-327][360]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Class representing an Entry Credit block.
 
@@ -1613,7 +2047,11 @@ Class representing an Entry Credit block.
 
 ### getCommitsForMinute
 
+<<<<<<< HEAD
 [src/blocks.js:310-315][373]
+=======
+[src/blocks.js:321-326][361]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Get all the commits for a given minute.
 
@@ -1625,7 +2063,11 @@ Returns **[Array][239]&lt;{version: [number][242], millis: [number][242], entryH
 
 ## FactoidBlock
 
+<<<<<<< HEAD
 [src/blocks.js:214-242][374]
+=======
+[src/blocks.js:223-253][362]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Class representing a Factoid block.
 
@@ -1642,7 +2084,11 @@ Class representing a Factoid block.
 
 ### getCoinbaseTransaction
 
+<<<<<<< HEAD
 [src/blocks.js:239-241][375]
+=======
+[src/blocks.js:250-252][363]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Get coinbase transaction of the block.
 
@@ -1650,7 +2096,11 @@ Returns **[Transaction][255]** Coinbase transaction of the block.
 
 ## generateRandomEcAddress
 
+<<<<<<< HEAD
 [src/addresses.js:240-247][376]
+=======
+[src/addresses.js:242-249][364]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Generate a new random EC address pair (private and public).
 
@@ -1658,7 +2108,11 @@ Returns **{public: [string][241], private: [string][241]}** Public and private E
 
 ## generateRandomFctAddress
 
+<<<<<<< HEAD
 [src/addresses.js:227-234][377]
+=======
+[src/addresses.js:229-236][365]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Generate a new random FCT address pair (private and public).
 
@@ -1786,7 +2240,11 @@ Returns **[boolean][243]** True if the address is a valid public FCT address.
 
 ## keyToPublicEcAddress
 
+<<<<<<< HEAD
 [src/addresses.js:195-197][388]
+=======
+[src/addresses.js:197-199][376]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Build a human readable public EC address from a 32-byte key.
 
@@ -1798,7 +2256,11 @@ Returns **[string][241]** Public EC address.
 
 ## keyToPublicFctAddress
 
+<<<<<<< HEAD
 [src/addresses.js:168-170][389]
+=======
+[src/addresses.js:170-172][377]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Build a human readable public FCT address from a key.
 
@@ -1810,7 +2272,11 @@ Returns **[string][241]** Public FCT address.
 
 ## rcdHashToPublicFctAddress
 
+<<<<<<< HEAD
 [src/addresses.js:177-179][390]
+=======
+[src/addresses.js:179-181][378]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Build a human readable public FCT address from a RCD hash.
 
@@ -1822,7 +2288,11 @@ Returns **[string][241]** Public FCT address.
 
 ## seedToPrivateEcAddress
 
+<<<<<<< HEAD
 [src/addresses.js:204-206][391]
+=======
+[src/addresses.js:206-208][379]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Build a human readable private EC address from a 32-byte seed.
 
@@ -1834,7 +2304,11 @@ Returns **[string][241]** Private EC address.
 
 ## seedToPrivateFctAddress
 
+<<<<<<< HEAD
 [src/addresses.js:186-188][392]
+=======
+[src/addresses.js:188-190][380]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Build a human readable private FCT address from a 32-byte seed.
 
@@ -1846,7 +2320,11 @@ Returns **[string][241]** Private FCT address.
 
 ## TransactionAddress
 
+<<<<<<< HEAD
 [src/transaction.js:15-30][393]
+=======
+[src/transaction.js:21-39][381]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Class to hold address and amount of an input/output of a [Transaction][130].
 
@@ -1857,7 +2335,11 @@ Class to hold address and amount of an input/output of a [Transaction][130].
 
 ## TransactionBlockContext
 
+<<<<<<< HEAD
 [src/transaction.js:77-234][394]
+=======
+[src/transaction.js:86-273][382]
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 Block context of a [Transaction][130].
 
@@ -2155,7 +2637,7 @@ Type: [Object][235]
 
 [143]: #parameters-56
 
-[144]: #walletdcli
+[144]: #factomdcli
 
 [145]: #parameters-57
 
@@ -2163,7 +2645,7 @@ Type: [Object][235]
 
 [147]: #parameters-58
 
-[148]: #factomdcli
+[148]: #walletdcli
 
 [149]: #parameters-59
 
@@ -2347,13 +2829,21 @@ Type: [Object][235]
 
 [239]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
+<<<<<<< HEAD
 [240]: #entry
+=======
+[228]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L28-L504 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [241]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
 [242]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
+<<<<<<< HEAD
 [243]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+=======
+[231]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L127-L130 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [244]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
@@ -2371,6 +2861,7 @@ Type: [Object][235]
 
 [251]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L49-L52 "Source code on GitHub"
 
+<<<<<<< HEAD
 [252]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L62-L65 "Source code on GitHub"
 
 [253]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L75-L78 "Source code on GitHub"
@@ -2388,19 +2879,49 @@ Type: [Object][235]
 [259]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L459-L461 "Source code on GitHub"
 
 [260]: #adminblock
+=======
+[240]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L143-L146 "Source code on GitHub"
+
+[241]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L160-L163 "Source code on GitHub"
+
+[242]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L193-L196 "Source code on GitHub"
+
+[243]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L176-L179 "Source code on GitHub"
+
+[244]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L281-L283 "Source code on GitHub"
+
+[245]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L49-L52 "Source code on GitHub"
+
+[246]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L62-L65 "Source code on GitHub"
+
+[247]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L75-L78 "Source code on GitHub"
+
+[248]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L365-L374 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [261]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L218-L220 "Source code on GitHub"
 
+<<<<<<< HEAD
 [262]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L271-L273 "Source code on GitHub"
 
 [263]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L230-L232 "Source code on GitHub"
+=======
+[250]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L345-L354 "Source code on GitHub"
+
+[251]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L420-L422 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [264]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L449-L451 "Source code on GitHub"
 
+<<<<<<< HEAD
 [265]: #directoryblock
+=======
+[253]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L471-L473 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [266]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L439-L441 "Source code on GitHub"
 
+<<<<<<< HEAD
 [267]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L240-L242 "Source code on GitHub"
 
 [268]: #factomcligetentrywithblockcontext
@@ -2408,39 +2929,79 @@ Type: [Object][235]
 [269]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L489-L491 "Source code on GitHub"
 
 [270]: #entryblock
+=======
+[255]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L218-L220 "Source code on GitHub"
+
+[256]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L271-L273 "Source code on GitHub"
+
+[257]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L230-L232 "Source code on GitHub"
+
+[258]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L461-L463 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [271]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L469-L471 "Source code on GitHub"
 
+<<<<<<< HEAD
 [272]: #entrycreditblock
 
 [273]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L290-L292 "Source code on GitHub"
+=======
+[260]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L451-L453 "Source code on GitHub"
+
+[261]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L240-L242 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [274]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L251-L253 "Source code on GitHub"
 
+<<<<<<< HEAD
 [275]: #factomcligetentry
+=======
+[263]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L501-L503 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [276]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L479-L481 "Source code on GitHub"
 
+<<<<<<< HEAD
 [277]: #factoidblock
+=======
+[265]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L481-L483 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [278]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L261-L263 "Source code on GitHub"
 
+<<<<<<< HEAD
 [279]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L430-L432 "Source code on GitHub"
 
 [280]: https://docs.factom.com/api#heights
+=======
+[267]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L290-L292 "Source code on GitHub"
+
+[268]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L251-L253 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [281]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L206-L208 "Source code on GitHub"
 
+<<<<<<< HEAD
 [282]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L300-L302 "Source code on GitHub"
+=======
+[270]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L491-L493 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [283]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L87-L89 "Source code on GitHub"
 
+<<<<<<< HEAD
 [284]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L98-L100 "Source code on GitHub"
 
 [285]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L109-L111 "Source code on GitHub"
+=======
+[272]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L261-L263 "Source code on GitHub"
+
+[273]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L442-L444 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [286]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L315-L317 "Source code on GitHub"
 
+<<<<<<< HEAD
 [287]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
 [288]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L332-L334 "Source code on GitHub"
@@ -2452,27 +3013,59 @@ Type: [Object][235]
 [291]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L395-L397 "Source code on GitHub"
 
 [292]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L384-L386 "Source code on GitHub"
+=======
+[275]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L206-L208 "Source code on GitHub"
+
+[276]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L300-L302 "Source code on GitHub"
+
+[277]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L87-L89 "Source code on GitHub"
+
+[278]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L98-L100 "Source code on GitHub"
+
+[279]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L109-L111 "Source code on GitHub"
+
+[280]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L315-L317 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [293]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/factom-cli.js#L419-L421 "Source code on GitHub"
 
+<<<<<<< HEAD
 [294]: https://docs.factom.com/api#factom-walletd-api
 
 [295]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/addresses.js#L141-L149 "Source code on GitHub"
+=======
+[282]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L332-L334 "Source code on GitHub"
+
+[283]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L384-L386 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [296]: https://nodejs.org/api/buffer.html
 
+<<<<<<< HEAD
 [297]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/addresses.js#L156-L161 "Source code on GitHub"
 
 [298]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/blocks.js#L86-L113 "Source code on GitHub"
 
 [299]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/blocks.js#L109-L112 "Source code on GitHub"
+=======
+[285]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L407-L409 "Source code on GitHub"
+
+[286]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L396-L398 "Source code on GitHub"
+
+[287]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/factom-cli.js#L431-L433 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [300]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/entry.js#L199-L290 "Source code on GitHub"
 
+<<<<<<< HEAD
 [301]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/entry.js#L278-L281 "Source code on GitHub"
+=======
+[289]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L141-L151 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [302]: #entryblockcontext
 
+<<<<<<< HEAD
 [303]: #entrybuilder
 
 [304]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/entry.js#L287-L289 "Source code on GitHub"
@@ -2482,11 +3075,23 @@ Type: [Object][235]
 [306]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/entry.js#L219-L224 "Source code on GitHub"
 
 [307]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/entry.js#L255-L260 "Source code on GitHub"
+=======
+[291]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L158-L163 "Source code on GitHub"
+
+[292]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/blocks.js#L86-L113 "Source code on GitHub"
+
+[293]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/blocks.js#L109-L112 "Source code on GitHub"
+
+[294]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L197-L289 "Source code on GitHub"
+
+[295]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L277-L280 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [308]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/entry.js#L243-L248 "Source code on GitHub"
 
 [309]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/entry.js#L267-L270 "Source code on GitHub"
 
+<<<<<<< HEAD
 [310]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/transaction.js#L262-L354 "Source code on GitHub"
 
 [311]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/transaction.js#L351-L353 "Source code on GitHub"
@@ -2504,11 +3109,31 @@ Type: [Object][235]
 [317]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/transaction.js#L342-L345 "Source code on GitHub"
 
 [318]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/entry.js#L26-L189 "Source code on GitHub"
+=======
+[298]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L286-L288 "Source code on GitHub"
+
+[299]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L230-L235 "Source code on GitHub"
+
+[300]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L218-L223 "Source code on GitHub"
+
+[301]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L254-L259 "Source code on GitHub"
+
+[302]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L242-L247 "Source code on GitHub"
+
+[303]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L266-L269 "Source code on GitHub"
+
+[304]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L299-L391 "Source code on GitHub"
+
+[305]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L388-L390 "Source code on GitHub"
+
+[306]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L326-L340 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [319]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/entry.js#L43-L45 "Source code on GitHub"
 
 [320]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/entry.js#L50-L52 "Source code on GitHub"
 
+<<<<<<< HEAD
 [321]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/entry.js#L154-L161 "Source code on GitHub"
 
 [322]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/entry.js#L57-L59 "Source code on GitHub"
@@ -2602,9 +3227,105 @@ Type: [Object][235]
 [366]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/entry.js#L423-L426 "Source code on GitHub"
 
 [367]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/apis-cli.js#L33-L62 "Source code on GitHub"
+=======
+[309]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L349-L358 "Source code on GitHub"
+
+[310]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L367-L371 "Source code on GitHub"
+
+[311]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L379-L382 "Source code on GitHub"
+
+[312]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L26-L187 "Source code on GitHub"
+
+[313]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L43-L45 "Source code on GitHub"
+
+[314]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L50-L52 "Source code on GitHub"
+
+[315]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L152-L159 "Source code on GitHub"
+
+[316]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L57-L59 "Source code on GitHub"
+
+[317]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L116-L119 "Source code on GitHub"
+
+[318]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L124-L126 "Source code on GitHub"
+
+[319]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L131-L139 "Source code on GitHub"
+
+[320]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L144-L146 "Source code on GitHub"
+
+[321]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L74-L76 "Source code on GitHub"
+
+[322]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L82-L84 "Source code on GitHub"
+
+[323]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L90-L97 "Source code on GitHub"
+
+[324]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L103-L110 "Source code on GitHub"
+
+[325]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L65-L68 "Source code on GitHub"
+
+[326]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L165-L177 "Source code on GitHub"
+
+[327]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L184-L186 "Source code on GitHub"
+
+[328]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L86-L273 "Source code on GitHub"
+
+[329]: #transactionblockcontext
+
+[330]: #transactionaddress
+
+[331]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L212-L245 "Source code on GitHub"
+
+[332]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L203-L205 "Source code on GitHub"
+
+[333]: #factomcligetentrycreditrate
+
+[334]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L184-L186 "Source code on GitHub"
+
+[335]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L250-L263 "Source code on GitHub"
+
+[336]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L193-L195 "Source code on GitHub"
+
+[337]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L270-L272 "Source code on GitHub"
+
+[338]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/apis-cli.js#L165-L183 "Source code on GitHub"
+
+[339]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/apis-cli.js#L179-L182 "Source code on GitHub"
+
+[340]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/apis-cli.js#L189-L205 "Source code on GitHub"
+
+[341]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/apis-cli.js#L202-L204 "Source code on GitHub"
+
+[342]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/chain.js#L17-L62 "Source code on GitHub"
+
+[343]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/chain.js#L48-L50 "Source code on GitHub"
+
+[344]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/chain.js#L40-L42 "Source code on GitHub"
+
+[345]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/chain.js#L56-L61 "Source code on GitHub"
+
+[346]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/chain.js#L145-L152 "Source code on GitHub"
+
+[347]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/chain.js#L77-L106 "Source code on GitHub"
+
+[348]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/chain.js#L132-L135 "Source code on GitHub"
+
+[349]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L399-L406 "Source code on GitHub"
+
+[350]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L336-L366 "Source code on GitHub"
+
+[351]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L386-L389 "Source code on GitHub"
+
+[352]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/chain.js#L180-L184 "Source code on GitHub"
+
+[353]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/chain.js#L170-L173 "Source code on GitHub"
+
+[354]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L424-L427 "Source code on GitHub"
+
+[355]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/apis-cli.js#L46-L75 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks
 
 [368]: https://github.com/tim-kos/node-retry#retrytimeoutsoptions
 
+<<<<<<< HEAD
 [369]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/blocks.js#L24-L73 "Source code on GitHub"
 
 [370]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/blocks.js#L186-L201 "Source code on GitHub"
@@ -2656,3 +3377,56 @@ Type: [Object][235]
 [393]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/transaction.js#L15-L30 "Source code on GitHub"
 
 [394]: https://git@github.com/:Factoshi/factomjs/blob/913d908bacd99eb470d299a1afa81ae5a6e4a2f3/src/transaction.js#L42-L48 "Source code on GitHub"
+=======
+[357]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/blocks.js#L24-L73 "Source code on GitHub"
+
+[358]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/blocks.js#L192-L210 "Source code on GitHub"
+
+[359]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/entry.js#L291-L299 "Source code on GitHub"
+
+[360]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/blocks.js#L269-L327 "Source code on GitHub"
+
+[361]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/blocks.js#L321-L326 "Source code on GitHub"
+
+[362]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/blocks.js#L223-L253 "Source code on GitHub"
+
+[363]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/blocks.js#L250-L252 "Source code on GitHub"
+
+[364]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L242-L249 "Source code on GitHub"
+
+[365]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L229-L236 "Source code on GitHub"
+
+[366]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L121-L134 "Source code on GitHub"
+
+[367]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L22-L42 "Source code on GitHub"
+
+[368]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L67-L69 "Source code on GitHub"
+
+[369]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L94-L96 "Source code on GitHub"
+
+[370]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L58-L60 "Source code on GitHub"
+
+[371]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L85-L87 "Source code on GitHub"
+
+[372]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L112-L114 "Source code on GitHub"
+
+[373]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L49-L51 "Source code on GitHub"
+
+[374]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L76-L78 "Source code on GitHub"
+
+[375]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L103-L105 "Source code on GitHub"
+
+[376]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L197-L199 "Source code on GitHub"
+
+[377]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L170-L172 "Source code on GitHub"
+
+[378]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L179-L181 "Source code on GitHub"
+
+[379]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L206-L208 "Source code on GitHub"
+
+[380]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/addresses.js#L188-L190 "Source code on GitHub"
+
+[381]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L21-L39 "Source code on GitHub"
+
+[382]: https://git@github.com/:PaulBernier/factomjs/blob/ddb4ea6ed72df44e2b16b7148042da7056fea6c4/src/transaction.js#L51-L57 "Source code on GitHub"
+>>>>>>> perf(add): use bluebird concurrency option instead of using chunks

@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+* `chunkSize` option for the `add*` methods has been deprecated and replaced by `concurrency`.
+
 ## [1.0.2]
 
 ### Removed

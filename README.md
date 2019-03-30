@@ -103,11 +103,12 @@ cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym');
 ```
 
 ```javascript
-// Add multiples entries. The library will chunk the input list to not have an unbounded number of concurrent promises being resolved at the same time.
+// Add multiples entries. 
+// The library will limit the number of concurrent Promises to 200 by default to avoid overwhelming the factomd instance.
 cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym');
 
-// The size of the chunks can be customized (default value is 200).
-cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', { chunkSize: 1 });
+// The concurrency limit can be customized.
+cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', { concurrency: 1 });
 ```
 
 #### Commit/reveal acknowledgment when submitting chains or entries

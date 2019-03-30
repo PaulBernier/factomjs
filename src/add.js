@@ -1,6 +1,5 @@
 const Promise = require('bluebird'),
-    chunk = require('lodash.chunk'),
-    { flatMap, isIterable } = require('./util'),
+    { isIterable } = require('./util'),
     { chainExists } = require('./get'),
     { waitOnCommitAck, waitOnRevealAck } = require('./ack'),
     { isValidPrivateEcAddress, getPublicAddress } = require('./addresses'),
@@ -180,9 +179,11 @@ async function addIterableInternal(factomd, iterable, ecPrivate, opts) {
         options.skipFundValidation = true;
     }
 
-    return Promise.mapSeries(chunk(iterable, options.chunkSize || 200), sublist =>
-        Promise.map(sublist, entry => addDispatch(factomd, entry, ecPrivate, options))
-    ).then(r => flatMap(r, i => i));
+    // chunkSize is a legacy name kept for backward compatibility
+    const concurrency = options.chunkSize || options.concurrency || 200;
+    return Promise.map(iterable, entry => addDispatch(factomd, entry, ecPrivate, options), {
+        concurrency
+    });
 }
 
 async function validateFunds(factomd, ecPrivate, cost) {
