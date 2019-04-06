@@ -72,12 +72,12 @@ async function commitInternal(factomd, obj, composeCommit, commitApiCall, ecPriv
 
 //////////// Reveal /////////////
 
-function reveal(factomd, obj, ecPrivate, ackTimeout) {
+function reveal(factomd, obj, ackTimeout) {
     switch (obj.constructor) {
         case Entry:
-            return revealEntry(factomd, obj, ecPrivate, ackTimeout);
+            return revealEntry(factomd, obj, ackTimeout);
         case Chain:
-            return revealChain(factomd, obj, ecPrivate, ackTimeout);
+            return revealChain(factomd, obj, ackTimeout);
         default:
             throw new Error('Argument of `reveal` is not an instance of Chain or Entry');
     }
