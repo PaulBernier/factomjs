@@ -124,7 +124,7 @@ class FactomEventEmitter extends EventEmitter {
 
     _isBlockchainEvent(event) {
         return Object.values(FACTOM_EVENT).includes(event) || isValidPublicFctAddress(event) || event.match(/\b[A-Fa-f0-9]{64}\b/);
-        }
+    }
 
     ///////////////////////////////////////////////////////////////
     //              POLL DIRECTORY BLOCKS                       //
@@ -182,7 +182,7 @@ class FactomEventEmitter extends EventEmitter {
 
         const entryBlockRefs = block.entryBlockRefs.filter(ref => this._entryChainSubscriptions.has(ref.chainId));
         if (entryBlockRefs.length > 0) {
-            this._emitEntryBlock(block);
+            this._emitEntryBlock(entryBlockRefs);
         }
     }
 
@@ -244,15 +244,11 @@ class FactomEventEmitter extends EventEmitter {
     }
 
     // Emit the latest entry block of any entry chain the user is listening to.
-    async _emitEntryBlock(directoryBlock) {
-        const fetchAndEmitNewBlock = async chainId => {
+    async _emitEntryBlock(entryBlockRefs) {
+        const fetchAndEmitNewBlock = async ref => {
             try {
-                const entryBlockRef = directoryBlock.entryBlockRefs.find(ref => ref.chainId === chainId);
-
-                if (entryBlockRef) {
-                    const entryBlock = await this._cli.getEntryBlock(entryBlockRef.keyMR);
-                    this.emit(chainId, entryBlock);
-                }
+                const entryBlock = await this._cli.getEntryBlock(ref.keyMR);
+                this.emit(ref.chainId, entryBlock);
             } catch (err) {
                 this.emit('error', err);
             }
