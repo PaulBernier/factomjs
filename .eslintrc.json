@@ -11,24 +11,12 @@
         "ecmaVersion": 2018
     },
     "rules": {
+        "no-console": 0,
         "no-throw-literal": 2,
         "prefer-promise-reject-errors": 2,
-        "indent": [
-            "warn",
-            4,
-            { "SwitchCase": 1 }
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ]
+        "indent": ["warn", 4, { "SwitchCase": 1 }],
+        "linebreak-style": ["error", "unix"],
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"]
     }
 }

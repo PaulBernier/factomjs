@@ -3,11 +3,14 @@ const assert = require('chai').assert,
     {
         Entry,
         composeEntryCommit,
+        composeEntryCommitDelegateSig,
         composeEntryReveal,
         composeEntry,
+        composeEntryDelegateSig,
         computeEntryTxId,
         composeEntryLedger
-    } = require('../src/entry');
+    } = require('../src/entry'),
+    { addressToKey, getPublicAddress } = require('../src/addresses');
 
 describe('Test Entry', function() {
     it('should populate Entry attributes', function() {
@@ -265,6 +268,51 @@ describe('Test Entry', function() {
         );
     });
 
+    it('should compose Entry commit with delegated signature', async function() {
+        const e1 = Entry.builder()
+            .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
+            .content('ab')
+            .timestamp(1523151053000)
+            .build();
+
+        const address = 'Es2d1a3uPx7o5uXHmsCnSEK2EKatPA56n8RUFmW9uRrpPRBuk5bZ';
+        const publicAddress = getPublicAddress(address);
+        const secretKey = sign.keyPair.fromSeed(addressToKey(address)).secretKey;
+
+        const commit = await composeEntryCommitDelegateSig(e1, publicAddress, data =>
+            sign.detached(data, secretKey)
+        );
+        assert.instanceOf(commit, Buffer);
+        assert.strictEqual(
+            commit.toString('hex'),
+            '000162a2e0a0c8fd461748e49aa77a6380c04059bd7e3040c9dbceca1828b37ddb737dd928909f015d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b678790d79fc44d3c81fb701b2c3278b50b98eec215cd28be19bba5e1d96f7dc262ec8a87ae4cf9ea20eb43ef196052e761afb02a8f1a78df097c27c56a4a1d00f'
+        );
+    });
+
+    it('should throw when delegated signature of compose Entry does not match', async function() {
+        const e1 = Entry.builder()
+            .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
+            .content('ab')
+            .timestamp(1523151053000)
+            .build();
+
+        const address = 'Es2d1a3uPx7o5uXHmsCnSEK2EKatPA56n8RUFmW9uRrpPRBuk5bZ';
+        const secretKey = sign.keyPair.fromSeed(addressToKey(address)).secretKey;
+
+        try {
+            await composeEntryCommitDelegateSig(
+                e1,
+                'EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD',
+                data => sign.detached(data, secretKey)
+            );
+        } catch (e) {
+            assert.instanceOf(e, Error);
+            assert.include(e.message, 'Invalid signature');
+            return;
+        }
+        throw new Error('Should have thrown');
+    });
+
     it('should reject invalid argument of composeChainCommit', function() {
         try {
             composeEntryCommit({}, 'Es2d1a3uPx7o5uXHmsCnSEK2EKatPA56n8RUFmW9uRrpPRBuk5bZ');
@@ -367,6 +415,33 @@ describe('Test Entry', function() {
             e,
             'EC2UFobcsWom2NvyNDN67Q8eTdpCQvwYe327ZeGTLXbYaZ56e9QR',
             '2a7642156b5cf73ecd0b54b803922c5365d58c372d33353995a1ef5b2ef889bdcd19a3101456379cc339642de1d623f6cade5af10addbcdd589d30e8bfe78702'
+        );
+        assert.instanceOf(composed.commit, Buffer);
+        assert.instanceOf(composed.reveal, Buffer);
+        assert.strictEqual(
+            composed.commit.toString('hex'),
+            '000162a2e0a0c8be705a58aea4230e99881f625e74cd085b6ef455b94ff144249b9a2f425e8f96015d54e4b02234a10b542573645f7ba55650f25eb931985cddcf451df77594b5b62a7642156b5cf73ecd0b54b803922c5365d58c372d33353995a1ef5b2ef889bdcd19a3101456379cc339642de1d623f6cade5af10addbcdd589d30e8bfe78702'
+        );
+        assert.strictEqual(
+            composed.reveal.toString('hex'),
+            '00954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f400060004746573745061796c6f616448657265'
+        );
+    });
+
+    it('should compose Entry commit and reveal with delegated signature', async function() {
+        const e = Entry.builder()
+            .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
+            .extId('test', 'utf8')
+            .content('PayloadHere', 'utf8')
+            .timestamp(1523151053000)
+            .build();
+
+        const address = 'Es2d1a3uPx7o5uXHmsCnSEK2EKatPA56n8RUFmW9uRrpPRBuk5bZ';
+        const publicAddress = getPublicAddress(address);
+        const secretKey = sign.keyPair.fromSeed(addressToKey(address)).secretKey;
+
+        const composed = await composeEntryDelegateSig(e, publicAddress, data =>
+            sign.detached(data, secretKey)
         );
         assert.instanceOf(composed.commit, Buffer);
         assert.instanceOf(composed.reveal, Buffer);

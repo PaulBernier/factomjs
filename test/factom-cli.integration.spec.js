@@ -1,12 +1,20 @@
 const assert = require('chai').assert;
 const { Entry } = require('../src/entry'),
     { Chain } = require('../src/chain'),
+    sign = require('tweetnacl/nacl-fast').sign,
+    { addressToKey, getPublicAddress } = require('../src/addresses'),
     { FactomCli } = require('../src/factom-cli');
 
+require('dotenv').config();
+
 const PAYING_EC_ADDRESS = process.env.EC_PRIVATE_ADDRESS;
+const PAYING_SECRET_KEY = sign.keyPair.fromSeed(addressToKey(PAYING_EC_ADDRESS)).secretKey;
+const PAYING_EC_PUBLIC_ADDRESS = getPublicAddress(PAYING_EC_ADDRESS);
 const PAYING_FCT_ADDRESS = process.env.FCT_PRIVATE_ADDRESS;
 const RECEIVING_FCT_ADDRESS = 'FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH';
 const RECEIVING_EC_ADDRESS = 'EC3MVTBYTo2Y1HrEKxeEGfNNoKhLZ9ZYQhb26zQUzngJ6SLUVRX9';
+
+const SIGN = data => sign.detached(data, PAYING_SECRET_KEY);
 
 describe('Test FactomCli', function() {
     const cli = new FactomCli({
@@ -31,12 +39,7 @@ describe('Test FactomCli', function() {
     it('should commit and reveal', async function() {
         this.timeout(5000);
 
-        const e = Entry.builder()
-            .chainId('0ec9d1cfbb458e28229b40139b5bee7d88c81215fb4dfdac48a9cf27f70f0790')
-            .extId('factom-cli', 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .build();
+        const e = getRandomEntry();
         assert.isObject(await cli.commit(e, PAYING_EC_ADDRESS));
         assert.isObject(await cli.reveal(e));
     });
@@ -44,86 +47,143 @@ describe('Test FactomCli', function() {
     it('should commit and reveal chain', async function() {
         this.timeout(5000);
 
-        const e = Entry.builder()
-            .extId('factom-cli', 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .build();
-        assert.isObject(await cli.commitChain(new Chain(e), PAYING_EC_ADDRESS));
-        assert.isObject(await cli.revealChain(new Chain(e), PAYING_EC_ADDRESS));
+        const c = getRandomChain();
+        assert.isObject(await cli.commitChain(c, PAYING_EC_ADDRESS));
+        assert.isObject(await cli.revealChain(c, PAYING_EC_ADDRESS));
     });
 
     it('should commit and reveal entry', async function() {
         this.timeout(5000);
 
-        const e = Entry.builder()
-            .chainId('0ec9d1cfbb458e28229b40139b5bee7d88c81215fb4dfdac48a9cf27f70f0790')
-            .extId('factom-cli', 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .build();
+        const e = getRandomEntry();
         assert.isObject(await cli.commitEntry(e, PAYING_EC_ADDRESS));
         assert.isObject(await cli.revealEntry(e, PAYING_EC_ADDRESS));
+    });
+
+    it('should commit with delegated signature', async function() {
+        this.timeout(5000);
+
+        const e = getRandomEntry();
+
+        assert.isObject(
+            await cli.commit(e, PAYING_EC_PUBLIC_ADDRESS, {
+                sign: SIGN
+            })
+        );
+    });
+
+    it('should commit chain with delegated signature', async function() {
+        this.timeout(5000);
+
+        const c = getRandomChain();
+
+        assert.isObject(
+            await cli.commitChain(c, PAYING_EC_PUBLIC_ADDRESS, {
+                sign: SIGN
+            })
+        );
+    });
+
+    it('should commit entry with delegated signature', async function() {
+        this.timeout(5000);
+
+        const e = getRandomEntry();
+
+        assert.isObject(
+            await cli.commitEntry(e, PAYING_EC_PUBLIC_ADDRESS, {
+                sign: SIGN
+            })
+        );
     });
 
     it('should add', async function() {
         this.timeout(10000);
 
-        const e = Entry.builder()
-            .chainId('0ec9d1cfbb458e28229b40139b5bee7d88c81215fb4dfdac48a9cf27f70f0790')
-            .extId('factom-cli', 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .build();
+        const e = getRandomEntry();
         assert.isObject(await cli.add(e, PAYING_EC_ADDRESS));
     });
 
     it('should add entry', async function() {
         this.timeout(10000);
 
-        const e = Entry.builder()
-            .chainId('0ec9d1cfbb458e28229b40139b5bee7d88c81215fb4dfdac48a9cf27f70f0790')
-            .extId('factom-cli', 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .build();
+        const e = getRandomEntry();
         assert.isObject(await cli.addEntry(e, PAYING_EC_ADDRESS));
     });
 
     it('should add entries', async function() {
         this.timeout(10000);
 
-        const e = Entry.builder()
-            .chainId('0ec9d1cfbb458e28229b40139b5bee7d88c81215fb4dfdac48a9cf27f70f0790')
-            .extId('factom-cli', 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .build();
+        const e = getRandomEntry();
         assert.isArray(await cli.addEntries([e], PAYING_EC_ADDRESS));
     });
 
     it('should add chain', async function() {
         this.timeout(10000);
 
-        const e = Entry.builder()
-            .chainId('0ec9d1cfbb458e28229b40139b5bee7d88c81215fb4dfdac48a9cf27f70f0790')
-            .extId('factom-cli', 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .build();
-        assert.isObject(await cli.addChain(new Chain(e), PAYING_EC_ADDRESS));
+        const c = getRandomChain();
+        assert.isObject(await cli.addChain(c, PAYING_EC_ADDRESS));
     });
 
     it('should add chains', async function() {
         this.timeout(10000);
 
-        const e = Entry.builder()
-            .chainId('0ec9d1cfbb458e28229b40139b5bee7d88c81215fb4dfdac48a9cf27f70f0790')
-            .extId('factom-cli', 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .extId(Math.random().toString(), 'utf8')
-            .build();
-        assert.isArray(await cli.addChains([new Chain(e)], PAYING_EC_ADDRESS));
+        const c = getRandomChain();
+        assert.isArray(await cli.addChains([c], PAYING_EC_ADDRESS));
+    });
+
+    it('should add with delegated signature', async function() {
+        this.timeout(10000);
+
+        const e = getRandomEntry();
+        assert.isObject(
+            await cli.add(e, PAYING_EC_PUBLIC_ADDRESS, {
+                sign: SIGN
+            })
+        );
+    });
+
+    it('should add entry with delegated signature', async function() {
+        this.timeout(10000);
+
+        const e = getRandomEntry();
+        assert.isObject(
+            await cli.addEntry(e, PAYING_EC_PUBLIC_ADDRESS, {
+                sign: SIGN
+            })
+        );
+    });
+
+    it('should add entries with delegated signature', async function() {
+        this.timeout(10000);
+
+        const e = getRandomEntry();
+        assert.isArray(
+            await cli.addEntries([e], PAYING_EC_PUBLIC_ADDRESS, {
+                sign: SIGN
+            })
+        );
+    });
+
+    it('should add chain with delegated signature', async function() {
+        this.timeout(10000);
+
+        const c = getRandomChain();
+        assert.isObject(
+            await cli.addChain(c, PAYING_EC_PUBLIC_ADDRESS, {
+                sign: SIGN
+            })
+        );
+    });
+
+    it('should add chains with delegated signature', async function() {
+        this.timeout(10000);
+
+        const c = getRandomChain();
+        assert.isArray(
+            await cli.addChains([c], PAYING_EC_PUBLIC_ADDRESS, {
+                sign: SIGN
+            })
+        );
     });
 
     it('should get all entries of chain', async function() {
@@ -300,3 +360,22 @@ describe('Test FactomCli', function() {
         );
     });
 });
+
+function getRandomEntry() {
+    return Entry.builder()
+        .chainId('0ec9d1cfbb458e28229b40139b5bee7d88c81215fb4dfdac48a9cf27f70f0790')
+        .extId('factom-cli', 'utf8')
+        .extId(Math.random().toString(), 'utf8')
+        .extId(Math.random().toString(), 'utf8')
+        .build();
+}
+
+function getRandomChain() {
+    return new Chain(
+        Entry.builder()
+            .extId('factom-cli', 'utf8')
+            .extId(Math.random().toString(), 'utf8')
+            .extId(Math.random().toString(), 'utf8')
+            .build()
+    );
+}

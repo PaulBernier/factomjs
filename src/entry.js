@@ -1,4 +1,4 @@
-const sign = require('tweetnacl/nacl-fast').sign,
+const naclSign = require('tweetnacl/nacl-fast').sign,
     { addressToKey, isValidPrivateEcAddress, isValidPublicEcAddress } = require('./addresses'),
     { MAX_ENTRY_PAYLOAD_SIZE } = require('./constant'),
     { sha256, sha512 } = require('./util');
@@ -328,32 +328,34 @@ function marshalExternalIdsBinary(extIds) {
  * Compose the commit of an Entry, that can then be used as input of the factomd API `commit-entry`.
  * Note that if the Entry doesn't have a timestamp set the library will use Date.now() as the default for the commit timestamp.
  * @param {Entry} entry - Entry to compose the commit of.
- * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
- * If a public EC address is provided it is necessary to provide the signature of the commit as a 3rd argument (use case for hardware wallets)
- * @param {string|Buffer} [signature] - Optional signature of the commit (composeEntryLedger). Only necessary if a public EC address was passed as 2nd argument.
+ * @param {string} ecAddress - Private Entry Credit address that pays for and sign the commit.
+ * @param {string} signature - Deprecated. Use {@link composeChainCommitDelegateSig} instead.
  * @returns {Buffer} - Entry commit.
  */
 function composeEntryCommit(entry, ecAddress, signature) {
     validateEntryInstance(entry);
 
-    const buffer = composeEntryLedger(entry);
+    const dataToSign = composeEntryLedger(entry);
 
     let ecPublicKey, sig;
 
     if (isValidPrivateEcAddress(ecAddress)) {
         // Sign commit
         const secret = addressToKey(ecAddress);
-        const key = sign.keyPair.fromSeed(secret);
+        const key = naclSign.keyPair.fromSeed(secret);
         ecPublicKey = Buffer.from(key.publicKey);
-        sig = Buffer.from(sign.detached(buffer, key.secretKey));
+        sig = Buffer.from(naclSign.detached(dataToSign, key.secretKey));
     } else if (isValidPublicEcAddress(ecAddress)) {
         // Verify the signature manually provided
         if (!signature) {
             throw new Error('Signature of the commit missing.');
         }
+        console.warn(
+            'composeEntryCommit with signature is deprecated. Use composeEntryCommitDelegateSig.'
+        );
         ecPublicKey = addressToKey(ecAddress);
         sig = Buffer.from(signature, 'hex');
-        if (!sign.detached.verify(buffer, sig, ecPublicKey)) {
+        if (!naclSign.detached.verify(dataToSign, sig, ecPublicKey)) {
             throw new Error(
                 'Invalid signature manually provided for the entry commit. (entry timestamp not fixed?)'
             );
@@ -362,7 +364,38 @@ function composeEntryCommit(entry, ecAddress, signature) {
         throw new Error(`${ecAddress} is not a valid EC address`);
     }
 
-    return Buffer.concat([buffer, ecPublicKey, sig]);
+    return Buffer.concat([dataToSign, ecPublicKey, sig]);
+}
+
+/**
+ * Compose the commit of an Entry delegating the signature.
+ * The commit can then be sent through factomd API `commit-entry`.
+ * @param {Entry} entry - Entry to compose the commit of.
+ * @param {string} ecPublicAddress - Public Entry Credit address that pays for the commit.
+ * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} sign - Signing function.
+ * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+ * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
+ * @returns {Buffer} - Entry commit.
+ * @async
+ */
+async function composeEntryCommitDelegateSig(entry, ecPublicAddress, sign) {
+    validateEntryInstance(entry);
+    if (!isValidPublicEcAddress(ecPublicAddress)) {
+        throw new Error(`${ecPublicAddress} is not a valid public EC address`);
+    }
+    if (typeof sign !== 'function') {
+        throw new Error('sign must be a function');
+    }
+
+    const dataToSign = composeEntryLedger(entry);
+    const signature = Buffer.from(await sign(dataToSign), 'hex');
+    const ecPublicKey = addressToKey(ecPublicAddress);
+
+    if (!naclSign.detached.verify(dataToSign, signature, ecPublicKey)) {
+        throw new Error('Invalid signature returned by the signing function for the entry commit.');
+    }
+
+    return Buffer.concat([dataToSign, ecPublicKey, signature]);
 }
 
 function composeEntryLedger(entry) {
@@ -391,16 +424,31 @@ function composeEntryReveal(entry) {
 /**
  * Compose the commit and reveal of an Entry, that can then be used as inputs of the factomd APIs `commit-entry` and `reveal-entry`.
  * @param {Entry} entry - Entry to compose the commit and reveal of.
- * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
- * If a public EC address is provided it is necessary to manually pass the signature of the commit as a 3rd argument (use case for hardware wallets)
- * @param {string|Buffer} [signature] - Optional signature of the commit (composeEntryLedger). Only necessary if a public EC address was passed as 2nd argument.
+ * @param {string} ecAddress - Private Entry Credit address that pays for and sign the commit.
+ * @param {string} signature - Deprecated. Use {@link composeEntryDelegateSig} instead.
  * @returns {{commit:Buffer, reveal:Buffer}} - Entry commit and reveal.
  */
 function composeEntry(entry, ecAddress, signature) {
-    validateEntryInstance(entry);
-
     return {
         commit: composeEntryCommit(entry, ecAddress, signature),
+        reveal: composeEntryReveal(entry)
+    };
+}
+
+/**
+ * Compose the commit and reveal of an Entry using an external signing function.
+ * The result can then be used as inputs of the factomd APIs `commit-entry` and `reveal-entry`.
+ * @param {Entry} entry - Entry to compose the commit and reveal of.
+ * @param {string} ecPublicAddress - Public Entry Credit address that pays for the commit.
+ * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} sign - Signing function.
+ * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+ * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
+ * @returns {{commit:Buffer, reveal:Buffer}} - Entry commit and reveal.
+ * @async
+ */
+async function composeEntryDelegateSig(entry, ecPublicAddress, sign) {
+    return {
+        commit: await composeEntryCommitDelegateSig(entry, ecPublicAddress, sign),
         reveal: composeEntryReveal(entry)
     };
 }
@@ -431,7 +479,9 @@ module.exports = {
     computeEntryTxId,
     validateEntryInstance,
     composeEntryCommit,
+    composeEntryCommitDelegateSig,
     composeEntryReveal,
     composeEntry,
+    composeEntryDelegateSig,
     composeEntryLedger
 };

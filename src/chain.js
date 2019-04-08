@@ -1,4 +1,4 @@
-const sign = require('tweetnacl/nacl-fast').sign,
+const naclSign = require('tweetnacl/nacl-fast').sign,
     { addressToKey, isValidPrivateEcAddress, isValidPublicEcAddress } = require('./addresses'),
     { Entry } = require('./entry'),
     { sha256, sha256d } = require('./util'),
@@ -69,31 +69,33 @@ class Chain {
  * Compose the commit of a Chain, that can then be used as input of the factomd API `commit-chain`.
  * Note that if the chain first entry doesn't have a timestamp set the library will use Date.now() as the default for the commit timestamp.
  * @param {Chain} chain - Chain to compose the commit of.
- * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
- * If a public EC address is provided it is necessary to provide the signature of the commit as a 3rd argument (use case for hardware wallets)
- * @param {string|Buffer} [signature] - Optional signature of the commit (composeChainLedger). Only necessary if a public EC address was passed as 2nd argument.
+ * @param {string} ecAddress - Private Entry Credit address that pays for and sign the commit.
+ * @param {string} signature - Deprecated. Use {@link composeChainCommitDelegateSig} instead.
  * @returns {Buffer} - Chain commit.
  */
 function composeChainCommit(chain, ecAddress, signature) {
     validateChainInstance(chain);
 
-    const buffer = composeChainLedger(chain);
+    const dataToSign = composeChainLedger(chain);
     let ecPublicKey, sig;
 
     if (isValidPrivateEcAddress(ecAddress)) {
         // Sign commit
         const secret = addressToKey(ecAddress);
-        const key = sign.keyPair.fromSeed(secret);
+        const key = naclSign.keyPair.fromSeed(secret);
         ecPublicKey = Buffer.from(key.publicKey);
-        sig = Buffer.from(sign.detached(buffer, key.secretKey));
+        sig = Buffer.from(naclSign.detached(dataToSign, key.secretKey));
     } else if (isValidPublicEcAddress(ecAddress)) {
         // Verify the signature manually provided
         if (!signature) {
             throw new Error('Signature of the commit missing.');
         }
+        console.warn(
+            'composeChainCommit with signature is deprecated. Use composeEntryCommitDelegateSig.'
+        );
         ecPublicKey = addressToKey(ecAddress);
         sig = Buffer.from(signature, 'hex');
-        if (!sign.detached.verify(buffer, sig, ecPublicKey)) {
+        if (!naclSign.detached.verify(dataToSign, sig, ecPublicKey)) {
             throw new Error(
                 'Invalid signature manually provided for the chain commit. (first entry timestamp not fixed?)'
             );
@@ -102,7 +104,40 @@ function composeChainCommit(chain, ecAddress, signature) {
         throw new Error(`${ecAddress} is not a valid EC address`);
     }
 
-    return Buffer.concat([buffer, ecPublicKey, sig]);
+    return Buffer.concat([dataToSign, ecPublicKey, sig]);
+}
+
+/**
+ * Compose the commit of a Chain using an external signing function.
+ * The commit can then be sent through factomd API `commit-chain`.
+ * @param {Chain} chain - Chain to compose the commit of.
+ * @param {string} ecPublicAddress - Public Entry Credit address that pays for the commit.
+ * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} sign - Signing function.
+ * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+ * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
+ * @returns {Buffer} - Chain commit.
+ * @async
+ */
+async function composeChainCommitDelegateSig(chain, ecPublicAddress, sign) {
+    validateChainInstance(chain);
+    if (!isValidPublicEcAddress(ecPublicAddress)) {
+        throw new Error(`${ecPublicAddress} is not a valid public EC address`);
+    }
+    if (typeof sign !== 'function') {
+        throw new Error('sign must be a function');
+    }
+
+    const dataToSign = composeChainLedger(chain);
+    const signature = Buffer.from(await sign(dataToSign), 'hex');
+    const ecPublicKey = addressToKey(ecPublicAddress);
+
+    if (!naclSign.detached.verify(dataToSign, signature, ecPublicKey)) {
+        throw new Error(
+            'Invalid signature manually returned by the signing function for the chain commit.'
+        );
+    }
+
+    return Buffer.concat([dataToSign, ecPublicKey, signature]);
 }
 
 function composeChainLedger(chain) {
@@ -137,16 +172,31 @@ function composeChainReveal(chain) {
 /**
  * Compose the commit and reveal of a Chain, that can then be used as inputs of the factomd APIs `commit-chain` and `reveal-chain`.
  * @param {Chain} chain - Chain to compose the commit and reveal of.
- * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
- * If a public EC address is provided it is necessary to manually pass the signature of the commit as a 3rd argument (use case for hardware wallets)
- * @param {string|Buffer} [signature] - Optional signature of the commit (composeChainLedger). Only necessary if a public EC address was passed as 2nd argument.
+ * @param {string} ecAddress - Private Entry Credit address that pays for and sign the commit.
+ * @param {string} signature - Deprecated. Use {@link composeChainDelegateSig} instead.
  * @returns {{commit:Buffer, reveal:Buffer}} - Chain commit and reveal.
  */
 function composeChain(chain, ecAddress, signature) {
-    validateChainInstance(chain);
-
     return {
         commit: composeChainCommit(chain, ecAddress, signature),
+        reveal: composeChainReveal(chain)
+    };
+}
+
+/**
+ * Compose the commit and reveal of a Chain using an external signing function for the commit.
+ * The result can then be used as inputs of the factomd APIs `commit-chain` and `reveal-chain`.
+ * @param {Chain} chain - Chain to compose the commit and reveal of.
+ * @param {string} ecPublicAddress - Public Entry Credit address that pays for the commit.
+ * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} sign - Signing function.
+ * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+ * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
+ * @returns {{commit:Buffer, reveal:Buffer}} - Chain commit and reveal.
+ * @async
+ */
+async function composeChainDelegateSig(chain, ecPublicAddress, sign) {
+    return {
+        commit: await composeChainCommitDelegateSig(chain, ecPublicAddress, sign),
         reveal: composeChainReveal(chain)
     };
 }
@@ -188,8 +238,10 @@ module.exports = {
     computeChainTxId,
     computeChainId,
     composeChainCommit,
+    composeChainCommitDelegateSig,
     composeChainReveal,
     composeChain,
+    composeChainDelegateSig,
     composeChainLedger,
     validateChainInstance
 };

@@ -41,40 +41,66 @@ class FactomCli {
      * Commit an Entry or a Chain.
      * @async
      * @param {Entry|Chain} obj - Entry or Chain to commit.
-     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
-     * @param {number} [commitAckTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
+     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
+     * If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
+     * @param {Object} [options] - Commit options.
+     * @param {number} [options.ackTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
+     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean }>} - Transaction ID and if this is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}). If repeatedCommit is true, txId is undefined.
-
      */
-    async commit(obj, ecAddress, commitAckTimeout) {
-        const ecPrivate = await this.getPrivateAddress(ecAddress);
-        return add.commit(this.factomd, obj, ecPrivate, commitAckTimeout);
+    async commit(obj, ecAddress, options = {}) {
+        if (!options.sign) {
+            const ecPrivate = await this.getPrivateAddress(ecAddress);
+            return add.commit(this.factomd, obj, ecPrivate, options);
+        } else {
+            return add.commit(this.factomd, obj, ecAddress, options);
+        }
     }
 
     /**
      * Commit a Chain.
      * @async
      * @param {Chain} chain - Chain to commit.
-     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
-     * @param {number} [commitAckTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
+     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
+     * If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
+     * @param {Object} [options] - Commit options.
+     * @param {number} [options.ackTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
+     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean }>} - Transaction ID and if this is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}). If repeatedCommit is true, txId is undefined.
      */
-    async commitChain(chain, ecAddress, commitAckTimeout) {
-        const ecPrivate = await this.getPrivateAddress(ecAddress);
-        return add.commitChain(this.factomd, chain, ecPrivate, commitAckTimeout);
+    async commitChain(chain, ecAddress, options = {}) {
+        if (!options.sign) {
+            const ecPrivate = await this.getPrivateAddress(ecAddress);
+            return add.commitChain(this.factomd, chain, ecPrivate, options);
+        } else {
+            return add.commitChain(this.factomd, chain, ecAddress, options);
+        }
     }
 
     /**
      * Commit an Entry.
      * @async
      * @param {Entry} entry - Entry to commit.
-     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
-     * @param {number} [commitAckTimeout=60] - Time to wait for the commit ack. If negative value, doesn't wait for ack.
+     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
+     * If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
+     * @param {Object} [options] - Commit options.
+     * @param {number} [options.ackTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
+     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean }>} - Transaction ID and if this is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}). If repeatedCommit is true, txId is undefined.
      */
-    async commitEntry(entry, ecAddress, commitAckTimeout) {
-        const ecPrivate = await this.getPrivateAddress(ecAddress);
-        return add.commitEntry(this.factomd, entry, ecPrivate, commitAckTimeout);
+    async commitEntry(entry, ecAddress, options = {}) {
+        if (!options.sign) {
+            const ecPrivate = await this.getPrivateAddress(ecAddress);
+            return add.commitEntry(this.factomd, entry, ecPrivate, options);
+        } else {
+            return add.commitEntry(this.factomd, entry, ecAddress, options);
+        }
     }
 
     /**
@@ -114,85 +140,125 @@ class FactomCli {
      * Add an Entry/Chain or a collection of either of those to the Factom blockchain. Performs both commits and reveals.
      * @async
      * @param {Chain|Chain[]|Entry|Entry[]} obj - Entry/Chain or array of Entry/Chain to add.
-     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
+     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
+     * If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
      * @param {Object} [options]
      * @param {number} [options.commitTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {number} [options.concurrency=200] - Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commits.
+     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }>|Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} -
      * Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      * It is an array of such object if the input was an iterable of Entry or Chain.
      */
-    async add(obj, ecAddress, options) {
-        const ecPrivate = await this.getPrivateAddress(ecAddress);
-        return add.add(this.factomd, obj, ecPrivate, options);
+    async add(obj, ecAddress, options = {}) {
+        if (!options.sign) {
+            const ecPrivate = await this.getPrivateAddress(ecAddress);
+            return add.add(this.factomd, obj, ecPrivate, options);
+        } else {
+            return add.add(this.factomd, obj, ecAddress, options);
+        }
     }
 
     /**
      * Add a Chain to the Factom blockchain. Performs both commit and reveal.
      * @async
      * @param {Chain} chain - Chain to add.
-     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
+     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
+     * If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
      * @param {Object} [options]
      * @param {number} [options.commitTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commit.
+     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */
-    async addChain(chain, ecAddress, options) {
-        const ecPrivate = await this.getPrivateAddress(ecAddress);
-        return add.addChain(this.factomd, chain, ecPrivate, options);
+    async addChain(chain, ecAddress, options = {}) {
+        if (!options.sign) {
+            const ecPrivate = await this.getPrivateAddress(ecAddress);
+            return add.addChain(this.factomd, chain, ecPrivate, options);
+        } else {
+            return add.addChain(this.factomd, chain, ecAddress, options);
+        }
     }
 
     /**
      * Add a collection of Chains to the Factom blockchain. Performs both commits and reveals.
      * @async
      * @param {Chain[]} chains - Iterable of Chains to add.
-     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
+     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
+     * If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
      * @param {Object} [options]
      * @param {number} [options.commitTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {number} [options.concurrency=200] - Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commits.
+     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */
-    async addChains(chains, ecAddress, options) {
-        const ecPrivate = await this.getPrivateAddress(ecAddress);
-        return add.addChains(this.factomd, chains, ecPrivate, options);
+    async addChains(chains, ecAddress, options = {}) {
+        if (!options.sign) {
+            const ecPrivate = await this.getPrivateAddress(ecAddress);
+            return add.addChains(this.factomd, chains, ecPrivate, options);
+        } else {
+            return add.addChains(this.factomd, chains, ecAddress, options);
+        }
     }
 
     /**
      * Add an Entry to the Factom blockchain. Performs both commit and reveal.
      * @async
      * @param {Entry} entry - Entry to add.
-     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
+     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
+     * If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
      * @param {Object} [options]
      * @param {number} [options.commitTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commit.
+     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */
-    async addEntry(entry, ecAddress, options) {
-        const ecPrivate = await this.getPrivateAddress(ecAddress);
-        return add.addEntry(this.factomd, entry, ecPrivate, options);
+    async addEntry(entry, ecAddress, options = {}) {
+        if (!options.sign) {
+            const ecPrivate = await this.getPrivateAddress(ecAddress);
+            return add.addEntry(this.factomd, entry, ecPrivate, options);
+        } else {
+            return add.addEntry(this.factomd, entry, ecAddress, options);
+        }
     }
 
     /**
      * Add a collection of Entries to the Factom blockchain. Performs both commits and reveals.
      * @async
      * @param {Entry[]} entries - Iterable of Entries to add.
-     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
+     * @param {string} ecAddress - Entry Credit address that pays for the commit, either private (Es) or public (EC).
+     * If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
      * @param {Object} [options]
      * @param {number} [options.commitTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {number} [options.concurrency=200] - Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commits.
+     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */
-    async addEntries(entries, ecAddress, options) {
-        const ecPrivate = await this.getPrivateAddress(ecAddress);
-        return add.addEntries(this.factomd, entries, ecPrivate, options);
+    async addEntries(entries, ecAddress, options = {}) {
+        if (!options.sign) {
+            const ecPrivate = await this.getPrivateAddress(ecAddress);
+            return add.addEntries(this.factomd, entries, ecPrivate, options);
+        } else {
+            return add.addEntries(this.factomd, entries, ecAddress, options);
+        }
     }
 
     // Wallet
@@ -305,8 +371,8 @@ class FactomCli {
      * Rewind a chain entry by entry (newest to oldest) while a predicate is true.
      * @async
      * @param {string} chainId - Chain to rewind.
-     * @param {Function<Entry>} predicate - Predicate of the while loop. Iteration stop if either the predicate is false or the end of the chain has been reached.
-     * @param {Function<Entry>} func - Function to apply at each iteration.
+     * @param {function(Entry)} predicate - Predicate of the while loop. Iteration stop if either the predicate is false or the end of the chain has been reached.
+     * @param {function(Entry)} func - Function to apply at each iteration.
      * @example
      * cli.rewindChainWhile('dab6c095c22ec6db1b0961fdb82d504a95f0a31467bb7df73cc793532b0e9ae3', (entry) => true, function(entry) {
      *      // Do stuff with the entry

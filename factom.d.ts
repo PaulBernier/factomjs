@@ -98,6 +98,13 @@ declare namespace factom {
          * Skip the validation that the EC address holds enough Entry Credits to pay for the commit.
          */
         skipFundValidation?: boolean;
+
+        /**
+         * Signing function.
+         * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+         * The returned signature must have been made by the private key corresponding to the ecAddress argument.
+         */
+        sign?: (data: Buffer) => Buffer | string | Promise<Buffer | string>;
     }
 
     interface AddResponse {
@@ -120,6 +127,20 @@ declare namespace factom {
          * Entry hash
          */
         entryHash: string;
+    }
+
+    interface CommitOptions {
+        /**
+         * Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
+         */
+        ackTimeout?: number;
+
+        /**
+         * Signing function.
+         * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+         * The returned signature must have been made by the private key corresponding to the ecAddress argument.
+         */
+        sign?: (data: Buffer) => Buffer | string | Promise<Buffer | string>;
     }
 
     /**
@@ -156,18 +177,20 @@ declare namespace factom {
         /**
          *
          * @param obj Entry or Chain to commit.
-         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
-         * @param commitAckTimeout Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. Defaults to 60.
+         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC).
+         * If a public address is passed, the private key must either be stored in factom-walletd or
+         * a sign function must be provided as part of the options.
+         * @param options
          */
         commit(
             obj: Chain | Entry,
             ecAddress: string,
-            commitAckTimeout?: number
+            options?: CommitOptions
         ): Promise<{
             /**
              * Transaction ID. This is undefined if this is a repeat commit.
              */
-            txtId?: string;
+            txId?: string;
 
             /**
              * If this is a repeated commit (https://docs.factom.com/api#repeated-commit). If repeatedCommit is true, txId is undefined.
@@ -179,13 +202,15 @@ declare namespace factom {
          * Commit a Chain.
          *
          * @param chain Chain to commit.
-         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
-         * @param commitAckTimeout Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. Defaults to 60.
+         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC).
+         * If a public address is passed, the private key must either be stored in factom-walletd or
+         * a sign function must be provided as part of the options.
+         * @param options
          */
         commitChain(
             chain: Chain,
             ecAddress: string,
-            commitAckTimeout?: number
+            options?: CommitOptions
         ): Promise<{
             /**
              * Transaction ID. This is undefined if this is a repeat commit.
@@ -202,13 +227,15 @@ declare namespace factom {
          * Commit an Entry.
          *
          * @param entry Entry to commit.
-         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
-         * @param commitAckTimeout Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. Defaults to 60.
+         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC).
+         * If a public address is passed, the private key must either be stored in factom-walletd or
+         * a sign function must be provided as part of the options.
+         * @param options
          */
         commitEntry(
             entry: Entry,
             ecAddress: string,
-            commitAckTimeout?: number
+            options?: CommitOptions
         ): Promise<{
             /**
              * Transaction ID. This is undefined if this is a repeat commit.
@@ -258,7 +285,9 @@ declare namespace factom {
          * Add an Entry/Chain or a collection of either of those to the Factom blockchain. Performs both commits and reveals.
          *
          * @param obj Entry/Chain or array of Entry/Chain to add.
-         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
+         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC).
+         * If a public address is passed, the private key must either be stored in factom-walletd or
+         * a sign function must be provided as part of the options.
          * @param options
          */
 
@@ -272,7 +301,9 @@ declare namespace factom {
          * Add a Chain to the Factom blockchain. Performs both commit and reveal.
          *
          * @param chain Chain to add.
-         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
+         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC).
+         * If a public address is passed, the private key must either be stored in factom-walletd or
+         * a sign function must be provided as part of the options.
          * @param options
          */
         addChain(chain: Chain, ecAddress: string, options?: AddOptions): Promise<AddResponse>;
@@ -281,7 +312,9 @@ declare namespace factom {
          * Add a collection of Chains to the Factom blockchain. Performs both commits and reveals.
          *
          * @param chains Iterable of Chains to add.
-         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
+         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC).
+         * If a public address is passed, the private key must either be stored in factom-walletd or
+         * a sign function must be provided as part of the options.
          * @param options
          */
         addChains(chains: Chain[], ecAddress: string, options?: AddOptions): Promise<AddResponse[]>;
@@ -290,7 +323,9 @@ declare namespace factom {
          * Add an Entry to the Factom blockchain. Performs both commit and reveal.
          *
          * @param entry Entry to add.
-         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
+         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC).
+         * If a public address is passed, the private key must either be stored in factom-walletd or
+         * a sign function must be provided as part of the options.
          * @param options
          */
         addEntry(entry: Entry, ecAddress: string, options?: AddOptions): Promise<AddResponse>;
@@ -299,7 +334,9 @@ declare namespace factom {
          * Add a collection of Entries to the Factom blockchain. Performs both commits and reveals.
          *
          * @param entries Iterable of Entries to add.
-         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC). If public address, the private key must be stored in factom-walletd.
+         * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC).
+         * If a public address is passed, the private key must either be stored in factom-walletd or
+         * a sign function must be provided as part of the options.
          * @param options
          */
         addEntries(
@@ -1383,18 +1420,33 @@ declare namespace factom {
      * Compose the commit and reveal of a Chain, that can then be used as inputs of the factomd APIs `commit-chain` and `reveal-chain`.
      *
      * @param chain Chain to compose the commit and reveal of.
-     * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC).
-     * If a public EC address is provided it is necessary to manually pass the signature of the commit as a 3rd argument (use case for hardware wallets)
-     * @param signature Optional signature of the commit (composeChainLedger). Only necessary if a public EC address was passed as 2nd argument.
+     * @param ecAddress Private Entry Credit address that pays for and sign the commit.
      */
     function composeChain(
         chain: Chain,
-        ecAddress: string,
-        signature?: string | Buffer
+        ecAddress: string
     ): {
         commit: Buffer;
         reveal: Buffer;
     };
+
+    /**
+     * Compose the commit and reveal of a Chain using an external signing function for the commit.
+     * The result can then be used as inputs of the factomd APIs `commit-chain` and `reveal-chain`.
+     * @param chain Chain to compose the commit and reveal of.
+     * @param ecPublicAddress Public Entry Credit address that pays for the commit.
+     * @param sign Signing function.
+     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
+     */
+    function composeChainDelegateSig(
+        chain: Chain,
+        ecPublicAddress: string,
+        sign: (data: Buffer) => Buffer | string | Promise<Buffer | string>
+    ): Promise<{
+        commit: Buffer;
+        reveal: Buffer;
+    }>;
 
     /**
      * Compose the commit of a Chain, that can then be used as input of the factomd API `commit-chain`.
@@ -1403,15 +1455,24 @@ declare namespace factom {
      * Returns chain commit.
      *
      * @param chain Chain to compose the commit of.
-     * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC).
-     * If a public EC address is provided it is necessary to provide the signature of the commit as a 3rd argument (use case for hardware wallets)
-     * @param signature Optional signature of the commit (composeChainLedger). Only necessary if a public EC address was passed as 2nd argument.
+     * @param ecAddress Private Entry Credit address that pays for and sign the commit.
      */
-    function composeChainCommit(
+    function composeChainCommit(chain: Chain, ecAddress: string): Buffer;
+
+    /**
+     * Compose the commit of a Chain using an external signing function.
+     * The commit can then be sent through factomd API `commit-chain`.
+     * @param chain Chain to compose the commit of.
+     * @param ecPublicAddress Public Entry Credit address that pays for the commit.
+     * @param sign Signing function.
+     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
+     */
+    function composeChainCommitDelegateSig(
         chain: Chain,
-        ecAddress: string,
-        signature?: string | Buffer
-    ): Buffer;
+        ecPublicAddress: string,
+        sign: (data: Buffer) => Buffer | string | Promise<Buffer | string>
+    ): Promise<Buffer>;
 
     /**
      * Compose the reveal of a Chain, that can then be used as input of the factomd API `reveal-chain`.
@@ -1426,18 +1487,33 @@ declare namespace factom {
      * Compose the commit and reveal of an Entry, that can then be used as inputs of the factomd APIs `commit-entry` and `reveal-entry`.
      *
      * @param entry Entry to compose the commit and reveal of.
-     * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC).
-     * If a public EC address is provided it is necessary to manually pass the signature of the commit as a 3rd argument (use case for hardware wallets)
-     * @param signature Optional signature of the commit (composeEntryLedger). Only necessary if a public EC address was passed as 2nd argument.
+     * @param ecAddress Private Entry Credit address that pays for and sign the commit.
      */
     function composeEntry(
         entry: Entry,
-        ecAddress: string,
-        signature?: string | Buffer
+        ecAddress: string
     ): {
         commit: Buffer;
         reveal: Buffer;
     };
+
+    /**
+     * Compose the commit and reveal of an Entry using an external signing function.
+     * The result can then be used as inputs of the factomd APIs `commit-entry` and `reveal-entry`.
+     * @param entry Entry to compose the commit and reveal of.
+     * @param ecPublicAddress Public Entry Credit address that pays for the commit.
+     * @param sign Signing function.
+     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
+     */
+    function composeEntryDelegateSig(
+        entry: Entry,
+        ecPublicAddress: string,
+        sign: (data: Buffer) => Buffer | string | Promise<Buffer | string>
+    ): Promise<{
+        commit: Buffer;
+        reveal: Buffer;
+    }>;
 
     /**
      * Compose the commit of an Entry, that can then be used as input of the factomd API `commit-entry`.
@@ -1446,15 +1522,24 @@ declare namespace factom {
      * Returns entry commit.
      *
      * @param entry Entry to compose the commit of.
-     * @param ecAddress Entry Credit address that pays for the commit, either private (Es) or public (EC).
-     * If a public EC address is provided it is necessary to provide the signature of the commit as a 3rd argument (use case for hardware wallets)
-     * @param signature Optional signature of the commit (composeEntryLedger). Only necessary if a public EC address was passed as 2nd argument.
+     * @param ecAddress Private Entry Credit address that pays for and sign the commit.
      */
-    function composeEntryCommit(
+    function composeEntryCommit(entry: Entry, ecAddress: string): Buffer;
+
+    /**
+     * Compose the commit of an Entry delegating the signature.
+     * The commit can then be sent through factomd API `commit-entry`.
+     * @param {Entry} entry - Entry to compose the commit of.
+     * @param {string} ecPublicAddress - Public Entry Credit address that pays for the commit.
+     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} sign - Signing function.
+     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
+     */
+    function composeEntryCommitDelegateSig(
         entry: Entry,
-        ecAddress: string,
-        signature?: string | Buffer
-    ): Buffer;
+        ecPublicAddress: string,
+        sign: (data: Buffer) => Buffer | string | Promise<Buffer | string>
+    ): Promise<Buffer>;
 
     /**
      * Compose the reveal of an Entry, that can then be used as input of the factomd API `reveal-entry`.

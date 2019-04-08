@@ -1,7 +1,9 @@
 const assert = require('chai').assert,
+    sign = require('tweetnacl/nacl-fast').sign,
     { FactomdCli } = require('../src/apis-cli'),
     { Entry, computeEntryTxId } = require('../src/entry'),
     { Chain, computeChainTxId } = require('../src/chain'),
+    { addressToKey, getPublicAddress } = require('../src/addresses'),
     add = require('../src/add');
 
 require('dotenv').config();
@@ -10,6 +12,8 @@ const factomd = new FactomdCli({
     port: process.env.FACTOMD_PORT
 });
 const PAYING_EC_ADDRESS = process.env.EC_PRIVATE_ADDRESS;
+const PAYING_SECRET_KEY = sign.keyPair.fromSeed(addressToKey(PAYING_EC_ADDRESS)).secretKey;
+const PAYING_EC_PUBLIC_ADDRESS = getPublicAddress(PAYING_EC_ADDRESS);
 
 describe('Add chains and entries in Factom blockchain', function() {
     it('should commit and then reveal chain', async function() {
@@ -34,6 +38,24 @@ describe('Add chains and entries in Factom blockchain', function() {
         assert.strictEqual(revealed.chainId, c.idHex);
     });
 
+    it('should commit chain with delegated signature', async function() {
+        this.timeout(10000);
+
+        const e = Entry.builder()
+            .timestamp(Date.now())
+            .extId('factom.js')
+            .extId('commit/reveal chain test', 'utf8')
+            .extId(Date.now().toString() + Math.random(), 'utf8')
+            .build();
+
+        const c = new Chain(e);
+
+        const committed = await add.commit(factomd, c, PAYING_EC_PUBLIC_ADDRESS, {
+            sign: data => sign.detached(data, PAYING_SECRET_KEY)
+        });
+        assert.strictEqual(committed.txId, computeChainTxId(c).toString('hex'));
+    });
+
     it('should commit and then reveal entry', async function() {
         this.timeout(10000);
 
@@ -56,6 +78,24 @@ describe('Add chains and entries in Factom blockchain', function() {
             revealed.chainId,
             '3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791'
         );
+    });
+
+    it('should commit entry with delegated signature', async function() {
+        this.timeout(10000);
+
+        const e = Entry.builder()
+            .chainId('3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791')
+            .timestamp(Date.now())
+            .extId('factom.js')
+            .extId('commit/reveal entry test', 'utf8')
+            .extId(Date.now().toString() + Math.random(), 'utf8')
+            .build();
+
+        // Commit
+        const committed = await add.commit(factomd, e, PAYING_EC_PUBLIC_ADDRESS, {
+            sign: data => sign.detached(data, PAYING_SECRET_KEY)
+        });
+        assert.strictEqual(committed.txId, computeEntryTxId(e).toString('hex'));
     });
 
     it('should reject commit entry without chainId', async function() {
