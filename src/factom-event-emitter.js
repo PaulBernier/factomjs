@@ -237,7 +237,7 @@ class FactomEventEmitter extends EventEmitter {
             };
 
             // Fetch entry chains contained in directory block concurrently
-            await Promise.map(directoryBlock.entryBlockRefs, checkIfNewChainAndEmit, { concurrency: 5 });
+            await Promise.map(directoryBlock.entryBlockRefs, checkIfNewChainAndEmit, { concurrency: 10 });
         } catch (err) {
             this.emit('error', err);
         }
@@ -259,7 +259,7 @@ class FactomEventEmitter extends EventEmitter {
         };
 
         // Fetch new entry blocks concurrently
-        await Promise.map(this._entryChainSubscriptions, fetchAndEmitNewBlock, { concurrency: 5 });
+        await Promise.map(entryBlockRefs, fetchAndEmitNewBlock, { concurrency: 10 });
     }
 
     // Emit new factoid transactions for user-defined addresses
