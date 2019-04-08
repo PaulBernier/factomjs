@@ -81,6 +81,11 @@ class FactomEventEmitter extends EventEmitter {
 
     // This method only starts polling and keeps track of "custom" events such as FCT addresses and chain ids
     async _newListener(event) {
+        // function uses string method
+        if (typeof event !== 'string') {
+            return;
+        }
+
         // Should not start polling when listening to non-blockchain events such as 'error'
         if (this._isBlockchainEvent(event)) {
             this._startPolling();
@@ -93,13 +98,18 @@ class FactomEventEmitter extends EventEmitter {
 
         if (isValidPublicFctAddress(event)) {
             this._factoidAddressSubscriptions.add(event);
-        } else if (typeof event === 'string' && event.match(/\b[A-Fa-f0-9]{64}\b/)) {
+        } else if (event.match(/\b[A-Fa-f0-9]{64}\b/)) {
             this._entryChainSubscriptions.add(event);
         }
     }
 
     // Counterpart only responsible to stop polling and keep track of custom events
     async _removeListener(event) {
+        // function uses string method
+        if (typeof event !== 'string') {
+            return;
+        }
+
         if (this._entryChainSubscriptions.has(event) && this.listenerCount(event) === 0) {
             this._entryChainSubscriptions.delete(event);
         } else if (this._factoidAddressSubscriptions.has(event) && this.listenerCount(event) === 0) {
