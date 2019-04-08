@@ -14,10 +14,22 @@ Object.freeze(FACTOM_EVENT);
 
 /**
  * Listen for new Factom Events.
- * @param {FactomCli} cli - FactomCli instance to be used by the FactomEventEmitter instance to poll the blockchain for new blocks.
- * @param {object} opts - Options to set on the FactomEventEmitter instance
- * @param {number} [opts.interval=7500] - The interval (ms) at which the FactomEventEmtitter instance should poll the blockchain to check for a new block. Defaults to 7500.
  * @class
+ * @param {FactomCli} cli - FactomCli instance to be used by the FactomEventEmitter instance to fetch blockchain data.
+ * @param {object=} opts - Options to set on the FactomEventEmitter instance
+ * @param {number} [opts.interval=7500] - Interval (ms) at which the FactomEventEmtitter instance should poll the blockchain to check for a new block.
+ * @event directoryBlock - Triggers when blockchain adds a new directory block. Listener receives new directory block.
+ * @event factoidBlock - Triggers when blockchain adds a new factoid block. Listener receives new factoid block.
+ * @event adminBlock - Triggers when blockchain adds a new admin block. Listener receives new admin block.
+ * @event entryCreditBlock - Triggers when blockchain adds a new entry credit block. Listener receives new entry credit block.
+ * @event newEntryChain - Triggers when blockchain adds a new entry chain. Listener receives first entry block of new entry chain.
+ * @event FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC - Triggers when factoid address sends or receives a transaction. Listener receives transaction.
+ * @event 4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4 - Triggers when entry chain adds new entry block. Listener receives entry block.
+ * @example
+ * // logs all new entry blocks for given chain ID.
+ * const cli = new FactomCli();
+ * const emitter = new FactomEventEmitter(cli, { concurrency: 15, interval: 10000 })
+ * emitter.on('4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4', console.log)
  */
 class FactomEventEmitter extends EventEmitter {
     constructor(cli, opts) {
