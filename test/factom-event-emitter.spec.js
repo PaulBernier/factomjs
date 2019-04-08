@@ -134,6 +134,7 @@ describe('Test FactomEventEmitter', () => {
 
         const listener = eBlock => {
             assert.instanceOf(eBlock, EntryBlock);
+            assert.strictEqual(eBlock.sequenceNumber, 0);
             assert.isTrue(emitter.isPolling);
             assert.strictEqual(eBlock.keyMR, newChain.keyMR);
             assert.lengthOf(emitter.listeners('newEntryChain'), 1);
