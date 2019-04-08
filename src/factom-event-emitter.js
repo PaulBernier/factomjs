@@ -266,12 +266,8 @@ class FactomEventEmitter extends EventEmitter {
     _emitFactoidTransaction(factoidBlock, directoryBlock) {
         const addrs = this._factoidAddressSubscriptions;
         factoidBlock.transactions.forEach(tx => {
-            const activeAddresses = new Set();
-
             // Search transaction inputs and outputs for user-defined addresses
-            const findActiveAddresses = io => addrs.has(io.address) && activeAddresses.add(io.address);
-            tx.inputs.forEach(findActiveAddresses);
-            tx.factoidOutputs.forEach(findActiveAddresses);
+            const activeAddresses = new Set([...tx.inputs, ...tx.factoidOutputs].filter(io => addrs.has(io.address)).map(io => io.address));
 
             if (activeAddresses.size > 0) {
                 // Add the block context to the transaction prior to emitting
