@@ -8,7 +8,7 @@
         "docs": "documentation build --github --sort-order alpha src/** -f md > docs/doc.md",
         "docs-html": "documentation build src/** --sort-order alpha -f html -o docs",
         "lint": "eslint \"{src,test}/**/*.js\"",
-        "format": "prettier --write \"{src,test}/**/*.js\"",
+        "format": "prettier --write \"{src,test}/**/*.js\" README.md changelog.md factom.d.ts",
         "build": "webpack",
         "prepublishOnly": "npm run format && npm run lint && npm run build && npm run test && npm run docs",
         "test": "nyc --reporter=html --reporter=text mocha 'test/*.spec.js'",
