@@ -123,14 +123,8 @@ class FactomEventEmitter extends EventEmitter {
     }
 
     _isBlockchainEvent(event) {
-        if (
-            Object.values(FACTOM_EVENT).includes(event) ||
-            isValidPublicFctAddress(event) ||
-            event.match(/\b[A-Fa-f0-9]{64}\b/)
-        ) {
-            return true;
+        return Object.values(FACTOM_EVENT).includes(event) || isValidPublicFctAddress(event) || event.match(/\b[A-Fa-f0-9]{64}\b/);
         }
-    }
 
     ///////////////////////////////////////////////////////////////
     //              POLL DIRECTORY BLOCKS                       //
