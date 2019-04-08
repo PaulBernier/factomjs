@@ -164,19 +164,19 @@ class FactomEventEmitter extends EventEmitter {
     _handleDirectoryBlock(block) {
         this.emit(FACTOM_EVENT.directoryBlock, block);
 
-        if (this.listenerCount(FACTOM_EVENT.adminBlock)) {
+        if (this.listenerCount(FACTOM_EVENT.adminBlock) > 0) {
             this._emitAdminBlock(block);
         }
 
-        if (this.listenerCount(FACTOM_EVENT.entryCreditBlock)) {
+        if (this.listenerCount(FACTOM_EVENT.entryCreditBlock) > 0) {
             this._emitEntryCreditBlock(block);
         }
 
-        if (this.listenerCount(FACTOM_EVENT.factoidBlock) || this._factoidAddressSubscriptions.size > 0) {
+        if (this.listenerCount(FACTOM_EVENT.factoidBlock) > 0 || this._factoidAddressSubscriptions.size > 0) {
             this._emitFactoidBlock(block);
         }
 
-        if (this.listenerCount(FACTOM_EVENT.newEntryChain)) {
+        if (this.listenerCount(FACTOM_EVENT.newEntryChain) > 0) {
             this._emitNewEntryChains(block);
         }
 
@@ -195,11 +195,11 @@ class FactomEventEmitter extends EventEmitter {
         try {
             const factoidBlock = await this._cli.getFactoidBlock(directoryBlock.factoidBlockRef);
 
-            if (this.listenerCount(FACTOM_EVENT.factoidBlock)) {
+            if (this.listenerCount(FACTOM_EVENT.factoidBlock) > 0) {
                 this.emit(FACTOM_EVENT.factoidBlock, factoidBlock);
             }
 
-            if (this._factoidAddressSubscriptions.size) {
+            if (this._factoidAddressSubscriptions.size > 0) {
                 // Must pass directoryBlock through to access block context
                 this._emitFactoidTransaction(factoidBlock, directoryBlock);
             }
@@ -273,7 +273,7 @@ class FactomEventEmitter extends EventEmitter {
             tx.inputs.forEach(findActiveAddresses);
             tx.factoidOutputs.forEach(findActiveAddresses);
 
-            if (activeAddresses.size) {
+            if (activeAddresses.size > 0) {
                 // Add the block context to the transaction prior to emitting
                 const transaction = new Transaction(Transaction.builder(tx), {
                     factoidBlockKeyMR: directoryBlock.factoidBlockRef,
