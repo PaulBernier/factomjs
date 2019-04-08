@@ -3,7 +3,7 @@ const { FactomCli, FactomEventEmitter, FACTOM_EVENT } = require('../src/factom')
     mockDirectoryBlock = require('./data/directory-block.json'),
     assert = require('chai').assert;
 
-describe.only('Test FactomEventEmitter', () => {
+describe('Test FactomEventEmitter', () => {
     const cli = new FactomCli({
         factomd: {
             host: process.env.FACTOMD_HOST,
