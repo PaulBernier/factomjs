@@ -1,5 +1,11 @@
 const { FactomCli, FactomEventEmitter, FACTOM_EVENT } = require('../src/factom'),
-    { DirectoryBlock, FactoidBlock, AdminBlock, EntryCreditBlock, EntryBlock } = require('../src/blocks'),
+    {
+        DirectoryBlock,
+        FactoidBlock,
+        AdminBlock,
+        EntryCreditBlock,
+        EntryBlock
+    } = require('../src/blocks'),
     mockDirectoryBlock = require('./data/directory-block.json'),
     assert = require('chai').assert;
 
@@ -109,7 +115,10 @@ describe('Test FactomEventEmitter', () => {
         const factoidBlockRef = 'cad832bab1d83c74bff8e1092fcf70e298cd7cdf35dee1956ae8879e749195ac';
 
         const listener = tx => {
-            assert.strictEqual(tx.id, 'c538ffb37d5dab837f3ea781b01bae481d8d6e77ceb0471442c1d85576a00e01');
+            assert.strictEqual(
+                tx.id,
+                'c538ffb37d5dab837f3ea781b01bae481d8d6e77ceb0471442c1d85576a00e01'
+            );
             assert.isTrue(emitter.isPolling);
             assert.lengthOf(emitter.listeners(address), 1);
 
@@ -168,7 +177,7 @@ describe('Test FactomEventEmitter', () => {
     it('should not stop polling if there are listeners of a different type still active', done => {
         const emitter = new FactomEventEmitter(cli);
 
-        const nullListener = () => { };
+        const nullListener = () => {};
 
         const listener = aBlock => {
             // assert that adding multiple listeners results in healthy state
@@ -199,7 +208,7 @@ describe('Test FactomEventEmitter', () => {
     it('should not stop polling if there are listeners of the same type still active', done => {
         const emitter = new FactomEventEmitter(cli);
 
-        const nullListener = () => { };
+        const nullListener = () => {};
 
         const listener = fBlock => {
             // assert that adding multiple listeners results in healthy state
@@ -229,7 +238,7 @@ describe('Test FactomEventEmitter', () => {
         const emitter = new FactomEventEmitter(cli);
         const chainId = '4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4';
 
-        const nullListener = () => { };
+        const nullListener = () => {};
 
         const listener = eBlock => {
             assert.instanceOf(eBlock, EntryBlock);
@@ -261,10 +270,13 @@ describe('Test FactomEventEmitter', () => {
         const address = 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC';
         const factoidBlockRef = 'cad832bab1d83c74bff8e1092fcf70e298cd7cdf35dee1956ae8879e749195ac';
 
-        const nullListener = () => { };
+        const nullListener = () => {};
 
         const listener = tx => {
-            assert.strictEqual(tx.id, 'c538ffb37d5dab837f3ea781b01bae481d8d6e77ceb0471442c1d85576a00e01');
+            assert.strictEqual(
+                tx.id,
+                'c538ffb37d5dab837f3ea781b01bae481d8d6e77ceb0471442c1d85576a00e01'
+            );
             assert.isTrue(emitter.isPolling);
             assert.lengthOf(emitter.listeners(address), 2);
             assert.lengthOf(emitter.factoidAddressSubscriptions, 1);

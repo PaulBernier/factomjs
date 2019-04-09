@@ -1,6 +1,8 @@
 *.code-workspace
 test.js
 todo.md
+docs/assets/*
+docs/index.html
 
 # Logs
 logs

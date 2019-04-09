@@ -14,7 +14,7 @@ Object.freeze(FACTOM_EVENT);
 
 /**
  * Listen for new Factom Events:
- * 
+ *
  * <ul>
  * <li>newDirectoryBlock - Triggers when blockchain adds a new directory block. Listener receives new directory block.</li>
  * <li>newFactoidBlock - Triggers when blockchain adds a new factoid block. Listener receives new factoid block.</li>
@@ -125,7 +125,10 @@ class FactomEventEmitter extends EventEmitter {
 
         if (this._chainSubscriptions.has(event) && this.listenerCount(event) === 0) {
             this._chainSubscriptions.delete(event);
-        } else if (this._factoidAddressSubscriptions.has(event) && this.listenerCount(event) === 0) {
+        } else if (
+            this._factoidAddressSubscriptions.has(event) &&
+            this.listenerCount(event) === 0
+        ) {
             this._factoidAddressSubscriptions.delete(event);
         }
 
@@ -136,7 +139,11 @@ class FactomEventEmitter extends EventEmitter {
     }
 
     _isBlockchainEvent(event) {
-        return Object.values(FACTOM_EVENT).includes(event) || isValidPublicFctAddress(event) || event.match(/\b[A-Fa-f0-9]{64}\b/);
+        return (
+            Object.values(FACTOM_EVENT).includes(event) ||
+            isValidPublicFctAddress(event) ||
+            event.match(/\b[A-Fa-f0-9]{64}\b/)
+        );
     }
 
     ///////////////////////////////////////////////////////////////
@@ -185,7 +192,10 @@ class FactomEventEmitter extends EventEmitter {
             this._emitEntryCreditBlock(block);
         }
 
-        if (this.listenerCount(FACTOM_EVENT.newFactoidBlock) > 0 || this._factoidAddressSubscriptions.size > 0) {
+        if (
+            this.listenerCount(FACTOM_EVENT.newFactoidBlock) > 0 ||
+            this._factoidAddressSubscriptions.size > 0
+        ) {
             this._emitFactoidBlock(block);
         }
 
@@ -193,7 +203,9 @@ class FactomEventEmitter extends EventEmitter {
             this._emitNewChains(block);
         }
 
-        const entryBlockRefs = block.entryBlockRefs.filter(ref => this._chainSubscriptions.has(ref.chainId));
+        const entryBlockRefs = block.entryBlockRefs.filter(ref =>
+            this._chainSubscriptions.has(ref.chainId)
+        );
         if (entryBlockRefs.length > 0) {
             this._emitEntryBlock(entryBlockRefs);
         }
@@ -232,7 +244,9 @@ class FactomEventEmitter extends EventEmitter {
 
     async _emitEntryCreditBlock(directoryBlock) {
         try {
-            const entryCreditBlock = await this._cli.getEntryCreditBlock(directoryBlock.entryCreditBlockRef);
+            const entryCreditBlock = await this._cli.getEntryCreditBlock(
+                directoryBlock.entryCreditBlockRef
+            );
             this.emit(FACTOM_EVENT.newEntryCreditBlock, entryCreditBlock);
         } catch (err) {
             this.emit('error', err);
@@ -250,7 +264,9 @@ class FactomEventEmitter extends EventEmitter {
             };
 
             // Fetch entry chains contained in directory block concurrently
-            await Promise.map(directoryBlock.entryBlockRefs, checkIfNewChainAndEmit, { concurrency: 10 });
+            await Promise.map(directoryBlock.entryBlockRefs, checkIfNewChainAndEmit, {
+                concurrency: 10
+            });
         } catch (err) {
             this.emit('error', err);
         }
@@ -276,7 +292,11 @@ class FactomEventEmitter extends EventEmitter {
         const addrs = this._factoidAddressSubscriptions;
         factoidBlock.transactions.forEach(tx => {
             // Search transaction inputs and outputs for user-defined addresses
-            const activeAddresses = new Set([...tx.inputs, ...tx.factoidOutputs].filter(io => addrs.has(io.address)).map(io => io.address));
+            const activeAddresses = new Set(
+                [...tx.inputs, ...tx.factoidOutputs]
+                    .filter(io => addrs.has(io.address))
+                    .map(io => io.address)
+            );
 
             if (activeAddresses.size > 0) {
                 // Add the block context to the transaction prior to emitting
