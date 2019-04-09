@@ -28,7 +28,7 @@ Object.freeze(FACTOM_EVENT);
  * @example
  * // logs all new entry blocks for given chain ID.
  * const cli = new FactomCli();
- * const emitter = new FactomEventEmitter(cli, { concurrency: 15, interval: 10000 })
+ * const emitter = new FactomEventEmitter(cli, { interval: 10000 })
  * emitter.on('4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4', console.log)
  */
 class FactomEventEmitter extends EventEmitter {
