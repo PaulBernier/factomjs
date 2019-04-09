@@ -4,10 +4,10 @@ const { EventEmitter } = require('events'),
     { Transaction } = require('./transaction');
 
 const FACTOM_EVENT = {
-    directoryBlock: 'directoryBlock',
-    factoidBlock: 'factoidBlock',
-    adminBlock: 'adminBlock',
-    entryCreditBlock: 'entryCreditBlock',
+    newDirectoryBlock: 'newDirectoryBlock',
+    newFactoidBlock: 'newFactoidBlock',
+    newAdminBlock: 'newAdminBlock',
+    newEntryCreditBlock: 'newEntryCreditBlock',
     newChain: 'newChain'
 };
 Object.freeze(FACTOM_EVENT);
@@ -18,10 +18,10 @@ Object.freeze(FACTOM_EVENT);
  * @param {FactomCli} cli - FactomCli instance to be used by the FactomEventEmitter instance to fetch blockchain data.
  * @param {object=} opts - Options to set on the FactomEventEmitter instance
  * @param {number} [opts.interval=7500] - Interval (ms) at which the FactomEventEmtitter instance should poll the blockchain to check for a new block.
- * @event directoryBlock - Triggers when blockchain adds a new directory block. Listener receives new directory block.
- * @event factoidBlock - Triggers when blockchain adds a new factoid block. Listener receives new factoid block.
- * @event adminBlock - Triggers when blockchain adds a new admin block. Listener receives new admin block.
- * @event entryCreditBlock - Triggers when blockchain adds a new entry credit block. Listener receives new entry credit block.
+ * @event newDirectoryBlock - Triggers when blockchain adds a new directory block. Listener receives new directory block.
+ * @event newFactoidBlock - Triggers when blockchain adds a new factoid block. Listener receives new factoid block.
+ * @event newAdminBlock - Triggers when blockchain adds a new admin block. Listener receives new admin block.
+ * @event newEntryCreditBlock - Triggers when blockchain adds a new entry credit block. Listener receives new entry credit block.
  * @event newChain - Triggers when blockchain adds a new chain. Listener receives first entry block of new chain.
  * @event FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC - Triggers when factoid address sends or receives a transaction. Listener receives transaction.
  * @event 4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4 - Triggers when entry chain adds new entry block. Listener receives entry block.
@@ -162,17 +162,17 @@ class FactomEventEmitter extends EventEmitter {
 
     // Emit new directory blocks then trigger other emitter functions as appropriate
     _handleDirectoryBlock(block) {
-        this.emit(FACTOM_EVENT.directoryBlock, block);
+        this.emit(FACTOM_EVENT.newDirectoryBlock, block);
 
-        if (this.listenerCount(FACTOM_EVENT.adminBlock) > 0) {
+        if (this.listenerCount(FACTOM_EVENT.newAdminBlock) > 0) {
             this._emitAdminBlock(block);
         }
 
-        if (this.listenerCount(FACTOM_EVENT.entryCreditBlock) > 0) {
+        if (this.listenerCount(FACTOM_EVENT.newEntryCreditBlock) > 0) {
             this._emitEntryCreditBlock(block);
         }
 
-        if (this.listenerCount(FACTOM_EVENT.factoidBlock) > 0 || this._factoidAddressSubscriptions.size > 0) {
+        if (this.listenerCount(FACTOM_EVENT.newFactoidBlock) > 0 || this._factoidAddressSubscriptions.size > 0) {
             this._emitFactoidBlock(block);
         }
 
@@ -195,8 +195,8 @@ class FactomEventEmitter extends EventEmitter {
         try {
             const factoidBlock = await this._cli.getFactoidBlock(directoryBlock.factoidBlockRef);
 
-            if (this.listenerCount(FACTOM_EVENT.factoidBlock) > 0) {
-                this.emit(FACTOM_EVENT.factoidBlock, factoidBlock);
+            if (this.listenerCount(FACTOM_EVENT.newFactoidBlock) > 0) {
+                this.emit(FACTOM_EVENT.newFactoidBlock, factoidBlock);
             }
 
             if (this._factoidAddressSubscriptions.size > 0) {
@@ -211,7 +211,7 @@ class FactomEventEmitter extends EventEmitter {
     async _emitAdminBlock(directoryBlock) {
         try {
             const adminBlock = await this._cli.getAdminBlock(directoryBlock.adminBlockRef);
-            this.emit(FACTOM_EVENT.adminBlock, adminBlock);
+            this.emit(FACTOM_EVENT.newAdminBlock, adminBlock);
         } catch (err) {
             this.emit('error', err);
         }
@@ -220,7 +220,7 @@ class FactomEventEmitter extends EventEmitter {
     async _emitEntryCreditBlock(directoryBlock) {
         try {
             const entryCreditBlock = await this._cli.getEntryCreditBlock(directoryBlock.entryCreditBlockRef);
-            this.emit(FACTOM_EVENT.entryCreditBlock, entryCreditBlock);
+            this.emit(FACTOM_EVENT.newEntryCreditBlock, entryCreditBlock);
         } catch (err) {
             this.emit('error', err);
         }

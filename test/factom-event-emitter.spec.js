@@ -17,16 +17,16 @@ describe('Test FactomEventEmitter', () => {
         const listener = dBlock => {
             assert.instanceOf(dBlock, DirectoryBlock);
             assert.isTrue(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('directoryBlock'), 1);
+            assert.lengthOf(emitter.listeners('newDirectoryBlock'), 1);
 
-            emitter.removeListener(FACTOM_EVENT.directoryBlock, listener);
+            emitter.removeListener(FACTOM_EVENT.newDirectoryBlock, listener);
             assert.isFalse(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('directoryBlock'), 0);
+            assert.lengthOf(emitter.listeners('newDirectoryBlock'), 0);
             done();
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(FACTOM_EVENT.directoryBlock, listener);
+        emitter.on(FACTOM_EVENT.newDirectoryBlock, listener);
     });
 
     it('should add then remove a factoid block listener', done => {
@@ -35,16 +35,16 @@ describe('Test FactomEventEmitter', () => {
         const listener = fBlock => {
             assert.instanceOf(fBlock, FactoidBlock);
             assert.isTrue(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('factoidBlock'), 1);
+            assert.lengthOf(emitter.listeners('newFactoidBlock'), 1);
 
-            emitter.removeListener('factoidBlock', listener);
+            emitter.removeListener('newFactoidBlock', listener);
             assert.isFalse(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('factoidBlock'), 0);
+            assert.lengthOf(emitter.listeners('newFactoidBlock'), 0);
             done();
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(FACTOM_EVENT.factoidBlock, listener);
+        emitter.on(FACTOM_EVENT.newFactoidBlock, listener);
     });
 
     it('should add then remove an admin block listener', done => {
@@ -53,16 +53,16 @@ describe('Test FactomEventEmitter', () => {
         const listener = aBlock => {
             assert.instanceOf(aBlock, AdminBlock);
             assert.isTrue(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('adminBlock'), 1);
+            assert.lengthOf(emitter.listeners('newAdminBlock'), 1);
 
-            emitter.removeListener('adminBlock', listener);
+            emitter.removeListener('newAdminBlock', listener);
             assert.isFalse(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('adminBlock'), 0);
+            assert.lengthOf(emitter.listeners('newAdminBlock'), 0);
             done();
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(FACTOM_EVENT.adminBlock, listener);
+        emitter.on(FACTOM_EVENT.newAdminBlock, listener);
     });
 
     it('should add then remove an entry credit block listener', done => {
@@ -71,16 +71,16 @@ describe('Test FactomEventEmitter', () => {
         const listener = ecBlock => {
             assert.instanceOf(ecBlock, EntryCreditBlock);
             assert.isTrue(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('entryCreditBlock'), 1);
+            assert.lengthOf(emitter.listeners('newEntryCreditBlock'), 1);
 
-            emitter.removeListener('entryCreditBlock', listener);
+            emitter.removeListener('newEntryCreditBlock', listener);
             assert.isFalse(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('entryCreditBlock'), 0);
+            assert.lengthOf(emitter.listeners('newEntryCreditBlock'), 0);
             done();
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(FACTOM_EVENT.entryCreditBlock, listener);
+        emitter.on(FACTOM_EVENT.newEntryCreditBlock, listener);
     });
 
     it('should add then remove entry chain listener', done => {
@@ -157,12 +157,12 @@ describe('Test FactomEventEmitter', () => {
         const listener = dBlock => {
             assert.instanceOf(dBlock, DirectoryBlock);
             assert.isFalse(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('directoryBlock'), 0);
+            assert.lengthOf(emitter.listeners('newDirectoryBlock'), 0);
             done();
         };
 
         emitter.on('error', err => done(err));
-        emitter.once(FACTOM_EVENT.directoryBlock, listener);
+        emitter.once(FACTOM_EVENT.newDirectoryBlock, listener);
     });
 
     it('should not stop polling if there are listeners of a different type still active', done => {
@@ -174,26 +174,26 @@ describe('Test FactomEventEmitter', () => {
             // assert that adding multiple listeners results in healthy state
             assert.instanceOf(aBlock, AdminBlock);
             assert.isTrue(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('entryCreditBlock'), 1);
-            assert.lengthOf(emitter.listeners('adminBlock'), 1);
+            assert.lengthOf(emitter.listeners('newEntryCreditBlock'), 1);
+            assert.lengthOf(emitter.listeners('newAdminBlock'), 1);
 
-            // assert that the removal of a listener does not stop polling if directoryBlock still has dependent listeners
-            emitter.removeListener('adminBlock', listener);
+            // assert that the removal of a listener does not stop polling if newDirectoryBlock still has dependent listeners
+            emitter.removeListener('newAdminBlock', listener);
             assert.isTrue(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('entryCreditBlock'), 1);
-            assert.lengthOf(emitter.listeners('adminBlock'), 0);
+            assert.lengthOf(emitter.listeners('newEntryCreditBlock'), 1);
+            assert.lengthOf(emitter.listeners('newAdminBlock'), 0);
 
             // assert that the removal of the final dependent listeners stops polling and removes all listeners
-            emitter.removeListener('entryCreditBlock', nullListener);
+            emitter.removeListener('newEntryCreditBlock', nullListener);
             assert.isFalse(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('entryCreditBlock'), 0);
+            assert.lengthOf(emitter.listeners('newEntryCreditBlock'), 0);
 
             done();
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(FACTOM_EVENT.entryCreditBlock, nullListener);
-        emitter.on(FACTOM_EVENT.adminBlock, listener);
+        emitter.on(FACTOM_EVENT.newEntryCreditBlock, nullListener);
+        emitter.on(FACTOM_EVENT.newAdminBlock, listener);
     });
 
     it('should not stop polling if there are listeners of the same type still active', done => {
@@ -205,24 +205,24 @@ describe('Test FactomEventEmitter', () => {
             // assert that adding multiple listeners results in healthy state
             assert.instanceOf(fBlock, FactoidBlock);
             assert.isTrue(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('factoidBlock'), 2);
+            assert.lengthOf(emitter.listeners('newFactoidBlock'), 2);
 
-            // assert that the removal of a listener does not stop polling if directoryBlock still has dependent listeners
-            emitter.removeListener('factoidBlock', listener);
+            // assert that the removal of a listener does not stop polling if newDirectoryBlock still has dependent listeners
+            emitter.removeListener('newFactoidBlock', listener);
             assert.isTrue(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('factoidBlock'), 1);
+            assert.lengthOf(emitter.listeners('newFactoidBlock'), 1);
 
             // assert that the removal of the final dependent listeners stops polling and removes all listeners
-            emitter.removeListener('factoidBlock', nullListener);
+            emitter.removeListener('newFactoidBlock', nullListener);
             assert.isFalse(emitter.isPolling);
-            assert.lengthOf(emitter.listeners('factoidBlock'), 0);
+            assert.lengthOf(emitter.listeners('newFactoidBlock'), 0);
 
             done();
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(FACTOM_EVENT.factoidBlock, nullListener);
-        emitter.on(FACTOM_EVENT.factoidBlock, listener);
+        emitter.on(FACTOM_EVENT.newFactoidBlock, nullListener);
+        emitter.on(FACTOM_EVENT.newFactoidBlock, listener);
     });
 
     it('should add two chain ID listeners for the same chain ID then remove one without affecting the other', done => {
