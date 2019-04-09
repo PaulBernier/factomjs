@@ -1529,9 +1529,9 @@ declare namespace factom {
     /**
      * Compose the commit of an Entry delegating the signature.
      * The commit can then be sent through factomd API `commit-entry`.
-     * @param {Entry} entry - Entry to compose the commit of.
-     * @param {string} ecPublicAddress - Public Entry Credit address that pays for the commit.
-     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} sign - Signing function.
+     * @param entry Entry to compose the commit of.
+     * @param ecPublicAddress Public Entry Credit address that pays for the commit.
+     * @param sign - Signing function.
      * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
      * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
      */
@@ -1581,126 +1581,108 @@ declare namespace factom {
 
     /**
      * Validate that an address is valid (well formed).
-     * @param {string} address - Address to validate
-     * @returns {boolean} - True if the address is valid.
+     * @param address Address to validate
      */
     function isValidAddress(address: string): boolean;
 
     /**
      * Validate if an address is a valid public EC or FCT address.
-     * @param {string} address - Address to validate.
-     * @returns {boolean} - True if the address is a valid public EC or FCT address.
+     * @param address Address to validate.
      */
     function isValidPublicAddress(address: string): boolean;
 
     /**
      * Validate if an address is a valid private EC or FCT address.
-     * @param {string} address - Address to validate.
-     * @returns {boolean} - True if the address is a valid private EC or FCT address.
+     * @param address Address to validate.
      */
     function isValidPrivateAddress(address: string): boolean;
 
     /**
      * Validate if an address is a valid EC address (public or private).
-     * @param {string} address - Address to validate.
-     * @returns {boolean} - True if the address is a valid EC address.
+     * @param address Address to validate.
      */
     function isValidEcAddress(address: string): boolean;
 
     /**
      * Validate if an address is a valid public EC address.
-     * @param {string} address - Address to validate.
-     * @returns {boolean} - True if the address is a valid public EC address.
+     * @param address Address to validate.
      */
     function isValidPublicEcAddress(address: string): boolean;
 
     /**
      * Validate if an address is a valid private EC address.
-     * @param {string} address - Address to validate.
-     * @returns {boolean} - True if the address is a valid private EC address.
+     * @param address Address to validate.
      */
     function isValidPrivateEcAddress(address: string): boolean;
 
     /**
      * Validate if an address is a valid FCT address (public or private).
-     * @param {string} address - Address to validate.
-     * @returns {boolean} - True if the address is a valid FCT address.
+     * @param address Address to validate.
      */
     function isValidFctAddress(address: string): boolean;
 
     /**
      * Validate if an address is a valid public FCT address.
-     * @param {string} address - Address to validate.
-     * @returns {boolean} - True if the address is a valid public FCT address.
+     * @param address Address to validate.
      */
     function isValidPublicFctAddress(address: string): boolean;
 
     /**
      * Validate if an address is a valid private FCT address.
-     * @param {string} address - Address to validate.
-     * @returns {boolean} - True if the address is a valid private FCT address.
+     * @param address Address to validate.
      */
     function isValidPrivateFctAddress(address: string): boolean;
 
     /**
      * Get public address corresponding to an address.
-     * @param {string} address - Any address.
-     * @returns {string} - Public address.
+     * @param address Any address.
      */
     function getPublicAddress(address: string): string;
 
     /**
      * Extract the key contained in an address. Cannot be used with public FCT address as those contain a RCD hash and not a key (See {@link addressToRcdHash}).
-     * @param {string} address - Any address, except public FCT address.
-     * @returns {Buffer} - Key contained in the address.
+     * @param address Any address, except public FCT address.
      */
     function addressToKey(address: string): Buffer;
 
     /**
      * Extract the RCD hash from a public FCT address.
-     * @param {string} address - Public FCT address.
-     * @returns {Buffer} - RCD hash.
+     * @param address Public FCT address.
      */
     function addressToRcdHash(address: string): Buffer;
 
     /**
      * Build a human readable public FCT address from a key.
-     * @param {Buffer|string} key
-     * @returns {string} - Public FCT address.
+     * @param key
      */
     function keyToPublicFctAddress(key: Buffer | string): string;
 
     /**
      * Build a human readable public FCT address from a RCD hash.
-     * @param {Buffer|string} rcdHash
-     * @returns {string} - Public FCT address.
+     * @param rcdHash
      */
     function rcdHashToPublicFctAddress(rcdHash: Buffer | string): string;
 
     /**
      * Build a human readable private FCT address from a 32-byte seed.
-     * @param {Buffer|string} seed 32-byte seed.
-     * @returns {string} - Private FCT address.
+     * @param seed 32-byte seed.
      */
     function seedToPrivateFctAddress(seed: Buffer | string): string;
 
     /**
      * Build a human readable public EC address from a 32-byte key.
-     * @param {Buffer|string} key 32-byte key.
-     * @returns {string} - Public EC address.
+     * @param key 32-byte key.
      */
     function keyToPublicEcAddress(key: Buffer | string): string;
 
     /**
      * Build a human readable private EC address from a 32-byte seed.
-     * @param {Buffer|string} seed 32-byte seed.
-     * @returns {string} - Private EC address.
+     * @param seed 32-byte seed.
      */
     function seedToPrivateEcAddress(seed: Buffer | string): string;
 
     /**
      * Generate a new random FCT address pair (private and public).
-     * @returns {{public: string, private: string}} - Public and private FCT addresses.
      */
     function generateRandomFctAddress(): {
         public: string;
@@ -1709,7 +1691,6 @@ declare namespace factom {
 
     /**
      * Generate a new random EC address pair (private and public).
-     * @returns {{public: string, private: string}} - Public and private EC addresses.
      */
     function generateRandomEcAddress(): {
         public: string;
