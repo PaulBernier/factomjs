@@ -4,15 +4,13 @@
 
 ### Added
 
+-   New `FactomEventEmitter` that can emit various blockchain events (see doc for details).
 -   New methods `composeChainCommitDelegateSig`, `composeChainDelegateSig`, `composeEntryCommitDelegateSig` and `composeEntryDelegateSig` for delegating signing of chain and entry commits to an external function (usage for hardware wallet).
 -   `FactomCli#add*` and `FactomCli#commit*` methods now support delegating signing of the commit messages by passing a `sign` function in the options.
 
-### Changed
-
--   `chunkSize` option for the `FactomCli#add*` methods has been deprecated and replaced by `concurrency`.
-
 ### Deprecated
 
+-   `chunkSize` option for the `FactomCli#add*` methods has been deprecated and replaced by `concurrency`.
 -   Depracated `signature` third argument of functions `composeChainCommit`, `composeChain`, `composeEntryCommit` and `composeEntryCommit`. Use the new `*DelegateSig` methods instead.
 
 ## [1.0.2]
