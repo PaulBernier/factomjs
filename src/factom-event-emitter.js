@@ -30,10 +30,19 @@ Object.freeze(FACTOM_EVENT);
  * @param {object=} opts - Options to set on the FactomEventEmitter instance
  * @param {number} [opts.interval=7500] - Interval (ms) at which the FactomEventEmtitter instance should poll the blockchain to check for a new block.
  * @example
- * // logs all new entry blocks for given chain ID.
+ * const { FactomCli, FactomEventEmitter } = require('factom');
  * const cli = new FactomCli();
- * const emitter = new FactomEventEmitter(cli, { interval: 10000 })
- * emitter.on('4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4', console.log)
+ * // Poll the blockchain every 10s
+ * const emitter = new FactomEventEmitter(cli, { interval: 10000 });
+ * emitter.on('newDirectoryBlock', (directoryBlock) => ...);
+ * emitter.on('newFactoidBlock', (factoidBlock) => ...);
+ * emitter.on('newAdminBlock', (adminBlock) => ...);
+ * emitter.on('newEntryCreditBlock', (entryCreditBlock) => ...);
+ * emitter.on('newChain', (entryBlock) => ...);
+ * // Listen to any transaction involving a given Factoid address
+ * emitter.on('FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC', (transaction) => ...);
+ * // Listen to any new entries in a given chain
+ * emitter.on('4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4', (entryBlock) => ...);
  */
 class FactomEventEmitter extends EventEmitter {
     constructor(cli, opts) {

@@ -428,6 +428,26 @@ factomd.call('directory-block', { keymr: 'faf2a058cc475c5cb8ec13e8ba979118f7cde9
 walletd.call('address', { address:'FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q' });
  ```
 
+## Factom Event Emitter
+
+`FactomEventEmitter` emits various blockchain events.
+
+```javascript
+const { FactomCli, FactomEventEmitter } = require('factom');
+const cli = new FactomCli();
+// Poll the blockchain every 10s
+const emitter = new FactomEventEmitter(cli, { interval: 10000 });
+emitter.on('newDirectoryBlock', (directoryBlock) => ...);
+emitter.on('newFactoidBlock', (factoidBlock) => ...);
+emitter.on('newAdminBlock', (adminBlock) => ...);
+emitter.on('newEntryCreditBlock', (entryCreditBlock) => ...);
+emitter.on('newChain', (entryBlock) => ...);
+// Listen to any transaction involving a given Factoid address
+emitter.on('FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC', (transaction) => ...);
+// Listen to any new entries in a given chain
+emitter.on('4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4', (entryBlock) => ...);
+```
+
 ## Running tests
 
 The integration tests of the library have been built against the Factom Community Testnet network. You need to set a few environment variables in order to properly run those tests. To do so you can create a `.env` file at the root of the project and populate the following variables:
