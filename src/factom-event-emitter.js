@@ -8,7 +8,7 @@ const FACTOM_EVENT = {
     factoidBlock: 'factoidBlock',
     adminBlock: 'adminBlock',
     entryCreditBlock: 'entryCreditBlock',
-    newEntryChain: 'newEntryChain'
+    newChain: 'newChain'
 };
 Object.freeze(FACTOM_EVENT);
 
@@ -22,7 +22,7 @@ Object.freeze(FACTOM_EVENT);
  * @event factoidBlock - Triggers when blockchain adds a new factoid block. Listener receives new factoid block.
  * @event adminBlock - Triggers when blockchain adds a new admin block. Listener receives new admin block.
  * @event entryCreditBlock - Triggers when blockchain adds a new entry credit block. Listener receives new entry credit block.
- * @event newEntryChain - Triggers when blockchain adds a new entry chain. Listener receives first entry block of new entry chain.
+ * @event newChain - Triggers when blockchain adds a new chain. Listener receives first entry block of new chain.
  * @event FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC - Triggers when factoid address sends or receives a transaction. Listener receives transaction.
  * @event 4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4 - Triggers when entry chain adds new entry block. Listener receives entry block.
  * @example
@@ -44,7 +44,7 @@ class FactomEventEmitter extends EventEmitter {
         };
 
         // FCT addresses and chain ids still need to be tracked manually for efficiency
-        this._entryChainSubscriptions = new Set();
+        this._chainSubscriptions = new Set();
         this._factoidAddressSubscriptions = new Set();
 
         this.on('removeListener', event => this._removeListener(event));
@@ -55,8 +55,8 @@ class FactomEventEmitter extends EventEmitter {
      * Get active entry chain subscriptions
      * @returns {Set<string>}
      */
-    get entryChainSubscriptions() {
-        return this._entryChainSubscriptions;
+    get chainSubscriptions() {
+        return this._chainSubscriptions;
     }
 
     /**
@@ -99,7 +99,7 @@ class FactomEventEmitter extends EventEmitter {
         if (isValidPublicFctAddress(event)) {
             this._factoidAddressSubscriptions.add(event);
         } else if (event.match(/\b[A-Fa-f0-9]{64}\b/)) {
-            this._entryChainSubscriptions.add(event);
+            this._chainSubscriptions.add(event);
         }
     }
 
@@ -110,8 +110,8 @@ class FactomEventEmitter extends EventEmitter {
             return;
         }
 
-        if (this._entryChainSubscriptions.has(event) && this.listenerCount(event) === 0) {
-            this._entryChainSubscriptions.delete(event);
+        if (this._chainSubscriptions.has(event) && this.listenerCount(event) === 0) {
+            this._chainSubscriptions.delete(event);
         } else if (this._factoidAddressSubscriptions.has(event) && this.listenerCount(event) === 0) {
             this._factoidAddressSubscriptions.delete(event);
         }
@@ -176,11 +176,11 @@ class FactomEventEmitter extends EventEmitter {
             this._emitFactoidBlock(block);
         }
 
-        if (this.listenerCount(FACTOM_EVENT.newEntryChain) > 0) {
-            this._emitNewEntryChains(block);
+        if (this.listenerCount(FACTOM_EVENT.newChain) > 0) {
+            this._emitNewChains(block);
         }
 
-        const entryBlockRefs = block.entryBlockRefs.filter(ref => this._entryChainSubscriptions.has(ref.chainId));
+        const entryBlockRefs = block.entryBlockRefs.filter(ref => this._chainSubscriptions.has(ref.chainId));
         if (entryBlockRefs.length > 0) {
             this._emitEntryBlock(entryBlockRefs);
         }
@@ -227,12 +227,12 @@ class FactomEventEmitter extends EventEmitter {
     }
 
     // Emit the first entry block of any newly created entry chain.
-    async _emitNewEntryChains(directoryBlock) {
+    async _emitNewChains(directoryBlock) {
         try {
             const checkIfNewChainAndEmit = async ref => {
                 const entryBlock = await this._cli.getEntryBlock(ref.keyMR);
                 if (entryBlock.sequenceNumber === 0) {
-                    this.emit(FACTOM_EVENT.newEntryChain, entryBlock);
+                    this.emit(FACTOM_EVENT.newChain, entryBlock);
                 }
             };
 
