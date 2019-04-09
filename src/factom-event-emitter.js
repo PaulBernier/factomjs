@@ -27,7 +27,7 @@ Object.freeze(FACTOM_EVENT);
  *
  * @class
  * @param {FactomCli} cli - FactomCli instance to be used by the FactomEventEmitter instance to fetch blockchain data.
- * @param {object=} opts - Options to set on the FactomEventEmitter instance
+ * @param {object} [opts] - Options to set on the FactomEventEmitter instance
  * @param {number} [opts.interval=7500] - Interval (ms) at which the FactomEventEmtitter instance should poll the blockchain to check for a new block.
  * @example
  * const { FactomCli, FactomEventEmitter } = require('factom');

@@ -145,25 +145,23 @@ declare namespace factom {
 
     /**
      * Main class to read and write data from Factom blockchain.
+     * @example
+     * const cli = new FactomCli({
+     *      factomd: {
+     *          host: 'api.factomd.net',
+     *          port: 443,
+     *          protocol: 'https'
+     *      },
+     *      walletd: {
+     *          host: 'localhost',
+     *          user: 'paul',
+     *          password: 'pass'
+     *      }
+     * });
      */
     export class FactomCli {
         /**
-         * Main class to read and write data from Factom blockchain.
-         *
          * @param opts Options of connection to factomd and factom-walletd.
-         * @example
-         * const cli = new FactomCli({
-         *      factomd: {
-         *          host: 'api.factomd.net',
-         *          port: 443,
-         *          protocol: 'https'
-         *      },
-         *      walletd: {
-         *          host: 'localhost',
-         *          user: 'paul',
-         *          password: 'pass'
-         *      }
-         * });
          */
         constructor(
             opts?:
@@ -663,6 +661,57 @@ declare namespace factom {
     }
 
     /**
+     * Listen for new Factom Events:
+     *
+     * <ul>
+     * <li>newDirectoryBlock - Triggers when blockchain adds a new directory block. Listener receives new directory block.</li>
+     * <li>newFactoidBlock - Triggers when blockchain adds a new factoid block. Listener receives new factoid block.</li>
+     * <li>newAdminBlock - Triggers when blockchain adds a new admin block. Listener receives new admin block.</li>
+     * <li>newEntryCreditBlock - Triggers when blockchain adds a new entry credit block. Listener receives new entry credit block.</li>
+     * <li>newChain - Triggers when blockchain adds a new chain. Listener receives first entry block of new chain.</li>
+     * <li>FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC - Triggers when factoid address sends or receives a transaction. Listener receives transaction.</li>
+     * <li>4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4 - Triggers when entry chain adds new entry block. Listener receives entry block.</li>
+     * </ul>
+     *
+     * @example
+     * const { FactomCli, FactomEventEmitter } = require('factom');
+     * const cli = new FactomCli();
+     * // Poll the blockchain every 10s
+     * const emitter = new FactomEventEmitter(cli, { interval: 10000 });
+     * emitter.on('newDirectoryBlock', (directoryBlock) => ...);
+     * emitter.on('newFactoidBlock', (factoidBlock) => ...);
+     * emitter.on('newAdminBlock', (adminBlock) => ...);
+     * emitter.on('newEntryCreditBlock', (entryCreditBlock) => ...);
+     * emitter.on('newChain', (entryBlock) => ...);
+     * // Listen to any transaction involving a given Factoid address
+     * emitter.on('FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC', (transaction) => ...);
+     * // Listen to any new entries in a given chain
+     * emitter.on('4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4', (entryBlock) => ...);
+     */
+    export class FactomEventEmitter {
+        /**
+         * @param cli - FactomCli instance to be used by the FactomEventEmitter instance to fetch blockchain data.
+         * @param opts - Options to set on the FactomEventEmitter instance
+         */
+        constructor(cli: FactomCli, opts: { interval: number });
+
+        /**
+         * Get active chain id subscriptions
+         */
+        chainSubscriptions: Set<string>;
+
+        /**
+         * Get active factoid address subscriptions
+         */
+        factoidAddressSubscriptions: Set<string>;
+
+        /**
+         * Determine whether or not polling is currently active.
+         */
+        isPolling: boolean;
+    }
+
+    /**
      * Block context of an Entry.
      */
 
@@ -695,15 +744,15 @@ declare namespace factom {
 
     /**
      * Class representing an Entry.
-     * 
+     *
      * @example
-        const myEntry = Entry.builder()
-            .chainId('9107a308f91fd7962fecb321fdadeb37e2ca7d456f1d99d24280136c0afd55f2')
-            .extId('6d79206578742069642031') // If no encoding parameter is passed as 2nd argument, 'hex' is used as default
-            .extId('Some external ID', 'utf8')
-            .content('My new content',  'utf8')
-            .build();
-    */
+     * const myEntry = Entry.builder()
+     *     .chainId('9107a308f91fd7962fecb321fdadeb37e2ca7d456f1d99d24280136c0afd55f2')
+     *     .extId('6d79206578742069642031') // If no encoding parameter is passed as 2nd argument, 'hex' is used as default
+     *     .extId('Some external ID', 'utf8')
+     *     .content('My new content',  'utf8')
+     *     .build();
+     */
     export class Entry {
         /**
          * @param builder builder
