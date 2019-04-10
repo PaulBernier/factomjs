@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.1]
+
+### Fixed
+
+-   Fix `FactomEventEmitter` typescript definition.
+
 ## [1.1.0]
 
 ### Added
