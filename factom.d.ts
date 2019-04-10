@@ -2,6 +2,8 @@
 // Project: https://github.com/PaulBernier/factomjs
 // Definitions by: Schalk Bower <https://github.com/schalk-b>, Paul Bernier <https://github.com/PaulBernier>
 
+import { EventEmitter } from 'events';
+
 export = factom;
 
 declare namespace factom {
@@ -688,12 +690,12 @@ declare namespace factom {
      * // Listen to any new entries in a given chain
      * emitter.on('4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4', (entryBlock) => ...);
      */
-    export class FactomEventEmitter {
+    export class FactomEventEmitter extends EventEmitter {
         /**
          * @param cli - FactomCli instance to be used by the FactomEventEmitter instance to fetch blockchain data.
          * @param opts - Options to set on the FactomEventEmitter instance
          */
-        constructor(cli: FactomCli, opts: { interval: number });
+        constructor(cli: FactomCli, opts?: { interval?: number });
 
         /**
          * Get active chain id subscriptions
