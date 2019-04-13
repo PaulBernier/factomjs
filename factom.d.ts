@@ -1411,7 +1411,7 @@ declare namespace factom {
         /**
          * Key Merkel Root.
          */
-        keyMr: string;
+        keyMR: string;
 
         /**
          * Height.
