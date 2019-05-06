@@ -52,8 +52,9 @@ const cli = new FactomCli({
     password: 'pwd',
     protocol: 'http', // http or https. Default to http
     rejectUnauthorized: true, // Set to false to allow connection to a node with a self-signed certificate
+    timeout: 5000, // Timeout of individual requests
     retry: {
-        retries: 4,
+        retries: 3,
         factor: 2,
         minTimeout: 500,
         maxTimeout: 2000

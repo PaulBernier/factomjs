@@ -20,8 +20,9 @@ declare namespace factom {
      *      password: 'pwd',
      *      protocol: 'https',
      *      rejectUnauthorized: false,
+     *      timeout: 5000,
      *      retry: {
-     *          retries: 4,
+     *          retries: 3,
      *          factor: 2,
      *          minTimeout: 500,
      *          maxTimeout: 2000
@@ -70,7 +71,13 @@ declare namespace factom {
         rejectUnauthorized?: boolean;
 
         /**
-         * Retry strategy. For the detail of the options see https://github.com/tim-kos/node-retry#retrytimeoutsoptions. Default to {retries: 4, factor: 2, minTimeout: 500, maxTimeout: 2000}
+         * Specifies the number of milliseconds before any API request times out.
+         * If a request takes longer than `timeout`, the request will be aborted. Default is `0` (no timeout).
+         */
+        timeout?: number;
+
+        /**
+         * Retry strategy. For the detail of the options see https://github.com/tim-kos/node-retry#retrytimeoutsoptions. Default to {retries: 3, factor: 2, minTimeout: 500, maxTimeout: 2000}
          */
         retry?: {
             retries?: number;

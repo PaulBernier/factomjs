@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+-   Added `timeout` option to `ConnectionOptions`. Allows to set a timeout for all API requests made by `FactomCli`, `FactomdCli` and `WalletdCli`.
+
 ## [1.1.1]
 
 ### Fixed

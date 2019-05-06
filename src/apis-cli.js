@@ -22,7 +22,7 @@ const DEBUG_API_CALLS = new Set([
 ]);
 
 const DEFAULT_RETRY_STRATEGY = {
-    retries: 4,
+    retries: 3,
     factor: 2,
     minTimeout: 500,
     maxTimeout: 2000
@@ -53,8 +53,10 @@ class ApiError extends Error {
  * @property {string} [user] - User for basic authentication.
  * @property {string} [password] - Password for basic authentication.
  * @property {string} [protocol=http] - http or https. Default to http.
+ * @property {number} [timeout=0] - Specifies the number of milliseconds before any API request times out.
+ * If a request takes longer than `timeout`, the request will be aborted. Default is `0` (no timeout).
  * @property {boolean} [rejectUnauthorized=true] - Set to false to allow connection to a node with a self-signed certificate. Default to true.
- * @property {Object} [retry] - Retry strategy. For the detail of the options see {@link https://github.com/tim-kos/node-retry#retrytimeoutsoptions}. Default to {retries: 4, factor: 2, minTimeout: 500, maxTimeout: 2000}
+ * @property {Object} [retry] - Retry strategy. For the detail of the options see {@link https://github.com/tim-kos/node-retry#retrytimeoutsoptions}. Default to {retries: 3, factor: 2, minTimeout: 500, maxTimeout: 2000}
  * @example
  * const cli = new FactomdCli({
  *      host: '52.202.51.228',
@@ -65,8 +67,9 @@ class ApiError extends Error {
  *      password: 'pwd',
  *      protocol: 'https',
  *      rejectUnauthorized: false,
+ *      timeout: 5000,
  *      retry: {
- *          retries: 4,
+ *          retries: 3,
  *          factor: 2,
  *          minTimeout: 500,
  *          maxTimeout: 2000
@@ -98,6 +101,10 @@ class BaseCli {
             httpCliOptions.httpsAgent = new HttpsAgent({
                 rejectUnauthorized: conf.rejectUnauthorized
             });
+        }
+
+        if (conf.timeout) {
+            httpCliOptions.timeout = parseInt(conf.timeout);
         }
 
         this.httpCli = axios.create(httpCliOptions);
