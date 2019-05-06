@@ -481,10 +481,12 @@ class FactomCli {
      * @async
      * @param {string} method - Factomd API method name.
      * @param {Object} [params] - The object that the factomd API is expecting.
+     * @param {Object} [requestConfig] - Request configuration.
+     * @param {number} [requestConfig.timeout] - Specified a timeout in milliseconds for the request.
      * @returns {Promise<Object>} - Factomd API response.
      */
-    factomdApi(method, params) {
-        return this.factomd.call(method, params);
+    factomdApi(method, params, requestConfig) {
+        return this.factomd.call(method, params, requestConfig);
     }
 
     /**
@@ -492,10 +494,12 @@ class FactomCli {
      * @async
      * @param {string} method - Walletd API method name.
      * @param {Object} [params] - The object that the walletd API is expecting.
+     * @param {Object} [requestConfig] - Request configuration.
+     * @param {number} [requestConfig.timeout] - Specified a timeout in milliseconds for the request.
      * @returns {Promise<Object>} - Walletd API response.
      */
-    walletdApi(method, params) {
-        return this.walletd.call(method, params);
+    walletdApi(method, params, requestConfig) {
+        return this.walletd.call(method, params, requestConfig);
     }
 
     // Blocks

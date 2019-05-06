@@ -114,7 +114,7 @@ class BaseCli {
         this.retry = conf.retry || DEFAULT_RETRY_STRATEGY;
     }
 
-    call(url, method, params) {
+    call(url, method, params, requestConfig) {
         return new Promise((resolve, reject) => {
             const operation = retry.operation(this.retry);
 
@@ -127,7 +127,7 @@ class BaseCli {
 
             operation.attempt(() => {
                 this.httpCli
-                    .post(url, data)
+                    .post(url, data, requestConfig)
                     .then(r => resolve(r.data.result))
                     .catch(function(error) {
                         let rejection;
@@ -181,11 +181,13 @@ class FactomdCli extends BaseCli {
      * @async
      * @param {string} method - Factomd API method name.
      * @param {Object} [params] - The object that the factomd API is expecting.
+     * @param {Object} [requestConfig] - Request configuration.
+     * @param {number} [requestConfig.timeout] - Specified a timeout in milliseconds for the request.
      * @returns {Promise<Object>} - Factomd API response.
      */
-    call(method, params) {
+    call(method, params, requestConfig) {
         const url = DEBUG_API_CALLS.has(method) ? this.debugPath : this.path;
-        return super.call(url, method, params);
+        return super.call(url, method, params, requestConfig);
     }
 }
 
@@ -203,11 +205,13 @@ class WalletdCli extends BaseCli {
      * Make a call to factom-walletd API. See {@link https://docs.factom.com/api#factom-walletd-api}.
      * @async
      * @param {string} method - Walletd API method name.
-     * @param {Object} params - The object that the walletd API is expecting.
+     * @param {Object} [params] - The object that the walletd API is expecting.
+     * @param {Object} [requestConfig] - Request configuration.
+     * @param {number} [requestConfig.timeout] - Specified a timeout in milliseconds for the request.
      * @returns {Promise<Object>} - Walletd API response.
      */
-    call(method, params) {
-        return super.call(this.path, method, params);
+    call(method, params, requestConfig) {
+        return super.call(this.path, method, params, requestConfig);
     }
 }
 

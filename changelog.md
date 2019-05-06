@@ -5,6 +5,7 @@
 ### Added
 
 -   Added `timeout` option to `ConnectionOptions`. Allows to set a timeout for all API requests made by `FactomCli`, `FactomdCli` and `WalletdCli`.
+-   Added a 3rd optional `requestConfig` parameter to `FactomCli.factomdApi`, `FactomCli.walletdApi`, `FactomdCli.call` and `WalletdCli.call`. Currenly only allows to specify a request timeout.
 
 ## [1.1.1]
 

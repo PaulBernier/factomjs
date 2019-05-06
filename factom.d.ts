@@ -563,8 +563,13 @@ declare namespace factom {
          *
          * @param method Factomd API method name.
          * @param params The object that the factomd API is expecting.
+         * @param requestConfig Request configuration.
          */
-        factomdApi(method: string, params?: any): Promise<any>;
+        factomdApi(
+            method: string,
+            params?: any,
+            requestConfig?: { timeout?: number }
+        ): Promise<any>;
 
         /**
          * Make a call to factom-walletd API. See https://docs.factom.com/api#factom-walletd-api.
@@ -573,8 +578,13 @@ declare namespace factom {
          *
          * @param method Walletd API method name.
          * @param params The object that the walletd API is expecting.
+         * @param requestConfig Request configuration.
          */
-        walletdApi(method: string, params?: any): Promise<any>;
+        walletdApi(
+            method: string,
+            params?: any,
+            requestConfig?: { timeout?: number }
+        ): Promise<any>;
 
         // Blocks
 
@@ -645,8 +655,9 @@ declare namespace factom {
          *
          * @param method Factomd API method name.
          * @param params The object that the factomd API is expecting.
+         * @param requestConfig Request configuration.
          */
-        call(method: string, params?: any): Promise<any>;
+        call(method: string, params?: any, requestConfig?: { timeout?: number }): Promise<any>;
     }
 
     /**
@@ -665,8 +676,9 @@ declare namespace factom {
          *
          * @param method Walletd API method name.
          * @param params The object that the walletd API is expecting.
+         * @param requestConfig Request configuration.
          */
-        call(method: string, params?: any): Promise<any>;
+        call(method: string, params?: any, requestConfig?: { timeout?: number }): Promise<any>;
     }
 
     /**
