@@ -1,6 +1,6 @@
 {
     "name": "factom",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Library to build applications on the Factom blockchain",
     "main": "src/factom.js",
     "types": "factom.d.ts",
