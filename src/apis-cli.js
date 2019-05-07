@@ -130,7 +130,7 @@ class BaseCli {
                     .post(url, data, requestConfig)
                     .then(r => resolve(r.data.result))
                     .catch(function(error) {
-                        let rejection;
+                        let rejectionMessage;
                         if (error.response) {
                             switch (error.response.status) {
                                 case 400:
@@ -142,13 +142,17 @@ class BaseCli {
                                     // No need to retry un authorized access
                                     return reject(new Error(error.response.data));
                                 default:
-                                    rejection = new Error(error.response.data);
+                                    rejectionMessage =
+                                        typeof error.response.data === 'object'
+                                            ? JSON.stringify(error.response.data)
+                                            : error.response.data;
                             }
                         } else {
-                            rejection = new Error(error.message);
+                            rejectionMessage = error.message;
                         }
 
                         // If there is no more retry left, reject the promise with the most common error
+                        const rejection = new Error(rejectionMessage);
                         if (!operation.retry(rejection)) {
                             return reject(operation.mainError());
                         }
