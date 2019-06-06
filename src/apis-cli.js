@@ -115,8 +115,10 @@ class BaseCli {
     }
 
     call(url, method, params, requestConfig) {
+        const { timeout, retry: retryConfig } = requestConfig || {};
+
         return new Promise((resolve, reject) => {
-            const operation = retry.operation(this.retry);
+            const operation = retry.operation(retryConfig || this.retry);
 
             const data = {
                 jsonrpc: '2.0',
@@ -127,7 +129,7 @@ class BaseCli {
 
             operation.attempt(() => {
                 this.httpCli
-                    .post(url, data, requestConfig)
+                    .post(url, data, { timeout })
                     .then(r => resolve(r.data.result))
                     .catch(function(error) {
                         let rejectionMessage;
@@ -186,7 +188,9 @@ class FactomdCli extends BaseCli {
      * @param {string} method - Factomd API method name.
      * @param {Object} [params] - The object that the factomd API is expecting.
      * @param {Object} [requestConfig] - Request configuration.
-     * @param {number} [requestConfig.timeout] - Specified a timeout in milliseconds for the request.
+     * @param {number} [requestConfig.timeout] - Timeout in milliseconds for the request. Override the timeout set at the instance level.
+     * @param {Object} [requestConfig.retry] - Retry strategy. For the detail of the options see {@link https://github.com/tim-kos/node-retry#retrytimeoutsoptions}.
+     * Override the retry strategy set at the instance level.
      * @returns {Promise<Object>} - Factomd API response.
      */
     call(method, params, requestConfig) {
@@ -211,7 +215,9 @@ class WalletdCli extends BaseCli {
      * @param {string} method - Walletd API method name.
      * @param {Object} [params] - The object that the walletd API is expecting.
      * @param {Object} [requestConfig] - Request configuration.
-     * @param {number} [requestConfig.timeout] - Specified a timeout in milliseconds for the request.
+     * @param {number} [requestConfig.timeout] - Timeout in milliseconds for the request. Override the timeout set at the instance level.
+     * @param {Object} [requestConfig.retry] - Retry strategy. For the detail of the options see {@link https://github.com/tim-kos/node-retry#retrytimeoutsoptions}.
+     * Override the retry strategy set at the instance level.
      * @returns {Promise<Object>} - Walletd API response.
      */
     call(method, params, requestConfig) {

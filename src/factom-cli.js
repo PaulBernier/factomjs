@@ -482,7 +482,9 @@ class FactomCli {
      * @param {string} method - Factomd API method name.
      * @param {Object} [params] - The object that the factomd API is expecting.
      * @param {Object} [requestConfig] - Request configuration.
-     * @param {number} [requestConfig.timeout] - Specified a timeout in milliseconds for the request.
+     * @param {number} [requestConfig.timeout] - Timeout in milliseconds for the request. Override the timeout set at the instance level.
+     * @param {Object} [requestConfig.retry] - Retry strategy. For the detail of the options see {@link https://github.com/tim-kos/node-retry#retrytimeoutsoptions}.
+     * Override the retry strategy set at the instance level.
      * @returns {Promise<Object>} - Factomd API response.
      */
     factomdApi(method, params, requestConfig) {
@@ -495,7 +497,9 @@ class FactomCli {
      * @param {string} method - Walletd API method name.
      * @param {Object} [params] - The object that the walletd API is expecting.
      * @param {Object} [requestConfig] - Request configuration.
-     * @param {number} [requestConfig.timeout] - Specified a timeout in milliseconds for the request.
+     * @param {number} [requestConfig.timeout] - Timeout in milliseconds for the request. Override the timeout set at the instance level.
+     * @param {Object} [requestConfig.retry] - Retry strategy. For the detail of the options see {@link https://github.com/tim-kos/node-retry#retrytimeoutsoptions}.
+     * Override the retry strategy set at the instance level.
      * @returns {Promise<Object>} - Walletd API response.
      */
     walletdApi(method, params, requestConfig) {

@@ -568,7 +568,15 @@ declare namespace factom {
         factomdApi(
             method: string,
             params?: any,
-            requestConfig?: { timeout?: number }
+            requestConfig?: {
+                timeout?: number;
+                retry?: {
+                    retries?: number;
+                    factor?: number;
+                    minTimeout?: number;
+                    maxTimeout?: number;
+                };
+            }
         ): Promise<any>;
 
         /**
@@ -583,7 +591,15 @@ declare namespace factom {
         walletdApi(
             method: string,
             params?: any,
-            requestConfig?: { timeout?: number }
+            requestConfig?: {
+                timeout?: number;
+                retry?: {
+                    retries?: number;
+                    factor?: number;
+                    minTimeout?: number;
+                    maxTimeout?: number;
+                };
+            }
         ): Promise<any>;
 
         // Blocks
@@ -657,7 +673,19 @@ declare namespace factom {
          * @param params The object that the factomd API is expecting.
          * @param requestConfig Request configuration.
          */
-        call(method: string, params?: any, requestConfig?: { timeout?: number }): Promise<any>;
+        call(
+            method: string,
+            params?: any,
+            requestConfig?: {
+                timeout?: number;
+                retry?: {
+                    retries?: number;
+                    factor?: number;
+                    minTimeout?: number;
+                    maxTimeout?: number;
+                };
+            }
+        ): Promise<any>;
     }
 
     /**
@@ -678,7 +706,19 @@ declare namespace factom {
          * @param params The object that the walletd API is expecting.
          * @param requestConfig Request configuration.
          */
-        call(method: string, params?: any, requestConfig?: { timeout?: number }): Promise<any>;
+        call(
+            method: string,
+            params?: any,
+            requestConfig?: {
+                timeout?: number;
+                retry?: {
+                    retries?: number;
+                    factor?: number;
+                    minTimeout?: number;
+                    maxTimeout?: number;
+                };
+            }
+        ): Promise<any>;
     }
 
     /**

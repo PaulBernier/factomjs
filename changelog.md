@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.3]
+
+### Added
+
+-   Added `retry` field to the `requestConfig` parameter of `FactomCli.factomdApi`, `FactomCli.walletdApi`, `FactomdCli.call` and `WalletdCli.call`. Allows to override the instance level retry strategy for a single API call.
+
 ## [1.2.0]
 
 ### Added
