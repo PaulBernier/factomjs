@@ -31,15 +31,11 @@ async function submitTransaction(factomd, transaction, force) {
 
     if (minimumRequiresFees > transaction.feesPaid) {
         throw new Error(
-            `Insufficient fees for the transaction (paid: ${
-                transaction.feesPaid
-            }, minimum required: ${minimumRequiresFees}, current EC rate: ${ecRate})`
+            `Insufficient fees for the transaction (paid: ${transaction.feesPaid}, minimum required: ${minimumRequiresFees}, current EC rate: ${ecRate})`
         );
     } else if (!force && minimumRequiresFees * MAX_OVERPAYING_FACTOR < transaction.feesPaid) {
         throw new Error(
-            `Transaction is overpaying required fees by more than 10 times (paid: ${
-                transaction.feesPaid
-            }, minimum required: ${minimumRequiresFees}, current EC rate: ${ecRate})`
+            `Transaction is overpaying required fees by more than 10 times (paid: ${transaction.feesPaid}, minimum required: ${minimumRequiresFees}, current EC rate: ${ecRate})`
         );
     }
 
@@ -47,11 +43,7 @@ async function submitTransaction(factomd, transaction, force) {
         transaction.entryCreditOutputs.forEach(function(eco) {
             if (eco.amount < ecRate) {
                 throw new Error(
-                    `Entry Credit output to ${
-                        eco.address
-                    } is not sufficient to get a minimum of 1 Entry Credit (${
-                        eco.amount
-                    } < ${ecRate}).`
+                    `Entry Credit output to ${eco.address} is not sufficient to get a minimum of 1 Entry Credit (${eco.amount} < ${ecRate}).`
                 );
             }
         });

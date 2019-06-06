@@ -169,9 +169,7 @@ class Transaction {
             this.feesPaid = this.totalInputs - totalOutputs;
         } else {
             throw new Error(
-                `Sum of Transaction outputs (${totalOutputs}) is greater than the sum of inputs (${
-                    this.totalInputs
-                })`
+                `Sum of Transaction outputs (${totalOutputs}) is greater than the sum of inputs (${this.totalInputs})`
             );
         }
 
@@ -394,9 +392,7 @@ class TransactionBuilder {
 function validateRcds(inputs, rcds) {
     if (rcds.length !== inputs.length) {
         throw new Error(
-            `The number of RCDs (${rcds.length}) does not equal the number of inputs (${
-                inputs.length
-            }).`
+            `The number of RCDs (${rcds.length}) does not equal the number of inputs (${inputs.length}).`
         );
     }
     for (let i = 0; i < rcds.length; ++i) {
@@ -413,9 +409,7 @@ function validateRcdHash(input, rcd) {
 function validateSignatures(data, rcds, signatures) {
     if (rcds.length !== signatures.length) {
         throw new Error(
-            `The number of RCDs (${rcds.length}) does not equal the number of signatures (${
-                signatures.length
-            })`
+            `The number of RCDs (${rcds.length}) does not equal the number of signatures (${signatures.length})`
         );
     }
     for (let i = 0; i < signatures.length; ++i) {
