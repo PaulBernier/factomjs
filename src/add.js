@@ -205,10 +205,11 @@ async function addInternal(factomd, obj, commitFn, revealFn, ecAddress, options 
 
 async function addIterableInternal(factomd, iterable, ecAddress, options = {}) {
     if (!options.skipFundValidation) {
-        const totalCost = iterable.reduce((cost, el) => cost + el.ecCost(), 0);
-        await validateFunds(factomd, ecAddress, totalCost);
         // Skip individual objects fund validation
         options.skipFundValidation = true;
+
+        const totalCost = iterable.reduce((cost, el) => cost + el.ecCost(), 0);
+        await validateFunds(factomd, ecAddress, totalCost);
     }
 
     // chunkSize is a legacy name kept for backward compatibility

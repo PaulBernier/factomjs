@@ -289,12 +289,12 @@ class EntryCreditBlock {
         this.commits = [];
 
         for (const entry of ecb.body.entries) {
-            if (entry.hasOwnProperty('number')) {
+            if (Object.prototype.hasOwnProperty.call(entry, 'number')) {
                 this.minuteIndexes.push(this.commits.length);
-            } else if (entry.hasOwnProperty('serverindexnumber')) {
+            } else if (Object.prototype.hasOwnProperty.call(entry, 'serverindexnumber')) {
                 // serverindexnumber is a legacy field in old blocks
                 continue;
-            } else if (entry.hasOwnProperty('numec')) {
+            } else if (Object.prototype.hasOwnProperty.call(entry, 'numec')) {
                 // M1 blocks used to contain EC purchases
                 // But those should be found in Factoid blocks anyway ()
                 continue;
