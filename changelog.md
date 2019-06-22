@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.4]
+
+### Added
+
+-   Basic support of cookies. This allows session affinity for Factom Open Node (currently uses a Cloudflare load balancer).
+
 ## [1.2.3]
 
 ### Added
