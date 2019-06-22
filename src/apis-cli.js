@@ -112,6 +112,24 @@ class BaseCli {
 
         this.apiCounter = newCounter();
         this.retry = conf.retry || DEFAULT_RETRY_STRATEGY;
+
+        this.cookies = {};
+    }
+
+    _processCookieHeader(cookieHeader) {
+        if (Array.isArray(cookieHeader)) {
+            // Add or update cookie values
+            cookieHeader
+                .map(c => c.split(';')[0])
+                .forEach(c => {
+                    const keyVal = c.split('=');
+                    this.cookies[keyVal[0]] = keyVal[1];
+                });
+            // Set Axios Cookie header with the updated cookies
+            this.httpCli.defaults.headers.Cookie = Object.entries(this.cookies)
+                .map(c => `${c[0]}=${c[1]}`)
+                .join(';');
+        }
     }
 
     call(url, method, params, requestConfig) {
@@ -130,7 +148,10 @@ class BaseCli {
             operation.attempt(() => {
                 this.httpCli
                     .post(url, data, { timeout })
-                    .then(r => resolve(r.data.result))
+                    .then(r => {
+                        this._processCookieHeader(r.headers['set-cookie']);
+                        resolve(r.data.result);
+                    })
                     .catch(function(error) {
                         let rejectionMessage;
                         if (error.response) {
