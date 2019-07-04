@@ -1,85 +1,89 @@
 {
-    "name": "factom",
-    "version": "1.2.4",
-    "description": "Library to build applications on the Factom blockchain",
-    "main": "src/factom.js",
-    "types": "factom.d.ts",
-    "scripts": {
-        "docs": "documentation build --github --sort-order alpha src/** -f md > docs/doc.md",
-        "docs-html": "documentation build src/** --sort-order alpha -f html -o docs",
-        "lint": "eslint \"{src,test}/**/*.js\"",
-        "format": "prettier --write \"{src,test}/**/*.js\" README.md changelog.md factom.d.ts",
-        "build": "webpack",
-        "prepublishOnly": "npm run format && npm run lint && npm run build && npm run test && npm run docs",
-        "test": "nyc --reporter=html --reporter=text mocha 'test/*.spec.js'",
-        "coveralls": "nyc report --reporter=text-lcov | coveralls",
-        "test:integration": "mocha test/*.integration.spec.js",
-        "test:unit": "mocha test/*unit.spec.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/PaulBernier/factomjs.git"
-    },
-    "keywords": [
-        "factom",
-        "blockchain",
-        "factoid",
-        "fct",
-        "transaction",
-        "entry-credit",
-        "factom-cli"
-    ],
-    "author": "Paul Bernier",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/PaulBernier/factomjs/issues"
-    },
-    "homepage": "https://github.com/PaulBernier/factomjs#readme",
-    "dependencies": {
-        "axios": "^0.19.0",
-        "base-58": "0.0.1",
-        "bluebird": "^3.5.5",
-        "hash.js": "^1.1.7",
-        "long": "^4.0.0",
-        "npm-check-updates": "^3.1.11",
-        "retry": "^0.12.0",
-        "tweetnacl": "^1.0.1"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.4.5",
-        "@babel/plugin-transform-async-to-generator": "^7.4.4",
-        "@babel/plugin-transform-modules-commonjs": "^7.4.4",
-        "@babel/plugin-transform-runtime": "^7.4.4",
-        "@babel/preset-env": "^7.4.5",
-        "@babel/runtime": "^7.4.5",
-        "@commitlint/cli": "^8.0.0",
-        "@commitlint/config-conventional": "^8.0.0",
-        "babel-loader": "^8.0.6",
-        "chai": "^4.2.0",
-        "coveralls": "^3.0.4",
-        "documentation": "^11.0.0",
-        "dotenv": "^8.0.0",
-        "eslint": "^6.0.0",
-        "husky": "^2.4.0",
-        "lint-staged": "^8.2.0",
-        "mocha": "^6.1.4",
-        "nyc": "^14.1.1",
-        "prettier": "1.18.2",
-        "sinon": "^7.3.2",
-        "webpack": "^4.33.0",
-        "webpack-cli": "^3.3.2"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged",
-            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-        }
-    },
-    "lint-staged": {
-        "{src,test}/**/*.js": [
-            "eslint --fix",
-            "prettier --write",
-            "git add"
-        ]
+  "name": "factom",
+  "version": "1.2.4",
+  "description": "Library to build applications on the Factom blockchain",
+  "main": "src/factom.js",
+  "types": "factom.d.ts",
+  "scripts": {
+    "docs": "documentation build --github --sort-order alpha src/** -f md > docs/doc.md",
+    "docs-html": "documentation build src/** --sort-order alpha -f html -o docs",
+    "lint": "eslint \"{src,test}/**/*.js\"",
+    "format": "prettier --write \"{src,test}/**/*.js\" README.md changelog.md factom.d.ts",
+    "build": "webpack",
+    "prepublishOnly": "npm run format && npm run lint && npm run build && npm run test && npm run docs",
+    "test": "nyc --reporter=html --reporter=text mocha 'test/*.spec.js'",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "test:integration": "mocha test/*.integration.spec.js",
+    "test:unit": "mocha test/*unit.spec.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulBernier/factomjs.git"
+  },
+  "keywords": [
+    "factom",
+    "blockchain",
+    "factoid",
+    "fct",
+    "transaction",
+    "entry-credit",
+    "factom-cli"
+  ],
+  "author": "Paul Bernier",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PaulBernier/factomjs/issues"
+  },
+  "homepage": "https://github.com/PaulBernier/factomjs#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "base-58": "0.0.1",
+    "bluebird": "^3.5.5",
+    "hash.js": "^1.1.7",
+    "long": "^4.0.0",
+    "npm-check-updates": "^3.1.11",
+    "retry": "^0.12.0",
+    "tweetnacl": "^1.0.1",
+    "snyk": "^1.189.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-transform-async-to-generator": "^7.4.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/runtime": "^7.4.5",
+    "@commitlint/cli": "^8.0.0",
+    "@commitlint/config-conventional": "^8.0.0",
+    "babel-loader": "^8.0.6",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.4",
+    "documentation": "^11.0.0",
+    "dotenv": "^8.0.0",
+    "eslint": "^6.0.0",
+    "husky": "^2.4.0",
+    "lint-staged": "^8.2.0",
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
+    "prettier": "1.18.2",
+    "sinon": "^7.3.2",
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
+  },
+  "lint-staged": {
+    "{src,test}/**/*.js": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "snyk": true
 }
