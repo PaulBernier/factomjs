@@ -152,36 +152,40 @@ class BaseCli {
                         this._processCookieHeader(r.headers['set-cookie']);
                         resolve(r.data.result);
                     })
-                    .catch(function(error) {
-                        let rejectionMessage;
-                        if (error.response) {
-                            switch (error.response.status) {
-                                case 400:
-                                    // API bad requests should not be retried
-                                    return reject(
-                                        new ApiError(method, params, error.response.data.error)
-                                    );
-                                case 401:
-                                    // No need to retry un authorized access
-                                    return reject(new Error(error.response.data));
-                                default:
-                                    rejectionMessage =
-                                        typeof error.response.data === 'object'
-                                            ? JSON.stringify(error.response.data)
-                                            : error.response.data;
-                            }
-                        } else {
-                            rejectionMessage = error.message;
-                        }
-
-                        // If there is no more retry left, reject the promise with the most common error
-                        const rejection = new Error(rejectionMessage);
-                        if (!operation.retry(rejection)) {
-                            return reject(operation.mainError());
-                        }
-                    });
+                    .catch(error => handleCallError({ error, reject, method, params, operation }));
             });
         });
+    }
+}
+
+function handleCallError({ error, reject, method, params, operation }) {
+    let rejectionMessage;
+    if (error.response) {
+        const errorData = error.response.data;
+        switch (error.response.status) {
+            case 400:
+                // Bad requests should not be retried
+                if (typeof errorData.error === 'object') {
+                    // JSON RPC error
+                    return reject(new ApiError(method, params, errorData.error));
+                } else {
+                    return reject(new Error(errorData));
+                }
+            case 401:
+                // No need to retry unauthorized access errors
+                return reject(new Error(error.response.data));
+            default:
+                rejectionMessage =
+                    typeof errorData === 'object' ? JSON.stringify(errorData) : errorData;
+        }
+    } else {
+        rejectionMessage = error.message;
+    }
+
+    const rejection = new Error(rejectionMessage);
+    if (!operation.retry(rejection)) {
+        // If there is no more retry left, reject the promise with the most common error
+        return reject(operation.mainError());
     }
 }
 
