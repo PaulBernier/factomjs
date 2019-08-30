@@ -271,7 +271,7 @@ const transaction = await cli.createFactoidTransaction(
 // (automatically set to the minimum acceptable by the network)
 console.log(transaction.feesPaid);
 // Send the transaction
-const txId = await cli.sendTransaction(tx);
+const txId = await cli.sendTransaction(transaction);
 ```
 
 #### Buy EntryCredit
