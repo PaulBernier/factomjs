@@ -37,6 +37,7 @@ class ApiError extends Error {
         message.push(`got rejected: ${error.message} (code: ${error.code})`);
         super(message.join(''));
         this.code = error.code;
+        this.data = error.data;
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, ApiError);
         }
