@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.6]
+
+### Added
+
+-   `ApiError` now has a `data` field populated with the JSON-RPC error `data` field.
+
 ## [1.2.4]
 
 ### Added
