@@ -45,8 +45,9 @@ class FactomCli {
      * If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
      * @param {Object} [options] - Commit options.
      * @param {number} [options.ackTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
-     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
-     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * @param {function(Buffer, string): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes as input the data to sign with the EC public key paying for the commmit
+     * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
      * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean }>} - Transaction ID and if this is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}). If repeatedCommit is true, txId is undefined.
      */
@@ -67,8 +68,9 @@ class FactomCli {
      * If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
      * @param {Object} [options] - Commit options.
      * @param {number} [options.ackTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
-     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
-     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * @param {function(Buffer, string): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes as input the data to sign with the EC public key paying for the commmit
+     * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
      * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean }>} - Transaction ID and if this is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}). If repeatedCommit is true, txId is undefined.
      */
@@ -89,8 +91,9 @@ class FactomCli {
      * If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
      * @param {Object} [options] - Commit options.
      * @param {number} [options.ackTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
-     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
-     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * @param {function(Buffer, string): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes as input the data to sign with the EC public key paying for the commmit
+     * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
      * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean }>} - Transaction ID and if this is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}). If repeatedCommit is true, txId is undefined.
      */
@@ -147,8 +150,9 @@ class FactomCli {
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {number} [options.concurrency=200] - Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commits.
-     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
-     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * @param {function(Buffer, string): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes as input the data to sign with the EC public key paying for the commmit
+     * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
      * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }>|Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} -
      * Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
@@ -173,8 +177,9 @@ class FactomCli {
      * @param {number} [options.commitTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commit.
-     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
-     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * @param {function(Buffer, string): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes as input the data to sign with the EC public key paying for the commmit
+     * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
      * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */
@@ -198,8 +203,9 @@ class FactomCli {
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {number} [options.concurrency=200] - Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commits.
-     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
-     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * @param {function(Buffer, string): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes as input the data to sign with the EC public key paying for the commmit
+     * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
      * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */
@@ -222,8 +228,9 @@ class FactomCli {
      * @param {number} [options.commitTimeout=60] - Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack.
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commit.
-     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
-     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * @param {function(Buffer, string): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes as input the data to sign with the EC public key paying for the commmit
+     * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
      * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */
@@ -247,8 +254,9 @@ class FactomCli {
      * @param {number} [options.revealTimeout=60] - Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack.
      * @param {number} [options.concurrency=200] - Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains.
      * @param {boolean} [options.skipFundValidation = false] - Skip the validation that the EC address holds enough Entry Credits to pay the commits.
-     * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
-     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * @param {function(Buffer, string): (Buffer | string | Promise<Buffer | string>)} [options.sign] - Signing function.
+     * Takes as input the data to sign with the EC public key paying for the commmit
+     * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
      * The returned signature must have been made by the private key corresponding to the ecAddress argument.
      * @returns {Promise<{ txId: string, repeatedCommit: boolean, chainId: string, entryHash: string }[]>} - Transaction ID (commit), if it is a repeated commit ({@link https://docs.factom.com/api#repeated-commit}), chain id and entry hash.
      */

@@ -112,8 +112,9 @@ function composeChainCommit(chain, ecAddress, signature) {
  * The commit can then be sent through factomd API `commit-chain`.
  * @param {Chain} chain - Chain to compose the commit of.
  * @param {string} ecPublicAddress - Public Entry Credit address that pays for the commit.
- * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} sign - Signing function.
- * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+ * @param {function(Buffer, string): (Buffer | string | Promise<Buffer | string>)} sign - Signing function.
+ * Takes as input the data to sign with the EC public key paying for the commmit
+ * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
  * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
  * @returns {Buffer} - Chain commit.
  * @async
@@ -128,7 +129,7 @@ async function composeChainCommitDelegateSig(chain, ecPublicAddress, sign) {
     }
 
     const dataToSign = composeChainLedger(chain);
-    const signature = Buffer.from(await sign(dataToSign), 'hex');
+    const signature = Buffer.from(await sign(dataToSign, ecPublicAddress), 'hex');
     const ecPublicKey = addressToKey(ecPublicAddress);
 
     if (!naclSign.detached.verify(dataToSign, signature, ecPublicKey)) {
@@ -188,8 +189,9 @@ function composeChain(chain, ecAddress, signature) {
  * The result can then be used as inputs of the factomd APIs `commit-chain` and `reveal-chain`.
  * @param {Chain} chain - Chain to compose the commit and reveal of.
  * @param {string} ecPublicAddress - Public Entry Credit address that pays for the commit.
- * @param {function(Buffer): (Buffer | string | Promise<Buffer | string>)} sign - Signing function.
- * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+ * @param {function(Buffer, string): (Buffer | string | Promise<Buffer | string>)} sign - Signing function.
+ * Takes as input the data to sign with the EC public key paying for the commmit
+ * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
  * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
  * @returns {{commit:Buffer, reveal:Buffer}} - Chain commit and reveal.
  * @async

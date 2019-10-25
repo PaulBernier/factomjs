@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.7]
+
+### Added
+
+-   Pass the paying EC public address as the second argument to the signing function when using signature delegation.
+
 ## [1.2.6]
 
 ### Added

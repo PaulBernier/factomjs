@@ -110,7 +110,8 @@ declare namespace factom {
 
         /**
          * Signing function.
-         * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+         * Takes as input the data to sign with the EC public key paying for the commmit
+         * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
          * The returned signature must have been made by the private key corresponding to the ecAddress argument.
          */
         sign?: (data: Buffer) => Buffer | string | Promise<Buffer | string>;
@@ -146,7 +147,8 @@ declare namespace factom {
 
         /**
          * Signing function.
-         * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+         * Takes as input the data to sign with the EC public key paying for the commmit
+         * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
          * The returned signature must have been made by the private key corresponding to the ecAddress argument.
          */
         sign?: (data: Buffer) => Buffer | string | Promise<Buffer | string>;
@@ -1546,7 +1548,8 @@ declare namespace factom {
      * @param chain Chain to compose the commit and reveal of.
      * @param ecPublicAddress Public Entry Credit address that pays for the commit.
      * @param sign Signing function.
-     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * Takes as input the data to sign with the EC public key paying for the commmit
+     * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
      * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
      */
     function composeChainDelegateSig(
@@ -1575,7 +1578,8 @@ declare namespace factom {
      * @param chain Chain to compose the commit of.
      * @param ecPublicAddress Public Entry Credit address that pays for the commit.
      * @param sign Signing function.
-     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * Takes as input the data to sign with the EC public key paying for the commmit
+     * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
      * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
      */
     function composeChainCommitDelegateSig(
@@ -1613,7 +1617,8 @@ declare namespace factom {
      * @param entry Entry to compose the commit and reveal of.
      * @param ecPublicAddress Public Entry Credit address that pays for the commit.
      * @param sign Signing function.
-     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * Takes as input the data to sign with the EC public key paying for the commmit
+     * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
      * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
      */
     function composeEntryDelegateSig(
@@ -1642,7 +1647,8 @@ declare namespace factom {
      * @param entry Entry to compose the commit of.
      * @param ecPublicAddress Public Entry Credit address that pays for the commit.
      * @param sign - Signing function.
-     * Takes data to sign as input and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
+     * Takes as input the data to sign with the EC public key paying for the commmit
+     * and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
      * The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
      */
     function composeEntryCommitDelegateSig(
