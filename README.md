@@ -27,6 +27,11 @@ A changelog is available in the file `changelog.md`.
 
 Two versions of _factom.js_ are being bundled for usage in a web browser and can be found in the `dist` folder. `dist/factom.js` is a bundle containing all the exposed components of the library. `dist/factom-struct.js` is a lighter bundle that contains factom structures such as Entry, Chain and Transaction, and all the utily functions related to FCT/EC addresses and fundamental constants. `factom-struct` bundle doesn't include any component that makes API calls.
 
+```javascript
+import { isValidPrivateAddress, isValidPrivateEcAddress } from 'factom/dist/factom-struct'
+import { FactomCli } from 'factom/dist/factom'
+```
+
 ## Usage
 
 We recommend you have a look at the [tutorial on the developer portal of the Factom protocol](https://developers.factomprotocol.org/start/hello-world-examples/javascript).
