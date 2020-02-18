@@ -19,12 +19,22 @@ const SIGN = data => sign.detached(data, PAYING_SECRET_KEY);
 describe('Test FactomCli', function() {
     const cli = new FactomCli({
         factomd: {
+            protocol: process.env.FACTOMD_PROTOCOL,
+            rejectUnauthorized: false,
+            path: process.env.FACTOMD_PATH,
+            user: process.env.FACTOMD_USER,
+            password: process.env.FACTOMD_PASSWORD,
             host: process.env.FACTOMD_HOST,
             port: process.env.FACTOMD_PORT
         },
         walletd: {
-            host: 'localhost',
-            port: 8089
+            protocol: process.env.WALLETD_PROTOCOL,
+            rejectUnauthorized: false,
+            path: process.env.WALLETD_PATH,
+            user: process.env.WALLETD_USER,
+            password: process.env.WALLETD_PASSWORD,
+            host: process.env.WALLETD_HOST,
+            port: process.env.WALLETD_PORT
         }
     });
 

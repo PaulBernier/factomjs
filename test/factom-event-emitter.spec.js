@@ -12,6 +12,11 @@ const { FactomCli, FactomEventEmitter, FACTOM_EVENT } = require('../src/factom')
 describe('Test FactomEventEmitter', () => {
     const cli = new FactomCli({
         factomd: {
+            protocol: process.env.FACTOMD_PROTOCOL,
+            rejectUnauthorized: false,
+            path: process.env.FACTOMD_PATH,
+            user: process.env.FACTOMD_USER,
+            password: process.env.FACTOMD_PASSWORD,
             host: process.env.FACTOMD_HOST,
             port: process.env.FACTOMD_PORT
         }

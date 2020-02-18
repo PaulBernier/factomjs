@@ -13,6 +13,11 @@ const assert = require('chai').assert,
 
 require('dotenv').config();
 const factomd = new FactomdCli({
+    protocol: process.env.FACTOMD_PROTOCOL,
+    rejectUnauthorized: false,
+    path: process.env.FACTOMD_PATH,
+    user: process.env.FACTOMD_USER,
+    password: process.env.FACTOMD_PASSWORD,
     host: process.env.FACTOMD_HOST,
     port: process.env.FACTOMD_PORT
 });
