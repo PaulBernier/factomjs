@@ -1482,7 +1482,7 @@ declare namespace factom {
          *
          * @param types A sequence of either numbers representing an adminId, strings representing an adminCode or AdminCode enums.
          */
-        getEntriesOfTypes(...types: number[] | string[] | AdminCode[]): any;
+        getEntriesOfTypes(...types: (number | string | AdminCode)[]): any;
     }
 
     /**
