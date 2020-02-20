@@ -740,7 +740,7 @@ declare namespace factom {
      * const { FactomCli, FactomEventEmitter } = require('factom');
      * const cli = new FactomCli();
      * // Poll the blockchain every 10s
-     * const emitter = new FactomEventEmitter(cli, { interval: 10000 });
+     * const emitter = new FactomEventEmitter(cli, { interval: 10000, discardCurrent: false });
      * emitter.on('newDirectoryBlock', (directoryBlock) => ...);
      * emitter.on('newFactoidBlock', (factoidBlock) => ...);
      * emitter.on('newAdminBlock', (adminBlock) => ...);
@@ -756,7 +756,7 @@ declare namespace factom {
          * @param cli - FactomCli instance to be used by the FactomEventEmitter instance to fetch blockchain data.
          * @param opts - Options to set on the FactomEventEmitter instance
          */
-        constructor(cli: FactomCli, opts?: { interval?: number });
+        constructor(cli: FactomCli, opts?: { interval?: number; discardCurrent?: boolean });
 
         /**
          * Get active chain id subscriptions
