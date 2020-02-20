@@ -29,7 +29,6 @@ Object.freeze(FACTOM_EVENT);
  * @param {FactomCli} cli - FactomCli instance to be used by the FactomEventEmitter instance to fetch blockchain data.
  * @param {object} [opts] - Options to set on the FactomEventEmitter instance
  * @param {number} [opts.interval=7500] - Interval (ms) at which the FactomEventEmtitter instance should poll the blockchain to check for a new block.
- * @param {boolean} [opts.discardCurrent=false] - Determines whether the current height at the time the listener is attached qualifies as new.
  * @example
  * const { FactomCli, FactomEventEmitter } = require('factom');
  * const cli = new FactomCli();
@@ -51,10 +50,10 @@ class FactomEventEmitter extends EventEmitter {
 
         this._cli = cli;
         this._lastBlockHeightProcessed = 0;
+        this._isPolling = false;
 
         this.opts = {
             interval: 7500,
-            discardCurrent: false,
             ...opts
         };
 
@@ -87,7 +86,7 @@ class FactomEventEmitter extends EventEmitter {
      * @returns {boolean}
      */
     get isPolling() {
-        return !!this._isPolling;
+        return this._isPolling;
     }
 
     ///////////////////////////////////////////////////////////////
@@ -95,7 +94,7 @@ class FactomEventEmitter extends EventEmitter {
     /////////////////////////////////////////////////////////////
 
     // This method only starts polling and keeps track of "custom" events such as FCT addresses and chain ids
-    async _newListener(event) {
+    _newListener(event) {
         // function uses string method
         if (typeof event !== 'string') {
             return;
@@ -119,7 +118,7 @@ class FactomEventEmitter extends EventEmitter {
     }
 
     // Counterpart only responsible to stop polling and keep track of custom events
-    async _removeListener(event) {
+    _removeListener(event) {
         // function uses string method
         if (typeof event !== 'string') {
             return;
@@ -154,23 +153,28 @@ class FactomEventEmitter extends EventEmitter {
 
     // Start polling the blockchain for new directory blocks
     async _startPolling() {
-        // Guard should prevent more than one interval from starting
-        if (!this.isPolling) {
-            // Prevents the current block height from emitting as a new block.
-            if (this.opts.discardCurrent) {
+        try {
+            // Guard should prevent more than one interval from starting
+            if (!this.isPolling) {
+                this._isPolling = true;
+
+                // Prevents the head of the blockchain from emitting as a new block.
                 const heights = await this._cli.getHeights();
                 this._lastBlockHeightProcessed = heights.directoryBlockHeight;
+
+                // Start polling the blockchain for the next height.
+                this._pollingInterval = setInterval(() => this._poll(), this.opts.interval);
             }
-            this._poll();
-            this._isPolling = setInterval(() => this._poll(), this.opts.interval);
+        } catch (err) {
+            this.emit('error', err);
         }
     }
 
     // Stop polling for new directory blocks
     _stopPolling() {
         if (this.isPolling) {
-            clearInterval(this._isPolling);
             this._isPolling = false;
+            clearInterval(this._pollingInterval);
         }
     }
 

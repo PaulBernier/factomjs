@@ -1,11 +1,5 @@
 const { FactomCli, FactomEventEmitter, FACTOM_EVENT } = require('../src/factom'),
-    {
-        DirectoryBlock,
-        FactoidBlock,
-        AdminBlock,
-        EntryCreditBlock,
-        EntryBlock
-    } = require('../src/blocks'),
+    { FactoidBlock, AdminBlock, EntryCreditBlock, EntryBlock } = require('../src/blocks'),
     mockDirectoryBlock = require('./data/directory-block.json'),
     assert = require('chai').assert;
 
@@ -26,7 +20,7 @@ describe('Test FactomEventEmitter', () => {
         const emitter = new FactomEventEmitter(cli);
 
         const listener = dBlock => {
-            assert.instanceOf(dBlock, DirectoryBlock);
+            assert.isString(dBlock.keyMR);
             assert.isTrue(emitter.isPolling);
             assert.lengthOf(emitter.listeners('newDirectoryBlock'), 1);
 
@@ -38,6 +32,8 @@ describe('Test FactomEventEmitter', () => {
 
         emitter.on('error', err => done(err));
         emitter.on(FACTOM_EVENT.newDirectoryBlock, listener);
+        // Necessary to mock all new directory blocks.
+        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should add then remove a factoid block listener', done => {
@@ -56,6 +52,7 @@ describe('Test FactomEventEmitter', () => {
 
         emitter.on('error', err => done(err));
         emitter.on(FACTOM_EVENT.newFactoidBlock, listener);
+        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should add then remove an admin block listener', done => {
@@ -74,6 +71,7 @@ describe('Test FactomEventEmitter', () => {
 
         emitter.on('error', err => done(err));
         emitter.on(FACTOM_EVENT.newAdminBlock, listener);
+        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should add then remove an entry credit block listener', done => {
@@ -92,6 +90,7 @@ describe('Test FactomEventEmitter', () => {
 
         emitter.on('error', err => done(err));
         emitter.on(FACTOM_EVENT.newEntryCreditBlock, listener);
+        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should add then remove entry chain listener', done => {
@@ -169,7 +168,7 @@ describe('Test FactomEventEmitter', () => {
         const emitter = new FactomEventEmitter(cli);
 
         const listener = dBlock => {
-            assert.instanceOf(dBlock, DirectoryBlock);
+            assert.isString(dBlock.keyMR);
             assert.isFalse(emitter.isPolling);
             assert.lengthOf(emitter.listeners('newDirectoryBlock'), 0);
             done();
@@ -177,6 +176,7 @@ describe('Test FactomEventEmitter', () => {
 
         emitter.on('error', err => done(err));
         emitter.once(FACTOM_EVENT.newDirectoryBlock, listener);
+        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should not stop polling if there are listeners of a different type still active', done => {
@@ -208,6 +208,7 @@ describe('Test FactomEventEmitter', () => {
         emitter.on('error', err => done(err));
         emitter.on(FACTOM_EVENT.newEntryCreditBlock, nullListener);
         emitter.on(FACTOM_EVENT.newAdminBlock, listener);
+        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should not stop polling if there are listeners of the same type still active', done => {
@@ -237,6 +238,7 @@ describe('Test FactomEventEmitter', () => {
         emitter.on('error', err => done(err));
         emitter.on(FACTOM_EVENT.newFactoidBlock, nullListener);
         emitter.on(FACTOM_EVENT.newFactoidBlock, listener);
+        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should add two chain ID listeners for the same chain ID then remove one without affecting the other', done => {
@@ -303,23 +305,5 @@ describe('Test FactomEventEmitter', () => {
         emitter.on(address, nullListener);
         emitter.on(address, listener);
         emitter._handleDirectoryBlock({ factoidBlockRef, entryBlockRefs: [] });
-    });
-
-    it('Should prevent the current block height from being emitted as a new block', async () => {
-        const emitter = new FactomEventEmitter(cli, { discardCurrent: true });
-        const heights = await cli.getHeights();
-
-        let hasEmitted = false;
-        emitter.on(FACTOM_EVENT.newDirectoryBlock, d => {
-            if (heights.directoryBlockHeight === d.height) {
-                hasEmitted = true;
-            }
-        });
-
-        // If the above has not emitted within a second, assume no block will emitted for current height.
-        await new Promise(resolve => setTimeout(() => resolve(), 1000));
-        if (hasEmitted) {
-            throw new Error('Emitted new block for current height.');
-        }
     });
 });

@@ -756,7 +756,7 @@ declare namespace factom {
          * @param cli - FactomCli instance to be used by the FactomEventEmitter instance to fetch blockchain data.
          * @param opts - Options to set on the FactomEventEmitter instance
          */
-        constructor(cli: FactomCli, opts?: { interval?: number; discardCurrent?: boolean });
+        constructor(cli: FactomCli, opts?: { interval?: number });
 
         /**
          * Get active chain id subscriptions
