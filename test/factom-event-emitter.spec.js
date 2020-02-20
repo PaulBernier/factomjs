@@ -304,4 +304,22 @@ describe('Test FactomEventEmitter', () => {
         emitter.on(address, listener);
         emitter._handleDirectoryBlock({ factoidBlockRef, entryBlockRefs: [] });
     });
+
+    it('Should prevent the current block height from being emitted as a new block', async () => {
+        const emitter = new FactomEventEmitter(cli, { discardCurrent: true });
+        const heights = await cli.getHeights();
+
+        let hasEmitted = false;
+        emitter.on(FACTOM_EVENT.newDirectoryBlock, d => {
+            if (heights.directoryBlockHeight === d.height) {
+                hasEmitted = true;
+            }
+        });
+
+        // If the above has not emitted within a second, assume no block will emitted for current height.
+        await new Promise(resolve => setTimeout(() => resolve(), 1000));
+        if (hasEmitted) {
+            throw new Error('Emitted new block for current height.');
+        }
+    });
 });

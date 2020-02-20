@@ -29,6 +29,7 @@ Object.freeze(FACTOM_EVENT);
  * @param {FactomCli} cli - FactomCli instance to be used by the FactomEventEmitter instance to fetch blockchain data.
  * @param {object} [opts] - Options to set on the FactomEventEmitter instance
  * @param {number} [opts.interval=7500] - Interval (ms) at which the FactomEventEmtitter instance should poll the blockchain to check for a new block.
+ * @param {boolean} [opts.discardCurrent=false] - Determines whether the current height at the time the listener is attached qualifies as new.
  * @example
  * const { FactomCli, FactomEventEmitter } = require('factom');
  * const cli = new FactomCli();
@@ -53,6 +54,7 @@ class FactomEventEmitter extends EventEmitter {
 
         this.opts = {
             interval: 7500,
+            discardCurrent: false,
             ...opts
         };
 
@@ -151,9 +153,14 @@ class FactomEventEmitter extends EventEmitter {
     /////////////////////////////////////////////////////////////
 
     // Start polling the blockchain for new directory blocks
-    _startPolling() {
+    async _startPolling() {
         // Guard should prevent more than one interval from starting
         if (!this.isPolling) {
+            // Prevents the current block height from emitting as a new block.
+            if (this.opts.discardCurrent) {
+                const heights = await this._cli.getHeights();
+                this._lastBlockHeightProcessed = heights.directoryBlockHeight;
+            }
             this._poll();
             this._isPolling = setInterval(() => this._poll(), this.opts.interval);
         }
