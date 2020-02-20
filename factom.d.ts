@@ -838,14 +838,14 @@ declare namespace factom {
         content: Buffer;
 
         /**
-         * Timestamp in milliseconds for the commit.
+         * Timestamp in milliseconds for the commit. This property is *not* populated when using the method getEntry.
          */
-        timestamp: number;
+        timestamp?: number;
 
         /**
          * Block context. This property is *not* populated when using the method getEntry.
          */
-        blockContext: EntryBlockContext;
+        blockContext?: EntryBlockContext;
 
         /**
          * Entry content as hex encoded string.
@@ -1455,14 +1455,57 @@ declare namespace factom {
         /**
          * Admin entries. Each entry has its own type (can be identified either by its adminId (number) or its adminCode (string)).
          */
-        entries: any;
+        entries: AdminEntry[];
 
         /**
          * Return all the admin entries for given types.
          *
-         * @param types A sequence of either numbers representing an adminId or strings representing an adminCode.
+         * @param types A sequence of either numbers representing an adminId, strings representing an adminCode or AdminCode enums.
          */
-        getEntriesOfTypes(...types: number[] | string[]): any;
+        getEntriesOfTypes(...types: (number | string | AdminCode)[]): any;
+    }
+
+    /**
+     * AdminCode enum
+     */
+    export const enum AdminCode {
+        MINUTE_NUMBER = 'MINUTE_NUMBER',
+        DIRECTORY_BLOCK_SIGNATURE = 'DIRECTORY_BLOCK_SIGNATURE',
+        REVEAL_MATRYOSHKA_HASH = 'REVEAL_MATRYOSHKA_HASH',
+        ADD_REPLACE_MATRYOSHKA_HASH = 'ADD_REPLACE_MATRYOSHKA_HASH',
+        INCREASE_SERVER_COUNT = 'INCREASE_SERVER_COUNT',
+        ADD_FEDERATED_SERVER = 'ADD_FEDERATED_SERVER',
+        ADD_AUDIT_SERVER = 'ADD_AUDIT_SERVER',
+        REMOVE_FEDERATED_SERVER = 'REMOVE_FEDERATED_SERVER',
+        ADD_FEDERATED_SERVER_SIGNING_KEY = 'ADD_FEDERATED_SERVER_SIGNING_KEY',
+        ADD_FEDERATED_SERVER_BITCOIN_ANCHOR_KEY = 'ADD_FEDERATED_SERVER_BITCOIN_ANCHOR_KEY',
+        SERVER_FAULT_HANDOFF = 'SERVER_FAULT_HANDOFF',
+        COINBASE_DESCRIPTOR = 'COINBASE_DESCRIPTOR',
+        COINBASE_DESCRIPTOR_CANCEL = 'COINBASE_DESCRIPTOR_CANCEL',
+        ADD_AUTHORITY_FACTOID_ADDRESS = 'ADD_AUTHORITY_FACTOID_ADDRESS',
+        ADD_AUTHORITY_EFFICIENCY = 'ADD_AUTHORITY_EFFICIENCY'
+    }
+
+    interface AdminEntry {
+        adminId: number;
+        adminCode: AdminCode;
+        identityChainId?: string;
+        previousDirectoryBlockSignature?: { publicKey: string; signature: string };
+        matryoshkaHash?: string;
+        amount?: number;
+        keyPriority?: string;
+        keyType?: string;
+        ecdsaPublicKey?: string;
+        outputs?: {
+            address: string;
+            rcdHash: string;
+            amount: number;
+        }[];
+        descriptorHeight?: number;
+        descriptorIndex?: number;
+        rcdHash?: string;
+        factoidAddress?: string;
+        efficiency?: number;
     }
 
     /**
