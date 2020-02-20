@@ -838,14 +838,14 @@ declare namespace factom {
         content: Buffer;
 
         /**
-         * Timestamp in milliseconds for the commit.
+         * Timestamp in milliseconds for the commit. This property is *not* populated when using the method getEntry.
          */
-        timestamp: number;
+        timestamp?: number;
 
         /**
          * Block context. This property is *not* populated when using the method getEntry.
          */
-        blockContext: EntryBlockContext;
+        blockContext?: EntryBlockContext;
 
         /**
          * Entry content as hex encoded string.
