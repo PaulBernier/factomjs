@@ -1455,27 +1455,7 @@ declare namespace factom {
         /**
          * Admin entries. Each entry has its own type (can be identified either by its adminId (number) or its adminCode (string)).
          */
-        entries: {
-            adminId: number;
-            adminCode: AdminCode;
-            identityChainId?: string;
-            previousDirectoryBlockSignature?: { publicKey: string; signature: string };
-            matryoshkaHash?: string;
-            amount?: number;
-            keyPriority?: string;
-            keyType?: string;
-            ecdsaPublicKey?: string;
-            outputs?: {
-                address: string;
-                rcdHash: string;
-                amount: number;
-            }[];
-            descriptorHeight?: number;
-            descriptorIndex?: number;
-            rcdHash?: string;
-            factoidAddress?: string;
-            efficiency?: number;
-        }[];
+        entries: AdminEntry[];
 
         /**
          * Return all the admin entries for given types.
@@ -1504,6 +1484,28 @@ declare namespace factom {
         COINBASE_DESCRIPTOR_CANCEL = 'COINBASE_DESCRIPTOR_CANCEL',
         ADD_AUTHORITY_FACTOID_ADDRESS = 'ADD_AUTHORITY_FACTOID_ADDRESS',
         ADD_AUTHORITY_EFFICIENCY = 'ADD_AUTHORITY_EFFICIENCY'
+    }
+
+    interface AdminEntry {
+        adminId: number;
+        adminCode: AdminCode;
+        identityChainId?: string;
+        previousDirectoryBlockSignature?: { publicKey: string; signature: string };
+        matryoshkaHash?: string;
+        amount?: number;
+        keyPriority?: string;
+        keyType?: string;
+        ecdsaPublicKey?: string;
+        outputs?: {
+            address: string;
+            rcdHash: string;
+            amount: number;
+        }[];
+        descriptorHeight?: number;
+        descriptorIndex?: number;
+        rcdHash?: string;
+        factoidAddress?: string;
+        efficiency?: number;
     }
 
     /**
