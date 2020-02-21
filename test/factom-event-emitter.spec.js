@@ -1,9 +1,12 @@
 const { FactomCli, FactomEventEmitter, FACTOM_EVENT } = require('../src/factom'),
     { FactoidBlock, AdminBlock, EntryCreditBlock, EntryBlock } = require('../src/blocks'),
     mockDirectoryBlock = require('./data/directory-block.json'),
-    assert = require('chai').assert;
+    assert = require('chai').assert,
+    sinon = require('sinon');
 
-describe('Test FactomEventEmitter', () => {
+const INTERVAL = 50;
+
+describe.only('Test FactomEventEmitter', () => {
     const cli = new FactomCli({
         factomd: {
             protocol: process.env.FACTOMD_PROTOCOL,
@@ -16,8 +19,13 @@ describe('Test FactomEventEmitter', () => {
         }
     });
 
+    // Create mocks for methods used to start polling and trigger new block height.
+    sinon.stub(cli, 'getDirectoryBlockHead').resolves(mockDirectoryBlock);
+    sinon.stub(cli, 'getHeights').resolves({ directoryBlockHeight: mockDirectoryBlock.height - 1 });
+
     it('should add then remove a directory block listener', done => {
-        const emitter = new FactomEventEmitter(cli);
+        // Set short interval so the test does not timeout.
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
 
         const listener = dBlock => {
             assert.isString(dBlock.keyMR);
@@ -32,12 +40,10 @@ describe('Test FactomEventEmitter', () => {
 
         emitter.on('error', err => done(err));
         emitter.on(FACTOM_EVENT.newDirectoryBlock, listener);
-        // Necessary to mock all new directory blocks.
-        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should add then remove a factoid block listener', done => {
-        const emitter = new FactomEventEmitter(cli);
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
 
         const listener = fBlock => {
             assert.instanceOf(fBlock, FactoidBlock);
@@ -52,11 +58,10 @@ describe('Test FactomEventEmitter', () => {
 
         emitter.on('error', err => done(err));
         emitter.on(FACTOM_EVENT.newFactoidBlock, listener);
-        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should add then remove an admin block listener', done => {
-        const emitter = new FactomEventEmitter(cli);
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
 
         const listener = aBlock => {
             assert.instanceOf(aBlock, AdminBlock);
@@ -71,11 +76,10 @@ describe('Test FactomEventEmitter', () => {
 
         emitter.on('error', err => done(err));
         emitter.on(FACTOM_EVENT.newAdminBlock, listener);
-        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should add then remove an entry credit block listener', done => {
-        const emitter = new FactomEventEmitter(cli);
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
 
         const listener = ecBlock => {
             assert.instanceOf(ecBlock, EntryCreditBlock);
@@ -90,11 +94,10 @@ describe('Test FactomEventEmitter', () => {
 
         emitter.on('error', err => done(err));
         emitter.on(FACTOM_EVENT.newEntryCreditBlock, listener);
-        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should add then remove entry chain listener', done => {
-        const emitter = new FactomEventEmitter(cli);
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
         const chain = '3392f9df84cae30d97962641600546d7aafd3a29667d1dd356280a54c9070bcb';
 
         const listener = eBlock => {
@@ -110,13 +113,14 @@ describe('Test FactomEventEmitter', () => {
 
         emitter.on('error', err => done(err));
         emitter.on(chain, listener);
-        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should add then remove factoid address listener', done => {
-        const emitter = new FactomEventEmitter(cli);
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
         const address = 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC';
         const factoidBlockRef = 'cad832bab1d83c74bff8e1092fcf70e298cd7cdf35dee1956ae8879e749195ac';
+        // Stub resolves directory block with specific factoidBlockRef
+        cli.getDirectoryBlockHead.resolves({ ...mockDirectoryBlock, factoidBlockRef });
 
         const listener = tx => {
             assert.strictEqual(
@@ -134,11 +138,10 @@ describe('Test FactomEventEmitter', () => {
 
         emitter.on('error', err => done(err));
         emitter.on(address, listener);
-        emitter._handleDirectoryBlock({ factoidBlockRef, entryBlockRefs: [] });
     });
 
     it('should add then remove new chain listener', done => {
-        const emitter = new FactomEventEmitter(cli);
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
         const newChain = {
             chainId: '626ae1be1e36c6fd589e50c55638c7a18b551dfc6b63da30842722d448fc6db2',
             keyMR: 'a4883d0e53ce79d70401a839b087c91f1611bd332e3d988a412230fddd27c22d'
@@ -161,11 +164,10 @@ describe('Test FactomEventEmitter', () => {
 
         emitter.on('error', err => done(err));
         emitter.on(FACTOM_EVENT.newChain, listener);
-        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should stop polling after emitting once', done => {
-        const emitter = new FactomEventEmitter(cli);
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
 
         const listener = dBlock => {
             assert.isString(dBlock.keyMR);
@@ -176,11 +178,10 @@ describe('Test FactomEventEmitter', () => {
 
         emitter.on('error', err => done(err));
         emitter.once(FACTOM_EVENT.newDirectoryBlock, listener);
-        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should not stop polling if there are listeners of a different type still active', done => {
-        const emitter = new FactomEventEmitter(cli);
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
 
         const nullListener = () => {};
 
@@ -208,11 +209,10 @@ describe('Test FactomEventEmitter', () => {
         emitter.on('error', err => done(err));
         emitter.on(FACTOM_EVENT.newEntryCreditBlock, nullListener);
         emitter.on(FACTOM_EVENT.newAdminBlock, listener);
-        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should not stop polling if there are listeners of the same type still active', done => {
-        const emitter = new FactomEventEmitter(cli);
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
 
         const nullListener = () => {};
 
@@ -238,11 +238,10 @@ describe('Test FactomEventEmitter', () => {
         emitter.on('error', err => done(err));
         emitter.on(FACTOM_EVENT.newFactoidBlock, nullListener);
         emitter.on(FACTOM_EVENT.newFactoidBlock, listener);
-        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should add two chain ID listeners for the same chain ID then remove one without affecting the other', done => {
-        const emitter = new FactomEventEmitter(cli);
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
         const chainId = '4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4';
 
         const nullListener = () => {};
@@ -269,13 +268,13 @@ describe('Test FactomEventEmitter', () => {
         emitter.on('error', err => done(err));
         emitter.on(chainId, nullListener);
         emitter.on(chainId, listener);
-        emitter._handleDirectoryBlock(mockDirectoryBlock);
     });
 
     it('should add two factoid address listeners for the same address then remove one without affecting the other', done => {
-        const emitter = new FactomEventEmitter(cli);
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
         const address = 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC';
         const factoidBlockRef = 'cad832bab1d83c74bff8e1092fcf70e298cd7cdf35dee1956ae8879e749195ac';
+        cli.getDirectoryBlockHead.resolves({ ...mockDirectoryBlock, factoidBlockRef });
 
         const nullListener = () => {};
 
@@ -304,6 +303,5 @@ describe('Test FactomEventEmitter', () => {
         emitter.on('error', err => done(err));
         emitter.on(address, nullListener);
         emitter.on(address, listener);
-        emitter._handleDirectoryBlock({ factoidBlockRef, entryBlockRefs: [] });
     });
 });
