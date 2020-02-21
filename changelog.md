@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0]
+
+### Fixed
+
+-   Fix an incorrect behavior of `FactomEventEmitter` that would immediately emit an event when the first listener was attached. This can be a breaking change if you are relying on this initial event to be emitted.
+-   Fix TypeScript declaration file.
+
 ## [1.2.7]
 
 ### Added
