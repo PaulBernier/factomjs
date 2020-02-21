@@ -6,7 +6,7 @@ const { FactomCli, FactomEventEmitter, FACTOM_EVENT } = require('../src/factom')
 
 const INTERVAL = 50;
 
-describe.only('Test FactomEventEmitter', () => {
+describe('Test FactomEventEmitter', () => {
     const cli = new FactomCli({
         factomd: {
             protocol: process.env.FACTOMD_PROTOCOL,
