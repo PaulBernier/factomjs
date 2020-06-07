@@ -1,6 +1,7 @@
-const { FactomCli, FactomEventEmitter, FACTOM_EVENT } = require('../src/factom'),
+const { FactomCli, FactomEventEmitter, BLOCK_EVENT } = require('../src/factom'),
     { FactoidBlock, AdminBlock, EntryCreditBlock, EntryBlock } = require('../src/blocks'),
     mockDirectoryBlock = require('./data/directory-block.json'),
+    mockPendingTransaction = require('./data/pending-transaction.json'),
     assert = require('chai').assert,
     sinon = require('sinon');
 
@@ -32,14 +33,14 @@ describe('Test FactomEventEmitter', () => {
             assert.isTrue(emitter.isPolling);
             assert.lengthOf(emitter.listeners('newDirectoryBlock'), 1);
 
-            emitter.removeListener(FACTOM_EVENT.newDirectoryBlock, listener);
+            emitter.removeListener(BLOCK_EVENT.newDirectoryBlock, listener);
             assert.isFalse(emitter.isPolling);
             assert.lengthOf(emitter.listeners('newDirectoryBlock'), 0);
             done();
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(FACTOM_EVENT.newDirectoryBlock, listener);
+        emitter.on(BLOCK_EVENT.newDirectoryBlock, listener);
     });
 
     it('should add then remove a factoid block listener', done => {
@@ -57,7 +58,7 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(FACTOM_EVENT.newFactoidBlock, listener);
+        emitter.on(BLOCK_EVENT.newFactoidBlock, listener);
     });
 
     it('should add then remove an admin block listener', done => {
@@ -75,7 +76,7 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(FACTOM_EVENT.newAdminBlock, listener);
+        emitter.on(BLOCK_EVENT.newAdminBlock, listener);
     });
 
     it('should add then remove an entry credit block listener', done => {
@@ -93,7 +94,7 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(FACTOM_EVENT.newEntryCreditBlock, listener);
+        emitter.on(BLOCK_EVENT.newEntryCreditBlock, listener);
     });
 
     it('should add then remove entry chain listener', done => {
@@ -140,6 +141,35 @@ describe('Test FactomEventEmitter', () => {
         emitter.on(address, listener);
     });
 
+    it('should add then remove factoid pending transaction address listener', done => {
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
+        const pendingTransaction = {
+            eventType: 'newPendingTransaction',
+            address: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC'
+        };
+        const tokenizedPendingTransaction = FactomEventEmitter.getSubscriptionToken(
+            pendingTransaction
+        );
+
+        const listener = tx => {
+            assert.isTrue(emitter.isPolling);
+            assert.lengthOf(emitter.listeners(tokenizedPendingTransaction), 1);
+            assert.strictEqual(
+                tx[0].transactionid,
+                '337a32712f14c5df0b57a64bd6c321a043081688ecd4f33fd8319470da2256b1'
+            );
+
+            emitter.removeListener(tokenizedPendingTransaction, listener);
+            assert.isFalse(emitter.isPolling);
+            assert.lengthOf(emitter.listeners(tokenizedPendingTransaction), 0);
+            cli.factomdApi.restore();
+            done();
+        };
+        emitter.on('error', err => done(err));
+        emitter.on(tokenizedPendingTransaction, listener);
+        sinon.stub(cli, 'factomdApi').resolves(mockPendingTransaction);
+    });
+
     it('should add then remove new chain listener', done => {
         const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
         const newChain = {
@@ -163,7 +193,7 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(FACTOM_EVENT.newChain, listener);
+        emitter.on(BLOCK_EVENT.newChain, listener);
     });
 
     it('should stop polling after emitting once', done => {
@@ -177,7 +207,7 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.once(FACTOM_EVENT.newDirectoryBlock, listener);
+        emitter.once(BLOCK_EVENT.newDirectoryBlock, listener);
     });
 
     it('should not stop polling if there are listeners of a different type still active', done => {
@@ -207,8 +237,8 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(FACTOM_EVENT.newEntryCreditBlock, nullListener);
-        emitter.on(FACTOM_EVENT.newAdminBlock, listener);
+        emitter.on(BLOCK_EVENT.newEntryCreditBlock, nullListener);
+        emitter.on(BLOCK_EVENT.newAdminBlock, listener);
     });
 
     it('should not stop polling if there are listeners of the same type still active', done => {
@@ -236,8 +266,8 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(FACTOM_EVENT.newFactoidBlock, nullListener);
-        emitter.on(FACTOM_EVENT.newFactoidBlock, listener);
+        emitter.on(BLOCK_EVENT.newFactoidBlock, nullListener);
+        emitter.on(BLOCK_EVENT.newFactoidBlock, listener);
     });
 
     it('should add two chain ID listeners for the same chain ID then remove one without affecting the other', done => {
@@ -303,5 +333,47 @@ describe('Test FactomEventEmitter', () => {
         emitter.on('error', err => done(err));
         emitter.on(address, nullListener);
         emitter.on(address, listener);
+    });
+
+    it('should add two factoid address listeners for the same pending address subscription then remove one without affecting the other', done => {
+        const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
+        const pendingTransaction = {
+            eventType: 'newPendingTransaction',
+            address: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC'
+        };
+        const tokenizedPendingTransaction = FactomEventEmitter.getSubscriptionToken(
+            pendingTransaction
+        );
+
+        const nullListener = () => {};
+
+        const listener = tx => {
+            assert.strictEqual(
+                tx[0].transactionid,
+                '337a32712f14c5df0b57a64bd6c321a043081688ecd4f33fd8319470da2256b1'
+            );
+
+            assert.isTrue(emitter.isPolling);
+            assert.lengthOf(emitter.listeners(tokenizedPendingTransaction), 2);
+            assert.lengthOf(emitter.factoidAddressPendingTransactionSubscriptions, 1);
+
+            emitter.removeListener(tokenizedPendingTransaction, nullListener);
+            assert.lengthOf(emitter.listeners(tokenizedPendingTransaction), 1);
+            assert.lengthOf(emitter.factoidAddressPendingTransactionSubscriptions, 1);
+            assert.isTrue(emitter.isPolling);
+
+            emitter.removeListener(tokenizedPendingTransaction, listener);
+            assert.isFalse(emitter.isPolling);
+            assert.lengthOf(emitter.listeners(tokenizedPendingTransaction), 0);
+            assert.lengthOf(emitter.factoidAddressPendingTransactionSubscriptions, 0);
+
+            cli.factomdApi.restore();
+            done();
+        };
+
+        emitter.on('error', err => done(err));
+        emitter.on(tokenizedPendingTransaction, nullListener);
+        emitter.on(tokenizedPendingTransaction, listener);
+        sinon.stub(cli, 'factomdApi').resolves(mockPendingTransaction);
     });
 });

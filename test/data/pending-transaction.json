@@ -1,0 +1,22 @@
+[
+  {
+    "transactionid": "337a32712f14c5df0b57a64bd6c321a043081688ecd4f33fd8319470da2256b1",
+    "status": "TransactionACK",
+    "inputs":[
+      {
+        "amount":100012000,
+        "address":"646f3e8750c550e4582eca5047546ffef89c13a175985e320232bacac81cc428",
+        "useraddress":"FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q"
+      }
+    ],
+    "outputs":[
+      {
+        "amount":100000000,
+        "address":"27c0a471c6c9b6da3fce0af7b1119ac2cbc68723657a9e2860d83c6776bbd6ff",
+        "useraddress":"FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC"
+      }
+    ],
+    "ecoutputs":[],
+    "fees":12000
+  }
+]
