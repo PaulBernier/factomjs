@@ -1,7 +1,7 @@
 const { EventEmitter } = require('events'),
     Promise = require('bluebird'),
     { isValidPublicFctAddress } = require('./addresses'),
-    { isValidChain } = require('./chain'),
+    { isValidChainId } = require('./chain'),
     { Transaction } = require('./transaction');
 
 const BLOCK_EVENT = {
@@ -15,8 +15,9 @@ const BLOCK_EVENT = {
 const PENDING_EVENT = {
     newPendingTransaction: 'newPendingTransaction'
 };
-Object.freeze(BLOCK_EVENT);
-Object.freeze(PENDING_EVENT);
+
+const FACTOM_EVENT = { ...BLOCK_EVENT, ...PENDING_EVENT };
+Object.freeze(FACTOM_EVENT);
 /**
  * Listen for new Factom Events:
  *
@@ -28,6 +29,7 @@ Object.freeze(PENDING_EVENT);
  * <li>newChain - Triggers when blockchain adds a new chain. Listener receives first entry block of new chain.</li>
  * <li>FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC - Triggers when factoid address sends or receives a transaction. Listener receives transaction.</li>
  * <li>4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4 - Triggers when entry chain adds new entry block. Listener receives entry block.</li>
+ * <li>newPendingTransaction:FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC - Triggers when factoid address receives a new pending transaction.</li>
  * </ul>
  *
  * @class
@@ -56,11 +58,13 @@ Object.freeze(PENDING_EVENT);
 class FactomEventEmitter extends EventEmitter {
     /**
      * Given an event configuration object returns a tokenized string
-     * @param {object} event
+     * @param {Object} event - The event configuration object
+     * @param {string} event.eventType - The type of event e.g. newPendingTransaction
+     * @param {string} event.topic - The topic e.g. A Factoid address
      * @returns {string}
      */
-    static getSubscriptionToken(event) {
-        return `${event.eventType}:${event.address}`;
+    static getSubscriptionToken({ eventType, topic }) {
+        return `${eventType}:${topic}`;
     }
 
     constructor(cli, opts = {}) {
@@ -104,7 +108,7 @@ class FactomEventEmitter extends EventEmitter {
 
     /**
      * Get active factoid pending transactions subscriptions
-     * @returns {Map<string, array>}
+     * @returns {Map<string, Set<string>>}
      */
     get factoidAddressPendingTransactionSubscriptions() {
         return this._factoidAddressPendingTransactionSubscriptions;
@@ -136,13 +140,15 @@ class FactomEventEmitter extends EventEmitter {
 
         if (isValidPublicFctAddress(event)) {
             this._factoidAddressSubscriptions.add(event);
-        } else if (isValidChain(event)) {
+        } else if (isValidChainId(event)) {
             this._chainSubscriptions.add(event);
         } else if (this._isValidPendingTransactionEvent(event)) {
             const address = event.split(':')[1];
             if (!this._factoidAddressPendingTransactionSubscriptions.has(address)) {
                 const pendingTransactions = await this.getPendingTransactions(address);
-                const pendingTransactionIds = pendingTransactions.map(tx => tx.transactionid);
+                const pendingTransactionIds = new Set(
+                    pendingTransactions.map(tx => tx.transactionid)
+                );
                 this._factoidAddressPendingTransactionSubscriptions.set(
                     address,
                     pendingTransactionIds
@@ -158,7 +164,7 @@ class FactomEventEmitter extends EventEmitter {
         }
 
         if (
-            isValidChain(event) &&
+            isValidChainId(event) &&
             this._chainSubscriptions.has(event) &&
             this.listenerCount(event) === 0
         ) {
@@ -218,7 +224,7 @@ class FactomEventEmitter extends EventEmitter {
             typeof event === 'string' &&
             (this._isValidBlockEvent(event) ||
                 isValidPublicFctAddress(event) ||
-                isValidChain(event) ||
+                isValidChainId(event) ||
                 this._isValidPendingTransactionEvent(event))
         );
     }
@@ -288,17 +294,17 @@ class FactomEventEmitter extends EventEmitter {
         const subscribedTransactionIds = this._factoidAddressPendingTransactionSubscriptions.get(
             fctAddress
         );
-        const newPendingTransactions = pendingTransactions.filter(
-            tx => !subscribedTransactionIds.includes(tx.transactionid)
-        );
 
-        if (newPendingTransactions.length > 0) {
-            this._emitPendingFactoidTransaction(fctAddress, newPendingTransactions);
-            this._factoidAddressPendingTransactionSubscriptions.set(
-                fctAddress,
-                pendingTransactions.map(tx => tx.transactionid)
-            );
+        for (const pendingTransaction of pendingTransactions) {
+            if (!subscribedTransactionIds.has(pendingTransaction.id)) {
+                this._emitPendingFactoidTransaction(fctAddress, pendingTransaction);
+            }
         }
+
+        this._factoidAddressPendingTransactionSubscriptions.set(
+            fctAddress,
+            new Set(pendingTransactions.map(tx => tx.transactionid))
+        );
     }
 
     // Emit new directory blocks then trigger other emitter functions as appropriate
@@ -455,4 +461,4 @@ class FactomEventEmitter extends EventEmitter {
     }
 }
 
-module.exports = { FactomEventEmitter, BLOCK_EVENT };
+module.exports = { FactomEventEmitter, FACTOM_EVENT };

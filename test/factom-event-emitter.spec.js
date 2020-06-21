@@ -1,4 +1,4 @@
-const { FactomCli, FactomEventEmitter, BLOCK_EVENT } = require('../src/factom'),
+const { FactomCli, FactomEventEmitter, FACTOM_EVENT } = require('../src/factom'),
     { FactoidBlock, AdminBlock, EntryCreditBlock, EntryBlock } = require('../src/blocks'),
     mockDirectoryBlock = require('./data/directory-block.json'),
     mockPendingTransaction = require('./data/pending-transaction.json'),
@@ -33,14 +33,14 @@ describe('Test FactomEventEmitter', () => {
             assert.isTrue(emitter.isPolling);
             assert.lengthOf(emitter.listeners('newDirectoryBlock'), 1);
 
-            emitter.removeListener(BLOCK_EVENT.newDirectoryBlock, listener);
+            emitter.removeListener(FACTOM_EVENT.newDirectoryBlock, listener);
             assert.isFalse(emitter.isPolling);
             assert.lengthOf(emitter.listeners('newDirectoryBlock'), 0);
             done();
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(BLOCK_EVENT.newDirectoryBlock, listener);
+        emitter.on(FACTOM_EVENT.newDirectoryBlock, listener);
     });
 
     it('should add then remove a factoid block listener', done => {
@@ -58,7 +58,7 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(BLOCK_EVENT.newFactoidBlock, listener);
+        emitter.on(FACTOM_EVENT.newFactoidBlock, listener);
     });
 
     it('should add then remove an admin block listener', done => {
@@ -76,7 +76,7 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(BLOCK_EVENT.newAdminBlock, listener);
+        emitter.on(FACTOM_EVENT.newAdminBlock, listener);
     });
 
     it('should add then remove an entry credit block listener', done => {
@@ -94,7 +94,7 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(BLOCK_EVENT.newEntryCreditBlock, listener);
+        emitter.on(FACTOM_EVENT.newEntryCreditBlock, listener);
     });
 
     it('should add then remove entry chain listener', done => {
@@ -145,7 +145,7 @@ describe('Test FactomEventEmitter', () => {
         const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
         const pendingTransaction = {
             eventType: 'newPendingTransaction',
-            address: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC'
+            topic: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC'
         };
         const tokenizedPendingTransaction = FactomEventEmitter.getSubscriptionToken(
             pendingTransaction
@@ -155,7 +155,7 @@ describe('Test FactomEventEmitter', () => {
             assert.isTrue(emitter.isPolling);
             assert.lengthOf(emitter.listeners(tokenizedPendingTransaction), 1);
             assert.strictEqual(
-                tx[0].transactionid,
+                tx.transactionid,
                 '337a32712f14c5df0b57a64bd6c321a043081688ecd4f33fd8319470da2256b1'
             );
 
@@ -193,7 +193,7 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(BLOCK_EVENT.newChain, listener);
+        emitter.on(FACTOM_EVENT.newChain, listener);
     });
 
     it('should stop polling after emitting once', done => {
@@ -207,7 +207,7 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.once(BLOCK_EVENT.newDirectoryBlock, listener);
+        emitter.once(FACTOM_EVENT.newDirectoryBlock, listener);
     });
 
     it('should not stop polling if there are listeners of a different type still active', done => {
@@ -237,8 +237,8 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(BLOCK_EVENT.newEntryCreditBlock, nullListener);
-        emitter.on(BLOCK_EVENT.newAdminBlock, listener);
+        emitter.on(FACTOM_EVENT.newEntryCreditBlock, nullListener);
+        emitter.on(FACTOM_EVENT.newAdminBlock, listener);
     });
 
     it('should not stop polling if there are listeners of the same type still active', done => {
@@ -266,8 +266,8 @@ describe('Test FactomEventEmitter', () => {
         };
 
         emitter.on('error', err => done(err));
-        emitter.on(BLOCK_EVENT.newFactoidBlock, nullListener);
-        emitter.on(BLOCK_EVENT.newFactoidBlock, listener);
+        emitter.on(FACTOM_EVENT.newFactoidBlock, nullListener);
+        emitter.on(FACTOM_EVENT.newFactoidBlock, listener);
     });
 
     it('should add two chain ID listeners for the same chain ID then remove one without affecting the other', done => {
@@ -339,7 +339,7 @@ describe('Test FactomEventEmitter', () => {
         const emitter = new FactomEventEmitter(cli, { interval: INTERVAL });
         const pendingTransaction = {
             eventType: 'newPendingTransaction',
-            address: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC'
+            topic: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC'
         };
         const tokenizedPendingTransaction = FactomEventEmitter.getSubscriptionToken(
             pendingTransaction
@@ -349,7 +349,7 @@ describe('Test FactomEventEmitter', () => {
 
         const listener = tx => {
             assert.strictEqual(
-                tx[0].transactionid,
+                tx.transactionid,
                 '337a32712f14c5df0b57a64bd6c321a043081688ecd4f33fd8319470da2256b1'
             );
 

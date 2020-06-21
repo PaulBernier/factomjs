@@ -734,6 +734,7 @@ declare namespace factom {
      * <li>newChain - Triggers when blockchain adds a new chain. Listener receives first entry block of new chain.</li>
      * <li>FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC - Triggers when factoid address sends or receives a transaction. Listener receives transaction.</li>
      * <li>4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4 - Triggers when entry chain adds new entry block. Listener receives entry block.</li>
+     * <li>newPendingTransaction:FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC - Triggers when factoid address receives a new pending transaction.</li>
      * </ul>
      *
      * @example
@@ -750,6 +751,10 @@ declare namespace factom {
      * emitter.on('FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC', (transaction) => ...);
      * // Listen to any new entries in a given chain
      * emitter.on('4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4', (entryBlock) => ...);
+     * // Listen to any pending transactions involving a given Factoid address
+     * emitter.on(FactomEventEmitter.getSubscriptionToken({
+     *  eventType: 'newPendingTransaction', address: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC'
+     * }), (pendingTransaction) => ...);
      */
     export class FactomEventEmitter extends EventEmitter {
         /**
@@ -769,9 +774,23 @@ declare namespace factom {
         factoidAddressSubscriptions: Set<string>;
 
         /**
+         * Get active factoid pending transactions subscriptions
+         */
+        factoidAddressPendingTransactionSubscriptions: Map<string, Set<string>>;
+
+        /**
          * Determine whether or not polling is currently active.
          */
         isPolling: boolean;
+
+        /**
+         * Given an event configuration object returns a tokenized string
+         * @param {Object} event - The event configuration object
+         * @param {string} event.eventType - The type of event e.g. newPendingTransaction
+         * @param {string} event.topic - The topic e.g. A Factoid address
+         * @returns {string}
+         */
+        static getSubscriptionToken(event: Object): string;
     }
 
     /**
@@ -1737,6 +1756,12 @@ declare namespace factom {
      * @param entry
      */
     function computeEntryTxId(entry: Entry): Buffer;
+
+    /**
+     * Validate that a chain is valid (well formed).
+     * @param chain Chain to validate
+     */
+    function isValidChainId(chain: string): boolean;
 
     /**
      * Validate that an address is valid (well formed).

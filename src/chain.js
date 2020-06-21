@@ -237,10 +237,10 @@ function computeChainId(firstEntry) {
 
 /**
  * Determine if a given string is a valid FCT chain.
- * @param {string} chain - chain to validate.
+ * @param {string} chain - Chain to validate.
  * @returns {boolean} - True if the chain is a valid FCT chain.
  */
-function isValidChain(chain) {
+function isValidChainId(chain) {
     return typeof chain === 'string' && chain.match(CHAIN_REGEX);
 }
 
@@ -255,5 +255,5 @@ module.exports = {
     composeChainDelegateSig,
     composeChainLedger,
     validateChainInstance,
-    isValidChain
+    isValidChainId
 };
