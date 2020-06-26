@@ -477,7 +477,7 @@ emitter.on('FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC', (transaction)
 emitter.on('4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4', (entryBlock) => ...);
 // Listen to any pending transactions involving a given Factoid address
 emitter.on(FactomEventEmitter.getSubscriptionToken({
-  eventType: 'newPendingTransaction', address: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC'
+  eventType: 'newPendingTransaction', topic: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC'
 }), (pendingTransaction) => ...);
 ```
 

@@ -52,7 +52,7 @@ Object.freeze(FACTOM_EVENT);
  * emitter.on('4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4', (entryBlock) => ...);
  * // Listen to any pending transactions involving a given Factoid address
  * emitter.on(FactomEventEmitter.getSubscriptionToken({
- *  eventType: 'newPendingTransaction', address: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC'
+ *  eventType: 'newPendingTransaction', topic: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC'
  * }), (pendingTransaction) => ...);
  */
 class FactomEventEmitter extends EventEmitter {
@@ -296,7 +296,7 @@ class FactomEventEmitter extends EventEmitter {
         );
 
         for (const pendingTransaction of pendingTransactions) {
-            if (!subscribedTransactionIds.has(pendingTransaction.id)) {
+            if (!subscribedTransactionIds.has(pendingTransaction.transactionid)) {
                 this._emitPendingFactoidTransaction(fctAddress, pendingTransaction);
             }
         }
@@ -438,23 +438,21 @@ class FactomEventEmitter extends EventEmitter {
         });
     }
 
-    // Emit new pending factoid transactions for user-defined FCT address
-    _emitPendingFactoidTransaction(fctAddress, transactions) {
-        this.emit(`newPendingTransaction:${fctAddress}`, transactions);
+    // Emit new pending factoid transaction for user-defined FCT address
+    _emitPendingFactoidTransaction(fctAddress, transaction) {
+        this.emit(`${PENDING_EVENT.newPendingTransaction}:${fctAddress}`, transaction);
     }
 
     /**
-     * Fetch pending FCT transactions for a given FCT address
+     * Get pending FCT transactions for a given FCT address
      * @param {string} - address
      * @returns {array} - Array of pending FCT transactions
      */
-    async getPendingTransactions(address) {
+    getPendingTransactions(address) {
         try {
-            const pendingTransactionsResponse = await this._cli.factomdApi('pending-transactions', {
+            return this._cli.factomdApi('pending-transactions', {
                 address: address
             });
-
-            return pendingTransactionsResponse;
         } catch (err) {
             this.emit('error', err);
         }
