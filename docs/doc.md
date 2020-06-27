@@ -2,259 +2,415 @@
 
 ### Table of Contents
 
--   [FactomCli][1]
+-   [FactomEventEmitter][1]
     -   [Parameters][2]
     -   [Examples][3]
-    -   [add][4]
+    -   [\_isBlockchainEvent][4]
         -   [Parameters][5]
-    -   [addChain][6]
+    -   [\_isValidBlockEvent][6]
         -   [Parameters][7]
-    -   [addChains][8]
+    -   [\_isValidPendingTransactionEvent][8]
         -   [Parameters][9]
-    -   [addEntries][10]
-        -   [Parameters][11]
-    -   [addEntry][12]
-        -   [Parameters][13]
-    -   [chainExists][14]
-        -   [Parameters][15]
-    -   [commit][16]
+    -   [chainSubscriptions][10]
+    -   [factoidAddressPendingTransactionSubscriptions][11]
+    -   [factoidAddressSubscriptions][12]
+    -   [getPendingTransactions][13]
+        -   [Parameters][14]
+    -   [isPolling][15]
+    -   [getSubscriptionToken][16]
         -   [Parameters][17]
-    -   [commitChain][18]
-        -   [Parameters][19]
-    -   [commitEntry][20]
-        -   [Parameters][21]
-    -   [createEntryCreditPurchaseTransaction][22]
-        -   [Parameters][23]
-    -   [createFactoidTransaction][24]
-        -   [Parameters][25]
-    -   [factomdApi][26]
-        -   [Parameters][27]
-    -   [getAdminBlock][28]
-        -   [Parameters][29]
-    -   [getAllEntriesOfChain][30]
-        -   [Parameters][31]
-    -   [getBalance][32]
-        -   [Parameters][33]
-    -   [getChainHead][34]
-        -   [Parameters][35]
-    -   [getDirectoryBlock][36]
-        -   [Parameters][37]
-    -   [getDirectoryBlockHead][38]
-    -   [getEntry][39]
+-   [FactomCli][18]
+    -   [Parameters][19]
+    -   [Examples][20]
+    -   [add][21]
+        -   [Parameters][22]
+    -   [addChain][23]
+        -   [Parameters][24]
+    -   [addChains][25]
+        -   [Parameters][26]
+    -   [addEntries][27]
+        -   [Parameters][28]
+    -   [addEntry][29]
+        -   [Parameters][30]
+    -   [chainExists][31]
+        -   [Parameters][32]
+    -   [commit][33]
+        -   [Parameters][34]
+    -   [commitChain][35]
+        -   [Parameters][36]
+    -   [commitEntry][37]
+        -   [Parameters][38]
+    -   [createEntryCreditPurchaseTransaction][39]
         -   [Parameters][40]
-    -   [getEntryBlock][41]
+    -   [createFactoidTransaction][41]
         -   [Parameters][42]
-    -   [getEntryCreditBlock][43]
+    -   [factomdApi][43]
         -   [Parameters][44]
-    -   [getEntryCreditRate][45]
-    -   [getEntryWithBlockContext][46]
-        -   [Parameters][47]
-    -   [getFactoidBlock][48]
-        -   [Parameters][49]
-    -   [getFirstEntry][50]
-        -   [Parameters][51]
-    -   [getHeights][52]
-    -   [getPrivateAddress][53]
+    -   [getAdminBlock][45]
+        -   [Parameters][46]
+    -   [getAllEntriesOfChain][47]
+        -   [Parameters][48]
+    -   [getBalance][49]
+        -   [Parameters][50]
+    -   [getChainHead][51]
+        -   [Parameters][52]
+    -   [getDirectoryBlock][53]
         -   [Parameters][54]
-    -   [getTransaction][55]
-        -   [Parameters][56]
-    -   [reveal][57]
-        -   [Parameters][58]
-    -   [revealChain][59]
-        -   [Parameters][60]
-    -   [revealEntry][61]
-        -   [Parameters][62]
-    -   [rewindChainWhile][63]
+    -   [getDirectoryBlockHead][55]
+    -   [getEntry][56]
+        -   [Parameters][57]
+    -   [getEntryBlock][58]
+        -   [Parameters][59]
+    -   [getEntryCreditBlock][60]
+        -   [Parameters][61]
+    -   [getEntryCreditRate][62]
+    -   [getEntryWithBlockContext][63]
         -   [Parameters][64]
-        -   [Examples][65]
-    -   [sendTransaction][66]
-        -   [Parameters][67]
-    -   [waitOnCommitAck][68]
-        -   [Parameters][69]
-    -   [waitOnFactoidTransactionAck][70]
+    -   [getFactoidBlock][65]
+        -   [Parameters][66]
+    -   [getFirstEntry][67]
+        -   [Parameters][68]
+    -   [getHeights][69]
+    -   [getPrivateAddress][70]
         -   [Parameters][71]
-    -   [waitOnRevealAck][72]
+    -   [getTransaction][72]
         -   [Parameters][73]
-    -   [walletdApi][74]
+    -   [reveal][74]
         -   [Parameters][75]
--   [addressToKey][76]
-    -   [Parameters][77]
--   [addressToRcdHash][78]
-    -   [Parameters][79]
--   [AdminBlock][80]
-    -   [Properties][81]
-    -   [getEntriesOfTypes][82]
-        -   [Parameters][83]
--   [EntryBuilder][84]
-    -   [Parameters][85]
-    -   [blockContext][86]
-        -   [Parameters][87]
-    -   [build][88]
-    -   [chainId][89]
+    -   [revealChain][76]
+        -   [Parameters][77]
+    -   [revealEntry][78]
+        -   [Parameters][79]
+    -   [rewindChainWhile][80]
+        -   [Parameters][81]
+        -   [Examples][82]
+    -   [sendTransaction][83]
+        -   [Parameters][84]
+    -   [waitOnCommitAck][85]
+        -   [Parameters][86]
+    -   [waitOnFactoidTransactionAck][87]
+        -   [Parameters][88]
+    -   [waitOnRevealAck][89]
         -   [Parameters][90]
-    -   [content][91]
+    -   [walletdApi][91]
         -   [Parameters][92]
-    -   [extId][93]
-        -   [Parameters][94]
-    -   [extIds][95]
-        -   [Parameters][96]
-    -   [timestamp][97]
-        -   [Parameters][98]
--   [TransactionBuilder][99]
-    -   [Parameters][100]
-    -   [build][101]
-    -   [input][102]
-        -   [Parameters][103]
-    -   [output][104]
-        -   [Parameters][105]
-    -   [rcdSignature][106]
+-   [addressToKey][93]
+    -   [Parameters][94]
+-   [addressToRcdHash][95]
+    -   [Parameters][96]
+-   [AdminBlock][97]
+    -   [Properties][98]
+    -   [getEntriesOfTypes][99]
+        -   [Parameters][100]
+-   [EntryBuilder][101]
+    -   [Parameters][102]
+    -   [blockContext][103]
+        -   [Parameters][104]
+    -   [build][105]
+    -   [chainId][106]
         -   [Parameters][107]
-    -   [timestamp][108]
+    -   [content][108]
         -   [Parameters][109]
--   [Transaction][110]
-    -   [Parameters][111]
-    -   [Properties][112]
-    -   [Examples][113]
-    -   [computeEcRequiredFees][114]
+    -   [extId][110]
+        -   [Parameters][111]
+    -   [extIds][112]
+        -   [Parameters][113]
+    -   [timestamp][114]
         -   [Parameters][115]
-    -   [computeRequiredFees][116]
-        -   [Parameters][117]
-    -   [isSigned][118]
-    -   [marshalBinary][119]
-    -   [validateFees][120]
-        -   [Parameters][121]
-    -   [builder][122]
-        -   [Parameters][123]
--   [Entry][124]
-    -   [Parameters][125]
-    -   [Properties][126]
-    -   [Examples][127]
-    -   [chainIdHex][128]
-    -   [contentHex][129]
-    -   [ecCost][130]
-    -   [extIdsHex][131]
-    -   [hash][132]
-    -   [hashHex][133]
-    -   [marshalBinary][134]
-    -   [marshalBinaryHex][135]
-    -   [payloadSize][136]
-    -   [rawDataSize][137]
-    -   [remainingFreeBytes][138]
-    -   [remainingMaxBytes][139]
-    -   [size][140]
-    -   [toObject][141]
-    -   [builder][142]
-        -   [Parameters][143]
--   [FactomdCli][144]
-    -   [Parameters][145]
-    -   [call][146]
-        -   [Parameters][147]
--   [WalletdCli][148]
-    -   [Parameters][149]
-    -   [call][150]
-        -   [Parameters][151]
--   [Chain][152]
-    -   [Parameters][153]
-    -   [Properties][154]
-    -   [ecCost][155]
-    -   [idHex][156]
-    -   [toObject][157]
--   [FactomEventEmitter][158]
-    -   [Parameters][159]
-    -   [Examples][160]
-    -   [chainSubscriptions][161]
-    -   [factoidAddressSubscriptions][162]
-    -   [isPolling][163]
--   [composeChain][164]
-    -   [Parameters][165]
--   [composeChainCommit][166]
-    -   [Parameters][167]
--   [composeChainCommitDelegateSig][168]
-    -   [Parameters][169]
--   [composeChainDelegateSig][170]
-    -   [Parameters][171]
--   [composeChainReveal][172]
-    -   [Parameters][173]
--   [composeEntry][174]
-    -   [Parameters][175]
--   [composeEntryCommit][176]
-    -   [Parameters][177]
--   [composeEntryCommitDelegateSig][178]
-    -   [Parameters][179]
--   [composeEntryDelegateSig][180]
-    -   [Parameters][181]
--   [composeEntryReveal][182]
-    -   [Parameters][183]
--   [computeChainId][184]
-    -   [Parameters][185]
--   [computeChainTxId][186]
-    -   [Parameters][187]
--   [computeEntryTxId][188]
-    -   [Parameters][189]
--   [ConnectionOptions][190]
-    -   [Properties][191]
-    -   [Examples][192]
--   [DirectoryBlock][193]
-    -   [Properties][194]
--   [EntryBlock][195]
-    -   [Properties][196]
--   [EntryBlockContext][197]
-    -   [Properties][198]
--   [EntryCreditBlock][199]
-    -   [Properties][200]
-    -   [getCommitsForMinute][201]
-        -   [Parameters][202]
--   [FactoidBlock][203]
-    -   [Properties][204]
-    -   [getCoinbaseTransaction][205]
--   [generateRandomEcAddress][206]
--   [generateRandomFctAddress][207]
--   [getPublicAddress][208]
-    -   [Parameters][209]
--   [isValidAddress][210]
-    -   [Parameters][211]
--   [isValidEcAddress][212]
-    -   [Parameters][213]
--   [isValidFctAddress][214]
-    -   [Parameters][215]
--   [isValidPrivateAddress][216]
-    -   [Parameters][217]
--   [isValidPrivateEcAddress][218]
-    -   [Parameters][219]
--   [isValidPrivateFctAddress][220]
-    -   [Parameters][221]
--   [isValidPublicAddress][222]
-    -   [Parameters][223]
--   [isValidPublicEcAddress][224]
-    -   [Parameters][225]
--   [isValidPublicFctAddress][226]
-    -   [Parameters][227]
--   [keyToPublicEcAddress][228]
-    -   [Parameters][229]
--   [keyToPublicFctAddress][230]
-    -   [Parameters][231]
--   [rcdHashToPublicFctAddress][232]
-    -   [Parameters][233]
--   [seedToPrivateEcAddress][234]
-    -   [Parameters][235]
--   [seedToPrivateFctAddress][236]
-    -   [Parameters][237]
--   [TransactionAddress][238]
-    -   [Parameters][239]
--   [TransactionBlockContext][240]
-    -   [Properties][241]
+-   [TransactionBuilder][116]
+    -   [Parameters][117]
+    -   [build][118]
+    -   [input][119]
+        -   [Parameters][120]
+    -   [output][121]
+        -   [Parameters][122]
+    -   [rcdSignature][123]
+        -   [Parameters][124]
+    -   [timestamp][125]
+        -   [Parameters][126]
+-   [Transaction][127]
+    -   [Parameters][128]
+    -   [Properties][129]
+    -   [Examples][130]
+    -   [computeEcRequiredFees][131]
+        -   [Parameters][132]
+    -   [computeRequiredFees][133]
+        -   [Parameters][134]
+    -   [isSigned][135]
+    -   [marshalBinary][136]
+    -   [validateFees][137]
+        -   [Parameters][138]
+    -   [builder][139]
+        -   [Parameters][140]
+-   [Entry][141]
+    -   [Parameters][142]
+    -   [Properties][143]
+    -   [Examples][144]
+    -   [chainIdHex][145]
+    -   [contentHex][146]
+    -   [ecCost][147]
+    -   [extIdsHex][148]
+    -   [hash][149]
+    -   [hashHex][150]
+    -   [marshalBinary][151]
+    -   [marshalBinaryHex][152]
+    -   [payloadSize][153]
+    -   [rawDataSize][154]
+    -   [remainingFreeBytes][155]
+    -   [remainingMaxBytes][156]
+    -   [size][157]
+    -   [toObject][158]
+    -   [builder][159]
+        -   [Parameters][160]
+-   [FactomdCli][161]
+    -   [Parameters][162]
+    -   [call][163]
+        -   [Parameters][164]
+-   [WalletdCli][165]
+    -   [Parameters][166]
+    -   [call][167]
+        -   [Parameters][168]
+-   [Chain][169]
+    -   [Parameters][170]
+    -   [Properties][171]
+    -   [ecCost][172]
+    -   [idHex][173]
+    -   [toObject][174]
+-   [composeChain][175]
+    -   [Parameters][176]
+-   [composeChainCommit][177]
+    -   [Parameters][178]
+-   [composeChainCommitDelegateSig][179]
+    -   [Parameters][180]
+-   [composeChainDelegateSig][181]
+    -   [Parameters][182]
+-   [composeChainReveal][183]
+    -   [Parameters][184]
+-   [composeEntry][185]
+    -   [Parameters][186]
+-   [composeEntryCommit][187]
+    -   [Parameters][188]
+-   [composeEntryCommitDelegateSig][189]
+    -   [Parameters][190]
+-   [composeEntryDelegateSig][191]
+    -   [Parameters][192]
+-   [composeEntryReveal][193]
+    -   [Parameters][194]
+-   [computeChainId][195]
+    -   [Parameters][196]
+-   [computeChainTxId][197]
+    -   [Parameters][198]
+-   [computeEntryTxId][199]
+    -   [Parameters][200]
+-   [ConnectionOptions][201]
+    -   [Properties][202]
+    -   [Examples][203]
+-   [DirectoryBlock][204]
+    -   [Properties][205]
+-   [EntryBlock][206]
+    -   [Properties][207]
+-   [EntryBlockContext][208]
+    -   [Properties][209]
+-   [EntryCreditBlock][210]
+    -   [Properties][211]
+    -   [getCommitsForMinute][212]
+        -   [Parameters][213]
+-   [FactoidBlock][214]
+    -   [Properties][215]
+    -   [getCoinbaseTransaction][216]
+-   [generateRandomEcAddress][217]
+-   [generateRandomFctAddress][218]
+-   [getPublicAddress][219]
+    -   [Parameters][220]
+-   [isValidAddress][221]
+    -   [Parameters][222]
+-   [isValidChainId][223]
+    -   [Parameters][224]
+-   [isValidEcAddress][225]
+    -   [Parameters][226]
+-   [isValidFctAddress][227]
+    -   [Parameters][228]
+-   [isValidPrivateAddress][229]
+    -   [Parameters][230]
+-   [isValidPrivateEcAddress][231]
+    -   [Parameters][232]
+-   [isValidPrivateFctAddress][233]
+    -   [Parameters][234]
+-   [isValidPublicAddress][235]
+    -   [Parameters][236]
+-   [isValidPublicEcAddress][237]
+    -   [Parameters][238]
+-   [isValidPublicFctAddress][239]
+    -   [Parameters][240]
+-   [keyToPublicEcAddress][241]
+    -   [Parameters][242]
+-   [keyToPublicFctAddress][243]
+    -   [Parameters][244]
+-   [rcdHashToPublicFctAddress][245]
+    -   [Parameters][246]
+-   [seedToPrivateEcAddress][247]
+    -   [Parameters][248]
+-   [seedToPrivateFctAddress][249]
+    -   [Parameters][250]
+-   [TransactionAddress][251]
+    -   [Parameters][252]
+-   [TransactionBlockContext][253]
+    -   [Properties][254]
+
+## FactomEventEmitter
+
+[src/factom-event-emitter.js:58-460][255]
+
+**Extends EventEmitter**
+
+Listen for new Factom Events:
+
+<ul>
+<li>newDirectoryBlock - Triggers when blockchain adds a new directory block. Listener receives new directory block.</li>
+<li>newFactoidBlock - Triggers when blockchain adds a new factoid block. Listener receives new factoid block.</li>
+<li>newAdminBlock - Triggers when blockchain adds a new admin block. Listener receives new admin block.</li>
+<li>newEntryCreditBlock - Triggers when blockchain adds a new entry credit block. Listener receives new entry credit block.</li>
+<li>newChain - Triggers when blockchain adds a new chain. Listener receives first entry block of new chain.</li>
+<li>FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC - Triggers when factoid address sends or receives a transaction. Listener receives transaction.</li>
+<li>4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4 - Triggers when entry chain adds new entry block. Listener receives entry block.</li>
+<li>newPendingTransaction:FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC - Triggers when factoid address receives a new pending transaction.</li>
+</ul>
+
+### Parameters
+
+-   `cli` **[FactomCli][256]** FactomCli instance to be used by the FactomEventEmitter instance to fetch blockchain data.
+-   `opts` **[object][257]?** Options to set on the FactomEventEmitter instance (optional, default `{}`)
+    -   `opts.interval` **[number][258]** Interval (ms) at which the FactomEventEmtitter instance should poll the blockchain to check for a new block. (optional, default `7500`)
+
+### Examples
+
+```javascript
+const { FactomCli, FactomEventEmitter } = require('factom');
+const cli = new FactomCli();
+// Poll the blockchain every 10s
+const emitter = new FactomEventEmitter(cli, { interval: 10000 });
+emitter.on('newDirectoryBlock', (directoryBlock) => ...);
+emitter.on('newFactoidBlock', (factoidBlock) => ...);
+emitter.on('newAdminBlock', (adminBlock) => ...);
+emitter.on('newEntryCreditBlock', (entryCreditBlock) => ...);
+emitter.on('newChain', (entryBlock) => ...);
+// Listen to any transaction involving a given Factoid address
+emitter.on('FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC', (transaction) => ...);
+// Listen to any new entries in a given chain
+emitter.on('4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4', (entryBlock) => ...);
+// Listen to any pending transactions involving a given Factoid address
+emitter.on(FactomEventEmitter.getSubscriptionToken({
+ eventType: 'newPendingTransaction', topic: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC'
+}), (pendingTransaction) => ...);
+```
+
+### \_isBlockchainEvent
+
+[src/factom-event-emitter.js:222-230][259]
+
+Determine if a given event is a valid blockchain event
+
+#### Parameters
+
+-   `event` **[string][260]** 
+
+Returns **[boolean][261]** 
+
+### \_isValidBlockEvent
+
+[src/factom-event-emitter.js:199-201][262]
+
+Determine if a given event is a valid block event
+
+#### Parameters
+
+-   `event` **[event][263]** 
+
+Returns **[boolean][261]** 
+
+### \_isValidPendingTransactionEvent
+
+[src/factom-event-emitter.js:208-215][264]
+
+Determine if a given event is a valid pending transaction event
+
+#### Parameters
+
+-   `event`  
+-   `null-null` **[string][260]** event
+
+Returns **[boolean][261]** 
+
+### chainSubscriptions
+
+[src/factom-event-emitter.js:97-99][265]
+
+Get active chain id subscriptions
+
+Returns **[Set][266]&lt;[string][260]>** 
+
+### factoidAddressPendingTransactionSubscriptions
+
+[src/factom-event-emitter.js:113-115][267]
+
+Get active factoid pending transactions subscriptions
+
+Returns **[Map][268]&lt;[string][260], [Set][266]&lt;[string][260]>>** 
+
+### factoidAddressSubscriptions
+
+[src/factom-event-emitter.js:105-107][269]
+
+Get active factoid address subscriptions
+
+Returns **[Set][266]&lt;[string][260]>** 
+
+### getPendingTransactions
+
+[src/factom-event-emitter.js:451-459][270]
+
+Get pending FCT transactions for a given FCT address
+
+#### Parameters
+
+-   `address`  
+-   `null-null` **[string][260]** address
+
+Returns **[array][271]** Array of pending FCT transactions
+
+### isPolling
+
+[src/factom-event-emitter.js:121-123][272]
+
+Determine whether or not polling is currently active.
+
+Returns **[boolean][261]** 
+
+### getSubscriptionToken
+
+[src/factom-event-emitter.js:66-68][273]
+
+Given an event configuration object returns a tokenized string
+
+#### Parameters
+
+-   `event` **[Object][257]** The event configuration object
+    -   `event.eventType` **[string][260]** The type of event e.g. newPendingTransaction
+    -   `event.topic` **[string][260]** The topic e.g. A Factoid address
+
+Returns **[string][260]** 
 
 ## FactomCli
 
-[src/factom-cli.js:28-586][242]
+[src/factom-cli.js:28-586][274]
 
 Main class to read and write data from Factom blockchain.
 
 ### Parameters
 
--   `opts` **[Object][243]?** Options of connection to factomd and factom-walletd.
-    -   `opts.factomd` **[ConnectionOptions][244]?** Options of connection to factomd.
-    -   `opts.walletd` **[ConnectionOptions][244]?** Options of connection to factom-walletd.
+-   `opts` **[Object][257]?** Options of connection to factomd and factom-walletd.
+    -   `opts.factomd` **[ConnectionOptions][275]?** Options of connection to factomd.
+    -   `opts.walletd` **[ConnectionOptions][275]?** Options of connection to factom-walletd.
 
 ### Examples
 
@@ -275,470 +431,470 @@ const cli = new FactomCli({
 
 ### add
 
-[src/factom-cli.js:161-168][245]
+[src/factom-cli.js:161-168][276]
 
 Add an Entry/Chain or a collection of either of those to the Factom blockchain. Performs both commits and reveals.
 
 #### Parameters
 
--   `obj` **([Chain][246] \| [Array][247]&lt;[Chain][246]> | [Entry][248] \| [Array][247]&lt;[Entry][248]>)** Entry/Chain or array of Entry/Chain to add.
--   `ecAddress` **[string][249]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
+-   `obj` **([Chain][277] \| [Array][271]&lt;[Chain][277]> | [Entry][278] \| [Array][271]&lt;[Entry][278]>)** Entry/Chain or array of Entry/Chain to add.
+-   `ecAddress` **[string][260]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
     If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
--   `options` **[Object][243]?**  (optional, default `{}`)
-    -   `options.commitTimeout` **[number][250]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.revealTimeout` **[number][250]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.concurrency` **[number][250]** Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains. (optional, default `200`)
-    -   `options.skipFundValidation` **[boolean][251]** Skip the validation that the EC address holds enough Entry Credits to pay the commits. (optional, default `false`)
-    -   `options.sign` **function ([Buffer][252], [string][249]): ([Buffer][252] \| [string][249] \| [Promise][253]&lt;([Buffer][252] \| [string][249])>)?** Signing function.
+-   `options` **[Object][257]?**  (optional, default `{}`)
+    -   `options.commitTimeout` **[number][258]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.revealTimeout` **[number][258]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.concurrency` **[number][258]** Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains. (optional, default `200`)
+    -   `options.skipFundValidation` **[boolean][261]** Skip the validation that the EC address holds enough Entry Credits to pay the commits. (optional, default `false`)
+    -   `options.sign` **function ([Buffer][279], [string][260]): ([Buffer][279] \| [string][260] \| [Promise][280]&lt;([Buffer][279] \| [string][260])>)?** Signing function.
         Takes as input the data to sign with the EC public key paying for the commmit
         and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
         The returned signature must have been made by the private key corresponding to the ecAddress argument.
 
-Returns **([Promise][253]&lt;{txId: [string][249], repeatedCommit: [boolean][251], chainId: [string][249], entryHash: [string][249]}> | [Promise][253]&lt;[Array][247]&lt;{txId: [string][249], repeatedCommit: [boolean][251], chainId: [string][249], entryHash: [string][249]}>>)** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][254]), chain id and entry hash.
+Returns **([Promise][280]&lt;{txId: [string][260], repeatedCommit: [boolean][261], chainId: [string][260], entryHash: [string][260]}> | [Promise][280]&lt;[Array][271]&lt;{txId: [string][260], repeatedCommit: [boolean][261], chainId: [string][260], entryHash: [string][260]}>>)** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][281]), chain id and entry hash.
 It is an array of such object if the input was an iterable of Entry or Chain.
 
 ### addChain
 
-[src/factom-cli.js:186-193][255]
+[src/factom-cli.js:186-193][282]
 
 Add a Chain to the Factom blockchain. Performs both commit and reveal.
 
 #### Parameters
 
--   `chain` **[Chain][246]** Chain to add.
--   `ecAddress` **[string][249]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
+-   `chain` **[Chain][277]** Chain to add.
+-   `ecAddress` **[string][260]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
     If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
--   `options` **[Object][243]?**  (optional, default `{}`)
-    -   `options.commitTimeout` **[number][250]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.revealTimeout` **[number][250]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.skipFundValidation` **[boolean][251]** Skip the validation that the EC address holds enough Entry Credits to pay the commit. (optional, default `false`)
-    -   `options.sign` **function ([Buffer][252], [string][249]): ([Buffer][252] \| [string][249] \| [Promise][253]&lt;([Buffer][252] \| [string][249])>)?** Signing function.
+-   `options` **[Object][257]?**  (optional, default `{}`)
+    -   `options.commitTimeout` **[number][258]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.revealTimeout` **[number][258]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.skipFundValidation` **[boolean][261]** Skip the validation that the EC address holds enough Entry Credits to pay the commit. (optional, default `false`)
+    -   `options.sign` **function ([Buffer][279], [string][260]): ([Buffer][279] \| [string][260] \| [Promise][280]&lt;([Buffer][279] \| [string][260])>)?** Signing function.
         Takes as input the data to sign with the EC public key paying for the commmit
         and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
         The returned signature must have been made by the private key corresponding to the ecAddress argument.
 
-Returns **[Promise][253]&lt;{txId: [string][249], repeatedCommit: [boolean][251], chainId: [string][249], entryHash: [string][249]}>** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][254]), chain id and entry hash.
+Returns **[Promise][280]&lt;{txId: [string][260], repeatedCommit: [boolean][261], chainId: [string][260], entryHash: [string][260]}>** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][281]), chain id and entry hash.
 
 ### addChains
 
-[src/factom-cli.js:212-219][256]
+[src/factom-cli.js:212-219][283]
 
 Add a collection of Chains to the Factom blockchain. Performs both commits and reveals.
 
 #### Parameters
 
--   `chains` **[Array][247]&lt;[Chain][246]>** Iterable of Chains to add.
--   `ecAddress` **[string][249]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
+-   `chains` **[Array][271]&lt;[Chain][277]>** Iterable of Chains to add.
+-   `ecAddress` **[string][260]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
     If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
--   `options` **[Object][243]?**  (optional, default `{}`)
-    -   `options.commitTimeout` **[number][250]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.revealTimeout` **[number][250]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.concurrency` **[number][250]** Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains. (optional, default `200`)
-    -   `options.skipFundValidation` **[boolean][251]** Skip the validation that the EC address holds enough Entry Credits to pay the commits. (optional, default `false`)
-    -   `options.sign` **function ([Buffer][252], [string][249]): ([Buffer][252] \| [string][249] \| [Promise][253]&lt;([Buffer][252] \| [string][249])>)?** Signing function.
+-   `options` **[Object][257]?**  (optional, default `{}`)
+    -   `options.commitTimeout` **[number][258]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.revealTimeout` **[number][258]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.concurrency` **[number][258]** Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains. (optional, default `200`)
+    -   `options.skipFundValidation` **[boolean][261]** Skip the validation that the EC address holds enough Entry Credits to pay the commits. (optional, default `false`)
+    -   `options.sign` **function ([Buffer][279], [string][260]): ([Buffer][279] \| [string][260] \| [Promise][280]&lt;([Buffer][279] \| [string][260])>)?** Signing function.
         Takes as input the data to sign with the EC public key paying for the commmit
         and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
         The returned signature must have been made by the private key corresponding to the ecAddress argument.
 
-Returns **[Promise][253]&lt;[Array][247]&lt;{txId: [string][249], repeatedCommit: [boolean][251], chainId: [string][249], entryHash: [string][249]}>>** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][254]), chain id and entry hash.
+Returns **[Promise][280]&lt;[Array][271]&lt;{txId: [string][260], repeatedCommit: [boolean][261], chainId: [string][260], entryHash: [string][260]}>>** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][281]), chain id and entry hash.
 
 ### addEntries
 
-[src/factom-cli.js:263-270][257]
+[src/factom-cli.js:263-270][284]
 
 Add a collection of Entries to the Factom blockchain. Performs both commits and reveals.
 
 #### Parameters
 
--   `entries` **[Array][247]&lt;[Entry][248]>** Iterable of Entries to add.
--   `ecAddress` **[string][249]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
+-   `entries` **[Array][271]&lt;[Entry][278]>** Iterable of Entries to add.
+-   `ecAddress` **[string][260]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
     If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
--   `options` **[Object][243]?**  (optional, default `{}`)
-    -   `options.commitTimeout` **[number][250]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.revealTimeout` **[number][250]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.concurrency` **[number][250]** Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains. (optional, default `200`)
-    -   `options.skipFundValidation` **[boolean][251]** Skip the validation that the EC address holds enough Entry Credits to pay the commits. (optional, default `false`)
-    -   `options.sign` **function ([Buffer][252], [string][249]): ([Buffer][252] \| [string][249] \| [Promise][253]&lt;([Buffer][252] \| [string][249])>)?** Signing function.
+-   `options` **[Object][257]?**  (optional, default `{}`)
+    -   `options.commitTimeout` **[number][258]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.revealTimeout` **[number][258]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.concurrency` **[number][258]** Only if the obj argument is an iterable. Limits the number of concurrent Promises adding entries/chains. (optional, default `200`)
+    -   `options.skipFundValidation` **[boolean][261]** Skip the validation that the EC address holds enough Entry Credits to pay the commits. (optional, default `false`)
+    -   `options.sign` **function ([Buffer][279], [string][260]): ([Buffer][279] \| [string][260] \| [Promise][280]&lt;([Buffer][279] \| [string][260])>)?** Signing function.
         Takes as input the data to sign with the EC public key paying for the commmit
         and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
         The returned signature must have been made by the private key corresponding to the ecAddress argument.
 
-Returns **[Promise][253]&lt;[Array][247]&lt;{txId: [string][249], repeatedCommit: [boolean][251], chainId: [string][249], entryHash: [string][249]}>>** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][254]), chain id and entry hash.
+Returns **[Promise][280]&lt;[Array][271]&lt;{txId: [string][260], repeatedCommit: [boolean][261], chainId: [string][260], entryHash: [string][260]}>>** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][281]), chain id and entry hash.
 
 ### addEntry
 
-[src/factom-cli.js:237-244][258]
+[src/factom-cli.js:237-244][285]
 
 Add an Entry to the Factom blockchain. Performs both commit and reveal.
 
 #### Parameters
 
--   `entry` **[Entry][248]** Entry to add.
--   `ecAddress` **[string][249]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
+-   `entry` **[Entry][278]** Entry to add.
+-   `ecAddress` **[string][260]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
     If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
--   `options` **[Object][243]?**  (optional, default `{}`)
-    -   `options.commitTimeout` **[number][250]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.revealTimeout` **[number][250]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.skipFundValidation` **[boolean][251]** Skip the validation that the EC address holds enough Entry Credits to pay the commit. (optional, default `false`)
-    -   `options.sign` **function ([Buffer][252], [string][249]): ([Buffer][252] \| [string][249] \| [Promise][253]&lt;([Buffer][252] \| [string][249])>)?** Signing function.
+-   `options` **[Object][257]?**  (optional, default `{}`)
+    -   `options.commitTimeout` **[number][258]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.revealTimeout` **[number][258]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.skipFundValidation` **[boolean][261]** Skip the validation that the EC address holds enough Entry Credits to pay the commit. (optional, default `false`)
+    -   `options.sign` **function ([Buffer][279], [string][260]): ([Buffer][279] \| [string][260] \| [Promise][280]&lt;([Buffer][279] \| [string][260])>)?** Signing function.
         Takes as input the data to sign with the EC public key paying for the commmit
         and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
         The returned signature must have been made by the private key corresponding to the ecAddress argument.
 
-Returns **[Promise][253]&lt;{txId: [string][249], repeatedCommit: [boolean][251], chainId: [string][249], entryHash: [string][249]}>** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][254]), chain id and entry hash.
+Returns **[Promise][280]&lt;{txId: [string][260], repeatedCommit: [boolean][261], chainId: [string][260], entryHash: [string][260]}>** Transaction ID (commit), if it is a repeated commit ([https://docs.factom.com/api#repeated-commit][281]), chain id and entry hash.
 
 ### chainExists
 
-[src/factom-cli.js:355-357][259]
+[src/factom-cli.js:355-357][286]
 
 Check if a chain exists.
 
 #### Parameters
 
--   `chainId` **[string][249]** Chain ID to check.
+-   `chainId` **[string][260]** Chain ID to check.
 
-Returns **[Promise][253]&lt;[boolean][251]>** 
+Returns **[Promise][280]&lt;[boolean][261]>** 
 
 ### commit
 
-[src/factom-cli.js:54-61][260]
+[src/factom-cli.js:54-61][287]
 
 Commit an Entry or a Chain.
 
 #### Parameters
 
--   `obj` **([Entry][248] \| [Chain][246])** Entry or Chain to commit.
--   `ecAddress` **[string][249]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
+-   `obj` **([Entry][278] \| [Chain][277])** Entry or Chain to commit.
+-   `ecAddress` **[string][260]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
     If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
--   `options` **[Object][243]?** Commit options. (optional, default `{}`)
-    -   `options.ackTimeout` **[number][250]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.sign` **function ([Buffer][252], [string][249]): ([Buffer][252] \| [string][249] \| [Promise][253]&lt;([Buffer][252] \| [string][249])>)?** Signing function.
+-   `options` **[Object][257]?** Commit options. (optional, default `{}`)
+    -   `options.ackTimeout` **[number][258]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.sign` **function ([Buffer][279], [string][260]): ([Buffer][279] \| [string][260] \| [Promise][280]&lt;([Buffer][279] \| [string][260])>)?** Signing function.
         Takes as input the data to sign with the EC public key paying for the commmit
         and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
         The returned signature must have been made by the private key corresponding to the ecAddress argument.
 
-Returns **[Promise][253]&lt;{txId: [string][249], repeatedCommit: [boolean][251]}>** Transaction ID and if this is a repeated commit ([https://docs.factom.com/api#repeated-commit][254]). If repeatedCommit is true, txId is undefined.
+Returns **[Promise][280]&lt;{txId: [string][260], repeatedCommit: [boolean][261]}>** Transaction ID and if this is a repeated commit ([https://docs.factom.com/api#repeated-commit][281]). If repeatedCommit is true, txId is undefined.
 
 ### commitChain
 
-[src/factom-cli.js:77-84][261]
+[src/factom-cli.js:77-84][288]
 
 Commit a Chain.
 
 #### Parameters
 
--   `chain` **[Chain][246]** Chain to commit.
--   `ecAddress` **[string][249]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
+-   `chain` **[Chain][277]** Chain to commit.
+-   `ecAddress` **[string][260]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
     If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
--   `options` **[Object][243]?** Commit options. (optional, default `{}`)
-    -   `options.ackTimeout` **[number][250]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.sign` **function ([Buffer][252], [string][249]): ([Buffer][252] \| [string][249] \| [Promise][253]&lt;([Buffer][252] \| [string][249])>)?** Signing function.
+-   `options` **[Object][257]?** Commit options. (optional, default `{}`)
+    -   `options.ackTimeout` **[number][258]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.sign` **function ([Buffer][279], [string][260]): ([Buffer][279] \| [string][260] \| [Promise][280]&lt;([Buffer][279] \| [string][260])>)?** Signing function.
         Takes as input the data to sign with the EC public key paying for the commmit
         and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
         The returned signature must have been made by the private key corresponding to the ecAddress argument.
 
-Returns **[Promise][253]&lt;{txId: [string][249], repeatedCommit: [boolean][251]}>** Transaction ID and if this is a repeated commit ([https://docs.factom.com/api#repeated-commit][254]). If repeatedCommit is true, txId is undefined.
+Returns **[Promise][280]&lt;{txId: [string][260], repeatedCommit: [boolean][261]}>** Transaction ID and if this is a repeated commit ([https://docs.factom.com/api#repeated-commit][281]). If repeatedCommit is true, txId is undefined.
 
 ### commitEntry
 
-[src/factom-cli.js:100-107][262]
+[src/factom-cli.js:100-107][289]
 
 Commit an Entry.
 
 #### Parameters
 
--   `entry` **[Entry][248]** Entry to commit.
--   `ecAddress` **[string][249]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
+-   `entry` **[Entry][278]** Entry to commit.
+-   `ecAddress` **[string][260]** Entry Credit address that pays for the commit, either private (Es) or public (EC).
     If a public address is passed, the private key must either be stored in factom-walletd or a sign function must be provided as part of the options.
--   `options` **[Object][243]?** Commit options. (optional, default `{}`)
-    -   `options.ackTimeout` **[number][250]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.sign` **function ([Buffer][252], [string][249]): ([Buffer][252] \| [string][249] \| [Promise][253]&lt;([Buffer][252] \| [string][249])>)?** Signing function.
+-   `options` **[Object][257]?** Commit options. (optional, default `{}`)
+    -   `options.ackTimeout` **[number][258]** Time to wait in seconds for the commit ack. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.sign` **function ([Buffer][279], [string][260]): ([Buffer][279] \| [string][260] \| [Promise][280]&lt;([Buffer][279] \| [string][260])>)?** Signing function.
         Takes as input the data to sign with the EC public key paying for the commmit
         and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
         The returned signature must have been made by the private key corresponding to the ecAddress argument.
 
-Returns **[Promise][253]&lt;{txId: [string][249], repeatedCommit: [boolean][251]}>** Transaction ID and if this is a repeated commit ([https://docs.factom.com/api#repeated-commit][254]). If repeatedCommit is true, txId is undefined.
+Returns **[Promise][280]&lt;{txId: [string][260], repeatedCommit: [boolean][261]}>** Transaction ID and if this is a repeated commit ([https://docs.factom.com/api#repeated-commit][281]). If repeatedCommit is true, txId is undefined.
 
 ### createEntryCreditPurchaseTransaction
 
-[src/factom-cli.js:439-448][263]
+[src/factom-cli.js:439-448][290]
 
 Create a transaction to convert Factoids to Entry Credit.
 
 #### Parameters
 
--   `originAddress` **[string][249]** Private or public Factoid address origin of the funds. If a public address is provided (FA) the corresponding private address must be stored in factom-walletd.
--   `recipientAddress` **[string][249]** Public Entry Credit address to receive the ECs.
--   `ecAmount` **[number][250]** Amount of Entry Credit (EC) to purchase.
--   `fees` **[number][250]?** Value to override fees of the transaction (if not specified the library computes the lowest acceptable fee).
+-   `originAddress` **[string][260]** Private or public Factoid address origin of the funds. If a public address is provided (FA) the corresponding private address must be stored in factom-walletd.
+-   `recipientAddress` **[string][260]** Public Entry Credit address to receive the ECs.
+-   `ecAmount` **[number][258]** Amount of Entry Credit (EC) to purchase.
+-   `fees` **[number][258]?** Value to override fees of the transaction (if not specified the library computes the lowest acceptable fee).
 
-Returns **[Promise][253]&lt;[Transaction][264]>** 
+Returns **[Promise][280]&lt;[Transaction][291]>** 
 
 ### createFactoidTransaction
 
-[src/factom-cli.js:419-428][265]
+[src/factom-cli.js:419-428][292]
 
 Create a single input single output (SISO) Factoid transaction.
 
 #### Parameters
 
--   `originAddress` **[string][249]** Private or public Factoid address origin of the funds. If a public address is provided (FA) the corresponding private address must be stored in factom-walletd.
--   `recipientAddress` **[string][249]** Public Factoid address receiving the funds.
--   `amount` **[number][250]** Amount to transfer in factoshis (10^-8 Factoids).
--   `fees` **[number][250]?** Value to override fees of the transaction (if not specified the library computes the lowest acceptable fee).
+-   `originAddress` **[string][260]** Private or public Factoid address origin of the funds. If a public address is provided (FA) the corresponding private address must be stored in factom-walletd.
+-   `recipientAddress` **[string][260]** Public Factoid address receiving the funds.
+-   `amount` **[number][258]** Amount to transfer in factoshis (10^-8 Factoids).
+-   `fees` **[number][258]?** Value to override fees of the transaction (if not specified the library computes the lowest acceptable fee).
 
-Returns **[Promise][253]&lt;[Transaction][264]>** 
+Returns **[Promise][280]&lt;[Transaction][291]>** 
 
 ### factomdApi
 
-[src/factom-cli.js:498-500][266]
+[src/factom-cli.js:498-500][293]
 
-Make a direct call to factomd API. See [https://docs.factom.com/api#factomd-api][267].
+Make a direct call to factomd API. See [https://docs.factom.com/api#factomd-api][294].
 
 #### Parameters
 
--   `method` **[string][249]** Factomd API method name.
--   `params` **[Object][243]?** The object that the factomd API is expecting.
--   `requestConfig` **[Object][243]?** Request configuration.
-    -   `requestConfig.timeout` **[number][250]?** Timeout in milliseconds for the request. Override the timeout set at the instance level.
-    -   `requestConfig.retry` **[Object][243]?** Retry strategy. For the detail of the options see [https://github.com/tim-kos/node-retry#retrytimeoutsoptions][268].
+-   `method` **[string][260]** Factomd API method name.
+-   `params` **[Object][257]?** The object that the factomd API is expecting.
+-   `requestConfig` **[Object][257]?** Request configuration.
+    -   `requestConfig.timeout` **[number][258]?** Timeout in milliseconds for the request. Override the timeout set at the instance level.
+    -   `requestConfig.retry` **[Object][257]?** Retry strategy. For the detail of the options see [https://github.com/tim-kos/node-retry#retrytimeoutsoptions][295].
         Override the retry strategy set at the instance level.
 
-Returns **[Promise][253]&lt;[Object][243]>** Factomd API response.
+Returns **[Promise][280]&lt;[Object][257]>** Factomd API response.
 
 ### getAdminBlock
 
-[src/factom-cli.js:553-555][269]
+[src/factom-cli.js:553-555][296]
 
 Get an admin block by keyMR or height.
 
 #### Parameters
 
--   `arg` **([string][249] \| [number][250])** Either KeyMR (string) or height (number) of the admin block.
+-   `arg` **([string][260] \| [number][258])** Either KeyMR (string) or height (number) of the admin block.
 
-Returns **[Promise][253]&lt;[AdminBlock][270]>** 
+Returns **[Promise][280]&lt;[AdminBlock][297]>** 
 
 ### getAllEntriesOfChain
 
-[src/factom-cli.js:292-294][271]
+[src/factom-cli.js:292-294][298]
 
 Get all the entries of a given chain.
 
 #### Parameters
 
--   `chainId` **[string][249]** Chain ID of the chain to retrieve all the entries from.
+-   `chainId` **[string][260]** Chain ID of the chain to retrieve all the entries from.
 
-Returns **[Promise][253]&lt;[Array][247]&lt;[Entry][248]>>** Array of entries ordered from the oldest to the newest.
+Returns **[Promise][280]&lt;[Array][271]&lt;[Entry][278]>>** Array of entries ordered from the oldest to the newest.
 
 ### getBalance
 
-[src/factom-cli.js:345-347][272]
+[src/factom-cli.js:345-347][299]
 
 Get the balance of an Entry Credit or Factoid address.
 
 #### Parameters
 
--   `address` **[string][249]** Any type of address, FCT or EC, public or private.
+-   `address` **[string][260]** Any type of address, FCT or EC, public or private.
 
-Returns **[Promise][253]&lt;[number][250]>** Balance of EC or FCT. In the case of FCT the balance is in factoshis (10^-8 factoids).
+Returns **[Promise][280]&lt;[number][258]>** Balance of EC or FCT. In the case of FCT the balance is in factoshis (10^-8 factoids).
 
 ### getChainHead
 
-[src/factom-cli.js:304-306][273]
+[src/factom-cli.js:304-306][300]
 
 Get the head of a given chain.
 
 #### Parameters
 
--   `chainId` **[string][249]** Chain ID.
+-   `chainId` **[string][260]** Chain ID.
 
-Returns **[Promise][253]&lt;{keyMR: [string][249], chainInProcessList: [boolean][251]}>** result - keymr of the head of the chain.
+Returns **[Promise][280]&lt;{keyMR: [string][260], chainInProcessList: [boolean][261]}>** result - keymr of the head of the chain.
 chainInProcessList indicates if there is an Entry Block for that chain currently in the process list.
 If this is the case that would indicate that the head of that chain will change at the next block.
 
 ### getDirectoryBlock
 
-[src/factom-cli.js:543-545][274]
+[src/factom-cli.js:543-545][301]
 
 Get a directory block by keyMR or height.
 
 #### Parameters
 
--   `arg` **([string][249] \| [number][250])** Either KeyMR (string) or height (number) of the directory block.
+-   `arg` **([string][260] \| [number][258])** Either KeyMR (string) or height (number) of the directory block.
 
-Returns **[Promise][253]&lt;[DirectoryBlock][275]>** 
+Returns **[Promise][280]&lt;[DirectoryBlock][302]>** 
 
 ### getDirectoryBlockHead
 
-[src/factom-cli.js:533-535][276]
+[src/factom-cli.js:533-535][303]
 
 Return latest directory block saved.
 
-Returns **[Promise][253]&lt;[DirectoryBlock][275]>** 
+Returns **[Promise][280]&lt;[DirectoryBlock][302]>** 
 
 ### getEntry
 
-[src/factom-cli.js:314-316][277]
+[src/factom-cli.js:314-316][304]
 
-Get entry by hash (returned Entry does not contain an [EntryBlockContext][197] and a timestamp). See [FactomCli#getEntryWithBlockContext][278].
+Get entry by hash (returned Entry does not contain an [EntryBlockContext][208] and a timestamp). See [FactomCli#getEntryWithBlockContext][305].
 
 #### Parameters
 
--   `entryHash` **[string][249]** Hash of the entry to query.
+-   `entryHash` **[string][260]** Hash of the entry to query.
 
-Returns **[Promise][253]&lt;[Entry][248]>** Entry that does not contain an [EntryBlockContext][197] and a timestamp).
+Returns **[Promise][280]&lt;[Entry][278]>** Entry that does not contain an [EntryBlockContext][208] and a timestamp).
 
 ### getEntryBlock
 
-[src/factom-cli.js:583-585][279]
+[src/factom-cli.js:583-585][306]
 
 Get an entry block.
 
 #### Parameters
 
--   `keyMR` **[string][249]** KeyMR of the entry block.
+-   `keyMR` **[string][260]** KeyMR of the entry block.
 
-Returns **[Promise][253]&lt;[EntryBlock][280]>** 
+Returns **[Promise][280]&lt;[EntryBlock][307]>** 
 
 ### getEntryCreditBlock
 
-[src/factom-cli.js:563-565][281]
+[src/factom-cli.js:563-565][308]
 
 Get an entry credit block by keyMR or height.
 
 #### Parameters
 
--   `arg` **([string][249] \| [number][250])** Either KeyMR (string) or height (number) of the entry credit block.
+-   `arg` **([string][260] \| [number][258])** Either KeyMR (string) or height (number) of the entry credit block.
 
-Returns **[Promise][253]&lt;[EntryCreditBlock][282]>** 
+Returns **[Promise][280]&lt;[EntryCreditBlock][309]>** 
 
 ### getEntryCreditRate
 
-[src/factom-cli.js:364-366][283]
+[src/factom-cli.js:364-366][310]
 
 Get the current entry credit rate. The rate is the number of factoshis (10^-8 Factoids) necessary to purchase 1 EC.
 
-Returns **[Promise][253]&lt;[number][250]>** Entry credit rate.
+Returns **[Promise][280]&lt;[number][258]>** Entry credit rate.
 
 ### getEntryWithBlockContext
 
-[src/factom-cli.js:325-327][284]
+[src/factom-cli.js:325-327][311]
 
-Get entry by hash with its [EntryBlockContext][197] and timestamp.
-Note that this method is more expensive than [FactomCli#getEntry][285] as it also has to retrieve the Entry Block data.
+Get entry by hash with its [EntryBlockContext][208] and timestamp.
+Note that this method is more expensive than [FactomCli#getEntry][312] as it also has to retrieve the Entry Block data.
 
 #### Parameters
 
--   `entryHash` **[string][249]** Hash of the entry to query.
+-   `entryHash` **[string][260]** Hash of the entry to query.
 
-Returns **[Promise][253]&lt;[Entry][248]>** Entry with its blockContext and timestamp populated.
+Returns **[Promise][280]&lt;[Entry][278]>** Entry with its blockContext and timestamp populated.
 
 ### getFactoidBlock
 
-[src/factom-cli.js:573-575][286]
+[src/factom-cli.js:573-575][313]
 
 Get a Factoid block by keyMR or height.
 
 #### Parameters
 
--   `arg` **([string][249] \| [number][250])** Either KeyMR (string) or height (number) of the factoid block.
+-   `arg` **([string][260] \| [number][258])** Either KeyMR (string) or height (number) of the factoid block.
 
-Returns **[Promise][253]&lt;[FactoidBlock][287]>** 
+Returns **[Promise][280]&lt;[FactoidBlock][314]>** 
 
 ### getFirstEntry
 
-[src/factom-cli.js:335-337][288]
+[src/factom-cli.js:335-337][315]
 
 Get the first entry of a chain. This methods has to rewind the entire chain which can be an expensive operation.
 
 #### Parameters
 
--   `chainId` **[string][249]** Chain ID to retrieve the first entry from.
+-   `chainId` **[string][260]** Chain ID to retrieve the first entry from.
 
-Returns **[Promise][253]&lt;[Entry][248]>** Entry with its blockContext and timestamp populated.
+Returns **[Promise][280]&lt;[Entry][278]>** Entry with its blockContext and timestamp populated.
 
 ### getHeights
 
-[src/factom-cli.js:524-526][289]
+[src/factom-cli.js:524-526][316]
 
-Return blockchain heights. For the explanation of the different heights see [https://docs.factom.com/api#heights][290].
+Return blockchain heights. For the explanation of the different heights see [https://docs.factom.com/api#heights][317].
 
-Returns **[Promise][253]&lt;{directoryBlockHeight: [number][250], leaderHeight: [number][250], entryBlockHeight: [number][250], entryHeight: [number][250]}>** 
+Returns **[Promise][280]&lt;{directoryBlockHeight: [number][258], leaderHeight: [number][258], entryBlockHeight: [number][258], entryHeight: [number][258]}>** 
 
 ### getPrivateAddress
 
-[src/factom-cli.js:280-282][291]
+[src/factom-cli.js:280-282][318]
 
 Retrieve the corresponding private address of any type of address from factom-walletd if necessary.
 
 #### Parameters
 
--   `address` **[string][249]** Any address (EC or FCT, public or private).
+-   `address` **[string][260]** Any address (EC or FCT, public or private).
 
-Returns **[Promise][253]&lt;[string][249]>** Corresponding private address.
+Returns **[Promise][280]&lt;[string][260]>** Corresponding private address.
 
 ### getTransaction
 
-[src/factom-cli.js:374-376][292]
+[src/factom-cli.js:374-376][319]
 
 Get Factoid transaction by id.
 
 #### Parameters
 
--   `txId` **[string][249]** Transaction id.
+-   `txId` **[string][260]** Transaction id.
 
-Returns **[Transaction][264]** 
+Returns **[Transaction][291]** 
 
 ### reveal
 
-[src/factom-cli.js:116-118][293]
+[src/factom-cli.js:116-118][320]
 
 Reveal an Entry or Chain.
 
 #### Parameters
 
--   `obj` **([Entry][248] \| [Chain][246])** Entry or Chain to reveal.
--   `revealAckTimeout` **[number][250]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
+-   `obj` **([Entry][278] \| [Chain][277])** Entry or Chain to reveal.
+-   `revealAckTimeout` **[number][258]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
 
-Returns **[Promise][253]&lt;{chainId: [string][249], entryHash: [string][249]}>** 
+Returns **[Promise][280]&lt;{chainId: [string][260], entryHash: [string][260]}>** 
 
 ### revealChain
 
-[src/factom-cli.js:127-129][294]
+[src/factom-cli.js:127-129][321]
 
 Reveal a Chain.
 
 #### Parameters
 
--   `chain` **[Chain][246]** Chain to reveal.
--   `revealAckTimeout` **[number][250]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
+-   `chain` **[Chain][277]** Chain to reveal.
+-   `revealAckTimeout` **[number][258]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
 
-Returns **[Promise][253]&lt;{chainId: [string][249], entryHash: [string][249]}>** 
+Returns **[Promise][280]&lt;{chainId: [string][260], entryHash: [string][260]}>** 
 
 ### revealEntry
 
-[src/factom-cli.js:138-140][295]
+[src/factom-cli.js:138-140][322]
 
 Reveal a Entry.
 
 #### Parameters
 
--   `entry` **[Entry][248]** Entry to reveal.
--   `revealAckTimeout` **[number][250]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
+-   `entry` **[Entry][278]** Entry to reveal.
+-   `revealAckTimeout` **[number][258]** Time to wait in seconds for the reveal ack. If negative value, doesn't wait for ack. (optional, default `60`)
 
-Returns **[Promise][253]&lt;{chainId: [string][249], entryHash: [string][249]}>** 
+Returns **[Promise][280]&lt;{chainId: [string][260], entryHash: [string][260]}>** 
 
 ### rewindChainWhile
 
-[src/factom-cli.js:389-391][296]
+[src/factom-cli.js:389-391][323]
 
 Rewind a chain entry by entry (newest to oldest) while a predicate is true.
 
 #### Parameters
 
--   `chainId` **[string][249]** Chain to rewind.
--   `predicate` **function ([Entry][248])** Predicate of the while loop. Iteration stop if either the predicate is false or the end of the chain has been reached.
--   `func` **function ([Entry][248])** Function to apply at each iteration.
+-   `chainId` **[string][260]** Chain to rewind.
+-   `predicate` **function ([Entry][278])** Predicate of the while loop. Iteration stop if either the predicate is false or the end of the chain has been reached.
+-   `func` **function ([Entry][278])** Function to apply at each iteration.
 
 #### Examples
 
@@ -750,7 +906,7 @@ cli.rewindChainWhile('dab6c095c22ec6db1b0961fdb82d504a95f0a31467bb7df73cc793532b
 
 ### sendTransaction
 
-[src/factom-cli.js:406-408][297]
+[src/factom-cli.js:406-408][324]
 
 Send a Factoid transaction.
 This method will throw if the transaction fees are too low given the current EC rate.
@@ -758,318 +914,318 @@ Note that by default this method also rejects a transaction over paying the mini
 
 #### Parameters
 
--   `transaction` **[Transaction][264]** 
--   `options` **[Object][243]?** 
-    -   `options.timeout` **[number][250]** Time to wait in seconds for transaction acknowledgment before timing out. If negative value, doesn't wait for ack. (optional, default `60`)
-    -   `options.force` **[boolean][251]** Set to true to bypass the checks of the transaction fee overpay and the minimum EC output amount. (optional, default `false`)
+-   `transaction` **[Transaction][291]** 
+-   `options` **[Object][257]?** 
+    -   `options.timeout` **[number][258]** Time to wait in seconds for transaction acknowledgment before timing out. If negative value, doesn't wait for ack. (optional, default `60`)
+    -   `options.force` **[boolean][261]** Set to true to bypass the checks of the transaction fee overpay and the minimum EC output amount. (optional, default `false`)
 
-Returns **[Promise][253]&lt;[string][249]>** Transaction ID.
+Returns **[Promise][280]&lt;[string][260]>** Transaction ID.
 
 ### waitOnCommitAck
 
-[src/factom-cli.js:458-460][298]
+[src/factom-cli.js:458-460][325]
 
 Wait until an acknowlegment is received from the network for a commit.
 
 #### Parameters
 
--   `txId` **[string][249]** Commit transaction ID.
--   `timeout` **[number][250]** Wait time in seconds. (optional, default `60`)
+-   `txId` **[string][260]** Commit transaction ID.
+-   `timeout` **[number][258]** Wait time in seconds. (optional, default `60`)
 
-Returns **[Promise][253]&lt;[string][249]>** Status of the commit. See [https://docs.factom.com/api#ack][299].
+Returns **[Promise][280]&lt;[string][260]>** Status of the commit. See [https://docs.factom.com/api#ack][326].
 
 ### waitOnFactoidTransactionAck
 
-[src/factom-cli.js:481-483][300]
+[src/factom-cli.js:481-483][327]
 
 Wait until an acknowlegment is received from the network for a Factoid transaction.
 
 #### Parameters
 
--   `txId` **[string][249]** Transaction ID.
--   `timeout` **[number][250]** Wait time in seconds. (optional, default `60`)
+-   `txId` **[string][260]** Transaction ID.
+-   `timeout` **[number][258]** Wait time in seconds. (optional, default `60`)
 
-Returns **[Promise][253]&lt;[string][249]>** Status of the transaction. See [https://docs.factom.com/api#ack][299].
+Returns **[Promise][280]&lt;[string][260]>** Status of the transaction. See [https://docs.factom.com/api#ack][326].
 
 ### waitOnRevealAck
 
-[src/factom-cli.js:470-472][301]
+[src/factom-cli.js:470-472][328]
 
 Wait until an acknowlegment is received from the network for a reveal.
 
 #### Parameters
 
--   `hash` **[string][249]** Hash of the revealed entry.
--   `chainId` **[string][249]** Chain ID of the revealed entry.
--   `timeout` **[number][250]** Wait time in seconds. (optional, default `60`)
+-   `hash` **[string][260]** Hash of the revealed entry.
+-   `chainId` **[string][260]** Chain ID of the revealed entry.
+-   `timeout` **[number][258]** Wait time in seconds. (optional, default `60`)
 
-Returns **[Promise][253]&lt;[string][249]>** Status of the reveal. See [https://docs.factom.com/api#ack][299].
+Returns **[Promise][280]&lt;[string][260]>** Status of the reveal. See [https://docs.factom.com/api#ack][326].
 
 ### walletdApi
 
-[src/factom-cli.js:513-515][302]
+[src/factom-cli.js:513-515][329]
 
-Make a direct call to factom-walletd API. See [https://docs.factom.com/api#factom-walletd-api][303].
+Make a direct call to factom-walletd API. See [https://docs.factom.com/api#factom-walletd-api][330].
 
 #### Parameters
 
--   `method` **[string][249]** Walletd API method name.
--   `params` **[Object][243]?** The object that the walletd API is expecting.
--   `requestConfig` **[Object][243]?** Request configuration.
-    -   `requestConfig.timeout` **[number][250]?** Timeout in milliseconds for the request. Override the timeout set at the instance level.
-    -   `requestConfig.retry` **[Object][243]?** Retry strategy. For the detail of the options see [https://github.com/tim-kos/node-retry#retrytimeoutsoptions][268].
+-   `method` **[string][260]** Walletd API method name.
+-   `params` **[Object][257]?** The object that the walletd API is expecting.
+-   `requestConfig` **[Object][257]?** Request configuration.
+    -   `requestConfig.timeout` **[number][258]?** Timeout in milliseconds for the request. Override the timeout set at the instance level.
+    -   `requestConfig.retry` **[Object][257]?** Retry strategy. For the detail of the options see [https://github.com/tim-kos/node-retry#retrytimeoutsoptions][295].
         Override the retry strategy set at the instance level.
 
-Returns **[Promise][253]&lt;[Object][243]>** Walletd API response.
+Returns **[Promise][280]&lt;[Object][257]>** Walletd API response.
 
 ## addressToKey
 
-[src/addresses.js:141-151][304]
+[src/addresses.js:141-151][331]
 
-Extract the key contained in an address. Cannot be used with public FCT address as those contain a RCD hash and not a key (See [addressToRcdHash][78]).
+Extract the key contained in an address. Cannot be used with public FCT address as those contain a RCD hash and not a key (See [addressToRcdHash][95]).
 
 ### Parameters
 
--   `address` **[string][249]** Any address, except public FCT address.
+-   `address` **[string][260]** Any address, except public FCT address.
 
-Returns **[Buffer][252]** Key contained in the address.
+Returns **[Buffer][279]** Key contained in the address.
 
 ## addressToRcdHash
 
-[src/addresses.js:158-163][305]
+[src/addresses.js:158-163][332]
 
 Extract the RCD hash from a public FCT address.
 
 ### Parameters
 
--   `address` **[string][249]** Public FCT address.
+-   `address` **[string][260]** Public FCT address.
 
-Returns **[Buffer][252]** RCD hash.
+Returns **[Buffer][279]** RCD hash.
 
 ## AdminBlock
 
-[src/blocks.js:86-113][306]
+[src/blocks.js:86-113][333]
 
 Class representing an Admin block.
 
 ### Properties
 
--   `backReferenceHash` **[string][249]** Back reference hash.
--   `lookupHash` **[string][249]** Lookup hash.
--   `directoryBlockHeight` **[number][250]** Directory block height.
--   `previousBackReferenceHash` **[string][249]** Back reference hash of previous Admin block.
--   `headerExpansionSize` **[number][250]** Header expansion size.
--   `headerExpansionArea` **[string][249]** Header expansion area.
--   `bodySize` **[number][250]** Size of the body.
--   `entries` **[Object][243]** Admin entries. Each entry has its own type (can be identified either by its adminId (number) or its adminCode (string)).
+-   `backReferenceHash` **[string][260]** Back reference hash.
+-   `lookupHash` **[string][260]** Lookup hash.
+-   `directoryBlockHeight` **[number][258]** Directory block height.
+-   `previousBackReferenceHash` **[string][260]** Back reference hash of previous Admin block.
+-   `headerExpansionSize` **[number][258]** Header expansion size.
+-   `headerExpansionArea` **[string][260]** Header expansion area.
+-   `bodySize` **[number][258]** Size of the body.
+-   `entries` **[Object][257]** Admin entries. Each entry has its own type (can be identified either by its adminId (number) or its adminCode (string)).
 
 ### getEntriesOfTypes
 
-[src/blocks.js:109-112][307]
+[src/blocks.js:109-112][334]
 
 Return all the admin entries for given types.
 
 #### Parameters
 
--   `types` **...([number][250] \| [string][249])** A sequence of either numbers representing an adminId or strings representing an adminCode.
+-   `types` **...([number][258] \| [string][260])** A sequence of either numbers representing an adminId or strings representing an adminCode.
 
-Returns **[Object][243]** Admin entries.
+Returns **[Object][257]** Admin entries.
 
 ## EntryBuilder
 
-[src/entry.js:197-289][308]
+[src/entry.js:197-289][335]
 
-Class to build an [Entry][124]
+Class to build an [Entry][141]
 
 ### Parameters
 
--   `entry` **([Entry][248] \| [Object][243])?** Optional entry to use to initialize the attributes of the builder.
+-   `entry` **([Entry][278] \| [Object][257])?** Optional entry to use to initialize the attributes of the builder.
 
 ### blockContext
 
-[src/entry.js:277-280][309]
+[src/entry.js:277-280][336]
 
 Set block context. This method is used internally by the library to populate a block context,
 regular users should not have to use this.
 
 #### Parameters
 
--   `blockContext` **[EntryBlockContext][310]** 
+-   `blockContext` **[EntryBlockContext][337]** 
 
-Returns **[EntryBuilder][311]** EntryBuilder instance.
+Returns **[EntryBuilder][338]** EntryBuilder instance.
 
 ### build
 
-[src/entry.js:286-288][312]
+[src/entry.js:286-288][339]
 
 Build the Entry.
 
-Returns **[Entry][248]** Built entry.
+Returns **[Entry][278]** Built entry.
 
 ### chainId
 
-[src/entry.js:230-235][313]
+[src/entry.js:230-235][340]
 
 Set chain ID.
 
 #### Parameters
 
--   `chainId` **([string][249] \| [Buffer][252])** Chain ID.
--   `enc` **[string][249]** Encoding of the chainId if it is a string. (optional, default `hex`)
+-   `chainId` **([string][260] \| [Buffer][279])** Chain ID.
+-   `enc` **[string][260]** Encoding of the chainId if it is a string. (optional, default `hex`)
 
-Returns **[EntryBuilder][311]** EntryBuilder instance.
+Returns **[EntryBuilder][338]** EntryBuilder instance.
 
 ### content
 
-[src/entry.js:218-223][314]
+[src/entry.js:218-223][341]
 
 Set content.
 
 #### Parameters
 
--   `content` **([string][249] \| [Buffer][252])** | Content.
--   `enc` **[string][249]** Encoding of the content if it is a string. (optional, default `hex`)
+-   `content` **([string][260] \| [Buffer][279])** | Content.
+-   `enc` **[string][260]** Encoding of the content if it is a string. (optional, default `hex`)
 
-Returns **[EntryBuilder][311]** EntryBuilder instance.
+Returns **[EntryBuilder][338]** EntryBuilder instance.
 
 ### extId
 
-[src/entry.js:254-259][315]
+[src/entry.js:254-259][342]
 
 Add an external ID.
 
 #### Parameters
 
--   `extId` **([string][249] \| [Buffer][252])** External ID.
--   `enc` **[string][249]** Encoding of the external id if it is a string. (optional, default `hex`)
+-   `extId` **([string][260] \| [Buffer][279])** External ID.
+-   `enc` **[string][260]** Encoding of the external id if it is a string. (optional, default `hex`)
 
-Returns **[EntryBuilder][311]** EntryBuilder instance.
+Returns **[EntryBuilder][338]** EntryBuilder instance.
 
 ### extIds
 
-[src/entry.js:242-247][316]
+[src/entry.js:242-247][343]
 
 Set external IDs.
 
 #### Parameters
 
--   `extIds` **([Array][247]&lt;[string][249]> | [Array][247]&lt;[Buffer][252]>)** External IDs.
--   `enc` **[string][249]** Encoding of the external ids if they are strings. (optional, default `hex`)
+-   `extIds` **([Array][271]&lt;[string][260]> | [Array][271]&lt;[Buffer][279]>)** External IDs.
+-   `enc` **[string][260]** Encoding of the external ids if they are strings. (optional, default `hex`)
 
-Returns **[EntryBuilder][311]** EntryBuilder instance.
+Returns **[EntryBuilder][338]** EntryBuilder instance.
 
 ### timestamp
 
-[src/entry.js:266-269][317]
+[src/entry.js:266-269][344]
 
 Set the timestamp for the entry commit.
 If not set the library will use Date.now() as the commit timestamp.
 
 #### Parameters
 
--   `timestamp` **[number][250]** Timestamp in milliseconds.
+-   `timestamp` **[number][258]** Timestamp in milliseconds.
 
-Returns **[EntryBuilder][311]** EntryBuilder instance.
+Returns **[EntryBuilder][338]** EntryBuilder instance.
 
 ## TransactionBuilder
 
-[src/transaction.js:298-390][318]
+[src/transaction.js:300-392][345]
 
-Class to build a [Transaction][110].
+Class to build a [Transaction][127].
 
 ### Parameters
 
--   `transaction` **[Transaction][264]?** Optional transaction to use to initialize the attributes of the builder.
+-   `transaction` **[Transaction][291]?** Optional transaction to use to initialize the attributes of the builder.
 
 ### build
 
-[src/transaction.js:387-389][319]
+[src/transaction.js:389-391][346]
 
 Build the Transaction.
 
-Returns **[Transaction][264]** Built transaction.
+Returns **[Transaction][291]** Built transaction.
 
 ### input
 
-[src/transaction.js:325-339][320]
+[src/transaction.js:327-341][347]
 
 Add an input to the transaction.
 
 #### Parameters
 
--   `fctAddress` **[string][249]** Factoid address.
+-   `fctAddress` **[string][260]** Factoid address.
     User should provide a private address (Fs) to allow the signature of the transaction.
-    If a public address is provided the user will need to provide the RCD and signature using [TransactionBuilder#rcdSignature][321].
--   `amount` **[number][250]** Amount in factoshis (10^-8 Factoids).
+    If a public address is provided the user will need to provide the RCD and signature using [TransactionBuilder#rcdSignature][348].
+-   `amount` **[number][258]** Amount in factoshis (10^-8 Factoids).
 
-Returns **[TransactionBuilder][322]** TransactionBuilder instance.
+Returns **[TransactionBuilder][349]** TransactionBuilder instance.
 
 ### output
 
-[src/transaction.js:348-357][323]
+[src/transaction.js:350-359][350]
 
 Add an output to the transaction. Both FCT and EC outputs are supported.
 Please note that in case of an EC output, the amount is still in factoshis, it is not the number of Entry Credits.
 
 #### Parameters
 
--   `publicAddress` **[string][249]** Factoid or Entry Credit public address.
--   `amount` **[number][250]** Amount in factoshis (10^-8 Factoids).
+-   `publicAddress` **[string][260]** Factoid or Entry Credit public address.
+-   `amount` **[number][258]** Amount in factoshis (10^-8 Factoids).
 
-Returns **[TransactionBuilder][322]** TransactionBuilder instance.
+Returns **[TransactionBuilder][349]** TransactionBuilder instance.
 
 ### rcdSignature
 
-[src/transaction.js:366-370][324]
+[src/transaction.js:368-372][351]
 
 Add a RCD and signature to the transaction. This is used only in the case of unsigned transactions (usefull for hardware wallets).
 RCDs/signatures need to be added in the same order as their corresponding inputs.
 
 #### Parameters
 
--   `rcd` **[string][249]** RCD.
--   `signature` **[string][249]** Signature.
+-   `rcd` **[string][260]** RCD.
+-   `signature` **[string][260]** Signature.
 
-Returns **[TransactionBuilder][322]** TransactionBuilder instance.
+Returns **[TransactionBuilder][349]** TransactionBuilder instance.
 
 ### timestamp
 
-[src/transaction.js:378-381][325]
+[src/transaction.js:380-383][352]
 
 Set the transaction timestamp.
 If not set the library will use Date.now() as the transaction timestamp.
 
 #### Parameters
 
--   `timestamp` **[number][250]** Timestamp in milliseconds.
+-   `timestamp` **[number][258]** Timestamp in milliseconds.
 
-Returns **[TransactionBuilder][322]** TransactionBuilder instance.
+Returns **[TransactionBuilder][349]** TransactionBuilder instance.
 
 ## Transaction
 
-[src/transaction.js:86-272][326]
+[src/transaction.js:86-272][353]
 
 Class representing a Factoid transaction.
 
 ### Parameters
 
--   `builder` **[TransactionBuilder][322]** 
--   `blockContext` **[TransactionBlockContext][327]?** 
+-   `builder` **[TransactionBuilder][349]** 
+-   `blockContext` **[TransactionBlockContext][354]?** 
 
 ### Properties
 
--   `id` **[string][249]** Transaction ID.
--   `timestamp` **[number][250]** Timestamp in milliseconds.
--   `inputs` **[Array][247]&lt;[TransactionAddress][328]>** Inputs.
--   `factoidOutputs` **[Array][247]&lt;[TransactionAddress][328]>** Factoid outputs.
--   `entryCreditOutputs` **[Array][247]&lt;[TransactionAddress][328]>** Entry Credit outputs.
--   `totalInputs` **[number][250]** Total amount of factoshis as input of this transaction.
--   `totalFactoidOutputs` **[number][250]** Total amount of factoshis as factoid outputs of this transaction.
--   `totalEntryCreditOutputs` **[number][250]** Total amount of factoshis as entry credit outputs of this transaction.
--   `feesPaid` **[number][250]** Fees paid in this transaction.
--   `blockContext` **[TransactionBlockContext][327]** Block context.
--   `rcds` **[Array][247]&lt;[Buffer][252]>** RCDs.
--   `signatures` **[Array][247]&lt;[Buffer][252]>** Signatures.
+-   `id` **[string][260]** Transaction ID.
+-   `timestamp` **[number][258]** Timestamp in milliseconds.
+-   `inputs` **[Array][271]&lt;[TransactionAddress][355]>** Inputs.
+-   `factoidOutputs` **[Array][271]&lt;[TransactionAddress][355]>** Factoid outputs.
+-   `entryCreditOutputs` **[Array][271]&lt;[TransactionAddress][355]>** Entry Credit outputs.
+-   `totalInputs` **[number][258]** Total amount of factoshis as input of this transaction.
+-   `totalFactoidOutputs` **[number][258]** Total amount of factoshis as factoid outputs of this transaction.
+-   `totalEntryCreditOutputs` **[number][258]** Total amount of factoshis as entry credit outputs of this transaction.
+-   `feesPaid` **[number][258]** Fees paid in this transaction.
+-   `blockContext` **[TransactionBlockContext][354]** Block context.
+-   `rcds` **[Array][271]&lt;[Buffer][279]>** RCDs.
+-   `signatures` **[Array][271]&lt;[Buffer][279]>** Signatures.
 
 ### Examples
 
@@ -1087,84 +1243,84 @@ const transaction = Transaction.builder()
 
 ### computeEcRequiredFees
 
-[src/transaction.js:211-244][329]
+[src/transaction.js:211-244][356]
 
 Compute the required Entry Credit fees.
 
 #### Parameters
 
--   `opts` **[Object][243]?** Extra options necessary to compute fees of an unsigned transaction.
+-   `opts` **[Object][257]?** Extra options necessary to compute fees of an unsigned transaction.
 
-Returns **[number][250]** Fees in Entry Credit.
+Returns **[number][258]** Fees in Entry Credit.
 
 ### computeRequiredFees
 
-[src/transaction.js:202-204][330]
+[src/transaction.js:202-204][357]
 
 Compute the required fees (minimum difference between inputs and outputs amounts) for the transaction (for a given EC rate).
 
 #### Parameters
 
--   `ecRate` **[number][250]** Entry Credit rate. See [FactomCli#getEntryCreditRate][331].
--   `opts` **[Object][243]?** Extra options necessary to compute fees of an unsigned transaction.
+-   `ecRate` **[number][258]** Entry Credit rate. See [FactomCli#getEntryCreditRate][358].
+-   `opts` **[Object][257]?** Extra options necessary to compute fees of an unsigned transaction.
 
-Returns **[number][250]** Number of factoshis (10^-8 Factoids) required as fees for this transaction.
+Returns **[number][258]** Number of factoshis (10^-8 Factoids) required as fees for this transaction.
 
 ### isSigned
 
-[src/transaction.js:183-185][332]
+[src/transaction.js:183-185][359]
 
 Check if the transaction is signed or not.
 
-Returns **[boolean][251]** True if the transaction is signed.
+Returns **[boolean][261]** True if the transaction is signed.
 
 ### marshalBinary
 
-[src/transaction.js:249-262][333]
+[src/transaction.js:249-262][360]
 
-Returns **[Buffer][252]** Result of marshaling the transaction.
+Returns **[Buffer][279]** Result of marshaling the transaction.
 
 ### validateFees
 
-[src/transaction.js:192-194][334]
+[src/transaction.js:192-194][361]
 
 Compute if the fees of the transaction are enough (for a given EC rate).
 
 #### Parameters
 
--   `ecRate` **[number][250]** Entry Credit rate. See [FactomCli#getEntryCreditRate][331].
+-   `ecRate` **[number][258]** Entry Credit rate. See [FactomCli#getEntryCreditRate][358].
 
-Returns **[boolean][251]** True if the fees are sufficient.
+Returns **[boolean][261]** True if the fees are sufficient.
 
 ### builder
 
-[src/transaction.js:269-271][335]
+[src/transaction.js:269-271][362]
 
 Transaction builder static factory.
 
 #### Parameters
 
--   `transaction` **[Transaction][264]?** Optional transaction to use to initialize the attributes of the builder.
+-   `transaction` **[Transaction][291]?** Optional transaction to use to initialize the attributes of the builder.
 
-Returns **[TransactionBuilder][322]** A new TransactionBuilder.
+Returns **[TransactionBuilder][349]** A new TransactionBuilder.
 
 ## Entry
 
-[src/entry.js:26-187][336]
+[src/entry.js:26-187][363]
 
 Class representing an Entry.
 
 ### Parameters
 
--   `builder` **[EntryBuilder][311]** 
+-   `builder` **[EntryBuilder][338]** 
 
 ### Properties
 
--   `chainId` **[Buffer][252]** Chain ID.
--   `extIds` **[Array][247]&lt;[Buffer][252]>** External IDs.
--   `content` **[Buffer][252]** Content.
--   `timestamp` **[number][250]** Timestamp in milliseconds for the commit.
--   `blockContext` **[EntryBlockContext][310]** Block context. This property is _not_ populated when using the method getEntry.
+-   `chainId` **[Buffer][279]** Chain ID.
+-   `extIds` **[Array][271]&lt;[Buffer][279]>** External IDs.
+-   `content` **[Buffer][279]** Content.
+-   `timestamp` **[number][258]** Timestamp in milliseconds for the commit.
+-   `blockContext` **[EntryBlockContext][337]** Block context. This property is _not_ populated when using the method getEntry.
 
 ### Examples
 
@@ -1179,119 +1335,119 @@ const myEntry = Entry.builder()
 
 ### chainIdHex
 
-[src/entry.js:43-45][337]
+[src/entry.js:43-45][364]
 
-Returns **[string][249]** Chain ID of the entry as hex encoded string.
+Returns **[string][260]** Chain ID of the entry as hex encoded string.
 
 ### contentHex
 
-[src/entry.js:50-52][338]
+[src/entry.js:50-52][365]
 
-Returns **[string][249]** Entry content as hex encoded string.
+Returns **[string][260]** Entry content as hex encoded string.
 
 ### ecCost
 
-[src/entry.js:152-159][339]
+[src/entry.js:152-159][366]
 
 Get Entry Credit cost of the entry.
 
-Returns **[number][250]** EC cost of the entry.
+Returns **[number][258]** EC cost of the entry.
 
 ### extIdsHex
 
-[src/entry.js:57-59][340]
+[src/entry.js:57-59][367]
 
-Returns **[Array][247]&lt;[string][249]>** External ids as hex encoded strings.
+Returns **[Array][271]&lt;[string][260]>** External ids as hex encoded strings.
 
 ### hash
 
-[src/entry.js:116-119][341]
+[src/entry.js:116-119][368]
 
 Get hash of the entry.
 
-Returns **[Buffer][252]** Hash of the entry.
+Returns **[Buffer][279]** Hash of the entry.
 
 ### hashHex
 
-[src/entry.js:124-126][342]
+[src/entry.js:124-126][369]
 
-Returns **[string][249]** Hash of the entry as hex encoded string.
+Returns **[string][260]** Hash of the entry as hex encoded string.
 
 ### marshalBinary
 
-[src/entry.js:131-139][343]
+[src/entry.js:131-139][370]
 
-Returns **[Buffer][252]** Result of marshaling the entry.
+Returns **[Buffer][279]** Result of marshaling the entry.
 
 ### marshalBinaryHex
 
-[src/entry.js:144-146][344]
+[src/entry.js:144-146][371]
 
-Returns **[string][249]** Result of marshaling the entry as hex encoded string.
+Returns **[string][260]** Result of marshaling the entry as hex encoded string.
 
 ### payloadSize
 
-[src/entry.js:74-76][345]
+[src/entry.js:74-76][372]
 
 Get the entry payload size (excluding the header).
 
-Returns **[number][250]** The entry payload size in bytes.
+Returns **[number][258]** The entry payload size in bytes.
 
 ### rawDataSize
 
-[src/entry.js:82-84][346]
+[src/entry.js:82-84][373]
 
 Get the entry raw data size (payload size excluding the 2 byte overhead per extID).
 
-Returns **[number][250]** The entry raw size in bytes.
+Returns **[number][258]** The entry raw size in bytes.
 
 ### remainingFreeBytes
 
-[src/entry.js:90-97][347]
+[src/entry.js:90-97][374]
 
 Get the number of bytes that can be added to the entry for the same EC cost.
 
-Returns **[number][250]** Remaining number of free bytes.
+Returns **[number][258]** Remaining number of free bytes.
 
 ### remainingMaxBytes
 
-[src/entry.js:103-110][348]
+[src/entry.js:103-110][375]
 
 Get the number of bytes that can be added to the entry before hitting the maximum (10kb).
 
-Returns **[number][250]** Maximum number of bytes that can still be added to the entry.
+Returns **[number][258]** Maximum number of bytes that can still be added to the entry.
 
 ### size
 
-[src/entry.js:65-68][349]
+[src/entry.js:65-68][376]
 
 Get the entry size.
 
-Returns **[number][250]** The entry size in bytes.
+Returns **[number][258]** The entry size in bytes.
 
 ### toObject
 
-[src/entry.js:165-177][350]
+[src/entry.js:165-177][377]
 
-Convert to a JavaScript Object representation of the entry. Can be used as argument of [EntryBuilder][84].
+Convert to a JavaScript Object representation of the entry. Can be used as argument of [EntryBuilder][101].
 
-Returns **[Object][243]** JavaScript object representing the entry.
+Returns **[Object][257]** JavaScript object representing the entry.
 
 ### builder
 
-[src/entry.js:184-186][351]
+[src/entry.js:184-186][378]
 
 Entry builder static factory.
 
 #### Parameters
 
--   `entry` **[Entry][248]?** Optional entry to use to initialize the attributes of the builder.
+-   `entry` **[Entry][278]?** Optional entry to use to initialize the attributes of the builder.
 
-Returns **[EntryBuilder][311]** A new EntryBuilder.
+Returns **[EntryBuilder][338]** A new EntryBuilder.
 
 ## FactomdCli
 
-[src/apis-cli.js:204-226][352]
+[src/apis-cli.js:206-228][379]
 
 **Extends BaseCli**
 
@@ -1299,28 +1455,28 @@ Factomd API client.
 
 ### Parameters
 
--   `conf` **[ConnectionOptions][244]?** Factomd connection options.
+-   `conf` **[ConnectionOptions][275]?** Factomd connection options.
 
 ### call
 
-[src/apis-cli.js:222-225][353]
+[src/apis-cli.js:224-227][380]
 
-Make a call to factomd API. See [https://docs.factom.com/api#factomd-api][267].
+Make a call to factomd API. See [https://docs.factom.com/api#factomd-api][294].
 
 #### Parameters
 
--   `method` **[string][249]** Factomd API method name.
--   `params` **[Object][243]?** The object that the factomd API is expecting.
--   `requestConfig` **[Object][243]?** Request configuration.
-    -   `requestConfig.timeout` **[number][250]?** Timeout in milliseconds for the request. Override the timeout set at the instance level.
-    -   `requestConfig.retry` **[Object][243]?** Retry strategy. For the detail of the options see [https://github.com/tim-kos/node-retry#retrytimeoutsoptions][268].
+-   `method` **[string][260]** Factomd API method name.
+-   `params` **[Object][257]?** The object that the factomd API is expecting.
+-   `requestConfig` **[Object][257]?** Request configuration.
+    -   `requestConfig.timeout` **[number][258]?** Timeout in milliseconds for the request. Override the timeout set at the instance level.
+    -   `requestConfig.retry` **[Object][257]?** Retry strategy. For the detail of the options see [https://github.com/tim-kos/node-retry#retrytimeoutsoptions][295].
         Override the retry strategy set at the instance level.
 
-Returns **[Promise][253]&lt;[Object][243]>** Factomd API response.
+Returns **[Promise][280]&lt;[Object][257]>** Factomd API response.
 
 ## WalletdCli
 
-[src/apis-cli.js:232-252][354]
+[src/apis-cli.js:234-254][381]
 
 **Extends BaseCli**
 
@@ -1328,341 +1484,275 @@ Walletd API client.
 
 ### Parameters
 
--   `conf` **[ConnectionOptions][244]?** Walletd connection options.
+-   `conf` **[ConnectionOptions][275]?** Walletd connection options.
 
 ### call
 
-[src/apis-cli.js:249-251][355]
+[src/apis-cli.js:251-253][382]
 
-Make a call to factom-walletd API. See [https://docs.factom.com/api#factom-walletd-api][303].
+Make a call to factom-walletd API. See [https://docs.factom.com/api#factom-walletd-api][330].
 
 #### Parameters
 
--   `method` **[string][249]** Walletd API method name.
--   `params` **[Object][243]?** The object that the walletd API is expecting.
--   `requestConfig` **[Object][243]?** Request configuration.
-    -   `requestConfig.timeout` **[number][250]?** Timeout in milliseconds for the request. Override the timeout set at the instance level.
-    -   `requestConfig.retry` **[Object][243]?** Retry strategy. For the detail of the options see [https://github.com/tim-kos/node-retry#retrytimeoutsoptions][268].
+-   `method` **[string][260]** Walletd API method name.
+-   `params` **[Object][257]?** The object that the walletd API is expecting.
+-   `requestConfig` **[Object][257]?** Request configuration.
+    -   `requestConfig.timeout` **[number][258]?** Timeout in milliseconds for the request. Override the timeout set at the instance level.
+    -   `requestConfig.retry` **[Object][257]?** Retry strategy. For the detail of the options see [https://github.com/tim-kos/node-retry#retrytimeoutsoptions][295].
         Override the retry strategy set at the instance level.
 
-Returns **[Promise][253]&lt;[Object][243]>** Walletd API response.
+Returns **[Promise][280]&lt;[Object][257]>** Walletd API response.
 
 ## Chain
 
-[src/chain.js:17-62][356]
+[src/chain.js:17-58][383]
 
 Class representing a Chain.
 
 ### Parameters
 
--   `arg` **([Entry][248] \| [Chain][246])** First entry of the chain or another chain to copy.
+-   `arg` **([Entry][278] \| [Chain][277])** First entry of the chain or another chain to copy.
 
 ### Properties
 
--   `id` **[Buffer][252]** Chain ID.
--   `firstEntry` **[Entry][248]** First entry of the chain.
+-   `id` **[Buffer][279]** Chain ID.
+-   `firstEntry` **[Entry][278]** First entry of the chain.
 
 ### ecCost
 
-[src/chain.js:48-50][357]
+[src/chain.js:44-46][384]
 
 Get Entry Credit cost of the chain.
 
-Returns **[number][250]** Entry Credit cost of the chain.
+Returns **[number][258]** Entry Credit cost of the chain.
 
 ### idHex
 
-[src/chain.js:40-42][358]
+[src/chain.js:36-38][385]
 
-Returns **[string][249]** Chain ID as a hex encoded string.
+Returns **[string][260]** Chain ID as a hex encoded string.
 
 ### toObject
 
-[src/chain.js:56-61][359]
+[src/chain.js:52-57][386]
 
 Convert to a JavaScript Object representation of the chain.
 
-Returns **[Object][243]** JavaScript object representing the chain.
-
-## FactomEventEmitter
-
-[src/factom-event-emitter.js:47-324][360]
-
-**Extends EventEmitter**
-
-Listen for new Factom Events:
-
-<ul>
-<li>newDirectoryBlock - Triggers when blockchain adds a new directory block. Listener receives new directory block.</li>
-<li>newFactoidBlock - Triggers when blockchain adds a new factoid block. Listener receives new factoid block.</li>
-<li>newAdminBlock - Triggers when blockchain adds a new admin block. Listener receives new admin block.</li>
-<li>newEntryCreditBlock - Triggers when blockchain adds a new entry credit block. Listener receives new entry credit block.</li>
-<li>newChain - Triggers when blockchain adds a new chain. Listener receives first entry block of new chain.</li>
-<li>FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC - Triggers when factoid address sends or receives a transaction. Listener receives transaction.</li>
-<li>4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4 - Triggers when entry chain adds new entry block. Listener receives entry block.</li>
-</ul>
-
-### Parameters
-
--   `cli` **[FactomCli][361]** FactomCli instance to be used by the FactomEventEmitter instance to fetch blockchain data.
--   `opts` **[object][243]?** Options to set on the FactomEventEmitter instance
-    -   `opts.interval` **[number][250]** Interval (ms) at which the FactomEventEmtitter instance should poll the blockchain to check for a new block. (optional, default `7500`)
-
-### Examples
-
-```javascript
-const { FactomCli, FactomEventEmitter } = require('factom');
-const cli = new FactomCli();
-// Poll the blockchain every 10s
-const emitter = new FactomEventEmitter(cli, { interval: 10000 });
-emitter.on('newDirectoryBlock', (directoryBlock) => ...);
-emitter.on('newFactoidBlock', (factoidBlock) => ...);
-emitter.on('newAdminBlock', (adminBlock) => ...);
-emitter.on('newEntryCreditBlock', (entryCreditBlock) => ...);
-emitter.on('newChain', (entryBlock) => ...);
-// Listen to any transaction involving a given Factoid address
-emitter.on('FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC', (transaction) => ...);
-// Listen to any new entries in a given chain
-emitter.on('4060c0192a421ca121ffff935889ef55a64574a6ef0e69b2b4f8a0ab919b2ca4', (entryBlock) => ...);
-```
-
-### chainSubscriptions
-
-[src/factom-event-emitter.js:72-74][362]
-
-Get active chain id subscriptions
-
-Returns **[Set][363]&lt;[string][249]>** 
-
-### factoidAddressSubscriptions
-
-[src/factom-event-emitter.js:80-82][364]
-
-Get active factoid address subscriptions
-
-Returns **[Set][363]&lt;[string][249]>** 
-
-### isPolling
-
-[src/factom-event-emitter.js:88-90][365]
-
-Determine whether or not polling is currently active.
-
-Returns **[boolean][251]** 
+Returns **[Object][257]** JavaScript object representing the chain.
 
 ## composeChain
 
-[src/chain.js:180-185][366]
+[src/chain.js:176-181][387]
 
 Compose the commit and reveal of a Chain, that can then be used as inputs of the factomd APIs `commit-chain` and `reveal-chain`.
 
 ### Parameters
 
--   `chain` **[Chain][246]** Chain to compose the commit and reveal of.
--   `ecAddress` **[string][249]** Private Entry Credit address that pays for and sign the commit.
--   `signature` **[string][249]** Deprecated. Use [composeChainDelegateSig][170] instead.
+-   `chain` **[Chain][277]** Chain to compose the commit and reveal of.
+-   `ecAddress` **[string][260]** Private Entry Credit address that pays for and sign the commit.
+-   `signature` **[string][260]** Deprecated. Use [composeChainDelegateSig][181] instead.
 
-Returns **{commit: [Buffer][252], reveal: [Buffer][252]}** Chain commit and reveal.
+Returns **{commit: [Buffer][279], reveal: [Buffer][279]}** Chain commit and reveal.
 
 ## composeChainCommit
 
-[src/chain.js:76-108][367]
+[src/chain.js:72-104][388]
 
 Compose the commit of a Chain, that can then be used as input of the factomd API `commit-chain`.
 Note that if the chain first entry doesn't have a timestamp set the library will use Date.now() as the default for the commit timestamp.
 
 ### Parameters
 
--   `chain` **[Chain][246]** Chain to compose the commit of.
--   `ecAddress` **[string][249]** Private Entry Credit address that pays for and sign the commit.
--   `signature` **[string][249]** Deprecated. Use [composeChainCommitDelegateSig][168] instead.
+-   `chain` **[Chain][277]** Chain to compose the commit of.
+-   `ecAddress` **[string][260]** Private Entry Credit address that pays for and sign the commit.
+-   `signature` **[string][260]** Deprecated. Use [composeChainCommitDelegateSig][179] instead.
 
-Returns **[Buffer][252]** Chain commit.
+Returns **[Buffer][279]** Chain commit.
 
 ## composeChainCommitDelegateSig
 
-[src/chain.js:122-142][368]
+[src/chain.js:118-138][389]
 
 Compose the commit of a Chain using an external signing function.
 The commit can then be sent through factomd API `commit-chain`.
 
 ### Parameters
 
--   `chain` **[Chain][246]** Chain to compose the commit of.
--   `ecPublicAddress` **[string][249]** Public Entry Credit address that pays for the commit.
--   `sign` **function ([Buffer][252], [string][249]): ([Buffer][252] \| [string][249] \| [Promise][253]&lt;([Buffer][252] \| [string][249])>)** Signing function.
+-   `chain` **[Chain][277]** Chain to compose the commit of.
+-   `ecPublicAddress` **[string][260]** Public Entry Credit address that pays for the commit.
+-   `sign` **function ([Buffer][279], [string][260]): ([Buffer][279] \| [string][260] \| [Promise][280]&lt;([Buffer][279] \| [string][260])>)** Signing function.
     Takes as input the data to sign with the EC public key paying for the commmit
     and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
     The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
 
-Returns **[Buffer][252]** Chain commit.
+Returns **[Buffer][279]** Chain commit.
 
 ## composeChainDelegateSig
 
-[src/chain.js:199-204][369]
+[src/chain.js:195-200][390]
 
 Compose the commit and reveal of a Chain using an external signing function for the commit.
 The result can then be used as inputs of the factomd APIs `commit-chain` and `reveal-chain`.
 
 ### Parameters
 
--   `chain` **[Chain][246]** Chain to compose the commit and reveal of.
--   `ecPublicAddress` **[string][249]** Public Entry Credit address that pays for the commit.
--   `sign` **function ([Buffer][252], [string][249]): ([Buffer][252] \| [string][249] \| [Promise][253]&lt;([Buffer][252] \| [string][249])>)** Signing function.
+-   `chain` **[Chain][277]** Chain to compose the commit and reveal of.
+-   `ecPublicAddress` **[string][260]** Public Entry Credit address that pays for the commit.
+-   `sign` **function ([Buffer][279], [string][260]): ([Buffer][279] \| [string][260] \| [Promise][280]&lt;([Buffer][279] \| [string][260])>)** Signing function.
     Takes as input the data to sign with the EC public key paying for the commmit
     and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
     The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
 
-Returns **{commit: [Buffer][252], reveal: [Buffer][252]}** Chain commit and reveal.
+Returns **{commit: [Buffer][279], reveal: [Buffer][279]}** Chain commit and reveal.
 
 ## composeChainReveal
 
-[src/chain.js:168-171][370]
+[src/chain.js:164-167][391]
 
 Compose the reveal of a Chain, that can then be used as input of the factomd API `reveal-chain`.
 
 ### Parameters
 
--   `chain` **[Chain][246]** Chain to compose the reveal of.
+-   `chain` **[Chain][277]** Chain to compose the reveal of.
 
-Returns **[Buffer][252]** Chain reveal.
+Returns **[Buffer][279]** Chain reveal.
 
 ## composeEntry
 
-[src/entry.js:432-437][371]
+[src/entry.js:432-437][392]
 
 Compose the commit and reveal of an Entry, that can then be used as inputs of the factomd APIs `commit-entry` and `reveal-entry`.
 
 ### Parameters
 
--   `entry` **[Entry][248]** Entry to compose the commit and reveal of.
--   `ecAddress` **[string][249]** Private Entry Credit address that pays for and sign the commit.
--   `signature` **[string][249]** Deprecated. Use [composeEntryDelegateSig][180] instead.
+-   `entry` **[Entry][278]** Entry to compose the commit and reveal of.
+-   `ecAddress` **[string][260]** Private Entry Credit address that pays for and sign the commit.
+-   `signature` **[string][260]** Deprecated. Use [composeEntryDelegateSig][191] instead.
 
-Returns **{commit: [Buffer][252], reveal: [Buffer][252]}** Entry commit and reveal.
+Returns **{commit: [Buffer][279], reveal: [Buffer][279]}** Entry commit and reveal.
 
 ## composeEntryCommit
 
-[src/entry.js:335-368][372]
+[src/entry.js:335-368][393]
 
 Compose the commit of an Entry, that can then be used as input of the factomd API `commit-entry`.
 Note that if the Entry doesn't have a timestamp set the library will use Date.now() as the default for the commit timestamp.
 
 ### Parameters
 
--   `entry` **[Entry][248]** Entry to compose the commit of.
--   `ecAddress` **[string][249]** Private Entry Credit address that pays for and sign the commit.
--   `signature` **[string][249]** Deprecated. Use [composeChainCommitDelegateSig][168] instead.
+-   `entry` **[Entry][278]** Entry to compose the commit of.
+-   `ecAddress` **[string][260]** Private Entry Credit address that pays for and sign the commit.
+-   `signature` **[string][260]** Deprecated. Use [composeChainCommitDelegateSig][179] instead.
 
-Returns **[Buffer][252]** Entry commit.
+Returns **[Buffer][279]** Entry commit.
 
 ## composeEntryCommitDelegateSig
 
-[src/entry.js:382-400][373]
+[src/entry.js:382-400][394]
 
 Compose the commit of an Entry delegating the signature.
 The commit can then be sent through factomd API `commit-entry`.
 
 ### Parameters
 
--   `entry` **[Entry][248]** Entry to compose the commit of.
--   `ecPublicAddress` **[string][249]** Public Entry Credit address that pays for the commit.
--   `sign` **function ([Buffer][252], [string][249]): ([Buffer][252] \| [string][249] \| [Promise][253]&lt;([Buffer][252] \| [string][249])>)** Signing function.
+-   `entry` **[Entry][278]** Entry to compose the commit of.
+-   `ecPublicAddress` **[string][260]** Public Entry Credit address that pays for the commit.
+-   `sign` **function ([Buffer][279], [string][260]): ([Buffer][279] \| [string][260] \| [Promise][280]&lt;([Buffer][279] \| [string][260])>)** Signing function.
     Takes as input the data to sign with the EC public key paying for the commmit
     and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
     The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
 
-Returns **[Buffer][252]** Entry commit.
+Returns **[Buffer][279]** Entry commit.
 
 ## composeEntryDelegateSig
 
-[src/entry.js:451-456][374]
+[src/entry.js:451-456][395]
 
 Compose the commit and reveal of an Entry using an external signing function.
 The result can then be used as inputs of the factomd APIs `commit-entry` and `reveal-entry`.
 
 ### Parameters
 
--   `entry` **[Entry][248]** Entry to compose the commit and reveal of.
--   `ecPublicAddress` **[string][249]** Public Entry Credit address that pays for the commit.
--   `sign` **function ([Buffer][252], sign): ([Buffer][252] \| [string][249] \| [Promise][253]&lt;([Buffer][252] \| [string][249])>)** Signing function.
+-   `entry` **[Entry][278]** Entry to compose the commit and reveal of.
+-   `ecPublicAddress` **[string][260]** Public Entry Credit address that pays for the commit.
+-   `sign` **function ([Buffer][279], sign): ([Buffer][279] \| [string][260] \| [Promise][280]&lt;([Buffer][279] \| [string][260])>)** Signing function.
     Takes as input the data to sign with the EC public key paying for the commmit
     and should return its signature as a Buffer or a hex encoded string (or a Promise of those).
     The returned signature must have been made by the private key corresponding to the ecPublicAddress argument.
 
-Returns **{commit: [Buffer][252], reveal: [Buffer][252]}** Entry commit and reveal.
+Returns **{commit: [Buffer][279], reveal: [Buffer][279]}** Entry commit and reveal.
 
 ## composeEntryReveal
 
-[src/entry.js:420-423][375]
+[src/entry.js:420-423][396]
 
 Compose the reveal of an Entry, that can then be used as input of the factomd API `reveal-entry`.
 
 ### Parameters
 
--   `entry` **[Entry][248]** Entry to compose the reveal of.
+-   `entry` **[Entry][278]** Entry to compose the reveal of.
 
-Returns **[Buffer][252]** Entry reveal.
+Returns **[Buffer][279]** Entry reveal.
 
 ## computeChainId
 
-[src/chain.js:232-236][376]
+[src/chain.js:228-232][397]
 
 Compute the ID of a Chain provided its first entry.
 
 ### Parameters
 
--   `firstEntry` **[Entry][248]** The first entry of the chain.
+-   `firstEntry` **[Entry][278]** The first entry of the chain.
 
-Returns **[Buffer][252]** Chain ID.
+Returns **[Buffer][279]** Chain ID.
 
 ## computeChainTxId
 
-[src/chain.js:222-225][377]
+[src/chain.js:218-221][398]
 
 Compute the transaction ID of the Chain commit. The transaction ID is dependent on the timestamp set in the chain first entry.
 Note that if the timestamp is not set the library uses Date.now() as the default, changing the result of this function if called at different times.
 
 ### Parameters
 
--   `chain` **[Chain][246]** 
+-   `chain` **[Chain][277]** 
 
-Returns **[Buffer][252]** The transaction id of the Chain commit.
+Returns **[Buffer][279]** The transaction id of the Chain commit.
 
 ## computeEntryTxId
 
-[src/entry.js:474-477][378]
+[src/entry.js:474-477][399]
 
 Compute the transaction ID of the Entry commit. The transaction ID is dependent on the timestamp set in the entry.
 Note that if the timestamp is not set the library uses Date.now() as the default, changing the result of this function if called at different times.
 
 ### Parameters
 
--   `entry` **[Entry][248]** 
+-   `entry` **[Entry][278]** 
 
-Returns **[Buffer][252]** The transaction id of the Entry commit.
+Returns **[Buffer][279]** The transaction id of the Entry commit.
 
 ## ConnectionOptions
 
-[src/apis-cli.js:81-160][379]
+[src/apis-cli.js:81-162][400]
 
 Describe the options of connection to factomd or factom-walletd.
 
-Type: [Object][243]
+Type: [Object][257]
 
 ### Properties
 
--   `host` **[string][249]?** IP or hostname. Default to localhost.
--   `port` **[number][250]?** Port. Default to 8088 for factomd and 8089 for walletd.
--   `path` **[string][249]?** Path to V2 API. Default to /v2.
--   `debugPath` **[string][249]?** Path to debug API. Default to /debug.
--   `user` **[string][249]?** User for basic authentication.
--   `password` **[string][249]?** Password for basic authentication.
--   `protocol` **[string][249]?** http or https. Default to http.
--   `timeout` **[number][250]?** Specifies the number of milliseconds before any API request times out.
+-   `host` **[string][260]?** IP or hostname. Default to localhost.
+-   `port` **[number][258]?** Port. Default to 8088 for factomd and 8089 for walletd.
+-   `path` **[string][260]?** Path to V2 API. Default to /v2.
+-   `debugPath` **[string][260]?** Path to debug API. Default to /debug.
+-   `user` **[string][260]?** User for basic authentication.
+-   `password` **[string][260]?** Password for basic authentication.
+-   `protocol` **[string][260]?** http or https. Default to http.
+-   `timeout` **[number][258]?** Specifies the number of milliseconds before any API request times out.
     If a request takes longer than `timeout`, the request will be aborted. Default is `0` (no timeout).
--   `rejectUnauthorized` **[boolean][251]?** Set to false to allow connection to a node with a self-signed certificate. Default to true.
--   `retry` **[Object][243]?** Retry strategy. For the detail of the options see [https://github.com/tim-kos/node-retry#retrytimeoutsoptions][268]. Default to {retries: 3, factor: 2, minTimeout: 500, maxTimeout: 2000}
+-   `rejectUnauthorized` **[boolean][261]?** Set to false to allow connection to a node with a self-signed certificate. Default to true.
+-   `retry` **[Object][257]?** Retry strategy. For the detail of the options see [https://github.com/tim-kos/node-retry#retrytimeoutsoptions][295]. Default to {retries: 3, factor: 2, minTimeout: 500, maxTimeout: 2000}
 
 ### Examples
 
@@ -1688,1140 +1778,1196 @@ const cli = new FactomdCli({
 
 ## DirectoryBlock
 
-[src/blocks.js:24-73][380]
+[src/blocks.js:24-73][401]
 
 Class representing a Directory block.
 
 ### Properties
 
--   `keyMR` **[string][249]** Key Merkel Root.
--   `height` **[number][250]** Height.
--   `previousBlockKeyMR` **[string][249]** Key Merkel Root of the previous Directory block.
--   `timestamp` **[number][250]** UNIX timestamp (seconds).
--   `fullHash` **[string][249]** Full hash of the block. Only available when the block is queried by height.
--   `previousFullHash` **[string][249]** Full hash of the previous Directory block. Only available when the block is queried by height.
--   `bodyKeyMR` **[string][249]** Key Merkle Root of the block body. Only available when the block is queried by height.
--   `adminBlockRef` **[string][249]** Reference to the admin block.
--   `entryCreditBlockRef` **[string][249]** Reference to the entry credit block.
--   `factoidBlockRef` **[string][249]** Reference to the factoid block.
--   `entryBlockRefs` **[Array][247]&lt;{chainId: [string][249], keyMR: [string][249]}>** References to the entry blocks.
+-   `keyMR` **[string][260]** Key Merkel Root.
+-   `height` **[number][258]** Height.
+-   `previousBlockKeyMR` **[string][260]** Key Merkel Root of the previous Directory block.
+-   `timestamp` **[number][258]** UNIX timestamp (seconds).
+-   `fullHash` **[string][260]** Full hash of the block. Only available when the block is queried by height.
+-   `previousFullHash` **[string][260]** Full hash of the previous Directory block. Only available when the block is queried by height.
+-   `bodyKeyMR` **[string][260]** Key Merkle Root of the block body. Only available when the block is queried by height.
+-   `adminBlockRef` **[string][260]** Reference to the admin block.
+-   `entryCreditBlockRef` **[string][260]** Reference to the entry credit block.
+-   `factoidBlockRef` **[string][260]** Reference to the factoid block.
+-   `entryBlockRefs` **[Array][271]&lt;{chainId: [string][260], keyMR: [string][260]}>** References to the entry blocks.
 
 ## EntryBlock
 
-[src/blocks.js:192-210][381]
+[src/blocks.js:192-210][402]
 
 Class representing an Entry block.
 
 ### Properties
 
--   `keyMR` **[string][249]** Key Mertle Root.
--   `previousBlockKeyMR` **[string][249]** Key Mertle Root of the previous Entry block.
--   `directoryBlockHeight` **[number][250]** Directory block height.
--   `timestamp` **[number][250]** UNIX timestamp (seconds).
--   `chainId` **[string][249]** Chain ID.
--   `sequenceNumber` **[number][250]** Sequence number of this block relative to that sub chain.
--   `entryRefs` **[Array][247]&lt;{entryHash: [string][249], timestamp: [number][250]}>** References to entries with their UNIX timestamps.
+-   `keyMR` **[string][260]** Key Mertle Root.
+-   `previousBlockKeyMR` **[string][260]** Key Mertle Root of the previous Entry block.
+-   `directoryBlockHeight` **[number][258]** Directory block height.
+-   `timestamp` **[number][258]** UNIX timestamp (seconds).
+-   `chainId` **[string][260]** Chain ID.
+-   `sequenceNumber` **[number][258]** Sequence number of this block relative to that sub chain.
+-   `entryRefs` **[Array][271]&lt;{entryHash: [string][260], timestamp: [number][258]}>** References to entries with their UNIX timestamps.
 
 ## EntryBlockContext
 
-[src/entry.js:305-312][382]
+[src/entry.js:305-312][403]
 
-Block context of an [Entry][124].
+Block context of an [Entry][141].
 
-Type: [Object][243]
+Type: [Object][257]
 
 ### Properties
 
--   `entryTimestamp` **[number][250]** Epoch timestamp (in seconds) of the entry.
--   `directoryBlockHeight` **[number][250]** Directory Block height.
--   `entryBlockTimestamp` **[number][250]** Epoch timestamp (in seconds) of the Entry Block.
--   `entryBlockSequenceNumber` **[number][250]** Entry Block sequence number.
--   `entryBlockKeyMR` **[string][249]** Entry Block KeyMR.
+-   `entryTimestamp` **[number][258]** Epoch timestamp (in seconds) of the entry.
+-   `directoryBlockHeight` **[number][258]** Directory Block height.
+-   `entryBlockTimestamp` **[number][258]** Epoch timestamp (in seconds) of the Entry Block.
+-   `entryBlockSequenceNumber` **[number][258]** Entry Block sequence number.
+-   `entryBlockKeyMR` **[string][260]** Entry Block KeyMR.
 
 ## EntryCreditBlock
 
-[src/blocks.js:269-327][383]
+[src/blocks.js:269-327][404]
 
 Class representing an Entry Credit block.
 
 ### Properties
 
--   `headerHash` **[string][249]** Hash of the header.
--   `fullHash` **[string][249]** Full hash.
--   `headerExpansionArea` **[string][249]** Header expansion area.
--   `bodyHash` **[string][249]** Hash of the body.
--   `previousHeaderHash` **[string][249]** Hash of the previous Entry Credit block header.
--   `previousFullHash` **[string][249]** Full hash of the previous Entry Credit block.
--   `directoryBlockHeight` **[number][250]** Directory block height.
--   `bodySize` **[number][250]** Size of the body.
--   `objectCount` **[number][250]** Object count.
--   `minuteIndexes` **[Array][247]&lt;[number][250]>** Delimitation of the commits for each minute. Use method getCommitsForMinute rather than using this attribute directly.
--   `commits` **[Array][247]&lt;{version: [number][250], millis: [number][250], entryHash: [string][249], credits: [number][250], ecPublicKey: [string][249], signature: [string][249]}>** Array of commits.
+-   `headerHash` **[string][260]** Hash of the header.
+-   `fullHash` **[string][260]** Full hash.
+-   `headerExpansionArea` **[string][260]** Header expansion area.
+-   `bodyHash` **[string][260]** Hash of the body.
+-   `previousHeaderHash` **[string][260]** Hash of the previous Entry Credit block header.
+-   `previousFullHash` **[string][260]** Full hash of the previous Entry Credit block.
+-   `directoryBlockHeight` **[number][258]** Directory block height.
+-   `bodySize` **[number][258]** Size of the body.
+-   `objectCount` **[number][258]** Object count.
+-   `minuteIndexes` **[Array][271]&lt;[number][258]>** Delimitation of the commits for each minute. Use method getCommitsForMinute rather than using this attribute directly.
+-   `commits` **[Array][271]&lt;{version: [number][258], millis: [number][258], entryHash: [string][260], credits: [number][258], ecPublicKey: [string][260], signature: [string][260]}>** Array of commits.
 
 ### getCommitsForMinute
 
-[src/blocks.js:321-326][384]
+[src/blocks.js:321-326][405]
 
 Get all the commits for a given minute.
 
 #### Parameters
 
--   `minute` **[number][250]** Minute (between 1 and 10 included)
+-   `minute` **[number][258]** Minute (between 1 and 10 included)
 
-Returns **[Array][247]&lt;{version: [number][250], millis: [number][250], entryHash: [string][249], credits: [number][250], ecPublicKey: [string][249], signature: [string][249]}>** Commits.
+Returns **[Array][271]&lt;{version: [number][258], millis: [number][258], entryHash: [string][260], credits: [number][258], ecPublicKey: [string][260], signature: [string][260]}>** Commits.
 
 ## FactoidBlock
 
-[src/blocks.js:223-253][385]
+[src/blocks.js:223-253][406]
 
 Class representing a Factoid block.
 
 ### Properties
 
--   `keyMR` **[string][249]** Key Mertle Root.
--   `bodyMR` **[string][249]** Merkle Root of the body.
--   `previousBlockKeyMR` **[string][249]** Key Merkle Root of the previous Factoid block.
--   `ledgerKeyMR` **[string][249]** Ledger Key Merkle Root.
--   `previousLedgerKeyMR` **[string][249]** Ledger Key Merkle Root of the previous Factoid block.
--   `entryCreditRate` **[number][250]** Entry credit rate.
--   `directoryBlockHeight` **[number][250]** Directory block height.
--   `transactions` **[Array][247]&lt;[Transaction][264]>** Array of Factoid transactions part of this block.
+-   `keyMR` **[string][260]** Key Mertle Root.
+-   `bodyMR` **[string][260]** Merkle Root of the body.
+-   `previousBlockKeyMR` **[string][260]** Key Merkle Root of the previous Factoid block.
+-   `ledgerKeyMR` **[string][260]** Ledger Key Merkle Root.
+-   `previousLedgerKeyMR` **[string][260]** Ledger Key Merkle Root of the previous Factoid block.
+-   `entryCreditRate` **[number][258]** Entry credit rate.
+-   `directoryBlockHeight` **[number][258]** Directory block height.
+-   `transactions` **[Array][271]&lt;[Transaction][291]>** Array of Factoid transactions part of this block.
 
 ### getCoinbaseTransaction
 
-[src/blocks.js:250-252][386]
+[src/blocks.js:250-252][407]
 
 Get coinbase transaction of the block.
 
-Returns **[Transaction][264]** Coinbase transaction of the block.
+Returns **[Transaction][291]** Coinbase transaction of the block.
 
 ## generateRandomEcAddress
 
-[src/addresses.js:242-249][387]
+[src/addresses.js:242-249][408]
 
 Generate a new random EC address pair (private and public).
 
-Returns **{public: [string][249], private: [string][249]}** Public and private EC addresses.
+Returns **{public: [string][260], private: [string][260]}** Public and private EC addresses.
 
 ## generateRandomFctAddress
 
-[src/addresses.js:229-236][388]
+[src/addresses.js:229-236][409]
 
 Generate a new random FCT address pair (private and public).
 
-Returns **{public: [string][249], private: [string][249]}** Public and private FCT addresses.
+Returns **{public: [string][260], private: [string][260]}** Public and private FCT addresses.
 
 ## getPublicAddress
 
-[src/addresses.js:121-134][389]
+[src/addresses.js:121-134][410]
 
 Get public address corresponding to an address.
 
 ### Parameters
 
--   `address` **[string][249]** Any address.
+-   `address` **[string][260]** Any address.
 
-Returns **[string][249]** Public address.
+Returns **[string][260]** Public address.
 
 ## isValidAddress
 
-[src/addresses.js:22-42][390]
+[src/addresses.js:22-42][411]
 
 Validate that an address is valid (well formed).
 
 ### Parameters
 
--   `address` **[string][249]** Address to validate
+-   `address` **[string][260]** Address to validate
 
-Returns **[boolean][251]** True if the address is valid.
+Returns **[boolean][261]** True if the address is valid.
+
+## isValidChainId
+
+[src/chain.js:239-241][412]
+
+Determine if a given string is a valid FCT chain.
+
+### Parameters
+
+-   `chain` **[string][260]** Chain to validate.
+
+Returns **[boolean][261]** True if the chain is a valid FCT chain.
 
 ## isValidEcAddress
 
-[src/addresses.js:67-69][391]
+[src/addresses.js:67-69][413]
 
 Validate if an address is a valid EC address (public or private).
 
 ### Parameters
 
--   `address` **[string][249]** Address to validate.
+-   `address` **[string][260]** Address to validate.
 
-Returns **[boolean][251]** True if the address is a valid EC address.
+Returns **[boolean][261]** True if the address is a valid EC address.
 
 ## isValidFctAddress
 
-[src/addresses.js:94-96][392]
+[src/addresses.js:94-96][414]
 
 Validate if an address is a valid FCT address (public or private).
 
 ### Parameters
 
--   `address` **[string][249]** Address to validate.
+-   `address` **[string][260]** Address to validate.
 
-Returns **[boolean][251]** True if the address is a valid FCT address.
+Returns **[boolean][261]** True if the address is a valid FCT address.
 
 ## isValidPrivateAddress
 
-[src/addresses.js:58-60][393]
+[src/addresses.js:58-60][415]
 
 Validate if an address is a valid private EC or FCT address.
 
 ### Parameters
 
--   `address` **[string][249]** Address to validate.
+-   `address` **[string][260]** Address to validate.
 
-Returns **[boolean][251]** True if the address is a valid private EC or FCT address.
+Returns **[boolean][261]** True if the address is a valid private EC or FCT address.
 
 ## isValidPrivateEcAddress
 
-[src/addresses.js:85-87][394]
+[src/addresses.js:85-87][416]
 
 Validate if an address is a valid private EC address.
 
 ### Parameters
 
--   `address` **[string][249]** Address to validate.
+-   `address` **[string][260]** Address to validate.
 
-Returns **[boolean][251]** True if the address is a valid private EC address.
+Returns **[boolean][261]** True if the address is a valid private EC address.
 
 ## isValidPrivateFctAddress
 
-[src/addresses.js:112-114][395]
+[src/addresses.js:112-114][417]
 
 Validate if an address is a valid private FCT address.
 
 ### Parameters
 
--   `address` **[string][249]** Address to validate.
+-   `address` **[string][260]** Address to validate.
 
-Returns **[boolean][251]** True if the address is a valid private FCT address.
+Returns **[boolean][261]** True if the address is a valid private FCT address.
 
 ## isValidPublicAddress
 
-[src/addresses.js:49-51][396]
+[src/addresses.js:49-51][418]
 
 Validate if an address is a valid public EC or FCT address.
 
 ### Parameters
 
--   `address` **[string][249]** Address to validate.
+-   `address` **[string][260]** Address to validate.
 
-Returns **[boolean][251]** True if the address is a valid public EC or FCT address.
+Returns **[boolean][261]** True if the address is a valid public EC or FCT address.
 
 ## isValidPublicEcAddress
 
-[src/addresses.js:76-78][397]
+[src/addresses.js:76-78][419]
 
 Validate if an address is a valid public EC address.
 
 ### Parameters
 
--   `address` **[string][249]** Address to validate.
+-   `address` **[string][260]** Address to validate.
 
-Returns **[boolean][251]** True if the address is a valid public EC address.
+Returns **[boolean][261]** True if the address is a valid public EC address.
 
 ## isValidPublicFctAddress
 
-[src/addresses.js:103-105][398]
+[src/addresses.js:103-105][420]
 
 Validate if an address is a valid public FCT address.
 
 ### Parameters
 
--   `address` **[string][249]** Address to validate.
+-   `address` **[string][260]** Address to validate.
 
-Returns **[boolean][251]** True if the address is a valid public FCT address.
+Returns **[boolean][261]** True if the address is a valid public FCT address.
 
 ## keyToPublicEcAddress
 
-[src/addresses.js:197-199][399]
+[src/addresses.js:197-199][421]
 
 Build a human readable public EC address from a 32-byte key.
 
 ### Parameters
 
--   `key` **([Buffer][252] \| [string][249])** 32-byte key.
+-   `key` **([Buffer][279] \| [string][260])** 32-byte key.
 
-Returns **[string][249]** Public EC address.
+Returns **[string][260]** Public EC address.
 
 ## keyToPublicFctAddress
 
-[src/addresses.js:170-172][400]
+[src/addresses.js:170-172][422]
 
 Build a human readable public FCT address from a key.
 
 ### Parameters
 
--   `key` **([Buffer][252] \| [string][249])** 
+-   `key` **([Buffer][279] \| [string][260])** 
 
-Returns **[string][249]** Public FCT address.
+Returns **[string][260]** Public FCT address.
 
 ## rcdHashToPublicFctAddress
 
-[src/addresses.js:179-181][401]
+[src/addresses.js:179-181][423]
 
 Build a human readable public FCT address from a RCD hash.
 
 ### Parameters
 
--   `rcdHash` **([Buffer][252] \| [string][249])** 
+-   `rcdHash` **([Buffer][279] \| [string][260])** 
 
-Returns **[string][249]** Public FCT address.
+Returns **[string][260]** Public FCT address.
 
 ## seedToPrivateEcAddress
 
-[src/addresses.js:206-208][402]
+[src/addresses.js:206-208][424]
 
 Build a human readable private EC address from a 32-byte seed.
 
 ### Parameters
 
--   `seed` **([Buffer][252] \| [string][249])** 32-byte seed.
+-   `seed` **([Buffer][279] \| [string][260])** 32-byte seed.
 
-Returns **[string][249]** Private EC address.
+Returns **[string][260]** Private EC address.
 
 ## seedToPrivateFctAddress
 
-[src/addresses.js:188-190][403]
+[src/addresses.js:188-190][425]
 
 Build a human readable private FCT address from a 32-byte seed.
 
 ### Parameters
 
--   `seed` **([Buffer][252] \| [string][249])** 32-byte seed.
+-   `seed` **([Buffer][279] \| [string][260])** 32-byte seed.
 
-Returns **[string][249]** Private FCT address.
+Returns **[string][260]** Private FCT address.
 
 ## TransactionAddress
 
-[src/transaction.js:21-39][404]
+[src/transaction.js:21-39][426]
 
-Class to hold address and amount of an input/output of a [Transaction][110].
+Class to hold address and amount of an input/output of a [Transaction][127].
 
 ### Parameters
 
--   `address` **[string][249]** Factoid or Entry Credit public address.
--   `amount` **[number][250]** Amount in factoshis (10^-8 Factoids).
+-   `address` **[string][260]** Factoid or Entry Credit public address.
+-   `amount` **[number][258]** Amount in factoshis (10^-8 Factoids).
 
 ## TransactionBlockContext
 
-[src/transaction.js:86-272][405]
+[src/transaction.js:86-272][427]
 
-Block context of a [Transaction][110].
+Block context of a [Transaction][127].
 
-Type: [Object][243]
+Type: [Object][257]
 
 ### Properties
 
--   `factoidBlockKeyMR` **[string][249]** Factoid Block KeyMR the transaction is part of.
--   `directoryBlockKeyMR` **[string][249]** Directory Block KeyMR the transaction was secured in.
--   `directoryBlockHeight` **[number][250]** Directory Block height the transaction was secured in.
+-   `factoidBlockKeyMR` **[string][260]** Factoid Block KeyMR the transaction is part of.
+-   `directoryBlockKeyMR` **[string][260]** Directory Block KeyMR the transaction was secured in.
+-   `directoryBlockHeight` **[number][258]** Directory Block height the transaction was secured in.
 
-[1]: #factomcli
+[1]: #factomeventemitter
 
 [2]: #parameters
 
 [3]: #examples
 
-[4]: #add
+[4]: #_isblockchainevent
 
 [5]: #parameters-1
 
-[6]: #addchain
+[6]: #_isvalidblockevent
 
 [7]: #parameters-2
 
-[8]: #addchains
+[8]: #_isvalidpendingtransactionevent
 
 [9]: #parameters-3
 
-[10]: #addentries
+[10]: #chainsubscriptions
 
-[11]: #parameters-4
+[11]: #factoidaddresspendingtransactionsubscriptions
 
-[12]: #addentry
+[12]: #factoidaddresssubscriptions
 
-[13]: #parameters-5
+[13]: #getpendingtransactions
 
-[14]: #chainexists
+[14]: #parameters-4
 
-[15]: #parameters-6
+[15]: #ispolling
 
-[16]: #commit
+[16]: #getsubscriptiontoken
 
-[17]: #parameters-7
+[17]: #parameters-5
 
-[18]: #commitchain
+[18]: #factomcli
 
-[19]: #parameters-8
+[19]: #parameters-6
 
-[20]: #commitentry
+[20]: #examples-1
 
-[21]: #parameters-9
+[21]: #add
 
-[22]: #createentrycreditpurchasetransaction
+[22]: #parameters-7
 
-[23]: #parameters-10
+[23]: #addchain
 
-[24]: #createfactoidtransaction
+[24]: #parameters-8
 
-[25]: #parameters-11
+[25]: #addchains
 
-[26]: #factomdapi
+[26]: #parameters-9
 
-[27]: #parameters-12
+[27]: #addentries
 
-[28]: #getadminblock
+[28]: #parameters-10
 
-[29]: #parameters-13
+[29]: #addentry
 
-[30]: #getallentriesofchain
+[30]: #parameters-11
 
-[31]: #parameters-14
+[31]: #chainexists
 
-[32]: #getbalance
+[32]: #parameters-12
 
-[33]: #parameters-15
+[33]: #commit
 
-[34]: #getchainhead
+[34]: #parameters-13
 
-[35]: #parameters-16
+[35]: #commitchain
 
-[36]: #getdirectoryblock
+[36]: #parameters-14
 
-[37]: #parameters-17
+[37]: #commitentry
 
-[38]: #getdirectoryblockhead
+[38]: #parameters-15
 
-[39]: #getentry
+[39]: #createentrycreditpurchasetransaction
 
-[40]: #parameters-18
+[40]: #parameters-16
 
-[41]: #getentryblock
+[41]: #createfactoidtransaction
 
-[42]: #parameters-19
+[42]: #parameters-17
 
-[43]: #getentrycreditblock
+[43]: #factomdapi
 
-[44]: #parameters-20
+[44]: #parameters-18
 
-[45]: #getentrycreditrate
+[45]: #getadminblock
 
-[46]: #getentrywithblockcontext
+[46]: #parameters-19
 
-[47]: #parameters-21
+[47]: #getallentriesofchain
 
-[48]: #getfactoidblock
+[48]: #parameters-20
 
-[49]: #parameters-22
+[49]: #getbalance
 
-[50]: #getfirstentry
+[50]: #parameters-21
 
-[51]: #parameters-23
+[51]: #getchainhead
 
-[52]: #getheights
+[52]: #parameters-22
 
-[53]: #getprivateaddress
+[53]: #getdirectoryblock
 
-[54]: #parameters-24
+[54]: #parameters-23
 
-[55]: #gettransaction
+[55]: #getdirectoryblockhead
 
-[56]: #parameters-25
+[56]: #getentry
 
-[57]: #reveal
+[57]: #parameters-24
 
-[58]: #parameters-26
+[58]: #getentryblock
 
-[59]: #revealchain
+[59]: #parameters-25
 
-[60]: #parameters-27
+[60]: #getentrycreditblock
 
-[61]: #revealentry
+[61]: #parameters-26
 
-[62]: #parameters-28
+[62]: #getentrycreditrate
 
-[63]: #rewindchainwhile
+[63]: #getentrywithblockcontext
 
-[64]: #parameters-29
+[64]: #parameters-27
 
-[65]: #examples-1
+[65]: #getfactoidblock
 
-[66]: #sendtransaction
+[66]: #parameters-28
 
-[67]: #parameters-30
+[67]: #getfirstentry
 
-[68]: #waitoncommitack
+[68]: #parameters-29
 
-[69]: #parameters-31
+[69]: #getheights
 
-[70]: #waitonfactoidtransactionack
+[70]: #getprivateaddress
 
-[71]: #parameters-32
+[71]: #parameters-30
 
-[72]: #waitonrevealack
+[72]: #gettransaction
 
-[73]: #parameters-33
+[73]: #parameters-31
 
-[74]: #walletdapi
+[74]: #reveal
 
-[75]: #parameters-34
+[75]: #parameters-32
 
-[76]: #addresstokey
+[76]: #revealchain
 
-[77]: #parameters-35
+[77]: #parameters-33
 
-[78]: #addresstorcdhash
+[78]: #revealentry
 
-[79]: #parameters-36
+[79]: #parameters-34
 
-[80]: #adminblock
+[80]: #rewindchainwhile
 
-[81]: #properties
+[81]: #parameters-35
 
-[82]: #getentriesoftypes
+[82]: #examples-2
 
-[83]: #parameters-37
+[83]: #sendtransaction
 
-[84]: #entrybuilder
+[84]: #parameters-36
 
-[85]: #parameters-38
+[85]: #waitoncommitack
 
-[86]: #blockcontext
+[86]: #parameters-37
 
-[87]: #parameters-39
+[87]: #waitonfactoidtransactionack
 
-[88]: #build
+[88]: #parameters-38
 
-[89]: #chainid
+[89]: #waitonrevealack
 
-[90]: #parameters-40
+[90]: #parameters-39
 
-[91]: #content
+[91]: #walletdapi
 
-[92]: #parameters-41
+[92]: #parameters-40
 
-[93]: #extid
+[93]: #addresstokey
 
-[94]: #parameters-42
+[94]: #parameters-41
 
-[95]: #extids
+[95]: #addresstorcdhash
 
-[96]: #parameters-43
+[96]: #parameters-42
 
-[97]: #timestamp
+[97]: #adminblock
 
-[98]: #parameters-44
+[98]: #properties
 
-[99]: #transactionbuilder
+[99]: #getentriesoftypes
 
-[100]: #parameters-45
+[100]: #parameters-43
 
-[101]: #build-1
+[101]: #entrybuilder
 
-[102]: #input
+[102]: #parameters-44
 
-[103]: #parameters-46
+[103]: #blockcontext
 
-[104]: #output
+[104]: #parameters-45
 
-[105]: #parameters-47
+[105]: #build
 
-[106]: #rcdsignature
+[106]: #chainid
 
-[107]: #parameters-48
+[107]: #parameters-46
 
-[108]: #timestamp-1
+[108]: #content
 
-[109]: #parameters-49
+[109]: #parameters-47
 
-[110]: #transaction
+[110]: #extid
 
-[111]: #parameters-50
+[111]: #parameters-48
 
-[112]: #properties-1
+[112]: #extids
 
-[113]: #examples-2
+[113]: #parameters-49
 
-[114]: #computeecrequiredfees
+[114]: #timestamp
 
-[115]: #parameters-51
+[115]: #parameters-50
 
-[116]: #computerequiredfees
+[116]: #transactionbuilder
 
-[117]: #parameters-52
+[117]: #parameters-51
 
-[118]: #issigned
+[118]: #build-1
 
-[119]: #marshalbinary
+[119]: #input
 
-[120]: #validatefees
+[120]: #parameters-52
 
-[121]: #parameters-53
+[121]: #output
 
-[122]: #builder
+[122]: #parameters-53
 
-[123]: #parameters-54
+[123]: #rcdsignature
 
-[124]: #entry
+[124]: #parameters-54
 
-[125]: #parameters-55
+[125]: #timestamp-1
 
-[126]: #properties-2
+[126]: #parameters-55
 
-[127]: #examples-3
+[127]: #transaction
 
-[128]: #chainidhex
+[128]: #parameters-56
 
-[129]: #contenthex
+[129]: #properties-1
 
-[130]: #eccost
+[130]: #examples-3
 
-[131]: #extidshex
+[131]: #computeecrequiredfees
 
-[132]: #hash
+[132]: #parameters-57
 
-[133]: #hashhex
+[133]: #computerequiredfees
 
-[134]: #marshalbinary-1
+[134]: #parameters-58
 
-[135]: #marshalbinaryhex
+[135]: #issigned
 
-[136]: #payloadsize
+[136]: #marshalbinary
 
-[137]: #rawdatasize
+[137]: #validatefees
 
-[138]: #remainingfreebytes
+[138]: #parameters-59
 
-[139]: #remainingmaxbytes
+[139]: #builder
 
-[140]: #size
+[140]: #parameters-60
 
-[141]: #toobject
+[141]: #entry
 
-[142]: #builder-1
+[142]: #parameters-61
 
-[143]: #parameters-56
+[143]: #properties-2
 
-[144]: #factomdcli
+[144]: #examples-4
 
-[145]: #parameters-57
+[145]: #chainidhex
 
-[146]: #call
+[146]: #contenthex
 
-[147]: #parameters-58
+[147]: #eccost
 
-[148]: #walletdcli
+[148]: #extidshex
 
-[149]: #parameters-59
+[149]: #hash
 
-[150]: #call-1
+[150]: #hashhex
 
-[151]: #parameters-60
+[151]: #marshalbinary-1
 
-[152]: #chain
+[152]: #marshalbinaryhex
 
-[153]: #parameters-61
+[153]: #payloadsize
 
-[154]: #properties-3
+[154]: #rawdatasize
 
-[155]: #eccost-1
+[155]: #remainingfreebytes
 
-[156]: #idhex
+[156]: #remainingmaxbytes
 
-[157]: #toobject-1
+[157]: #size
 
-[158]: #factomeventemitter
+[158]: #toobject
 
-[159]: #parameters-62
+[159]: #builder-1
 
-[160]: #examples-4
+[160]: #parameters-62
 
-[161]: #chainsubscriptions
+[161]: #factomdcli
 
-[162]: #factoidaddresssubscriptions
+[162]: #parameters-63
 
-[163]: #ispolling
+[163]: #call
 
-[164]: #composechain
+[164]: #parameters-64
 
-[165]: #parameters-63
+[165]: #walletdcli
 
-[166]: #composechaincommit
+[166]: #parameters-65
 
-[167]: #parameters-64
+[167]: #call-1
 
-[168]: #composechaincommitdelegatesig
+[168]: #parameters-66
 
-[169]: #parameters-65
+[169]: #chain
 
-[170]: #composechaindelegatesig
+[170]: #parameters-67
 
-[171]: #parameters-66
+[171]: #properties-3
 
-[172]: #composechainreveal
+[172]: #eccost-1
 
-[173]: #parameters-67
+[173]: #idhex
 
-[174]: #composeentry
+[174]: #toobject-1
 
-[175]: #parameters-68
+[175]: #composechain
 
-[176]: #composeentrycommit
+[176]: #parameters-68
 
-[177]: #parameters-69
+[177]: #composechaincommit
 
-[178]: #composeentrycommitdelegatesig
+[178]: #parameters-69
 
-[179]: #parameters-70
+[179]: #composechaincommitdelegatesig
 
-[180]: #composeentrydelegatesig
+[180]: #parameters-70
 
-[181]: #parameters-71
+[181]: #composechaindelegatesig
 
-[182]: #composeentryreveal
+[182]: #parameters-71
 
-[183]: #parameters-72
+[183]: #composechainreveal
 
-[184]: #computechainid
+[184]: #parameters-72
 
-[185]: #parameters-73
+[185]: #composeentry
 
-[186]: #computechaintxid
+[186]: #parameters-73
 
-[187]: #parameters-74
+[187]: #composeentrycommit
 
-[188]: #computeentrytxid
+[188]: #parameters-74
 
-[189]: #parameters-75
+[189]: #composeentrycommitdelegatesig
 
-[190]: #connectionoptions
+[190]: #parameters-75
 
-[191]: #properties-4
+[191]: #composeentrydelegatesig
 
-[192]: #examples-5
+[192]: #parameters-76
 
-[193]: #directoryblock
+[193]: #composeentryreveal
 
-[194]: #properties-5
+[194]: #parameters-77
 
-[195]: #entryblock
+[195]: #computechainid
 
-[196]: #properties-6
+[196]: #parameters-78
 
-[197]: #entryblockcontext
+[197]: #computechaintxid
 
-[198]: #properties-7
+[198]: #parameters-79
 
-[199]: #entrycreditblock
+[199]: #computeentrytxid
 
-[200]: #properties-8
+[200]: #parameters-80
 
-[201]: #getcommitsforminute
+[201]: #connectionoptions
 
-[202]: #parameters-76
+[202]: #properties-4
 
-[203]: #factoidblock
+[203]: #examples-5
 
-[204]: #properties-9
+[204]: #directoryblock
 
-[205]: #getcoinbasetransaction
+[205]: #properties-5
 
-[206]: #generaterandomecaddress
+[206]: #entryblock
 
-[207]: #generaterandomfctaddress
+[207]: #properties-6
 
-[208]: #getpublicaddress
+[208]: #entryblockcontext
 
-[209]: #parameters-77
+[209]: #properties-7
 
-[210]: #isvalidaddress
+[210]: #entrycreditblock
 
-[211]: #parameters-78
+[211]: #properties-8
 
-[212]: #isvalidecaddress
+[212]: #getcommitsforminute
 
-[213]: #parameters-79
+[213]: #parameters-81
 
-[214]: #isvalidfctaddress
+[214]: #factoidblock
 
-[215]: #parameters-80
+[215]: #properties-9
 
-[216]: #isvalidprivateaddress
+[216]: #getcoinbasetransaction
 
-[217]: #parameters-81
+[217]: #generaterandomecaddress
 
-[218]: #isvalidprivateecaddress
+[218]: #generaterandomfctaddress
 
-[219]: #parameters-82
+[219]: #getpublicaddress
 
-[220]: #isvalidprivatefctaddress
+[220]: #parameters-82
 
-[221]: #parameters-83
+[221]: #isvalidaddress
 
-[222]: #isvalidpublicaddress
+[222]: #parameters-83
 
-[223]: #parameters-84
+[223]: #isvalidchainid
 
-[224]: #isvalidpublicecaddress
+[224]: #parameters-84
 
-[225]: #parameters-85
+[225]: #isvalidecaddress
 
-[226]: #isvalidpublicfctaddress
+[226]: #parameters-85
 
-[227]: #parameters-86
+[227]: #isvalidfctaddress
 
-[228]: #keytopublicecaddress
+[228]: #parameters-86
 
-[229]: #parameters-87
+[229]: #isvalidprivateaddress
 
-[230]: #keytopublicfctaddress
+[230]: #parameters-87
 
-[231]: #parameters-88
+[231]: #isvalidprivateecaddress
 
-[232]: #rcdhashtopublicfctaddress
+[232]: #parameters-88
 
-[233]: #parameters-89
+[233]: #isvalidprivatefctaddress
 
-[234]: #seedtoprivateecaddress
+[234]: #parameters-89
 
-[235]: #parameters-90
+[235]: #isvalidpublicaddress
 
-[236]: #seedtoprivatefctaddress
+[236]: #parameters-90
 
-[237]: #parameters-91
+[237]: #isvalidpublicecaddress
 
-[238]: #transactionaddress
+[238]: #parameters-91
 
-[239]: #parameters-92
+[239]: #isvalidpublicfctaddress
 
-[240]: #transactionblockcontext
+[240]: #parameters-92
 
-[241]: #properties-10
+[241]: #keytopublicecaddress
 
-[242]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L28-L586 "Source code on GitHub"
+[242]: #parameters-93
 
-[243]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[243]: #keytopublicfctaddress
 
-[244]: #connectionoptions
+[244]: #parameters-94
 
-[245]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L161-L168 "Source code on GitHub"
+[245]: #rcdhashtopublicfctaddress
 
-[246]: #chain
+[246]: #parameters-95
 
-[247]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[247]: #seedtoprivateecaddress
 
-[248]: #entry
+[248]: #parameters-96
 
-[249]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[249]: #seedtoprivatefctaddress
 
-[250]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[250]: #parameters-97
 
-[251]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[251]: #transactionaddress
 
-[252]: https://nodejs.org/api/buffer.html
+[252]: #parameters-98
 
-[253]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[253]: #transactionblockcontext
 
-[254]: https://docs.factom.com/api#repeated-commit
+[254]: #properties-10
 
-[255]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L186-L193 "Source code on GitHub"
+[255]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-event-emitter.js#L58-L460 "Source code on GitHub"
 
-[256]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L212-L219 "Source code on GitHub"
+[256]: #factomcli
 
-[257]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L263-L270 "Source code on GitHub"
+[257]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[258]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L237-L244 "Source code on GitHub"
+[258]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[259]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L355-L357 "Source code on GitHub"
+[259]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-event-emitter.js#L222-L230 "Source code on GitHub"
 
-[260]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L54-L61 "Source code on GitHub"
+[260]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[261]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L77-L84 "Source code on GitHub"
+[261]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[262]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L100-L107 "Source code on GitHub"
+[262]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-event-emitter.js#L199-L201 "Source code on GitHub"
 
-[263]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L439-L448 "Source code on GitHub"
+[263]: https://developer.mozilla.org/docs/Web/API/Event
 
-[264]: #transaction
+[264]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-event-emitter.js#L208-L215 "Source code on GitHub"
 
-[265]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L419-L428 "Source code on GitHub"
+[265]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-event-emitter.js#L97-L99 "Source code on GitHub"
 
-[266]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L498-L500 "Source code on GitHub"
+[266]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set
 
-[267]: https://docs.factom.com/api#factomd-api
+[267]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-event-emitter.js#L113-L115 "Source code on GitHub"
 
-[268]: https://github.com/tim-kos/node-retry#retrytimeoutsoptions
+[268]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map
 
-[269]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L553-L555 "Source code on GitHub"
+[269]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-event-emitter.js#L105-L107 "Source code on GitHub"
 
-[270]: #adminblock
+[270]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-event-emitter.js#L451-L459 "Source code on GitHub"
 
-[271]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L292-L294 "Source code on GitHub"
+[271]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[272]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L345-L347 "Source code on GitHub"
+[272]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-event-emitter.js#L121-L123 "Source code on GitHub"
 
-[273]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L304-L306 "Source code on GitHub"
+[273]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-event-emitter.js#L66-L68 "Source code on GitHub"
 
-[274]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L543-L545 "Source code on GitHub"
+[274]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L28-L586 "Source code on GitHub"
 
-[275]: #directoryblock
+[275]: #connectionoptions
 
-[276]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L533-L535 "Source code on GitHub"
+[276]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L161-L168 "Source code on GitHub"
 
-[277]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L314-L316 "Source code on GitHub"
+[277]: #chain
 
-[278]: #factomcligetentrywithblockcontext
+[278]: #entry
 
-[279]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L583-L585 "Source code on GitHub"
+[279]: https://nodejs.org/api/buffer.html
 
-[280]: #entryblock
+[280]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[281]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L563-L565 "Source code on GitHub"
+[281]: https://docs.factom.com/api#repeated-commit
 
-[282]: #entrycreditblock
+[282]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L186-L193 "Source code on GitHub"
 
-[283]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L364-L366 "Source code on GitHub"
+[283]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L212-L219 "Source code on GitHub"
 
-[284]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L325-L327 "Source code on GitHub"
+[284]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L263-L270 "Source code on GitHub"
 
-[285]: #factomcligetentry
+[285]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L237-L244 "Source code on GitHub"
 
-[286]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L573-L575 "Source code on GitHub"
+[286]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L355-L357 "Source code on GitHub"
 
-[287]: #factoidblock
+[287]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L54-L61 "Source code on GitHub"
 
-[288]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L335-L337 "Source code on GitHub"
+[288]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L77-L84 "Source code on GitHub"
 
-[289]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L524-L526 "Source code on GitHub"
+[289]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L100-L107 "Source code on GitHub"
 
-[290]: https://docs.factom.com/api#heights
+[290]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L439-L448 "Source code on GitHub"
 
-[291]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L280-L282 "Source code on GitHub"
+[291]: #transaction
 
-[292]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L374-L376 "Source code on GitHub"
+[292]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L419-L428 "Source code on GitHub"
 
-[293]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L116-L118 "Source code on GitHub"
+[293]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L498-L500 "Source code on GitHub"
 
-[294]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L127-L129 "Source code on GitHub"
+[294]: https://docs.factom.com/api#factomd-api
 
-[295]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L138-L140 "Source code on GitHub"
+[295]: https://github.com/tim-kos/node-retry#retrytimeoutsoptions
 
-[296]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L389-L391 "Source code on GitHub"
+[296]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L553-L555 "Source code on GitHub"
 
-[297]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L406-L408 "Source code on GitHub"
+[297]: #adminblock
 
-[298]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L458-L460 "Source code on GitHub"
+[298]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L292-L294 "Source code on GitHub"
 
-[299]: https://docs.factom.com/api#ack
+[299]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L345-L347 "Source code on GitHub"
 
-[300]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L481-L483 "Source code on GitHub"
+[300]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L304-L306 "Source code on GitHub"
 
-[301]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L470-L472 "Source code on GitHub"
+[301]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L543-L545 "Source code on GitHub"
 
-[302]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-cli.js#L513-L515 "Source code on GitHub"
+[302]: #directoryblock
 
-[303]: https://docs.factom.com/api#factom-walletd-api
+[303]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L533-L535 "Source code on GitHub"
 
-[304]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L141-L151 "Source code on GitHub"
+[304]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L314-L316 "Source code on GitHub"
 
-[305]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L158-L163 "Source code on GitHub"
+[305]: #factomcligetentrywithblockcontext
 
-[306]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/blocks.js#L86-L113 "Source code on GitHub"
+[306]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L583-L585 "Source code on GitHub"
 
-[307]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/blocks.js#L109-L112 "Source code on GitHub"
+[307]: #entryblock
 
-[308]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L197-L289 "Source code on GitHub"
+[308]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L563-L565 "Source code on GitHub"
 
-[309]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L277-L280 "Source code on GitHub"
+[309]: #entrycreditblock
 
-[310]: #entryblockcontext
+[310]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L364-L366 "Source code on GitHub"
 
-[311]: #entrybuilder
+[311]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L325-L327 "Source code on GitHub"
 
-[312]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L286-L288 "Source code on GitHub"
+[312]: #factomcligetentry
 
-[313]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L230-L235 "Source code on GitHub"
+[313]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L573-L575 "Source code on GitHub"
 
-[314]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L218-L223 "Source code on GitHub"
+[314]: #factoidblock
 
-[315]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L254-L259 "Source code on GitHub"
+[315]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L335-L337 "Source code on GitHub"
 
-[316]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L242-L247 "Source code on GitHub"
+[316]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L524-L526 "Source code on GitHub"
 
-[317]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L266-L269 "Source code on GitHub"
+[317]: https://docs.factom.com/api#heights
 
-[318]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L298-L390 "Source code on GitHub"
+[318]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L280-L282 "Source code on GitHub"
 
-[319]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L387-L389 "Source code on GitHub"
+[319]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L374-L376 "Source code on GitHub"
 
-[320]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L325-L339 "Source code on GitHub"
+[320]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L116-L118 "Source code on GitHub"
 
-[321]: #transactionbuilderrcdsignature
+[321]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L127-L129 "Source code on GitHub"
 
-[322]: #transactionbuilder
+[322]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L138-L140 "Source code on GitHub"
 
-[323]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L348-L357 "Source code on GitHub"
+[323]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L389-L391 "Source code on GitHub"
 
-[324]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L366-L370 "Source code on GitHub"
+[324]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L406-L408 "Source code on GitHub"
 
-[325]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L378-L381 "Source code on GitHub"
+[325]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L458-L460 "Source code on GitHub"
 
-[326]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L86-L272 "Source code on GitHub"
+[326]: https://docs.factom.com/api#ack
 
-[327]: #transactionblockcontext
+[327]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L481-L483 "Source code on GitHub"
 
-[328]: #transactionaddress
+[328]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L470-L472 "Source code on GitHub"
 
-[329]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L211-L244 "Source code on GitHub"
+[329]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/factom-cli.js#L513-L515 "Source code on GitHub"
 
-[330]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L202-L204 "Source code on GitHub"
+[330]: https://docs.factom.com/api#factom-walletd-api
 
-[331]: #factomcligetentrycreditrate
+[331]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L141-L151 "Source code on GitHub"
 
-[332]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L183-L185 "Source code on GitHub"
+[332]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L158-L163 "Source code on GitHub"
 
-[333]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L249-L262 "Source code on GitHub"
+[333]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/blocks.js#L86-L113 "Source code on GitHub"
 
-[334]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L192-L194 "Source code on GitHub"
+[334]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/blocks.js#L109-L112 "Source code on GitHub"
 
-[335]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L269-L271 "Source code on GitHub"
+[335]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L197-L289 "Source code on GitHub"
 
-[336]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L26-L187 "Source code on GitHub"
+[336]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L277-L280 "Source code on GitHub"
 
-[337]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L43-L45 "Source code on GitHub"
+[337]: #entryblockcontext
 
-[338]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L50-L52 "Source code on GitHub"
+[338]: #entrybuilder
 
-[339]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L152-L159 "Source code on GitHub"
+[339]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L286-L288 "Source code on GitHub"
 
-[340]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L57-L59 "Source code on GitHub"
+[340]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L230-L235 "Source code on GitHub"
 
-[341]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L116-L119 "Source code on GitHub"
+[341]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L218-L223 "Source code on GitHub"
 
-[342]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L124-L126 "Source code on GitHub"
+[342]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L254-L259 "Source code on GitHub"
 
-[343]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L131-L139 "Source code on GitHub"
+[343]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L242-L247 "Source code on GitHub"
 
-[344]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L144-L146 "Source code on GitHub"
+[344]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L266-L269 "Source code on GitHub"
 
-[345]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L74-L76 "Source code on GitHub"
+[345]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L300-L392 "Source code on GitHub"
 
-[346]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L82-L84 "Source code on GitHub"
+[346]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L389-L391 "Source code on GitHub"
 
-[347]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L90-L97 "Source code on GitHub"
+[347]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L327-L341 "Source code on GitHub"
 
-[348]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L103-L110 "Source code on GitHub"
+[348]: #transactionbuilderrcdsignature
 
-[349]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L65-L68 "Source code on GitHub"
+[349]: #transactionbuilder
 
-[350]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L165-L177 "Source code on GitHub"
+[350]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L350-L359 "Source code on GitHub"
 
-[351]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L184-L186 "Source code on GitHub"
+[351]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L368-L372 "Source code on GitHub"
 
-[352]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/apis-cli.js#L204-L226 "Source code on GitHub"
+[352]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L380-L383 "Source code on GitHub"
 
-[353]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/apis-cli.js#L222-L225 "Source code on GitHub"
+[353]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L86-L272 "Source code on GitHub"
 
-[354]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/apis-cli.js#L232-L252 "Source code on GitHub"
+[354]: #transactionblockcontext
 
-[355]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/apis-cli.js#L249-L251 "Source code on GitHub"
+[355]: #transactionaddress
 
-[356]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/chain.js#L17-L62 "Source code on GitHub"
+[356]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L211-L244 "Source code on GitHub"
 
-[357]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/chain.js#L48-L50 "Source code on GitHub"
+[357]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L202-L204 "Source code on GitHub"
 
-[358]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/chain.js#L40-L42 "Source code on GitHub"
+[358]: #factomcligetentrycreditrate
 
-[359]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/chain.js#L56-L61 "Source code on GitHub"
+[359]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L183-L185 "Source code on GitHub"
 
-[360]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-event-emitter.js#L47-L324 "Source code on GitHub"
+[360]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L249-L262 "Source code on GitHub"
 
-[361]: #factomcli
+[361]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L192-L194 "Source code on GitHub"
 
-[362]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-event-emitter.js#L72-L74 "Source code on GitHub"
+[362]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L269-L271 "Source code on GitHub"
 
-[363]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set
+[363]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L26-L187 "Source code on GitHub"
 
-[364]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-event-emitter.js#L80-L82 "Source code on GitHub"
+[364]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L43-L45 "Source code on GitHub"
 
-[365]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/factom-event-emitter.js#L88-L90 "Source code on GitHub"
+[365]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L50-L52 "Source code on GitHub"
 
-[366]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/chain.js#L180-L185 "Source code on GitHub"
+[366]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L152-L159 "Source code on GitHub"
 
-[367]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/chain.js#L76-L108 "Source code on GitHub"
+[367]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L57-L59 "Source code on GitHub"
 
-[368]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/chain.js#L122-L142 "Source code on GitHub"
+[368]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L116-L119 "Source code on GitHub"
 
-[369]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/chain.js#L199-L204 "Source code on GitHub"
+[369]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L124-L126 "Source code on GitHub"
 
-[370]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/chain.js#L168-L171 "Source code on GitHub"
+[370]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L131-L139 "Source code on GitHub"
 
-[371]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L432-L437 "Source code on GitHub"
+[371]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L144-L146 "Source code on GitHub"
 
-[372]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L335-L368 "Source code on GitHub"
+[372]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L74-L76 "Source code on GitHub"
 
-[373]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L382-L400 "Source code on GitHub"
+[373]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L82-L84 "Source code on GitHub"
 
-[374]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L451-L456 "Source code on GitHub"
+[374]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L90-L97 "Source code on GitHub"
 
-[375]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L420-L423 "Source code on GitHub"
+[375]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L103-L110 "Source code on GitHub"
 
-[376]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/chain.js#L232-L236 "Source code on GitHub"
+[376]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L65-L68 "Source code on GitHub"
 
-[377]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/chain.js#L222-L225 "Source code on GitHub"
+[377]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L165-L177 "Source code on GitHub"
 
-[378]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L474-L477 "Source code on GitHub"
+[378]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L184-L186 "Source code on GitHub"
 
-[379]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/apis-cli.js#L47-L79 "Source code on GitHub"
+[379]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/apis-cli.js#L206-L228 "Source code on GitHub"
 
-[380]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/blocks.js#L24-L73 "Source code on GitHub"
+[380]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/apis-cli.js#L224-L227 "Source code on GitHub"
 
-[381]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/blocks.js#L192-L210 "Source code on GitHub"
+[381]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/apis-cli.js#L234-L254 "Source code on GitHub"
 
-[382]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/entry.js#L291-L299 "Source code on GitHub"
+[382]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/apis-cli.js#L251-L253 "Source code on GitHub"
 
-[383]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/blocks.js#L269-L327 "Source code on GitHub"
+[383]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/chain.js#L17-L58 "Source code on GitHub"
 
-[384]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/blocks.js#L321-L326 "Source code on GitHub"
+[384]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/chain.js#L44-L46 "Source code on GitHub"
 
-[385]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/blocks.js#L223-L253 "Source code on GitHub"
+[385]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/chain.js#L36-L38 "Source code on GitHub"
 
-[386]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/blocks.js#L250-L252 "Source code on GitHub"
+[386]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/chain.js#L52-L57 "Source code on GitHub"
 
-[387]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L242-L249 "Source code on GitHub"
+[387]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/chain.js#L176-L181 "Source code on GitHub"
 
-[388]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L229-L236 "Source code on GitHub"
+[388]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/chain.js#L72-L104 "Source code on GitHub"
 
-[389]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L121-L134 "Source code on GitHub"
+[389]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/chain.js#L118-L138 "Source code on GitHub"
 
-[390]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L22-L42 "Source code on GitHub"
+[390]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/chain.js#L195-L200 "Source code on GitHub"
 
-[391]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L67-L69 "Source code on GitHub"
+[391]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/chain.js#L164-L167 "Source code on GitHub"
 
-[392]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L94-L96 "Source code on GitHub"
+[392]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L432-L437 "Source code on GitHub"
 
-[393]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L58-L60 "Source code on GitHub"
+[393]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L335-L368 "Source code on GitHub"
 
-[394]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L85-L87 "Source code on GitHub"
+[394]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L382-L400 "Source code on GitHub"
 
-[395]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L112-L114 "Source code on GitHub"
+[395]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L451-L456 "Source code on GitHub"
 
-[396]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L49-L51 "Source code on GitHub"
+[396]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L420-L423 "Source code on GitHub"
 
-[397]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L76-L78 "Source code on GitHub"
+[397]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/chain.js#L228-L232 "Source code on GitHub"
 
-[398]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L103-L105 "Source code on GitHub"
+[398]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/chain.js#L218-L221 "Source code on GitHub"
 
-[399]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L197-L199 "Source code on GitHub"
+[399]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L474-L477 "Source code on GitHub"
 
-[400]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L170-L172 "Source code on GitHub"
+[400]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/apis-cli.js#L47-L79 "Source code on GitHub"
 
-[401]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L179-L181 "Source code on GitHub"
+[401]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/blocks.js#L24-L73 "Source code on GitHub"
 
-[402]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L206-L208 "Source code on GitHub"
+[402]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/blocks.js#L192-L210 "Source code on GitHub"
 
-[403]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/addresses.js#L188-L190 "Source code on GitHub"
+[403]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/entry.js#L291-L299 "Source code on GitHub"
 
-[404]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L21-L39 "Source code on GitHub"
+[404]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/blocks.js#L269-L327 "Source code on GitHub"
 
-[405]: https://github.com/PaulBernier/factomjs/blob/88443870bd30070b21a4684104df9d34475870ba/src/transaction.js#L51-L57 "Source code on GitHub"
+[405]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/blocks.js#L321-L326 "Source code on GitHub"
+
+[406]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/blocks.js#L223-L253 "Source code on GitHub"
+
+[407]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/blocks.js#L250-L252 "Source code on GitHub"
+
+[408]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L242-L249 "Source code on GitHub"
+
+[409]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L229-L236 "Source code on GitHub"
+
+[410]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L121-L134 "Source code on GitHub"
+
+[411]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L22-L42 "Source code on GitHub"
+
+[412]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/chain.js#L239-L241 "Source code on GitHub"
+
+[413]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L67-L69 "Source code on GitHub"
+
+[414]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L94-L96 "Source code on GitHub"
+
+[415]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L58-L60 "Source code on GitHub"
+
+[416]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L85-L87 "Source code on GitHub"
+
+[417]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L112-L114 "Source code on GitHub"
+
+[418]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L49-L51 "Source code on GitHub"
+
+[419]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L76-L78 "Source code on GitHub"
+
+[420]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L103-L105 "Source code on GitHub"
+
+[421]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L197-L199 "Source code on GitHub"
+
+[422]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L170-L172 "Source code on GitHub"
+
+[423]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L179-L181 "Source code on GitHub"
+
+[424]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L206-L208 "Source code on GitHub"
+
+[425]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/addresses.js#L188-L190 "Source code on GitHub"
+
+[426]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L21-L39 "Source code on GitHub"
+
+[427]: https://github.com/PaulBernier/factomjs/blob/a908ac6f8bee86cff365296f1b5e9c58f6e66882/src/transaction.js#L51-L57 "Source code on GitHub"

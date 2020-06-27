@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.4.0]
+
+### Added
+
+-   Add support for pending Factoid transactions to `FactomEventEmitter`.
+
 ## [1.3.0]
 
 ### Fixed
