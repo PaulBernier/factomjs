@@ -62,20 +62,20 @@ const cli = new FactomCli({
         retries: 3,
         factor: 2,
         minTimeout: 500,
-        maxTimeout: 2000
-    }
+        maxTimeout: 2000,
+    },
 });
 
 // You can also override both factomd and walletd options
 const cli = new FactomCli({
     factomd: {
         host: '52.202.51.228',
-        port: 8088
+        port: 8088,
     },
     walletd: {
         host: '52.202.51.228',
-        port: 8089
-    }
+        port: 8089,
+    },
 });
 ```
 
@@ -115,7 +115,7 @@ cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'
 
 // The concurrency limit can be customized.
 cli.add([entry1, entry2], 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', {
-    concurrency: 1
+    concurrency: 1,
 });
 ```
 
@@ -129,7 +129,7 @@ cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym');
 // Change the timeout for commit ack to 120s and the timeout for reveal ack to 20s
 cli.add(myEntry, 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym', {
     commitTimeout: 120,
-    revealTimeout: 20
+    revealTimeout: 20,
 });
 // By providing a negative number the library will not wait for any acknowledgment.
 // In below example the wait on reveal ack is disabled (it'll still wait up to 60s on the commit ack).
@@ -187,7 +187,7 @@ let search = true,
 await cli.rewindChainWhile(
     'caf017da212bb68ffee2ba645e1488e5834863743d50972dd3009eab2b93eb42',
     () => search,
-    function(entry) {
+    function (entry) {
         if (entry.extId[0].toString() === 'Find me!') {
             search = false;
             found = entry;
@@ -220,7 +220,7 @@ const {
     keyToPublicEcAddress,
     seedToPrivateEcAddress,
     generateRandomFctAddress,
-    generateRandomEcAddress
+    generateRandomEcAddress,
 } = require('factom');
 ```
 
@@ -367,9 +367,7 @@ const { rcd, signature } = getRcdSignatureFromSecureComponent(unsignedTx.marshal
 
 // The builder below will copy timestamp, inputs and outputs. Then the RCD and signature are appended.
 // When the transaction is built the library verifies the validity of the RCD and signature. (exception throw if any of them is invalid)
-const signedTx = Transaction.builder(unsignedTx)
-    .rcdSignature(rcd, signature)
-    .build();
+const signedTx = Transaction.builder(unsignedTx).rcdSignature(rcd, signature).build();
 ```
 
 Side note: helper functions `createFactoidTransaction` and `createEntryCreditPurchaseTransaction` cannot generate unsigned transactions because they compute fees automatically and to do so need the complete transaction. Therefore if the user provides a public Factoid address as input for those functions the library will attempt to retrieve the corresponding private address from the wallet in order to build a signed transaction.
@@ -437,7 +435,7 @@ const eb = await cli.getEntryBlock(db.entryBlockRefs[0]);
 // First argument is the API method name, followed by the params object for that API
 // Check https://docs.factom.com/api for the details of APIs
 cli.factomdApi('directory-block', {
-    keymr: 'faf2a058cc475c5cb8ec13e8ba979118f7cde9db38bcfeb7e35744bcf5f6134b'
+    keymr: 'faf2a058cc475c5cb8ec13e8ba979118f7cde9db38bcfeb7e35744bcf5f6134b',
 });
 // It also supports factomd debug API calls
 cli.factomdApi('federated-servers');
@@ -452,7 +450,7 @@ const { FactomdCli, WalletdCli } = require('factom');
 const factomd = new FactomdCli();
 const walletd = new WalletdCli();
 factomd.call('directory-block', {
-    keymr: 'faf2a058cc475c5cb8ec13e8ba979118f7cde9db38bcfeb7e35744bcf5f6134b'
+    keymr: 'faf2a058cc475c5cb8ec13e8ba979118f7cde9db38bcfeb7e35744bcf5f6134b',
 });
 walletd.call('address', { address: 'FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q' });
 ```

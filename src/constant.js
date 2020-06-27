@@ -17,7 +17,7 @@ const ADMIN_ID_TO_CODE = new Map([
     [11, 'COINBASE_DESCRIPTOR'],
     [12, 'COINBASE_DESCRIPTOR_CANCEL'],
     [13, 'ADD_AUTHORITY_FACTOID_ADDRESS'],
-    [14, 'ADD_AUTHORITY_EFFICIENCY']
+    [14, 'ADD_AUTHORITY_EFFICIENCY'],
 ]);
 
 module.exports = {
@@ -32,7 +32,7 @@ module.exports = {
     RESERVED_CHAIN_IDS: new Set([
         ADMIN_BLOCKS_CHAIN_ID,
         ENTRY_CREDIT_BLOCKS_CHAIN_ID,
-        FACTOID_BLOCKS_CHAIN_ID
+        FACTOID_BLOCKS_CHAIN_ID,
     ]),
     VALID_PREFIXES: new Set(['Fs', 'FA', 'EC', 'Es']),
     PUBLIC_ADDRESS_VALID_PREFIXES: new Set(['FA', 'EC']),
@@ -44,5 +44,5 @@ module.exports = {
     ENTRYCREDIT_PUBLIC_PREFIX: Buffer.from('592a', 'hex'),
     ENTRYCREDIT_PRIVATE_PREFIX: Buffer.from('5db6', 'hex'),
     ADMIN_ID_TO_CODE,
-    CHAIN_REGEX: /\b[A-Fa-f0-9]{64}\b/
+    CHAIN_REGEX: /\b[A-Fa-f0-9]{64}\b/,
 };

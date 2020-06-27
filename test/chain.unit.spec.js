@@ -10,12 +10,12 @@ const assert = require('chai').assert,
         composeChainDelegateSig,
         composeChainLedger,
         computeChainTxId,
-        computeChainId
+        computeChainId,
     } = require('../src/chain'),
     { addressToKey, getPublicAddress } = require('../src/addresses');
 
-describe('Test Chain', function() {
-    it('should populate Chain attributes', function() {
+describe('Test Chain', function () {
+    it('should populate Chain attributes', function () {
         const entry = Entry.builder()
             .extId('test', 'utf8')
             .content('hello', 'utf8')
@@ -39,7 +39,7 @@ describe('Test Chain', function() {
         );
     });
 
-    it('should reject invalid argument of Chain constructor', function() {
+    it('should reject invalid argument of Chain constructor', function () {
         try {
             new Chain({});
         } catch (e) {
@@ -49,7 +49,7 @@ describe('Test Chain', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should override chainId of Entry', function() {
+    it('should override chainId of Entry', function () {
         const entry = Entry.builder()
             .chainId('45f7ebb3be5217d0e2f1d14ab73121a66cdaad12a50b9863a45ee8ee9f3ab032')
             .extId('test', 'utf8')
@@ -69,7 +69,7 @@ describe('Test Chain', function() {
         );
     });
 
-    it('should compute EC cost', function() {
+    it('should compute EC cost', function () {
         const entry = Entry.builder()
             .chainId('45f7ebb3be5217d0e2f1d14ab73121a66cdaad12a50b9863a45ee8ee9f3ab032')
             .extId('test', 'utf8')
@@ -82,7 +82,7 @@ describe('Test Chain', function() {
         assert.strictEqual(chain.ecCost(), 11);
     });
 
-    it('should compose Chain commit', function() {
+    it('should compose Chain commit', function () {
         const entry = Entry.builder()
             .extId('my ext id 1784465577795', 'utf8')
             .content('first')
@@ -102,7 +102,7 @@ describe('Test Chain', function() {
         );
     });
 
-    it('should reject invalid argument of composeChainCommit', function() {
+    it('should reject invalid argument of composeChainCommit', function () {
         try {
             const entry = Entry.builder()
                 .extId('my ext id 1784465577795', 'utf8')
@@ -117,7 +117,7 @@ describe('Test Chain', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should compose Chain commit with provided signature', function() {
+    it('should compose Chain commit with provided signature', function () {
         const entry = Entry.builder()
             .extId('my ext id 1784465577795', 'utf8')
             .content('first')
@@ -138,7 +138,7 @@ describe('Test Chain', function() {
         );
     });
 
-    it('should reject invalid signature manually provided for chain commit (timestamp not fixed)', function() {
+    it('should reject invalid signature manually provided for chain commit (timestamp not fixed)', function () {
         const entry = Entry.builder()
             .extId('my ext id 1784465577795', 'utf8')
             .content('first')
@@ -165,7 +165,7 @@ describe('Test Chain', function() {
         throw new Error('Should have rejected invalid signature');
     });
 
-    it('should compose Chain commit with delegated signature', async function() {
+    it('should compose Chain commit with delegated signature', async function () {
         const entry = Entry.builder()
             .extId('my ext id 1784465577795', 'utf8')
             .content('first')
@@ -178,7 +178,7 @@ describe('Test Chain', function() {
         const publicAddress = getPublicAddress(address);
         const secretKey = sign.keyPair.fromSeed(addressToKey(address)).secretKey;
 
-        const commit = await composeChainCommitDelegateSig(chain, publicAddress, data =>
+        const commit = await composeChainCommitDelegateSig(chain, publicAddress, (data) =>
             sign.detached(data, secretKey)
         );
 
@@ -189,7 +189,7 @@ describe('Test Chain', function() {
         );
     });
 
-    it('should compose Chain commit with delegated signature', async function() {
+    it('should compose Chain commit with delegated signature', async function () {
         const entry = Entry.builder()
             .extId('my ext id 1784465577795', 'utf8')
             .content('first')
@@ -204,7 +204,7 @@ describe('Test Chain', function() {
             await composeChainCommitDelegateSig(
                 chain,
                 'EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD',
-                data => sign.detached(data, secretKey)
+                (data) => sign.detached(data, secretKey)
             );
         } catch (e) {
             assert.instanceOf(e, Error);
@@ -214,7 +214,7 @@ describe('Test Chain', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should compose Chain reveal', function() {
+    it('should compose Chain reveal', function () {
         const entry = Entry.builder()
             .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
             .extId('test', 'utf8')
@@ -230,7 +230,7 @@ describe('Test Chain', function() {
         );
     });
 
-    it('should compose Chain commit and reveal', function() {
+    it('should compose Chain commit and reveal', function () {
         const entry = Entry.builder()
             .extId('my ext id 1784465577795', 'utf8')
             .content('first')
@@ -254,7 +254,7 @@ describe('Test Chain', function() {
         );
     });
 
-    it('should compose Chain commit and reveal with manually provided signature', function() {
+    it('should compose Chain commit and reveal with manually provided signature', function () {
         const entry = Entry.builder()
             .extId('my ext id 1784465577795', 'utf8')
             .content('first')
@@ -279,7 +279,7 @@ describe('Test Chain', function() {
         );
     });
 
-    it('should compose Chain commit and reveal with delegated signature', async function() {
+    it('should compose Chain commit and reveal with delegated signature', async function () {
         const entry = Entry.builder()
             .extId('my ext id 1784465577795', 'utf8')
             .content('first')
@@ -291,7 +291,7 @@ describe('Test Chain', function() {
         const publicAddress = getPublicAddress(address);
         const secretKey = sign.keyPair.fromSeed(addressToKey(address)).secretKey;
 
-        const composed = await composeChainDelegateSig(chain, publicAddress, data =>
+        const composed = await composeChainDelegateSig(chain, publicAddress, (data) =>
             sign.detached(data, secretKey)
         );
 
@@ -307,7 +307,7 @@ describe('Test Chain', function() {
         );
     });
 
-    it('should compute chain txId', function() {
+    it('should compute chain txId', function () {
         const e = Entry.builder()
             .extId('extId', 'utf8')
             .extId('extId++', 'utf8')
@@ -325,7 +325,7 @@ describe('Test Chain', function() {
         );
     });
 
-    it('should copy chain', function() {
+    it('should copy chain', function () {
         const e = Entry.builder()
             .extId('extId', 'utf8')
             .extId('extId++', 'utf8')
@@ -343,7 +343,7 @@ describe('Test Chain', function() {
         assert.deepStrictEqual(chain.firstEntry, chainCopy.firstEntry);
     });
 
-    it('should compute chain id', function() {
+    it('should compute chain id', function () {
         const entry = Entry.builder()
             .extId('factom-cli', 'utf8')
             .extId('0.9237665120394476', 'utf8')
@@ -357,7 +357,7 @@ describe('Test Chain', function() {
         );
     });
 
-    it('should convert to JS object', function() {
+    it('should convert to JS object', function () {
         const e = Entry.builder()
             .extId('extId', 'utf8')
             .extId('extId++', 'utf8')

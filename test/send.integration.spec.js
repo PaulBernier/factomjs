@@ -11,14 +11,14 @@ const factomd = new FactomdCli({
     user: process.env.FACTOMD_USER,
     password: process.env.FACTOMD_PASSWORD,
     host: process.env.FACTOMD_HOST,
-    port: process.env.FACTOMD_PORT
+    port: process.env.FACTOMD_PORT,
 });
 const PAYING_FCT_ADDRESS = process.env.FCT_PRIVATE_ADDRESS;
 const RECEIVING_FCT_ADDRESS = 'FA3syRxpYEvFFvoN4ZfNRJVQdumLpTK4CMmMUFmKGeqyTNgsg4uH';
 const RECEIVING_EC_ADDRESS = 'EC3MVTBYTo2Y1HrEKxeEGfNNoKhLZ9ZYQhb26zQUzngJ6SLUVRX9';
 
-describe('Send transactions', function() {
-    it('should send Factoid Transaction', async function() {
+describe('Send transactions', function () {
+    it('should send Factoid Transaction', async function () {
         this.timeout(10000);
 
         const transaction = await send.createFactoidTransaction(
@@ -30,7 +30,7 @@ describe('Send transactions', function() {
         await send.sendTransaction(factomd, transaction);
     });
 
-    it('should not send unsgined Transaction', async function() {
+    it('should not send unsgined Transaction', async function () {
         try {
             const unsignedTx = Transaction.builder()
                 .input('FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw', 10)
@@ -44,7 +44,7 @@ describe('Send transactions', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should reject non Transaction object', async function() {
+    it('should reject non Transaction object', async function () {
         try {
             await send.sendTransaction(factomd, {});
         } catch (e) {
@@ -54,7 +54,7 @@ describe('Send transactions', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should refuse to build under paid transation', async function() {
+    it('should refuse to build under paid transation', async function () {
         this.timeout(10000);
 
         try {
@@ -73,7 +73,7 @@ describe('Send transactions', function() {
         throw new Error('Should have thrown Error');
     });
 
-    it('should reject EC address when building a Factoid transaction', async function() {
+    it('should reject EC address when building a Factoid transaction', async function () {
         try {
             await send.createFactoidTransaction(
                 factomd,
@@ -89,7 +89,7 @@ describe('Send transactions', function() {
         throw new Error('Should have thrown Error');
     });
 
-    it('should reject over paid transation', async function() {
+    it('should reject over paid transation', async function () {
         this.timeout(10000);
 
         try {
@@ -112,7 +112,7 @@ describe('Send transactions', function() {
         throw new Error('Should have thrown Error');
     });
 
-    it('should send Entry Credit purchase Transaction', async function() {
+    it('should send Entry Credit purchase Transaction', async function () {
         this.timeout(10000);
 
         const transaction = await send.createEntryCreditPurchaseTransaction(
@@ -124,7 +124,7 @@ describe('Send transactions', function() {
         await send.sendTransaction(factomd, transaction);
     });
 
-    it('should reject FCT address when building a Entry Credit purchase transaction', async function() {
+    it('should reject FCT address when building a Entry Credit purchase transaction', async function () {
         try {
             await send.createEntryCreditPurchaseTransaction(
                 factomd,
@@ -140,7 +140,7 @@ describe('Send transactions', function() {
         throw new Error('Should have thrown Error');
     });
 
-    it('should reject under paid transaction', async function() {
+    it('should reject under paid transaction', async function () {
         this.timeout(10000);
 
         try {
@@ -159,10 +159,10 @@ describe('Send transactions', function() {
         throw new Error('Should have thrown Error');
     });
 
-    it('should send multi output Transaction', async function() {
+    it('should send multi output Transaction', async function () {
         this.timeout(10000);
 
-        const rate = await factomd.call('entry-credit-rate').then(r => r.rate);
+        const rate = await factomd.call('entry-credit-rate').then((r) => r.rate);
 
         const fees = Transaction.builder()
             .input(PAYING_FCT_ADDRESS, rate + 1)
@@ -180,7 +180,7 @@ describe('Send transactions', function() {
         await send.sendTransaction(factomd, transaction);
     });
 
-    it('should reject transaction with EC output below EC rate', async function() {
+    it('should reject transaction with EC output below EC rate', async function () {
         this.timeout(10000);
 
         try {
@@ -200,7 +200,7 @@ describe('Send transactions', function() {
         throw new Error('Should have thrown Error');
     });
 
-    it('should bypass check of transaction with EC output below EC rate', async function() {
+    it('should bypass check of transaction with EC output below EC rate', async function () {
         this.timeout(10000);
 
         const { rate } = await factomd.call('entry-credit-rate');

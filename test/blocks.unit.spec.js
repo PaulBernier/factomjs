@@ -1,8 +1,8 @@
 const assert = require('chai').assert,
     { EntryCreditBlock, AdminBlock } = require('../src/blocks');
 
-describe('Test Blocks', function() {
-    it('should populate EntryCreditBlock', function() {
+describe('Test Blocks', function () {
+    it('should populate EntryCreditBlock', function () {
         const ecb = new EntryCreditBlock(require('./data/entry-credit-block.json'));
 
         assert.instanceOf(ecb, EntryCreditBlock);
@@ -62,7 +62,7 @@ describe('Test Blocks', function() {
         );
     });
 
-    it('should populate M1 EntryCreditBlock', function() {
+    it('should populate M1 EntryCreditBlock', function () {
         const ecb = new EntryCreditBlock(require('./data/m1-entry-credit-block.json'));
 
         assert.instanceOf(ecb, EntryCreditBlock);
@@ -112,7 +112,7 @@ describe('Test Blocks', function() {
         );
     });
 
-    it('should parse AdminBlock', function() {
+    it('should parse AdminBlock', function () {
         const adminBlocks = require('./data/admin-blocks.json');
 
         const ablock1 = new AdminBlock(
@@ -146,7 +146,7 @@ describe('Test Blocks', function() {
         assert.lengthOf(ablock2.getEntriesOfTypes('ADD_REPLACE_MATRYOSHKA_HASH'), 1);
     });
 
-    it('should parse AdminBlock entry type 1', function() {
+    it('should parse AdminBlock entry type 1', function () {
         const adminBlocks = require('./data/admin-blocks.json');
 
         const ablock = new AdminBlock(
@@ -169,7 +169,7 @@ describe('Test Blocks', function() {
         );
     });
 
-    it('should parse AdminBlock entry type 3', function() {
+    it('should parse AdminBlock entry type 3', function () {
         const adminBlocks = require('./data/admin-blocks.json');
 
         const ablock = new AdminBlock(
@@ -188,7 +188,7 @@ describe('Test Blocks', function() {
         );
     });
 
-    it('should parse AdminBlock entry type 5', function() {
+    it('should parse AdminBlock entry type 5', function () {
         const adminBlocks = require('./data/admin-blocks.json');
 
         const ablock = new AdminBlock(
@@ -204,7 +204,7 @@ describe('Test Blocks', function() {
         assert.strictEqual(entry.directoryBlockHeight, 30943);
     });
 
-    it('should parse AdminBlock entry type 6', function() {
+    it('should parse AdminBlock entry type 6', function () {
         const adminBlocks = require('./data/admin-blocks.json');
 
         const ablock = new AdminBlock(
@@ -220,7 +220,7 @@ describe('Test Blocks', function() {
         assert.strictEqual(entry.directoryBlockHeight, 30896);
     });
 
-    it('should parse AdminBlock entry type 7', function() {
+    it('should parse AdminBlock entry type 7', function () {
         const adminBlocks = require('./data/admin-blocks.json');
 
         const ablock = new AdminBlock(
@@ -236,7 +236,7 @@ describe('Test Blocks', function() {
         assert.strictEqual(entry.directoryBlockHeight, 30751);
     });
 
-    it('should parse AdminBlock entry type 8', function() {
+    it('should parse AdminBlock entry type 8', function () {
         const adminBlocks = require('./data/admin-blocks.json');
 
         const ablock = new AdminBlock(
@@ -257,7 +257,7 @@ describe('Test Blocks', function() {
         assert.strictEqual(entry.directoryBlockHeight, 30896);
     });
 
-    it('should parse AdminBlock entry type 9', function() {
+    it('should parse AdminBlock entry type 9', function () {
         const adminBlocks = require('./data/admin-blocks.json');
 
         const ablock = new AdminBlock(
@@ -275,7 +275,7 @@ describe('Test Blocks', function() {
         assert.strictEqual(entry.keyType, 0);
     });
 
-    it('should parse AdminBlock entry type 11', function() {
+    it('should parse AdminBlock entry type 11', function () {
         const adminBlocks = require('./data/admin-blocks.json');
 
         const ablock = new AdminBlock(
@@ -296,7 +296,7 @@ describe('Test Blocks', function() {
         assert.strictEqual(entry.outputs[0].amount, 320000000);
     });
 
-    it('should parse AdminBlock entry type 12', function() {
+    it('should parse AdminBlock entry type 12', function () {
         const adminBlocks = require('./data/admin-blocks.json');
 
         const ablock = new AdminBlock(
@@ -309,7 +309,7 @@ describe('Test Blocks', function() {
         assert.strictEqual(entry.descriptorIndex, 8);
     });
 
-    it('should parse AdminBlock entry type 13', function() {
+    it('should parse AdminBlock entry type 13', function () {
         const adminBlocks = require('./data/admin-blocks.json');
 
         const ablock = new AdminBlock(
@@ -332,7 +332,7 @@ describe('Test Blocks', function() {
         );
     });
 
-    it('should parse AdminBlock entry type 14', function() {
+    it('should parse AdminBlock entry type 14', function () {
         const adminBlocks = require('./data/admin-blocks.json');
 
         const ablock = new AdminBlock(

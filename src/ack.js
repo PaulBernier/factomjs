@@ -24,12 +24,12 @@ function waitOnAck(factomd, hash, chainId, ackResponseField, to, ackType) {
     const startTime = Date.now();
 
     return new Promise((resolve, reject) => {
-        const clearId = setInterval(async function() {
+        const clearId = setInterval(async function () {
             try {
                 let error;
                 const ackResponse = await factomd
                     .call('ack', { hash: hash, chainid: chainId })
-                    .catch(function(e) {
+                    .catch(function (e) {
                         clearInterval(clearId);
                         error = e;
                     });
@@ -72,5 +72,5 @@ class AckError extends Error {
 module.exports = {
     waitOnCommitAck,
     waitOnRevealAck,
-    waitOnFactoidTransactionAck
+    waitOnFactoidTransactionAck,
 };

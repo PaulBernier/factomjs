@@ -7,7 +7,7 @@ const assert = require('chai').assert,
         EntryCreditBlock,
         FactoidBlock,
         AdminBlock,
-        EntryBlock
+        EntryBlock,
     } = require('../src/blocks'),
     get = require('../src/get');
 
@@ -19,11 +19,11 @@ const factomd = new FactomdCli({
     user: process.env.FACTOMD_USER,
     password: process.env.FACTOMD_PASSWORD,
     host: process.env.FACTOMD_HOST,
-    port: process.env.FACTOMD_PORT
+    port: process.env.FACTOMD_PORT,
 });
 
-describe('Get information from Factom blockchain', function() {
-    it('should get entry', async function() {
+describe('Get information from Factom blockchain', function () {
+    it('should get entry', async function () {
         this.timeout(5000);
 
         const entry = await get.getEntry(
@@ -42,7 +42,7 @@ describe('Get information from Factom blockchain', function() {
         assert.strictEqual(entry.content.toString(), '53746, 662369, 12\r\n');
     });
 
-    it('should get first entry', async function() {
+    it('should get first entry', async function () {
         this.timeout(20000);
 
         const entry = await get.getFirstEntry(
@@ -60,7 +60,7 @@ describe('Get information from Factom blockchain', function() {
         assert.isObject(entry.blockContext);
     });
 
-    it('should get entry with block context', async function() {
+    it('should get entry with block context', async function () {
         this.timeout(15000);
 
         const entry = await get.getEntryWithBlockContext(
@@ -70,7 +70,7 @@ describe('Get information from Factom blockchain', function() {
         assertEntryWithBlockContext(entry);
     });
 
-    it('should get all entries', async function() {
+    it('should get all entries', async function () {
         this.timeout(20000);
         const entries = await get.getAllEntriesOfChain(
             factomd,
@@ -100,7 +100,7 @@ describe('Get information from Factom blockchain', function() {
         );
     }
 
-    it('should get balance', async function() {
+    it('should get balance', async function () {
         this.timeout(5000);
 
         const ecBalance = await get.getBalance(
@@ -126,7 +126,7 @@ describe('Get information from Factom blockchain', function() {
         assert.typeOf(fctBalance2, 'number');
     });
 
-    it('should get Transaction', async function() {
+    it('should get Transaction', async function () {
         this.timeout(5000);
 
         const transaction = await get.getTransaction(
@@ -177,7 +177,7 @@ describe('Get information from Factom blockchain', function() {
         );
     });
 
-    it('should reject incorrect transaction id', async function() {
+    it('should reject incorrect transaction id', async function () {
         try {
             await get.getTransaction(factomd, 55);
         } catch (e) {
@@ -187,7 +187,7 @@ describe('Get information from Factom blockchain', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should not find Transaction', async function() {
+    it('should not find Transaction', async function () {
         this.timeout(5000);
 
         try {
@@ -202,7 +202,7 @@ describe('Get information from Factom blockchain', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should get coinbase Transaction', async function() {
+    it('should get coinbase Transaction', async function () {
         this.timeout(5000);
 
         const transaction = await get.getTransaction(
@@ -229,7 +229,7 @@ describe('Get information from Factom blockchain', function() {
         assert.strictEqual(transaction.factoidOutputs[0].amount, 320000000);
     });
 
-    it('should get heights', async function() {
+    it('should get heights', async function () {
         const heights = await get.getHeights(factomd);
 
         assert.isNumber(heights.directoryBlockHeight);
@@ -269,7 +269,7 @@ describe('Get information from Factom blockchain', function() {
         assert.lengthOf(db.entryBlockRefs, 23);
     }
 
-    it('should get Directory Block', async function() {
+    it('should get Directory Block', async function () {
         this.timeout(5000);
 
         const byKeyMR = await get.getDirectoryBlock(
@@ -295,7 +295,7 @@ describe('Get information from Factom blockchain', function() {
         );
     });
 
-    it('should reject negative block height for getDirectoryBlock', async function() {
+    it('should reject negative block height for getDirectoryBlock', async function () {
         try {
             await get.getDirectoryBlock(factomd, -1);
         } catch (e) {
@@ -305,7 +305,7 @@ describe('Get information from Factom blockchain', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should reject incorrect argument for getDirectoryBlock', async function() {
+    it('should reject incorrect argument for getDirectoryBlock', async function () {
         try {
             await get.getDirectoryBlock(factomd, true);
         } catch (e) {
@@ -345,7 +345,7 @@ describe('Get information from Factom blockchain', function() {
         assert.lengthOf(ecb.minuteIndexes, 11);
     }
 
-    it('should get Entry Credit Block', async function() {
+    it('should get Entry Credit Block', async function () {
         this.timeout(5000);
 
         const byHeaderHash = await get.getEntryCreditBlock(
@@ -358,7 +358,7 @@ describe('Get information from Factom blockchain', function() {
         assertEntryCreditBlock(byHeight);
     });
 
-    it('should reject negative block height for getEntryCreditBlock', async function() {
+    it('should reject negative block height for getEntryCreditBlock', async function () {
         try {
             await get.getEntryCreditBlock(factomd, -1);
         } catch (e) {
@@ -368,7 +368,7 @@ describe('Get information from Factom blockchain', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should reject incorrect argument for getEntryCreditBlock', async function() {
+    it('should reject incorrect argument for getEntryCreditBlock', async function () {
         try {
             await get.getEntryCreditBlock(factomd, true);
         } catch (e) {
@@ -416,7 +416,7 @@ describe('Get information from Factom blockchain', function() {
         assert.strictEqual(coinbaseTx.blockContext.directoryBlockHeight, 55010);
     }
 
-    it('should get Factoid Block', async function() {
+    it('should get Factoid Block', async function () {
         this.timeout(5000);
 
         const byKeyMR = await get.getFactoidBlock(
@@ -429,7 +429,7 @@ describe('Get information from Factom blockchain', function() {
         assertFactoidBlock(byHeight);
     });
 
-    it('should reject negative block height for getFactoidBlock', async function() {
+    it('should reject negative block height for getFactoidBlock', async function () {
         try {
             await get.getFactoidBlock(factomd, -1);
         } catch (e) {
@@ -439,7 +439,7 @@ describe('Get information from Factom blockchain', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should reject incorrect argument for getFactoidBlock', async function() {
+    it('should reject incorrect argument for getFactoidBlock', async function () {
         try {
             await get.getFactoidBlock(factomd, true);
         } catch (e) {
@@ -449,7 +449,7 @@ describe('Get information from Factom blockchain', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should get Entry Block', async function() {
+    it('should get Entry Block', async function () {
         this.timeout(5000);
 
         const eb = await get.getEntryBlock(
@@ -476,7 +476,7 @@ describe('Get information from Factom blockchain', function() {
         assert.lengthOf(eb.entryRefs, 50);
     });
 
-    it('should reject incorrect argument for getEntryBlock', async function() {
+    it('should reject incorrect argument for getEntryBlock', async function () {
         try {
             await get.getEntryBlock(factomd, 12777);
         } catch (e) {
@@ -507,7 +507,7 @@ describe('Get information from Factom blockchain', function() {
         assert.lengthOf(ab.entries, 3);
     }
 
-    it('should get Admin Block', async function() {
+    it('should get Admin Block', async function () {
         this.timeout(5000);
 
         const byHash = await get.getAdminBlock(
@@ -520,7 +520,7 @@ describe('Get information from Factom blockchain', function() {
         assertAdminBlock(byHeight);
     });
 
-    it('should reject negative block height for getAdminBlock', async function() {
+    it('should reject negative block height for getAdminBlock', async function () {
         try {
             await get.getAdminBlock(factomd, -1);
         } catch (e) {
@@ -530,7 +530,7 @@ describe('Get information from Factom blockchain', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should reject incorrect argument for getAdminBlock', async function() {
+    it('should reject incorrect argument for getAdminBlock', async function () {
         try {
             await get.getAdminBlock(factomd, true);
         } catch (e) {
@@ -540,7 +540,7 @@ describe('Get information from Factom blockchain', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should test if chain exists', async function() {
+    it('should test if chain exists', async function () {
         this.timeout(5000);
 
         const b1 = await get.chainExists(
@@ -555,7 +555,7 @@ describe('Get information from Factom blockchain', function() {
         assert.isFalse(b2);
     });
 
-    it('should get Directory block head', async function() {
+    it('should get Directory block head', async function () {
         this.timeout(5000);
 
         const head = await get.getDirectoryBlockHead(factomd);
@@ -563,7 +563,7 @@ describe('Get information from Factom blockchain', function() {
     });
 
     // TODO: fragile test, should be set up against local factomd rather than testnet
-    it('should rewind chain entry by entry (forEach)', async function() {
+    it('should rewind chain entry by entry (forEach)', async function () {
         this.timeout(20000);
 
         let counter = 0;
@@ -571,7 +571,7 @@ describe('Get information from Factom blockchain', function() {
             factomd,
             '106fa1e435be6cff0e167da35a186b141e4dfcea204e1500bf694c88b9214f68',
             () => true,
-            function(entry) {
+            function (entry) {
                 assert.instanceOf(entry, Entry);
                 assert.isObject(entry.blockContext);
                 assert.isNumber(entry.blockContext.directoryBlockHeight);
@@ -584,21 +584,21 @@ describe('Get information from Factom blockchain', function() {
         assert.strictEqual(counter, 5);
     });
 
-    it('should not rewind chain ', async function() {
+    it('should not rewind chain ', async function () {
         this.timeout(20000);
 
         await get.rewindChainWhile(
             factomd,
             '106fa1e435be6cff0e167da35a186b141e4dfcea204e1500bf694c88b9214f68',
             () => false,
-            function() {
+            function () {
                 throw new Error('Should not be entered');
             }
         );
     });
 
     // TODO: fragile test, should be set up against local factomd rather than testnet
-    it('should rewind chain and find entry', async function() {
+    it('should rewind chain and find entry', async function () {
         this.timeout(20000);
 
         let search = true,
@@ -608,7 +608,7 @@ describe('Get information from Factom blockchain', function() {
             factomd,
             '106fa1e435be6cff0e167da35a186b141e4dfcea204e1500bf694c88b9214f68',
             () => search,
-            function(entry) {
+            function (entry) {
                 counter++;
                 if (
                     entry.content.toString('hex') ===
@@ -627,7 +627,7 @@ describe('Get information from Factom blockchain', function() {
         );
     });
 
-    it('should validate rewind chain predicate function', async function() {
+    it('should validate rewind chain predicate function', async function () {
         try {
             await get.rewindChainWhile(
                 factomd,
@@ -642,7 +642,7 @@ describe('Get information from Factom blockchain', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should validate rewind chain apply function', async function() {
+    it('should validate rewind chain apply function', async function () {
         try {
             await get.rewindChainWhile(
                 factomd,

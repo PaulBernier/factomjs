@@ -14,14 +14,14 @@ const factomd = new FactomdCli({
     user: process.env.FACTOMD_USER,
     password: process.env.FACTOMD_PASSWORD,
     host: process.env.FACTOMD_HOST,
-    port: process.env.FACTOMD_PORT
+    port: process.env.FACTOMD_PORT,
 });
 const PAYING_EC_ADDRESS = process.env.EC_PRIVATE_ADDRESS;
 const PAYING_SECRET_KEY = sign.keyPair.fromSeed(addressToKey(PAYING_EC_ADDRESS)).secretKey;
 const PAYING_EC_PUBLIC_ADDRESS = getPublicAddress(PAYING_EC_ADDRESS);
 
-describe('Add chains and entries in Factom blockchain', function() {
-    it('should commit and then reveal chain', async function() {
+describe('Add chains and entries in Factom blockchain', function () {
+    it('should commit and then reveal chain', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -43,7 +43,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         assert.strictEqual(revealed.chainId, c.idHex);
     });
 
-    it('should commit chain with delegated signature', async function() {
+    it('should commit chain with delegated signature', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -56,12 +56,12 @@ describe('Add chains and entries in Factom blockchain', function() {
         const c = new Chain(e);
 
         const committed = await add.commit(factomd, c, PAYING_EC_PUBLIC_ADDRESS, {
-            sign: data => sign.detached(data, PAYING_SECRET_KEY)
+            sign: (data) => sign.detached(data, PAYING_SECRET_KEY),
         });
         assert.strictEqual(committed.txId, computeChainTxId(c).toString('hex'));
     });
 
-    it('should commit and then reveal entry', async function() {
+    it('should commit and then reveal entry', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -85,7 +85,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         );
     });
 
-    it('should commit entry with delegated signature', async function() {
+    it('should commit entry with delegated signature', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -98,12 +98,12 @@ describe('Add chains and entries in Factom blockchain', function() {
 
         // Commit
         const committed = await add.commit(factomd, e, PAYING_EC_PUBLIC_ADDRESS, {
-            sign: data => sign.detached(data, PAYING_SECRET_KEY)
+            sign: (data) => sign.detached(data, PAYING_SECRET_KEY),
         });
         assert.strictEqual(committed.txId, computeEntryTxId(e).toString('hex'));
     });
 
-    it('should reject commit entry without chainId', async function() {
+    it('should reject commit entry without chainId', async function () {
         const e = Entry.builder()
             .timestamp(Date.now())
             .extId('factom.js', 'utf8')
@@ -120,7 +120,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         throw new Error('Should have rejected entry without chainId');
     });
 
-    it('should reject reveal entry without chainId', async function() {
+    it('should reject reveal entry without chainId', async function () {
         const e = Entry.builder()
             .timestamp(Date.now())
             .extId('factom.js', 'utf8')
@@ -137,7 +137,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         throw new Error('Should have rejected entry without chainId');
     });
 
-    it('should add chain', async function() {
+    it('should add chain', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -157,7 +157,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         assert.strictEqual(added.txId, computeChainTxId(c).toString('hex'));
     });
 
-    it('should notify repeated commit', async function() {
+    it('should notify repeated commit', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -175,7 +175,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         assert.isUndefined(repeated.txId);
     });
 
-    it('should add entry', async function() {
+    it('should add entry', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -197,7 +197,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         assert.strictEqual(added.txId, computeEntryTxId(e).toString('hex'));
     });
 
-    it('should reject add entry without chainId', async function() {
+    it('should reject add entry without chainId', async function () {
         const e = Entry.builder()
             .timestamp(Date.now())
             .extId('factom.js', 'utf8')
@@ -214,7 +214,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         throw new Error('Should have rejected entry without chainId');
     });
 
-    it('should add entries', async function() {
+    it('should add entries', async function () {
         this.timeout(10000);
 
         const e1 = Entry.builder()
@@ -234,7 +234,7 @@ describe('Add chains and entries in Factom blockchain', function() {
             .build();
 
         const added = await add.add(factomd, [e1, e2], PAYING_EC_ADDRESS, {
-            concurrency: 1
+            concurrency: 1,
         });
 
         assert.lengthOf(added, 2);
@@ -247,7 +247,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         assert.strictEqual(added[0].txId, computeEntryTxId(e1).toString('hex'));
     });
 
-    it('should add chains', async function() {
+    it('should add chains', async function () {
         this.timeout(15000);
 
         const c1 = new Chain(
@@ -271,7 +271,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         );
 
         const added = await add.add(factomd, [c1, c2], PAYING_EC_ADDRESS, {
-            concurrency: 1
+            concurrency: 1,
         });
 
         assert.lengthOf(added, 2);
@@ -281,7 +281,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         assert.strictEqual(added[0].txId, computeChainTxId(c1).toString('hex'));
     });
 
-    it('should throw when adding an already existing chain', async function() {
+    it('should throw when adding an already existing chain', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -300,7 +300,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         throw new Error('Should have thrown.');
     });
 
-    it('should throw when not enough EC', async function() {
+    it('should throw when not enough EC', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -318,7 +318,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         throw new Error('Should have thrown.');
     });
 
-    it('should bypass fund validation', async function() {
+    it('should bypass fund validation', async function () {
         this.timeout(10000);
 
         const e = Entry.builder()
@@ -330,7 +330,7 @@ describe('Add chains and entries in Factom blockchain', function() {
         await add.add(factomd, e, 'Es3WC5Pr54jsppooWWvGEqeqsauQFJaZuBMdXCBWSDA3wkzWK9cC', {
             skipFundValidation: true,
             commitTimeout: -1,
-            revealTimeout: -1
+            revealTimeout: -1,
         });
     });
 });

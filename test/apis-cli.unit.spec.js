@@ -2,8 +2,8 @@ const sinon = require('sinon'),
     axios = require('axios'),
     { FactomdCli } = require('../src/apis-cli');
 
-describe('Test API clients', function() {
-    it('should retry calls with default strategy', async function() {
+describe('Test API clients', function () {
+    it('should retry calls with default strategy', async function () {
         this.timeout(4000);
 
         const httpCli = axios.create();
@@ -26,7 +26,7 @@ describe('Test API clients', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should override retry strategy', async function() {
+    it('should override retry strategy', async function () {
         const httpCli = axios.create();
         const mock = sinon.mock(httpCli);
 

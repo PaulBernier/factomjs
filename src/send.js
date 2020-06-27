@@ -40,7 +40,7 @@ async function submitTransaction(factomd, transaction, force) {
     }
 
     if (!force) {
-        transaction.entryCreditOutputs.forEach(function(eco) {
+        transaction.entryCreditOutputs.forEach(function (eco) {
             if (eco.amount < ecRate) {
                 throw new Error(
                     `Entry Credit output to ${eco.address} is not sufficient to get a minimum of 1 Entry Credit (${eco.amount} < ${ecRate}).`
@@ -49,20 +49,20 @@ async function submitTransaction(factomd, transaction, force) {
         });
     }
 
-    await Promise.each(transaction.inputs, input =>
+    await Promise.each(transaction.inputs, (input) =>
         validateFunds(factomd, input.address, input.amount)
     );
 
     return factomd
         .call('factoid-submit', {
-            transaction: transaction.marshalBinary().toString('hex')
+            transaction: transaction.marshalBinary().toString('hex'),
         })
-        .then(r => r.txid);
+        .then((r) => r.txid);
 }
 
 async function validateFunds(factomd, publicFctAddress, amount) {
     const { balance } = await factomd.call('factoid-balance', {
-        address: publicFctAddress
+        address: publicFctAddress,
     });
     if (balance < amount) {
         throw new Error(
@@ -134,5 +134,5 @@ function buildTransactionWithFees(originPrivateAddress, recipientAddress, amount
 module.exports = {
     sendTransaction,
     createFactoidTransaction,
-    createEntryCreditPurchaseTransaction
+    createEntryCreditPurchaseTransaction,
 };

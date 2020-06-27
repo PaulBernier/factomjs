@@ -8,12 +8,12 @@ const assert = require('chai').assert,
         composeEntry,
         composeEntryDelegateSig,
         computeEntryTxId,
-        composeEntryLedger
+        composeEntryLedger,
     } = require('../src/entry'),
     { addressToKey, getPublicAddress } = require('../src/addresses');
 
-describe('Test Entry', function() {
-    it('should populate Entry attributes', function() {
+describe('Test Entry', function () {
+    it('should populate Entry attributes', function () {
         const entry = Entry.builder()
             .chainId('cfb5d93e747d20433e3b14603f90a5eb152d0399e7278f9671ecf9763f8780e8')
             .extId('extId', 'utf8')
@@ -39,7 +39,7 @@ describe('Test Entry', function() {
         assert.strictEqual(entry.timestamp, 1523072354);
     });
 
-    it('should reject invalid argument of Entry constructor', function() {
+    it('should reject invalid argument of Entry constructor', function () {
         try {
             new Entry({});
         } catch (e) {
@@ -49,13 +49,9 @@ describe('Test Entry', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should fail to marshal binary Entry without a chain Id', function() {
+    it('should fail to marshal binary Entry without a chain Id', function () {
         try {
-            Entry.builder()
-                .extId('ef')
-                .content('af')
-                .build()
-                .marshalBinary();
+            Entry.builder().extId('ef').content('af').build().marshalBinary();
         } catch (e) {
             assert.instanceOf(e, Error);
             return;
@@ -63,7 +59,7 @@ describe('Test Entry', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should reject entry bigger tha 10kb', function() {
+    it('should reject entry bigger tha 10kb', function () {
         try {
             Entry.builder()
                 .content(Buffer.allocUnsafe(10240 + 1).fill('0'))
@@ -76,7 +72,7 @@ describe('Test Entry', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should get sizes with ext ids', function() {
+    it('should get sizes with ext ids', function () {
         const entry = Entry.builder()
             .extId('extId', 'utf8')
             .extId('extId2', 'utf8')
@@ -88,7 +84,7 @@ describe('Test Entry', function() {
         assert.strictEqual(entry.rawDataSize(), 16);
     });
 
-    it('should copy Entry', function() {
+    it('should copy Entry', function () {
         const entry = Entry.builder()
             .chainId('cfb5d93e747d20433e3b14603f90a5eb152d0399e7278f9671ecf9763f8780e8')
             .extId('extId', 'utf8')
@@ -105,7 +101,7 @@ describe('Test Entry', function() {
         assert.deepEqual(entry, copy);
     });
 
-    it('should copy empty Entry', function() {
+    it('should copy empty Entry', function () {
         const entry = Entry.builder().build();
 
         const copy = Entry.builder(entry).build();
@@ -116,29 +112,19 @@ describe('Test Entry', function() {
         assert.deepEqual(copy.content, Buffer.from(''));
     });
 
-    it('should get sizes without ext ids', function() {
-        const entry = Entry.builder()
-            .content('abcdef', 'utf8')
-            .build();
+    it('should get sizes without ext ids', function () {
+        const entry = Entry.builder().content('abcdef', 'utf8').build();
 
         assert.strictEqual(entry.size(), 41);
         assert.strictEqual(entry.payloadSize(), 6);
         assert.strictEqual(entry.rawDataSize(), 6);
     });
 
-    it('should get remaining free bytes', function() {
-        const e1 = Entry.builder()
-            .content(Buffer.alloc(24))
-            .build();
-        const e2 = Entry.builder()
-            .content(Buffer.alloc(1024))
-            .build();
-        const e3 = Entry.builder()
-            .content(Buffer.alloc(1025))
-            .build();
-        const e4 = Entry.builder()
-            .content(Buffer.alloc(0))
-            .build();
+    it('should get remaining free bytes', function () {
+        const e1 = Entry.builder().content(Buffer.alloc(24)).build();
+        const e2 = Entry.builder().content(Buffer.alloc(1024)).build();
+        const e3 = Entry.builder().content(Buffer.alloc(1025)).build();
+        const e4 = Entry.builder().content(Buffer.alloc(0)).build();
 
         assert.strictEqual(e1.remainingFreeBytes(), 1000);
         assert.strictEqual(e2.remainingFreeBytes(), 0);
@@ -146,10 +132,8 @@ describe('Test Entry', function() {
         assert.strictEqual(e4.remainingFreeBytes(), 1024);
     });
 
-    it('should get remaining maximum bytes', function() {
-        const e1 = Entry.builder()
-            .content(Buffer.alloc(240))
-            .build();
+    it('should get remaining maximum bytes', function () {
+        const e1 = Entry.builder().content(Buffer.alloc(240)).build();
         const e2 = Entry.builder()
             .content(Buffer.alloc(e1.payloadSize() + e1.remainingMaxBytes()))
             .build();
@@ -162,7 +146,7 @@ describe('Test Entry', function() {
         assert.throws(() => e3.remainingMaxBytes(), Error);
     });
 
-    it('should get hex values', function() {
+    it('should get hex values', function () {
         const e = Entry.builder()
             .chainId('45f7ebb3be5217d0e2f1d14ab73121a66cdaad12a50b9863a45ee8ee9f3ab032')
             .extId('efef', 'hex')
@@ -179,7 +163,7 @@ describe('Test Entry', function() {
         );
     });
 
-    it('should compute marshal binary', function() {
+    it('should compute marshal binary', function () {
         // Examples from Factom data structures document
         const e = Entry.builder()
             .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
@@ -208,7 +192,7 @@ describe('Test Entry', function() {
         );
     });
 
-    it('should compute hash', function() {
+    it('should compute hash', function () {
         const e = Entry.builder()
             .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
             .content('PayloadHere', 'utf8')
@@ -222,7 +206,7 @@ describe('Test Entry', function() {
         );
     });
 
-    it('should compute EC cost', function() {
+    it('should compute EC cost', function () {
         const e1 = Entry.builder()
             .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
             .content('ab')
@@ -250,7 +234,7 @@ describe('Test Entry', function() {
         assert.strictEqual(e3.ecCost(), e1.ecCost() + 1);
     });
 
-    it('should compose Entry commit', function() {
+    it('should compose Entry commit', function () {
         const e1 = Entry.builder()
             .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
             .content('ab')
@@ -268,7 +252,7 @@ describe('Test Entry', function() {
         );
     });
 
-    it('should compose Entry commit with delegated signature', async function() {
+    it('should compose Entry commit with delegated signature', async function () {
         const e1 = Entry.builder()
             .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
             .content('ab')
@@ -279,7 +263,7 @@ describe('Test Entry', function() {
         const publicAddress = getPublicAddress(address);
         const secretKey = sign.keyPair.fromSeed(addressToKey(address)).secretKey;
 
-        const commit = await composeEntryCommitDelegateSig(e1, publicAddress, data =>
+        const commit = await composeEntryCommitDelegateSig(e1, publicAddress, (data) =>
             sign.detached(data, secretKey)
         );
         assert.instanceOf(commit, Buffer);
@@ -289,7 +273,7 @@ describe('Test Entry', function() {
         );
     });
 
-    it('should throw when delegated signature of compose Entry does not match', async function() {
+    it('should throw when delegated signature of compose Entry does not match', async function () {
         const e1 = Entry.builder()
             .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
             .content('ab')
@@ -303,7 +287,7 @@ describe('Test Entry', function() {
             await composeEntryCommitDelegateSig(
                 e1,
                 'EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD',
-                data => sign.detached(data, secretKey)
+                (data) => sign.detached(data, secretKey)
             );
         } catch (e) {
             assert.instanceOf(e, Error);
@@ -313,7 +297,7 @@ describe('Test Entry', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should reject invalid argument of composeChainCommit', function() {
+    it('should reject invalid argument of composeChainCommit', function () {
         try {
             composeEntryCommit({}, 'Es2d1a3uPx7o5uXHmsCnSEK2EKatPA56n8RUFmW9uRrpPRBuk5bZ');
         } catch (e) {
@@ -323,7 +307,7 @@ describe('Test Entry', function() {
         throw new Error('Should have thrown');
     });
 
-    it('should compose Entry commit with provided signature', function() {
+    it('should compose Entry commit with provided signature', function () {
         const e1 = Entry.builder()
             .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
             .content('ab')
@@ -342,7 +326,7 @@ describe('Test Entry', function() {
         );
     });
 
-    it('should reject invalid signature manually provided for entry commit (timestamp not fixed)', function() {
+    it('should reject invalid signature manually provided for entry commit (timestamp not fixed)', function () {
         const e1 = Entry.builder()
             .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
             .content('ab')
@@ -367,7 +351,7 @@ describe('Test Entry', function() {
         throw new Error('Should have rejected invalid signature');
     });
 
-    it('should compose Entry reveal', function() {
+    it('should compose Entry reveal', function () {
         const e = Entry.builder()
             .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
             .extId('test', 'utf8')
@@ -382,7 +366,7 @@ describe('Test Entry', function() {
         );
     });
 
-    it('should compose Entry commit and reveal', function() {
+    it('should compose Entry commit and reveal', function () {
         const e = Entry.builder()
             .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
             .extId('test', 'utf8')
@@ -403,7 +387,7 @@ describe('Test Entry', function() {
         );
     });
 
-    it('should compose Entry commit and reveal with manually provided signature', function() {
+    it('should compose Entry commit and reveal with manually provided signature', function () {
         const e = Entry.builder()
             .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
             .extId('test', 'utf8')
@@ -428,7 +412,7 @@ describe('Test Entry', function() {
         );
     });
 
-    it('should compose Entry commit and reveal with delegated signature', async function() {
+    it('should compose Entry commit and reveal with delegated signature', async function () {
         const e = Entry.builder()
             .chainId('954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4')
             .extId('test', 'utf8')
@@ -440,7 +424,7 @@ describe('Test Entry', function() {
         const publicAddress = getPublicAddress(address);
         const secretKey = sign.keyPair.fromSeed(addressToKey(address)).secretKey;
 
-        const composed = await composeEntryDelegateSig(e, publicAddress, data =>
+        const composed = await composeEntryDelegateSig(e, publicAddress, (data) =>
             sign.detached(data, secretKey)
         );
         assert.instanceOf(composed.commit, Buffer);
@@ -455,7 +439,7 @@ describe('Test Entry', function() {
         );
     });
 
-    it('should compute entry txId', function() {
+    it('should compute entry txId', function () {
         const entry = Entry.builder()
             .chainId('3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791')
             .extId('extId', 'utf8')
@@ -472,7 +456,7 @@ describe('Test Entry', function() {
         );
     });
 
-    it('should convert to JS object', function() {
+    it('should convert to JS object', function () {
         const entry = Entry.builder()
             .chainId('3b6432afd44edb3086571663a377ead1d08123e4210e5baf0c8f522369079791')
             .extId('extId', 'utf8')
@@ -486,11 +470,6 @@ describe('Test Entry', function() {
         assert.strictEqual(obj.chainId, entry.chainIdHex);
         assert.strictEqual(obj.content, entry.contentHex);
         assert.strictEqual(obj.timestamp, entry.timestamp);
-        assert.deepEqual(
-            Entry.builder(obj)
-                .build()
-                .hash(),
-            entry.hash()
-        );
+        assert.deepEqual(Entry.builder(obj).build().hash(), entry.hash());
     });
 });

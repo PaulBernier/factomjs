@@ -3,8 +3,8 @@ const assert = require('chai').assert,
 const wallet = require('../src/wallet'),
     { WalletdCli } = require('../src/apis-cli');
 
-describe('Test wallet', function() {
-    it('should reject invalid address as input', async function() {
+describe('Test wallet', function () {
+    it('should reject invalid address as input', async function () {
         try {
             await wallet.getPrivateAddress(null, 'not an address');
         } catch (e) {
@@ -14,7 +14,7 @@ describe('Test wallet', function() {
         assert.fail();
     });
 
-    it('should get private address if already private address', async function() {
+    it('should get private address if already private address', async function () {
         const walletd = new WalletdCli();
         const mock = sinon.mock(walletd);
 
@@ -39,18 +39,18 @@ describe('Test wallet', function() {
         mock.verify();
     });
 
-    it('should get private address from walletd', async function() {
+    it('should get private address from walletd', async function () {
         const walletd = new WalletdCli();
         const mock = sinon.mock(walletd);
 
         mock.expects('call')
             .once()
             .withArgs('address', {
-                address: 'EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'
+                address: 'EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD',
             })
             .returns(
                 Promise.resolve({
-                    secret: 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'
+                    secret: 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym',
                 })
             );
 

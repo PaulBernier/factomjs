@@ -7,32 +7,32 @@ const Promise = require('bluebird'),
         AdminBlock,
         EntryBlock,
         FactoidBlock,
-        EntryCreditBlock
+        EntryCreditBlock,
     } = require('./blocks'),
     { getPublicAddress } = require('./addresses'),
     { toHex } = require('./util');
 
 function getChainHead(factomd, chainId) {
-    return factomd.call('chain-head', { chainid: toHex(chainId) }).then(ch => ({
+    return factomd.call('chain-head', { chainid: toHex(chainId) }).then((ch) => ({
         keyMR: ch.chainhead,
-        chainInProcessList: ch.chaininprocesslist
+        chainInProcessList: ch.chaininprocesslist,
     }));
 }
 
 async function getEntry(factomd, entryHash, entryBlockContext) {
     return factomd
         .call('entry', { hash: toHex(entryHash) })
-        .then(e => toEntry(e, entryBlockContext));
+        .then((e) => toEntry(e, entryBlockContext));
 }
 
 async function getEntryWithBlockContext(factomd, entryHash) {
     const entryBlockKeyMR = await factomd
         .call('receipt', { hash: toHex(entryHash) })
-        .then(r => r.receipt.entryblockkeymr);
+        .then((r) => r.receipt.entryblockkeymr);
     const entryBlock = await factomd.call('entry-block', {
-        keymr: entryBlockKeyMR
+        keymr: entryBlockKeyMR,
     });
-    const timestamp = entryBlock.entrylist.find(e => e.entryhash === entryHash).timestamp;
+    const timestamp = entryBlock.entrylist.find((e) => e.entryhash === entryHash).timestamp;
     return getEntry(
         factomd,
         entryHash,
@@ -118,13 +118,13 @@ async function rewindChainWhile(factomd, chainId, predicate, func) {
 async function getAllEntriesOfEntryBlock(factomd, keyMR) {
     const entryBlock = await factomd.call('entry-block', { keymr: keyMR });
 
-    const entries = await Promise.map(entryBlock.entrylist, e =>
+    const entries = await Promise.map(entryBlock.entrylist, (e) =>
         getEntry(factomd, e.entryhash, buildEntryBlockContext(keyMR, entryBlock, e.timestamp))
     );
 
     return {
         entries: entries,
-        previousKeyMR: entryBlock.header.prevkeymr
+        previousKeyMR: entryBlock.header.prevkeymr,
     };
 }
 
@@ -134,7 +134,7 @@ function buildEntryBlockContext(entryBlockKeyMR, entryBlock, entryTimestamp) {
         directoryBlockHeight: entryBlock.header.dbheight,
         entryBlockTimestamp: entryBlock.header.timestamp,
         entryBlockSequenceNumber: entryBlock.header.blocksequencenumber,
-        entryBlockKeyMR: entryBlockKeyMR
+        entryBlockKeyMR: entryBlockKeyMR,
     };
 }
 
@@ -156,14 +156,14 @@ function getBalance(factomd, address) {
             ? factomd.call.bind(factomd, 'entry-credit-balance')
             : factomd.call.bind(factomd, 'factoid-balance');
 
-    return balance({ address: publicAddress }).then(res => res.balance);
+    return balance({ address: publicAddress }).then((res) => res.balance);
 }
 
 function chainExists(factomd, chainId) {
     return factomd
         .call('chain-head', { chainid: toHex(chainId) })
         .then(() => true)
-        .catch(function(err) {
+        .catch(function (err) {
             if (err.code === -32009) {
                 return false;
             }
@@ -182,7 +182,7 @@ async function getTransaction(factomd, txId) {
         return new Transaction(tx.factoidtransaction, {
             factoidBlockKeyMR: tx.includedintransactionblock,
             directoryBlockKeyMR: tx.includedindirectoryblock,
-            directoryBlockHeight: tx.includedindirectoryblockheight
+            directoryBlockHeight: tx.includedindirectoryblockheight,
         });
     } else {
         throw new Error(`No Transaction with ID [${txId}] found.`);
@@ -190,7 +190,7 @@ async function getTransaction(factomd, txId) {
 }
 
 function getEntryCreditRate(factomd) {
-    return factomd.call('entry-credit-rate').then(r => r.rate);
+    return factomd.call('entry-credit-rate').then((r) => r.rate);
 }
 
 async function getHeights(factomd) {
@@ -200,12 +200,12 @@ async function getHeights(factomd) {
         directoryBlockHeight: heights.directoryblockheight,
         leaderHeight: heights.leaderheight,
         entryBlockHeight: heights.entryblockheight,
-        entryHeight: heights.entryheight
+        entryHeight: heights.entryheight,
     };
 }
 
 function getDirectoryBlockHead(factomd) {
-    return factomd.call('directory-block-head').then(r => getDirectoryBlock(factomd, r.keymr));
+    return factomd.call('directory-block-head').then((r) => getDirectoryBlock(factomd, r.keymr));
 }
 
 function getDirectoryBlock(factomd, arg) {
@@ -225,14 +225,14 @@ function getDirectoryBlock(factomd, arg) {
             throw Error(`Invalid argument: ${arg}`);
     }
 
-    return dbPromise.then(r => new DirectoryBlock(r, arg));
+    return dbPromise.then((r) => new DirectoryBlock(r, arg));
 }
 
 function getEntryBlock(factomd, keyMR) {
     if (typeof keyMR !== 'string') {
         throw new Error('Argument should be the KeyMR of the Entry Block');
     }
-    return factomd.call('entry-block', { keymr: keyMR }).then(r => new EntryBlock(r, keyMR));
+    return factomd.call('entry-block', { keymr: keyMR }).then((r) => new EntryBlock(r, keyMR));
 }
 
 function getFactoidBlock(factomd, arg) {
@@ -252,7 +252,7 @@ function getFactoidBlock(factomd, arg) {
             throw Error(`Invalid argument: ${arg}`);
     }
 
-    return fbPromise.then(r => new FactoidBlock(r));
+    return fbPromise.then((r) => new FactoidBlock(r));
 }
 
 function getEntryCreditBlock(factomd, arg) {
@@ -272,7 +272,7 @@ function getEntryCreditBlock(factomd, arg) {
             throw Error(`Invalid argument: ${arg}`);
     }
 
-    return ecbPromise.then(r => new EntryCreditBlock(r));
+    return ecbPromise.then((r) => new EntryCreditBlock(r));
 }
 
 function getAdminBlock(factomd, arg) {
@@ -292,7 +292,7 @@ function getAdminBlock(factomd, arg) {
             throw Error(`Invalid argument: ${arg}`);
     }
 
-    return abPromise.then(r => new AdminBlock(r));
+    return abPromise.then((r) => new AdminBlock(r));
 }
 module.exports = {
     getEntry,
@@ -311,5 +311,5 @@ module.exports = {
     getAdminBlock,
     getFactoidBlock,
     getEntryCreditBlock,
-    rewindChainWhile
+    rewindChainWhile,
 };

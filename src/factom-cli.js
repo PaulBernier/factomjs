@@ -586,5 +586,5 @@ class FactomCli {
 }
 
 module.exports = {
-    FactomCli
+    FactomCli,
 };

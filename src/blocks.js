@@ -4,7 +4,7 @@ const { Transaction } = require('./transaction'),
         ADMIN_ID_TO_CODE,
         ADMIN_BLOCKS_CHAIN_ID,
         ENTRY_CREDIT_BLOCKS_CHAIN_ID,
-        FACTOID_BLOCKS_CHAIN_ID
+        FACTOID_BLOCKS_CHAIN_ID,
     } = require('./constant');
 
 /**
@@ -63,7 +63,7 @@ class DirectoryBlock {
                 default:
                     this.entryBlockRefs.push({
                         chainId: entry.chainid,
-                        keyMR: entry.keymr
+                        keyMR: entry.keymr,
                     });
             }
         }
@@ -108,7 +108,7 @@ class AdminBlock {
      */
     getEntriesOfTypes(...types) {
         const set = new Set(types);
-        return this.entries.filter(e => set.has(e.adminId) || set.has(e.adminCode));
+        return this.entries.filter((e) => set.has(e.adminId) || set.has(e.adminCode));
     }
 }
 
@@ -116,7 +116,7 @@ class AdminBlock {
 function transformAdminBlockEntry(entry) {
     const base = {
         adminId: entry.adminidtype,
-        adminCode: ADMIN_ID_TO_CODE.get(entry.adminidtype)
+        adminCode: ADMIN_ID_TO_CODE.get(entry.adminidtype),
     };
 
     let data = {};
@@ -125,7 +125,7 @@ function transformAdminBlockEntry(entry) {
             data.identityChainId = entry.identityadminchainid;
             data.previousDirectoryBlockSignature = {
                 publicKey: entry.prevdbsig.pub,
-                signature: entry.prevdbsig.sig
+                signature: entry.prevdbsig.sig,
             };
             break;
         case 2:
@@ -155,10 +155,10 @@ function transformAdminBlockEntry(entry) {
             data.ecdsaPublicKey = entry.ecdsapublickey;
             break;
         case 11:
-            data.outputs = entry.Outputs.map(o => ({
+            data.outputs = entry.Outputs.map((o) => ({
                 address: o.useraddress,
                 rcdHash: o.address,
-                amount: o.amount
+                amount: o.amount,
             }));
             break;
         case 12:
@@ -201,9 +201,9 @@ class EntryBlock {
         this.previousBlockKeyMR = header.prevkeymr;
         this.chainId = header.chainid;
         this.sequenceNumber = header.blocksequencenumber;
-        this.entryRefs = block.entrylist.map(e => ({
+        this.entryRefs = block.entrylist.map((e) => ({
             entryHash: e.entryhash,
-            timestamp: e.timestamp
+            timestamp: e.timestamp,
         }));
         Object.freeze(this);
     }
@@ -234,10 +234,10 @@ class FactoidBlock {
         this.entryCreditRate = fb.exchrate;
         this.directoryBlockHeight = fb.dbheight;
         this.transactions = fb.transactions.map(
-            t =>
+            (t) =>
                 new Transaction(t, {
                     factoidBlockKeyMR: this.keyMR,
-                    directoryBlockHeight: this.directoryBlockHeight
+                    directoryBlockHeight: this.directoryBlockHeight,
                     // directoryBlockKeyMR is not available
                 })
         );
@@ -305,7 +305,7 @@ class EntryCreditBlock {
                     entryHash: entry.entryhash,
                     credits: entry.credits,
                     ecPublicKey: keyToPublicEcAddress(entry.ecpubkey),
-                    signature: entry.sig
+                    signature: entry.sig,
                 });
             }
         }
@@ -331,5 +331,5 @@ module.exports = {
     EntryBlock,
     AdminBlock,
     FactoidBlock,
-    EntryCreditBlock
+    EntryCreditBlock,
 };

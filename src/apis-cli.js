@@ -18,14 +18,14 @@ const DEBUG_API_CALLS = new Set([
     'delay',
     'set-delay',
     'summary',
-    'messages'
+    'messages',
 ]);
 
 const DEFAULT_RETRY_STRATEGY = {
     retries: 3,
     factor: 2,
     minTimeout: 500,
-    maxTimeout: 2000
+    maxTimeout: 2000,
 };
 
 class ApiError extends Error {
@@ -87,20 +87,20 @@ class BaseCli {
 
         const httpCliOptions = {
             baseURL,
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
         };
 
         if (typeof conf.user === 'string' && conf.user !== '') {
             httpCliOptions.auth = {
                 username: conf.user,
-                password: conf.password || ''
+                password: conf.password || '',
             };
             httpCliOptions.withCredentials = true;
         }
 
         if (protocol === 'https' && typeof conf.rejectUnauthorized !== 'undefined') {
             httpCliOptions.httpsAgent = new HttpsAgent({
-                rejectUnauthorized: conf.rejectUnauthorized
+                rejectUnauthorized: conf.rejectUnauthorized,
             });
         }
 
@@ -121,14 +121,14 @@ class BaseCli {
         if (Array.isArray(cookieHeader)) {
             // Add or update cookie values
             cookieHeader
-                .map(c => c.split(';')[0])
-                .forEach(c => {
+                .map((c) => c.split(';')[0])
+                .forEach((c) => {
                     const keyVal = c.split('=');
                     this.cookies[keyVal[0]] = keyVal[1];
                 });
             // Set Axios Cookie header with the updated cookies
             this.httpCli.defaults.headers.Cookie = Object.entries(this.cookies)
-                .map(c => `${c[0]}=${c[1]}`)
+                .map((c) => `${c[0]}=${c[1]}`)
                 .join(';');
         }
     }
@@ -143,17 +143,19 @@ class BaseCli {
                 jsonrpc: '2.0',
                 id: this.apiCounter(),
                 method: method,
-                params: params
+                params: params,
             };
 
             operation.attempt(() => {
                 this.httpCli
                     .post(url, data, { timeout })
-                    .then(r => {
+                    .then((r) => {
                         this._processCookieHeader(r.headers['set-cookie']);
                         resolve(r.data.result);
                     })
-                    .catch(error => handleCallError({ error, reject, method, params, operation }));
+                    .catch((error) =>
+                        handleCallError({ error, reject, method, params, operation })
+                    );
             });
         });
     }
@@ -192,7 +194,7 @@ function handleCallError({ error, reject, method, params, operation }) {
 
 function newCounter() {
     let i = 0;
-    return function() {
+    return function () {
         return ++i;
     };
 }
@@ -253,5 +255,5 @@ class WalletdCli extends BaseCli {
 
 module.exports = {
     FactomdCli,
-    WalletdCli
+    WalletdCli,
 };

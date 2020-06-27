@@ -11,7 +11,7 @@ const {
     PUBLIC_ADDRESS_VALID_PREFIXES,
     PRIVATE_ADDRESS_VALID_PREFIXES,
     EC_ADDRESS_VALID_PREFIXES,
-    FCT_ADDRESS_VALID_PREFIXES
+    FCT_ADDRESS_VALID_PREFIXES,
 } = require('./constant');
 
 /**
@@ -231,7 +231,7 @@ function generateRandomFctAddress() {
     const keyPair = nacl.sign.keyPair.fromSeed(seed);
     return {
         public: keyToPublicFctAddress(keyPair.publicKey),
-        private: seedToPrivateFctAddress(seed)
+        private: seedToPrivateFctAddress(seed),
     };
 }
 
@@ -244,7 +244,7 @@ function generateRandomEcAddress() {
     const keyPair = nacl.sign.keyPair.fromSeed(seed);
     return {
         public: keyToPublicEcAddress(keyPair.publicKey),
-        private: seedToPrivateEcAddress(seed)
+        private: seedToPrivateEcAddress(seed),
     };
 }
 
@@ -267,5 +267,5 @@ module.exports = {
     keyToPublicEcAddress,
     seedToPrivateEcAddress,
     generateRandomFctAddress,
-    generateRandomEcAddress
+    generateRandomEcAddress,
 };

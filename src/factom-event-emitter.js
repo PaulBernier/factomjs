@@ -9,11 +9,11 @@ const BLOCK_EVENT = {
     newFactoidBlock: 'newFactoidBlock',
     newAdminBlock: 'newAdminBlock',
     newEntryCreditBlock: 'newEntryCreditBlock',
-    newChain: 'newChain'
+    newChain: 'newChain',
 };
 
 const PENDING_EVENT = {
-    newPendingTransaction: 'newPendingTransaction'
+    newPendingTransaction: 'newPendingTransaction',
 };
 
 const FACTOM_EVENT = { ...BLOCK_EVENT, ...PENDING_EVENT };
@@ -76,7 +76,7 @@ class FactomEventEmitter extends EventEmitter {
 
         this.opts = {
             interval: 7500,
-            ...opts
+            ...opts,
         };
 
         // FCT addresses and chain ids still need to be tracked manually for efficiency
@@ -86,8 +86,8 @@ class FactomEventEmitter extends EventEmitter {
         // Map of FCT addresses and pending transactions
         this._factoidAddressPendingTransactionSubscriptions = new Map();
 
-        this.on('removeListener', event => this._removeListener(event));
-        this.on('newListener', event => this._newListener(event));
+        this.on('removeListener', (event) => this._removeListener(event));
+        this.on('newListener', (event) => this._newListener(event));
     }
 
     /**
@@ -147,7 +147,7 @@ class FactomEventEmitter extends EventEmitter {
             if (!this._factoidAddressPendingTransactionSubscriptions.has(address)) {
                 const pendingTransactions = await this.getPendingTransactions(address);
                 const pendingTransactionIds = new Set(
-                    pendingTransactions.map(tx => tx.transactionid)
+                    pendingTransactions.map((tx) => tx.transactionid)
                 );
                 this._factoidAddressPendingTransactionSubscriptions.set(
                     address,
@@ -186,7 +186,7 @@ class FactomEventEmitter extends EventEmitter {
         }
 
         // Should only stop polling where there are no blockchain listeners active
-        if (!this.eventNames().some(event => this._isBlockchainEvent(event))) {
+        if (!this.eventNames().some((event) => this._isBlockchainEvent(event))) {
             this._stopPolling();
         }
     }
@@ -303,7 +303,7 @@ class FactomEventEmitter extends EventEmitter {
 
         this._factoidAddressPendingTransactionSubscriptions.set(
             fctAddress,
-            new Set(pendingTransactions.map(tx => tx.transactionid))
+            new Set(pendingTransactions.map((tx) => tx.transactionid))
         );
     }
 
@@ -330,7 +330,7 @@ class FactomEventEmitter extends EventEmitter {
             this._emitNewChains(block);
         }
 
-        const entryBlockRefs = block.entryBlockRefs.filter(ref =>
+        const entryBlockRefs = block.entryBlockRefs.filter((ref) =>
             this._chainSubscriptions.has(ref.chainId)
         );
         if (entryBlockRefs.length > 0) {
@@ -383,7 +383,7 @@ class FactomEventEmitter extends EventEmitter {
     // Emit the first entry block of any newly created entry chain.
     async _emitNewChains(directoryBlock) {
         try {
-            const checkIfNewChainAndEmit = async ref => {
+            const checkIfNewChainAndEmit = async (ref) => {
                 const entryBlock = await this._cli.getEntryBlock(ref.keyMR);
                 if (entryBlock.sequenceNumber === 0) {
                     this.emit(BLOCK_EVENT.newChain, entryBlock);
@@ -392,7 +392,7 @@ class FactomEventEmitter extends EventEmitter {
 
             // Fetch entry chains contained in directory block concurrently
             await Promise.map(directoryBlock.entryBlockRefs, checkIfNewChainAndEmit, {
-                concurrency: 10
+                concurrency: 10,
             });
         } catch (err) {
             this.emit('error', err);
@@ -401,7 +401,7 @@ class FactomEventEmitter extends EventEmitter {
 
     // Emit the latest entry block of any entry chain the user is listening to.
     async _emitEntryBlock(entryBlockRefs) {
-        const fetchAndEmitNewBlock = async ref => {
+        const fetchAndEmitNewBlock = async (ref) => {
             try {
                 const entryBlock = await this._cli.getEntryBlock(ref.keyMR);
                 this.emit(ref.chainId, entryBlock);
@@ -417,12 +417,12 @@ class FactomEventEmitter extends EventEmitter {
     // Emit new factoid transactions for user-defined addresses
     _emitFactoidTransaction(factoidBlock, directoryBlock) {
         const addrs = this._factoidAddressSubscriptions;
-        factoidBlock.transactions.forEach(tx => {
+        factoidBlock.transactions.forEach((tx) => {
             // Search transaction inputs and outputs for user-defined addresses
             const activeAddresses = new Set(
                 [...tx.inputs, ...tx.factoidOutputs]
-                    .filter(io => addrs.has(io.address))
-                    .map(io => io.address)
+                    .filter((io) => addrs.has(io.address))
+                    .map((io) => io.address)
             );
 
             if (activeAddresses.size > 0) {
@@ -430,10 +430,10 @@ class FactomEventEmitter extends EventEmitter {
                 const transaction = new Transaction(Transaction.builder(tx), {
                     factoidBlockKeyMR: directoryBlock.factoidBlockRef,
                     directoryBlockHeight: directoryBlock.height,
-                    directoryBlockKeyMR: directoryBlock.keyMR
+                    directoryBlockKeyMR: directoryBlock.keyMR,
                 });
 
-                activeAddresses.forEach(address => this.emit(address, transaction));
+                activeAddresses.forEach((address) => this.emit(address, transaction));
             }
         });
     }
@@ -451,7 +451,7 @@ class FactomEventEmitter extends EventEmitter {
     getPendingTransactions(address) {
         try {
             return this._cli.factomdApi('pending-transactions', {
-                address: address
+                address: address,
             });
         } catch (err) {
             this.emit('error', err);

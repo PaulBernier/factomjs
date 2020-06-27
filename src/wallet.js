@@ -15,5 +15,5 @@ async function getPrivateAddress(walletd, address) {
 }
 
 module.exports = {
-    getPrivateAddress
+    getPrivateAddress,
 };

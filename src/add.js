@@ -7,13 +7,13 @@ const Promise = require('bluebird'),
         Chain,
         composeChainCommit,
         composeChainCommitDelegateSig,
-        composeChainReveal
+        composeChainReveal,
     } = require('./chain'),
     {
         Entry,
         composeEntryCommit,
         composeEntryCommitDelegateSig,
-        composeEntryReveal
+        composeEntryReveal,
     } = require('./entry');
 
 //////////// Commit /////////////
@@ -36,7 +36,7 @@ async function commitChain(factomd, chain, ecAddress, options) {
 
     let commit;
     if (typeof options === 'object' && typeof options.sign === 'function') {
-        commit = await composeChainCommitDelegateSig(chain, ecAddress, options.sign).then(c =>
+        commit = await composeChainCommitDelegateSig(chain, ecAddress, options.sign).then((c) =>
             c.toString('hex')
         );
     } else {
@@ -47,7 +47,7 @@ async function commitChain(factomd, chain, ecAddress, options) {
         factomd,
         commitApiCall: 'commit-chain',
         commit,
-        ackTimeout: getAckTimeout(options)
+        ackTimeout: getAckTimeout(options),
     });
 }
 
@@ -58,7 +58,7 @@ async function commitEntry(factomd, entry, ecAddress, options) {
 
     let commit;
     if (typeof options === 'object' && typeof options.sign === 'function') {
-        commit = await composeEntryCommitDelegateSig(entry, ecAddress, options.sign).then(c =>
+        commit = await composeEntryCommitDelegateSig(entry, ecAddress, options.sign).then((c) =>
             c.toString('hex')
         );
     } else {
@@ -69,7 +69,7 @@ async function commitEntry(factomd, entry, ecAddress, options) {
         factomd,
         commitApiCall: 'commit-entry',
         commit,
-        ackTimeout: getAckTimeout(options)
+        ackTimeout: getAckTimeout(options),
     });
 }
 
@@ -85,7 +85,7 @@ function getAckTimeout(arg) {
 
 async function sendCommit({ factomd, commit, commitApiCall, ackTimeout = 60 }) {
     let repeatedCommit = false;
-    const committed = await factomd.call(commitApiCall, { message: commit }).catch(function(e) {
+    const committed = await factomd.call(commitApiCall, { message: commit }).catch(function (e) {
         if (e.code === -32011) {
             repeatedCommit = true;
         } else {
@@ -99,7 +99,7 @@ async function sendCommit({ factomd, commit, commitApiCall, ackTimeout = 60 }) {
 
     return {
         txId: committed ? committed.txid : undefined,
-        repeatedCommit: repeatedCommit
+        repeatedCommit: repeatedCommit,
     };
 }
 
@@ -137,7 +137,7 @@ async function revealInternal(factomd, obj, composeReveal, revealApiCall, ackTim
 
     return {
         chainId: revealed.chainid,
-        entryHash: revealed.entryhash
+        entryHash: revealed.entryhash,
     };
 }
 
@@ -186,16 +186,16 @@ async function addInternal(factomd, obj, commitFn, revealFn, ecAddress, options 
         const result = await Promise.all([
             commitFn(factomd, obj, ecAddress, {
                 ackTimeout: commitAckTimeout,
-                sign: options.sign
+                sign: options.sign,
             }),
-            revealFn(factomd, obj, revealAckTimeout)
+            revealFn(factomd, obj, revealAckTimeout),
         ]);
         committed = result[0];
         revealed = result[1];
     } else {
         committed = await commitFn(factomd, obj, ecAddress, {
             ackTimeout: commitAckTimeout,
-            sign: options.sign
+            sign: options.sign,
         });
         revealed = await revealFn(factomd, obj, revealAckTimeout);
     }
@@ -214,15 +214,15 @@ async function addIterableInternal(factomd, iterable, ecAddress, options = {}) {
 
     // chunkSize is a legacy name kept for backward compatibility
     const concurrency = options.chunkSize || options.concurrency || 200;
-    return Promise.map(iterable, entry => addDispatch(factomd, entry, ecAddress, options), {
-        concurrency
+    return Promise.map(iterable, (entry) => addDispatch(factomd, entry, ecAddress, options), {
+        concurrency,
     });
 }
 
 async function validateFunds(factomd, ecAddress, cost) {
     const ecPublic = getPublicAddress(ecAddress);
     const { balance } = await factomd.call('entry-credit-balance', {
-        address: ecPublic
+        address: ecPublic,
     });
 
     if (balance < cost) {
@@ -246,5 +246,5 @@ module.exports = {
     commitChain,
     reveal,
     revealEntry,
-    revealChain
+    revealChain,
 };

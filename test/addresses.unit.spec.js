@@ -1,8 +1,8 @@
 const assert = require('chai').assert;
 const addresses = require('../src/addresses');
 
-describe('Test addresses', function() {
-    it('should validate addresses', function() {
+describe('Test addresses', function () {
+    it('should validate addresses', function () {
         assert.isTrue(
             addresses.isValidAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD')
         );
@@ -17,7 +17,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should invalidate addresses', function() {
+    it('should invalidate addresses', function () {
         assert.isFalse(addresses.isValidAddress('NOPE'));
         assert.isFalse(addresses.isValidAddress('FAyolooooooooooooooo'));
         assert.isFalse(
@@ -25,7 +25,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should validate public addresses', function() {
+    it('should validate public addresses', function () {
         assert.isTrue(
             addresses.isValidPublicAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD')
         );
@@ -40,7 +40,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should validate private addresses', function() {
+    it('should validate private addresses', function () {
         assert.isTrue(
             addresses.isValidPrivateAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym')
         );
@@ -55,7 +55,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should validate EC addresses', function() {
+    it('should validate EC addresses', function () {
         assert.isTrue(
             addresses.isValidEcAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym')
         );
@@ -70,7 +70,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should validate public EC addresses', function() {
+    it('should validate public EC addresses', function () {
         assert.isTrue(
             addresses.isValidPublicEcAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD')
         );
@@ -85,7 +85,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should validate private EC addresses', function() {
+    it('should validate private EC addresses', function () {
         assert.isTrue(
             addresses.isValidPrivateEcAddress(
                 'Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'
@@ -108,7 +108,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should validate FCT addresses', function() {
+    it('should validate FCT addresses', function () {
         assert.isTrue(
             addresses.isValidFctAddress('Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X')
         );
@@ -123,7 +123,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should validate public FCT addresses', function() {
+    it('should validate public FCT addresses', function () {
         assert.isTrue(
             addresses.isValidPublicFctAddress(
                 'FA29jNtT88wGjs9YLQch8ur4VFaTDkuiDwWe1YmksPDJuh3tAczG'
@@ -146,7 +146,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should validate private FCT addresses', function() {
+    it('should validate private FCT addresses', function () {
         assert.isTrue(
             addresses.isValidPrivateFctAddress(
                 'Fs2w6VL6cwBqt6SpUyPLvdo9TK834gCr52Y225z8C5aHPAFav36X'
@@ -169,7 +169,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should get public address from already public address', function() {
+    it('should get public address from already public address', function () {
         assert.strictEqual(
             addresses.getPublicAddress('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'),
             'EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'
@@ -180,7 +180,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should get public address from private address', function() {
+    it('should get public address from private address', function () {
         assert.strictEqual(
             addresses.getPublicAddress('Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym'),
             'EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD'
@@ -191,7 +191,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should get public Factoid address out of key', function() {
+    it('should get public Factoid address out of key', function () {
         const key = Buffer.from(
             '776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80',
             'hex'
@@ -207,7 +207,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should get public Factoid address out of RCD hash', function() {
+    it('should get public Factoid address out of RCD hash', function () {
         const key = Buffer.from(
             '776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80',
             'hex'
@@ -223,7 +223,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should get private Factoid address out of seed', function() {
+    it('should get private Factoid address out of seed', function () {
         const seed = Buffer.from(
             '776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80',
             'hex'
@@ -239,7 +239,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should get public Entry Credit address out of key', function() {
+    it('should get public Entry Credit address out of key', function () {
         const key = Buffer.from(
             '776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80',
             'hex'
@@ -254,7 +254,7 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should get private Entry Credit address out of key', function() {
+    it('should get private Entry Credit address out of key', function () {
         const seed = Buffer.from(
             '776b5cf08edea510711e2bc4a73f2b5118008906c5afd2e5786cf817fa279b80',
             'hex'
@@ -270,14 +270,14 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should reject to get public key from public Factoid addresses', function() {
+    it('should reject to get public key from public Factoid addresses', function () {
         assert.throws(
             () => addresses.addressToKey('FA3qqJ2gFngBYc4AkvcBYWXTh6Bv1jdUMEmafxsLgw1jZ3dGq1ye'),
             Error
         );
     });
 
-    it('should extract cryptographic keys from addresses', function() {
+    it('should extract cryptographic keys from addresses', function () {
         assert.strictEqual(
             addresses
                 .addressToKey('EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD')
@@ -298,14 +298,14 @@ describe('Test addresses', function() {
         );
     });
 
-    it('should generate random FCT address', function() {
+    it('should generate random FCT address', function () {
         const randomAddress = addresses.generateRandomFctAddress();
         assert.isTrue(addresses.isValidPublicFctAddress(randomAddress.public));
         assert.isTrue(addresses.isValidPrivateFctAddress(randomAddress.private));
         assert.strictEqual(addresses.getPublicAddress(randomAddress.private), randomAddress.public);
     });
 
-    it('should generate random EC address', function() {
+    it('should generate random EC address', function () {
         const randomAddress = addresses.generateRandomEcAddress();
         assert.isTrue(addresses.isValidPublicEcAddress(randomAddress.public));
         assert.isTrue(addresses.isValidPrivateEcAddress(randomAddress.private));

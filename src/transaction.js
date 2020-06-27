@@ -10,7 +10,7 @@ const sign = require('tweetnacl/nacl-fast').sign,
         isValidPublicAddress,
         getPublicAddress,
         addressToKey,
-        addressToRcdHash
+        addressToRcdHash,
     } = require('./addresses');
 
 /**
@@ -33,7 +33,7 @@ class TransactionAddress {
     marshalBinary() {
         return Buffer.concat([
             encodeVarInt(this.amount),
-            Buffer.from(base58.decode(this.address).slice(2, 34))
+            Buffer.from(base58.decode(this.address).slice(2, 34)),
         ]);
     }
 }
@@ -101,10 +101,10 @@ class Transaction {
             this.id = sha256(this.marshalBinarySig).toString('hex');
 
             if (builder._keys.length !== 0) {
-                this.rcds = builder._keys.map(key =>
+                this.rcds = builder._keys.map((key) =>
                     Buffer.concat([RCD_TYPE_1, Buffer.from(key.publicKey)])
                 );
-                this.signatures = builder._keys.map(key =>
+                this.signatures = builder._keys.map((key) =>
                     Buffer.from(sign.detached(this.marshalBinarySig, key.secretKey))
                 );
             } else {
@@ -124,16 +124,16 @@ class Transaction {
             this.id = builder.txid;
             this.timestamp = builder.millitimestamp;
             this.inputs = builder.inputs.map(
-                input => new TransactionAddress(input.useraddress, input.amount)
+                (input) => new TransactionAddress(input.useraddress, input.amount)
             );
             this.factoidOutputs = builder.outputs.map(
-                output => new TransactionAddress(output.useraddress, output.amount)
+                (output) => new TransactionAddress(output.useraddress, output.amount)
             );
             this.entryCreditOutputs = builder.outecs.map(
-                output => new TransactionAddress(output.useraddress, output.amount)
+                (output) => new TransactionAddress(output.useraddress, output.amount)
             );
-            this.rcds = builder.rcds.map(rcd => Buffer.from(rcd, 'hex'));
-            this.signatures = flatMap(builder.sigblocks, sb => sb.signatures).map(signature =>
+            this.rcds = builder.rcds.map((rcd) => Buffer.from(rcd, 'hex'));
+            this.signatures = flatMap(builder.sigblocks, (sb) => sb.signatures).map((signature) =>
                 Buffer.from(signature, 'hex')
             );
             this.blockContext = blockContext;
@@ -279,15 +279,17 @@ function marshalBinarySig(timestamp, inputs, factoidOutputs, entryCreditOutputs)
     header.writeInt8(factoidOutputs.length, 8);
     header.writeInt8(entryCreditOutputs.length, 9);
 
-    const marshalledInput = inputs.map(address => address.marshalBinary());
-    const marshalledFactoidOutputs = factoidOutputs.map(address => address.marshalBinary());
-    const marshalledEntryCreditOutputs = entryCreditOutputs.map(address => address.marshalBinary());
+    const marshalledInput = inputs.map((address) => address.marshalBinary());
+    const marshalledFactoidOutputs = factoidOutputs.map((address) => address.marshalBinary());
+    const marshalledEntryCreditOutputs = entryCreditOutputs.map((address) =>
+        address.marshalBinary()
+    );
 
     return Buffer.concat([
         header,
         ...marshalledInput,
         ...marshalledFactoidOutputs,
-        ...marshalledEntryCreditOutputs
+        ...marshalledEntryCreditOutputs,
     ]);
 }
 
@@ -430,5 +432,5 @@ function validateSignature(data, rcd, signature) {
 }
 
 module.exports = {
-    Transaction
+    Transaction,
 };

@@ -55,7 +55,7 @@ class Entry {
      * @returns {string[]} External ids as hex encoded strings.
      */
     get extIdsHex() {
-        return this.extIds.map(extId => extId.toString('hex'));
+        return this.extIds.map((extId) => extId.toString('hex'));
     }
 
     /**
@@ -166,7 +166,7 @@ class Entry {
         const o = {
             chainId: this.chainIdHex,
             extIds: this.extIdsHex,
-            content: this.contentHex
+            content: this.contentHex,
         };
 
         if (this.timestamp) {
@@ -199,7 +199,7 @@ class EntryBuilder {
         if (entry instanceof Object) {
             this._chainId = entry.chainId ? Buffer.from(entry.chainId, 'hex') : Buffer.from('');
             this._extIds = Array.isArray(entry.extIds)
-                ? entry.extIds.map(extId => Buffer.from(extId, 'hex'))
+                ? entry.extIds.map((extId) => Buffer.from(extId, 'hex'))
                 : [];
             this._content = entry.content ? Buffer.from(entry.content, 'hex') : Buffer.from('');
             this._timestamp = entry.timestamp;
@@ -241,7 +241,7 @@ class EntryBuilder {
      */
     extIds(extIds, enc) {
         if (Array.isArray(extIds)) {
-            this._extIds = extIds.map(extId => Buffer.from(extId, enc || 'hex'));
+            this._extIds = extIds.map((extId) => Buffer.from(extId, enc || 'hex'));
         }
         return this;
     }
@@ -432,7 +432,7 @@ function composeEntryReveal(entry) {
 function composeEntry(entry, ecAddress, signature) {
     return {
         commit: composeEntryCommit(entry, ecAddress, signature),
-        reveal: composeEntryReveal(entry)
+        reveal: composeEntryReveal(entry),
     };
 }
 
@@ -451,7 +451,7 @@ function composeEntry(entry, ecAddress, signature) {
 async function composeEntryDelegateSig(entry, ecPublicAddress, sign) {
     return {
         commit: await composeEntryCommitDelegateSig(entry, ecPublicAddress, sign),
-        reveal: composeEntryReveal(entry)
+        reveal: composeEntryReveal(entry),
     };
 }
 
@@ -485,5 +485,5 @@ module.exports = {
     composeEntryReveal,
     composeEntry,
     composeEntryDelegateSig,
-    composeEntryLedger
+    composeEntryLedger,
 };

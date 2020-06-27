@@ -2,8 +2,8 @@ const assert = require('chai').assert,
     sign = require('tweetnacl/nacl-fast').sign,
     { Transaction } = require('../src/transaction');
 
-describe('Test Factoid transaction creation', function() {
-    it('should build signed transaction', async function() {
+describe('Test Factoid transaction creation', function () {
+    it('should build signed transaction', async function () {
         const timestamp = 1521693377958;
 
         const tx = Transaction.builder()
@@ -37,7 +37,7 @@ describe('Test Factoid transaction creation', function() {
         }
     });
 
-    it('should build unsigned transaction', async function() {
+    it('should build unsigned transaction', async function () {
         const timestamp = 1521693377958;
 
         const tx = Transaction.builder()
@@ -94,7 +94,7 @@ describe('Test Factoid transaction creation', function() {
         assert.strictEqual(tx.entryCreditOutputs[0].amount, 6000000);
     }
 
-    it('should compute fees of generic unsigned transaction', async function() {
+    it('should compute fees of generic unsigned transaction', async function () {
         const timestamp = 1521693377958;
 
         const tx = Transaction.builder()
@@ -109,20 +109,20 @@ describe('Test Factoid transaction creation', function() {
         assert.strictEqual(
             tx.computeEcRequiredFees({
                 rcdSignatureLength: 2 * (33 + 64),
-                numberOfSignatures: 2
+                numberOfSignatures: 2,
             }),
             23
         );
         assert.strictEqual(
             tx.computeRequiredFees(1000, {
                 rcdSignatureLength: 2 * (33 + 64),
-                numberOfSignatures: 2
+                numberOfSignatures: 2,
             }),
             23000
         );
     });
 
-    it('should copy transaction without signature', async function() {
+    it('should copy transaction without signature', async function () {
         const timestamp = 1521693377958;
 
         const tx = Transaction.builder()
@@ -146,7 +146,7 @@ describe('Test Factoid transaction creation', function() {
         assert.strictEqual(unsignedCopy.totalEntryCreditOutputs, 6000000);
     });
 
-    it('should manually signed transaction', async function() {
+    it('should manually signed transaction', async function () {
         const timestamp = 1521693377958;
 
         const tx = Transaction.builder()
@@ -163,7 +163,7 @@ describe('Test Factoid transaction creation', function() {
         assert.deepStrictEqual(manuallySignedCopy.marshalBinary(), tx.marshalBinary());
     });
 
-    it('should reject transaction with outputs greater than inputs (and not coinbase)', async function() {
+    it('should reject transaction with outputs greater than inputs (and not coinbase)', async function () {
         const timestamp = 1521693377958;
 
         try {
@@ -180,7 +180,7 @@ describe('Test Factoid transaction creation', function() {
         throw new Error('Should have rejected transaction');
     });
 
-    it('should reject transaction with negative amount', async function() {
+    it('should reject transaction with negative amount', async function () {
         try {
             Transaction.builder()
                 .input('Fs2aWUK9n6nriazARdt2hzk6kEqYy6ch9z7wTzowu8R4DELXwK4P', -1)
@@ -193,7 +193,7 @@ describe('Test Factoid transaction creation', function() {
         throw new Error('Should have rejected transaction');
     });
 
-    it('should reject transaction with non safe integer', async function() {
+    it('should reject transaction with non safe integer', async function () {
         try {
             Transaction.builder()
                 .input(
@@ -212,7 +212,7 @@ describe('Test Factoid transaction creation', function() {
         throw new Error('Should have rejected transaction');
     });
 
-    it('should throw on marshal binary computation of unsigned transaction', async function() {
+    it('should throw on marshal binary computation of unsigned transaction', async function () {
         try {
             Transaction.builder()
                 .input('FA3cnxxcRxm6RQs2hpExdEPo9utyeBZecWKeKa1pFDCrRoQh9aVw', 10)

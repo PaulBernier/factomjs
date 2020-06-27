@@ -18,15 +18,11 @@ class Chain {
     constructor(arg) {
         if (arg instanceof Entry) {
             const chainId = computeChainId(arg);
-            this.firstEntry = Entry.builder(arg)
-                .chainId(chainId)
-                .build();
+            this.firstEntry = Entry.builder(arg).chainId(chainId).build();
             this.id = chainId;
         } else if (arg.firstEntry instanceof Entry) {
             const chainId = computeChainId(arg.firstEntry);
-            this.firstEntry = Entry.builder(arg.firstEntry)
-                .chainId(chainId)
-                .build();
+            this.firstEntry = Entry.builder(arg.firstEntry).chainId(chainId).build();
             this.id = chainId;
         } else {
             throw new Error('Argument of Chain constructor must be an instance of Entry or Chain.');
@@ -56,7 +52,7 @@ class Chain {
     toObject() {
         return {
             firstEntry: this.firstEntry.toObject(),
-            id: this.idHex
+            id: this.idHex,
         };
     }
 }
@@ -180,7 +176,7 @@ function composeChainReveal(chain) {
 function composeChain(chain, ecAddress, signature) {
     return {
         commit: composeChainCommit(chain, ecAddress, signature),
-        reveal: composeChainReveal(chain)
+        reveal: composeChainReveal(chain),
     };
 }
 
@@ -199,7 +195,7 @@ function composeChain(chain, ecAddress, signature) {
 async function composeChainDelegateSig(chain, ecPublicAddress, sign) {
     return {
         commit: await composeChainCommitDelegateSig(chain, ecPublicAddress, sign),
-        reveal: composeChainReveal(chain)
+        reveal: composeChainReveal(chain),
     };
 }
 
@@ -255,5 +251,5 @@ module.exports = {
     composeChainDelegateSig,
     composeChainLedger,
     validateChainInstance,
-    isValidChainId
+    isValidChainId,
 };
