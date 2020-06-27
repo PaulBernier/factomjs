@@ -2,7 +2,7 @@ const naclSign = require('tweetnacl/nacl-fast').sign,
     { addressToKey, isValidPrivateEcAddress, isValidPublicEcAddress } = require('./addresses'),
     { Entry } = require('./entry'),
     { sha256, sha256d } = require('./util'),
-    { CHAIN_CREATION_COST } = require('./constant');
+    { CHAIN_CREATION_COST, CHAIN_REGEX } = require('./constant');
 
 /**********************
  * Chain class
@@ -235,6 +235,15 @@ function computeChainId(firstEntry) {
     return sha256(hashes);
 }
 
+/**
+ * Determine if a given string is a valid FCT chain.
+ * @param {string} chain - Chain to validate.
+ * @returns {boolean} - True if the chain is a valid FCT chain.
+ */
+function isValidChainId(chain) {
+    return typeof chain === 'string' && chain.match(CHAIN_REGEX);
+}
+
 module.exports = {
     Chain,
     computeChainTxId,
@@ -245,5 +254,6 @@ module.exports = {
     composeChain,
     composeChainDelegateSig,
     composeChainLedger,
-    validateChainInstance
+    validateChainInstance,
+    isValidChainId
 };
