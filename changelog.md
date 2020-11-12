@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.1]
+
+Upgrade dependencies.
+
 ## [1.4.0]
 
 ### Added
