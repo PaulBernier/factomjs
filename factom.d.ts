@@ -381,9 +381,7 @@ declare namespace factom {
          *
          * @param chainId Chain ID.
          */
-        getChainHead(
-            chainId: string
-        ): Promise<{
+        getChainHead(chainId: string): Promise<{
             /**
              * keymr of the head of the chain
              */
@@ -1420,9 +1418,7 @@ declare namespace factom {
          *
          * @param minute Minute (between 1 and 10 included)
          */
-        getCommitsForMinute(
-            minute: number
-        ): {
+        getCommitsForMinute(minute: number): {
             version: number;
             millis: number;
             entryHash: string;

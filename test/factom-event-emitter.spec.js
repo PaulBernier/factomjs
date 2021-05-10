@@ -170,9 +170,8 @@ describe('Test FactomEventEmitter', () => {
             eventType: 'newPendingTransaction',
             topic: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC',
         };
-        const tokenizedPendingTransaction = FactomEventEmitter.getSubscriptionToken(
-            pendingTransaction
-        );
+        const tokenizedPendingTransaction =
+            FactomEventEmitter.getSubscriptionToken(pendingTransaction);
         const mockPendingTransaction = getMockPendingTransaction();
 
         const listener = (tx) => {
@@ -363,9 +362,8 @@ describe('Test FactomEventEmitter', () => {
             eventType: 'newPendingTransaction',
             topic: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC',
         };
-        const tokenizedPendingTransaction = FactomEventEmitter.getSubscriptionToken(
-            pendingTransaction
-        );
+        const tokenizedPendingTransaction =
+            FactomEventEmitter.getSubscriptionToken(pendingTransaction);
         const mockPendingTransaction = getMockPendingTransaction();
 
         const nullListener = () => {};
@@ -403,9 +401,8 @@ describe('Test FactomEventEmitter', () => {
             eventType: 'newPendingTransaction',
             topic: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC',
         };
-        const tokenizedPendingTransaction = FactomEventEmitter.getSubscriptionToken(
-            pendingTransaction
-        );
+        const tokenizedPendingTransaction =
+            FactomEventEmitter.getSubscriptionToken(pendingTransaction);
         const mockPendingTransaction = getMockPendingTransaction();
         let counter = 1;
 
@@ -446,9 +443,8 @@ describe('Test FactomEventEmitter', () => {
             eventType: 'newPendingTransaction',
             topic: 'FA29eyMVJaZ2tbGqJ3M49gANaXMXCjgfKcJGe5mx8p4iQFCvFDAC',
         };
-        const tokenizedPendingTransaction = FactomEventEmitter.getSubscriptionToken(
-            pendingTransaction
-        );
+        const tokenizedPendingTransaction =
+            FactomEventEmitter.getSubscriptionToken(pendingTransaction);
 
         const firstTransaction = getMockPendingTransaction();
         const secondTransaction = getMockPendingTransaction('abc123');

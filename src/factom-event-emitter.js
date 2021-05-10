@@ -291,9 +291,8 @@ class FactomEventEmitter extends EventEmitter {
      * and update subscribed transactions
      */
     _handlePendingTransactions(fctAddress, pendingTransactions) {
-        const subscribedTransactionIds = this._factoidAddressPendingTransactionSubscriptions.get(
-            fctAddress
-        );
+        const subscribedTransactionIds =
+            this._factoidAddressPendingTransactionSubscriptions.get(fctAddress);
 
         for (const pendingTransaction of pendingTransactions) {
             if (!subscribedTransactionIds.has(pendingTransaction.transactionid)) {
