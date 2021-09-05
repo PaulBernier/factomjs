@@ -36,7 +36,7 @@
     },
     "homepage": "https://github.com/PaulBernier/factomjs#readme",
     "dependencies": {
-        "axios": "^0.21.1",
+        "axios": "^0.21.3",
         "base-58": "0.0.1",
         "bluebird": "^3.7.2",
         "hash.js": "^1.1.7",
